@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "116240540929",
+    "project_id": "off-home-65541",
+    "storage_bucket": "off-home-65541.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:116240540929:android:0b468bbfa297d1253e2700",
+        "android_client_info": {
+          "package_name": "com.offhome.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "116240540929-s3oqtiob5ddarhknihp2oal1s0dtlg60.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoCbeTPC5Z9qYttb2mKSjHqdZWhR7NgJ0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "116240540929-s3oqtiob5ddarhknihp2oal1s0dtlg60.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

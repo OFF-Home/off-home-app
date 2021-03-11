@@ -1,3 +1,7 @@
 <resources>
     <string name="app_name">OFF Home</string>
+    <string name="title_activities">Activities</string>
+    <string name="title_explore">Explore</string>
+    <string name="title_chats">Chats</string>
+    <string name="title_profile">Profile</string>
 </resources>

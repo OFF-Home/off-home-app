@@ -28,7 +28,7 @@
             android:text="Button"
             app:layout_constraintEnd_toStartOf="@+id/buttonAboutMe"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
 
         <TextView
             android:id="@+id/textViewNomUsuari"
@@ -41,7 +41,7 @@
             app:layout_constraintTop_toBottomOf="@+id/imageView" />
 
         <RatingBar
-            android:id="@+id/ratingBar"
+            android:id="@+id/ratingBarEstrellesUsuari"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
@@ -57,26 +57,27 @@
             android:text="Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
 
         <Button
-            android:id="@+id/button3"
+            android:id="@+id/buttonSettings"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:text="Button"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/buttonAboutMe"
-            app:layout_constraintTop_toBottomOf="@+id/ratingBar" />
+            app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/RecyclerViewProfileActivities"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/buttonAboutMe" >
+            app:layout_constraintTop_toBottomOf="@+id/buttonLikedActivities">
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardView"
+                android:id="@+id/cardViewProfileActivities"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
@@ -90,6 +91,25 @@
                     android:text="Name" />
             </androidx.cardview.widget.CardView>
         </androidx.recyclerview.widget.RecyclerView>
+
+        <Button
+            android:id="@+id/buttonOlderActivities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonAboutMe" />
+
+        <Button
+            android:id="@+id/buttonLikedActivities"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Button"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/buttonOlderActivities" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -1,5 +1,6 @@
 package com.offhome.app.ui.signup
 
+//import android.text.TextUtils
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -17,9 +18,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     private val _signUpResult = MutableLiveData<SignUpResult>()
     val signUpResult: LiveData<SignUpResult> = _signUpResult
 
-    fun signUp(username: String, password: String) {
+    fun signUp(email: String, username: String, password: String, birthDate: String) {
         // can be launched in a separate asynchronous job
-        val result = signUpRepository.login(username, password)
+        val result = signUpRepository.signUp(email, username, password, birthDate)
 
         if (result is Result.Success) {
             _signUpResult.value =
@@ -29,8 +30,10 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         }
     }
 
-    fun loginDataChanged(username: String, password: String) {
-        if (!isUserNameValid(username)) {
+    fun loginDataChanged(email: String, username: String, password: String) {
+        if (!isEmailValid(email)) {
+            _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
+        } else if (!isUserNameValid(username)) {
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
@@ -39,13 +42,18 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         }
     }
 
-    // A placeholder username validation check
+    private fun isEmailValid(email: String): Boolean {
+        return email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches() //de stackoverflow
+    }
+
     private fun isUserNameValid(username: String): Boolean {
-        return if (username.contains('@')) {
+        /*return if (username.contains('@')) {
             Patterns.EMAIL_ADDRESS.matcher(username).matches()
         } else {
             username.isNotBlank()
-        }
+        }*/
+
+        return username.isNotBlank()
     }
 
     // A placeholder password validation check

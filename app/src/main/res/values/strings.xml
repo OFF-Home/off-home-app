@@ -21,4 +21,5 @@
     <string name="text_view_or">or</string>
     <string name="continue_google">Continue with Google</string>
     <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail adress</string>
+    <string name="invalid_email">Not a valid e-mail</string>
 </resources>

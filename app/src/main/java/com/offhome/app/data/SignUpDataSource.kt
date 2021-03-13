@@ -9,7 +9,7 @@ import java.io.IOException
 //plantilla que venia feta
 class SignUpDataSource {
 
-    fun login(username: String, password: String): Result<SignedUpUser> {
+    fun signUp(email: String, username: String, password: String, birthDate: String): Result<SignedUpUser> {
         try {
             // TODO: handle loggedInUser authentication
             val fakeUser = SignedUpUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
@@ -19,7 +19,7 @@ class SignUpDataSource {
         }
     }
 
-    fun logout() {
-        // TODO: revoke authentication
-    }
+    /*fun logout() {
+        // revoke authentication
+    }*/
 }

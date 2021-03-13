@@ -23,14 +23,14 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
         user = null
     }
 
-    fun logout() {
+    /*fun logout() {
         user = null
         dataSource.logout()
-    }
+    }*/
 
-    fun login(username: String, password: String): Result<SignedUpUser> {
+    fun signUp(email: String, username: String, password: String, birthDate: String): Result<SignedUpUser> {
         // handle login
-        val result = dataSource.login(username, password)
+        val result = dataSource.signUp(email, username, password, birthDate)
 
         if (result is Result.Success) {
             setLoggedInUser(result.data)

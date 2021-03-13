@@ -86,6 +86,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:background="@color/primary"
+        android:enabled="false"
         android:text="@string/button_sign_up"
         android:textAllCaps="false"
         android:textColor="@color/black"

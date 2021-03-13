@@ -78,8 +78,17 @@ class SignUpActivity : AppCompatActivity() {
         //TODO: afegir email
         //fan les comprovacions de si els strings son correctes
 
+        email.afterTextChanged {
+            signUpViewModel.loginDataChanged(
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString()
+            )
+        }
+
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(
+                email.text.toString(),
                 username.text.toString(),
                 password.text.toString()
             )
@@ -88,6 +97,7 @@ class SignUpActivity : AppCompatActivity() {
         password.apply {
             afterTextChanged {
                 signUpViewModel.loginDataChanged(
+                    email.text.toString(),
                     username.text.toString(),
                     password.text.toString()
                 )
@@ -97,7 +107,7 @@ class SignUpActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signUpViewModel.signUp(username.text.toString(), password.text.toString())
+                        signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
                 }
                 false
             }
@@ -106,7 +116,7 @@ class SignUpActivity : AppCompatActivity() {
             //crida a signUp
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                signUpViewModel.signUp(username.text.toString(), password.text.toString())
+                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
             }
         }
     }

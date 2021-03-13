@@ -4,12 +4,12 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.offhome.app.data.LoginRepository
+import com.offhome.app.data.SignUpRepository
 import com.offhome.app.data.Result
 
 import com.offhome.app.R
 
-class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewModel() {
 
     private val _loginForm = MutableLiveData<SignUpFormState>()
     val signUpFormState: LiveData<SignUpFormState> = _loginForm
@@ -19,7 +19,7 @@ class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel(
 
     fun login(username: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        val result = signUpRepository.login(username, password)
 
         if (result is Result.Success) {
             _loginResult.value =

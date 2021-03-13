@@ -36,35 +36,47 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)
 
+        //observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
         signUpViewModel.signUpFormState.observe(this@SignUpActivity, Observer {
-            val loginState = it ?: return@Observer
+            val signUpState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            signUp.isEnabled = loginState.isDataValid
+            signUp.isEnabled = signUpState.isDataValid
 
-            if (loginState.usernameError != null) { //si hi ha error
-                username.error = getString(loginState.usernameError)
+            if (signUpState.emailError != null) { //si hi ha error
+                email.error = getString(signUpState.emailError)
             }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
+            if (signUpState.usernameError != null) {
+                username.error = getString(signUpState.usernameError)
+            }
+            if (signUpState.passwordError != null) {
+                password.error = getString(signUpState.passwordError)
             }
         })
 
+        //observar el resultat de signUp.
+        //Si hi ha error, mostrar-lo.
+        //TODO: Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
+        //
         signUpViewModel.signUpResult.observe(this@SignUpActivity, Observer {
-            val loginResult = it ?: return@Observer
+            val signUpResult = it ?: return@Observer
 
             loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
+            if (signUpResult.error != null) {
+                showSignUpFailed(signUpResult.error)
             }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
+            if (signUpResult.success != null) {
+                updateUiWithUser(signUpResult.success)
             }
             setResult(Activity.RESULT_OK)
 
             //Complete and destroy login activity once successful
             finish()
         })
+
+        //s'executen quan es modifiquen username o password
+        //TODO: afegir email
+        //fan les comprovacions de si els strings son correctes
 
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(
@@ -81,36 +93,42 @@ class SignUpActivity : AppCompatActivity() {
                 )
             }
 
+            //que es esto??
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signUpViewModel.login(
-                            username.text.toString(),
-                            password.text.toString()
-                        )
+                        signUpViewModel.signUp(username.text.toString(), password.text.toString())
                 }
                 false
             }
 
+            //listener del botó signUp, suposo
+            //crida a signUp
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                signUpViewModel.login(username.text.toString(), password.text.toString())
+                signUpViewModel.signUp(username.text.toString(), password.text.toString())
             }
         }
     }
 
     private fun updateUiWithUser(model: SignedUpUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayName
-        // TODO : initiate successful logged in experience
+        val emailConfirmationMessage = getString(R.string.emailConfirmationMessage)
+        //val displayName = model.displayName
+        //initiate successful logged in experience
+        // TODO s'envia e-mail per a confirmar,
+        // s'informa d'axiò amb un missatge,
+        // TODO i canvia a pantalla de LogIn
+
+        //ensenya un missatge de welcome a baix
         Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
+                applicationContext,
+                //"$emailConfirmationMessage $displayName",
+                emailConfirmationMessage,
+                Toast.LENGTH_LONG
         ).show()
     }
 
-    private fun showLoginFailed(@StringRes errorString: Int) {
+    private fun showSignUpFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 }

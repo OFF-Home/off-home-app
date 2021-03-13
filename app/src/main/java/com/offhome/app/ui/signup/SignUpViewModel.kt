@@ -11,31 +11,31 @@ import com.offhome.app.R
 
 class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewModel() {
 
-    private val _loginForm = MutableLiveData<SignUpFormState>()
-    val signUpFormState: LiveData<SignUpFormState> = _loginForm
+    private val _signUpForm = MutableLiveData<SignUpFormState>()
+    val signUpFormState: LiveData<SignUpFormState> = _signUpForm
 
-    private val _loginResult = MutableLiveData<SignUpResult>()
-    val signUpResult: LiveData<SignUpResult> = _loginResult
+    private val _signUpResult = MutableLiveData<SignUpResult>()
+    val signUpResult: LiveData<SignUpResult> = _signUpResult
 
-    fun login(username: String, password: String) {
+    fun signUp(username: String, password: String) {
         // can be launched in a separate asynchronous job
         val result = signUpRepository.login(username, password)
 
         if (result is Result.Success) {
-            _loginResult.value =
+            _signUpResult.value =
                 SignUpResult(success = SignedUpUserView(displayName = result.data.displayName))
         } else {
-            _loginResult.value = SignUpResult(error = R.string.login_failed)
+            _signUpResult.value = SignUpResult(error = R.string.login_failed)
         }
     }
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
-            _loginForm.value = SignUpFormState(usernameError = R.string.invalid_username)
+            _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
-            _loginForm.value = SignUpFormState(passwordError = R.string.invalid_password)
+            _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
         } else {
-            _loginForm.value = SignUpFormState(isDataValid = true)
+            _signUpForm.value = SignUpFormState(isDataValid = true)
         }
     }
 
@@ -49,6 +49,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     }
 
     // A placeholder password validation check
+    //en signUp això serà només per coses tipo numero minim de char's.
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }

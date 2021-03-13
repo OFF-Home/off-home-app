@@ -4,4 +4,10 @@
     <string name="title_explore">Explore</string>
     <string name="title_chats">Chats</string>
     <string name="title_profile">Profile</string>
+    <string name="title_of_the_activity">Title of the activity</string>
+    <string name="create">CREATE</string>
+    <string name="insert_title">Insert title</string>
+    <string name="todo">TODO</string>
+    <string name="about_the_activity">About the activity</string>
+    <string name="insert_text">insert text</string>
 </resources>

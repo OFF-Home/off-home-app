@@ -10,10 +10,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
-import android.widget.Button
-import android.widget.EditText
-import android.widget.ProgressBar
-import android.widget.Toast
+import android.widget.*
 
 import com.offhome.app.R
 
@@ -27,9 +24,13 @@ class SignUpActivity : AppCompatActivity() {
 
         setContentView(R.layout.activity_sign_up)
 
-        val username = findViewById<EditText>(R.id.editTextEmail)
+        val email = findViewById<EditText>(R.id.editTextEmail)
+        val username = findViewById<EditText>(R.id.editTextUsername)
         val password = findViewById<EditText>(R.id.editTextPassword)
-        val login = findViewById<Button>(R.id.ButtonSignUp)
+        val birthDate = findViewById<EditText>(R.id.editTextBirthDate)
+        val signUp = findViewById<Button>(R.id.ButtonSignUp)
+        val hereButton = findViewById<TextView>(R.id.textViewHere)
+        val googleButton = findViewById<Button>(R.id.buttonGoogleSignUp)
         val loading = findViewById<ProgressBar>(R.id.loading)
 
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
@@ -39,9 +40,9 @@ class SignUpActivity : AppCompatActivity() {
             val loginState = it ?: return@Observer
 
             // disable login button unless both username / password is valid
-            login.isEnabled = loginState.isDataValid
+            signUp.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) {
+            if (loginState.usernameError != null) { //si hi ha error
                 username.error = getString(loginState.usernameError)
             }
             if (loginState.passwordError != null) {
@@ -91,7 +92,7 @@ class SignUpActivity : AppCompatActivity() {
                 false
             }
 
-            login.setOnClickListener {
+            signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 signUpViewModel.login(username.text.toString(), password.text.toString())
             }

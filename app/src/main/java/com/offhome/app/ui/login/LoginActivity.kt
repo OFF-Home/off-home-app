@@ -1,11 +1,9 @@
 package com.offhome.app.ui.login
 
 import android.app.Activity
-import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -13,13 +11,7 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.android.gms.auth.api.signin.GoogleSignIn
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions
-import com.google.android.gms.common.api.ApiException
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.R
-
 
 class LoginActivity : AppCompatActivity() {
 
@@ -41,35 +33,41 @@ class LoginActivity : AppCompatActivity() {
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
 
-        loginViewModel.loginFormState.observe(this@LoginActivity, Observer {
-            val loginState = it ?: return@Observer
+        loginViewModel.loginFormState.observe(
+            this@LoginActivity,
+            Observer {
+                val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
-            btnLogin.isEnabled = loginState.isDataValid
+                // disable login button unless both username / password is valid
+                btnLogin.isEnabled = loginState.isDataValid
 
-            if (loginState.emailError != null) {
-                editTextEmail.error = getString(loginState.emailError)
+                if (loginState.emailError != null) {
+                    editTextEmail.error = getString(loginState.emailError)
+                }
+                if (loginState.passwordError != null) {
+                    editTextPassword.error = getString(loginState.passwordError)
+                }
             }
-            if (loginState.passwordError != null) {
-                editTextPassword.error = getString(loginState.passwordError)
-            }
-        })
+        )
 
-        loginViewModel.loginResult.observe(this@LoginActivity, Observer {
-            val loginResult = it ?: return@Observer
+        loginViewModel.loginResult.observe(
+            this@LoginActivity,
+            Observer {
+                val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
+                loading.visibility = View.GONE
+                if (loginResult.error != null) {
+                    showLoginFailed(loginResult.error)
+                }
+                if (loginResult.success != null) {
+                    updateUiWithUser(loginResult.success)
+                }
+                setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
-            //finish()
-        })
+                // Complete and destroy login activity once successful
+                // finish()
+            }
+        )
 
         editTextEmail.afterTextChanged {
             loginViewModel.loginDataChanged(

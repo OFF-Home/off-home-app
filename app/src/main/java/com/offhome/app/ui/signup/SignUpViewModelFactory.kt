@@ -9,7 +9,7 @@ import com.offhome.app.data.LoginRepository
  * ViewModel provider factory to instantiate LoginViewModel.
  * Required given LoginViewModel has a non-empty constructor
  */
-//plantilla que venia feta. no sabem si ens servira per algo
+// plantilla que venia feta. no sabem si ens servira per algo
 class SignUpViewModelFactory : ViewModelProvider.Factory {
 
     @Suppress("UNCHECKED_CAST")

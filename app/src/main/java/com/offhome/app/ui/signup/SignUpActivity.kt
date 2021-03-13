@@ -1,20 +1,19 @@
 package com.offhome.app.ui.signup
 
 import android.app.Activity
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
-
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
 
-//la estem modificant
+// la estem modificant
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
@@ -36,35 +35,41 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)
 
-        signUpViewModel.signUpFormState.observe(this@SignUpActivity, Observer {
-            val loginState = it ?: return@Observer
+        signUpViewModel.signUpFormState.observe(
+            this@SignUpActivity,
+            Observer {
+                val loginState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
-            signUp.isEnabled = loginState.isDataValid
+                // disable login button unless both username / password is valid
+                signUp.isEnabled = loginState.isDataValid
 
-            if (loginState.usernameError != null) { //si hi ha error
-                username.error = getString(loginState.usernameError)
+                if (loginState.usernameError != null) { // si hi ha error
+                    username.error = getString(loginState.usernameError)
+                }
+                if (loginState.passwordError != null) {
+                    password.error = getString(loginState.passwordError)
+                }
             }
-            if (loginState.passwordError != null) {
-                password.error = getString(loginState.passwordError)
-            }
-        })
+        )
 
-        signUpViewModel.signUpResult.observe(this@SignUpActivity, Observer {
-            val loginResult = it ?: return@Observer
+        signUpViewModel.signUpResult.observe(
+            this@SignUpActivity,
+            Observer {
+                val loginResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
-            if (loginResult.error != null) {
-                showLoginFailed(loginResult.error)
-            }
-            if (loginResult.success != null) {
-                updateUiWithUser(loginResult.success)
-            }
-            setResult(Activity.RESULT_OK)
+                loading.visibility = View.GONE
+                if (loginResult.error != null) {
+                    showLoginFailed(loginResult.error)
+                }
+                if (loginResult.success != null) {
+                    updateUiWithUser(loginResult.success)
+                }
+                setResult(Activity.RESULT_OK)
 
-            //Complete and destroy login activity once successful
-            finish()
-        })
+                // Complete and destroy login activity once successful
+                finish()
+            }
+        )
 
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(

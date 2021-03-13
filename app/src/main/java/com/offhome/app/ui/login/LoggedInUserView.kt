@@ -5,5 +5,5 @@ package com.offhome.app.ui.login
  */
 data class LoggedInUserView(
     val displayUserName: String
-    //... other data fields that may be accessible to the UI
+    // ... other data fields that may be accessible to the UI
 )

@@ -1,7 +1,6 @@
 package com.offhome.app.data
 
 import android.util.Log
-import android.widget.Toast
 import com.google.firebase.auth.FirebaseAuth
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
@@ -16,7 +15,8 @@ class LoginDataSource {
             lateinit var user: LoggedInUser
             FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(
-                    email, password).addOnCompleteListener {
+                    email, password
+                ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val fUser = FirebaseAuth.getInstance().currentUser
                         user = LoggedInUser(fUser.uid, fUser.displayName ?: "Pau")

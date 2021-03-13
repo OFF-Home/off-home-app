@@ -1,13 +1,12 @@
 package com.offhome.app.ui.signup
 
+import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import android.util.Patterns
-import com.offhome.app.data.Result
-
 import com.offhome.app.R
 import com.offhome.app.data.LoginRepository
+import com.offhome.app.data.Result
 
 class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 

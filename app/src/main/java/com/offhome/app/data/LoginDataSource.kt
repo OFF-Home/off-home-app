@@ -1,5 +1,8 @@
 package com.offhome.app.data
 
+import android.util.Log
+import android.widget.Toast
+import com.google.firebase.auth.FirebaseAuth
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
 
@@ -8,11 +11,20 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    fun login(username: String, password: String): Result<LoggedInUser> {
+    fun login(email: String, password: String): Result<LoggedInUser> {
         try {
-            // TODO: handle loggedInUser authentication
-            val fakeUser = LoggedInUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            return Result.Success(fakeUser)
+            lateinit var user: LoggedInUser
+            FirebaseAuth.getInstance()
+                .signInWithEmailAndPassword(
+                    email, password).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        val fUser = FirebaseAuth.getInstance().currentUser
+                        user = LoggedInUser(fUser.uid, fUser.displayName ?: "Pau")
+                    } else {
+                        Log.w("LOGIN", "signInWithEmail:failure", it.exception)
+                    }
+                }
+            return Result.Success(user)
         } catch (e: Throwable) {
             return Result.Error(IOException("Error logging in", e))
         }

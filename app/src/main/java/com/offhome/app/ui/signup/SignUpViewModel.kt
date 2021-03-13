@@ -4,10 +4,10 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import android.util.Patterns
-import com.offhome.app.data.LoginRepository
 import com.offhome.app.data.Result
 
 import com.offhome.app.R
+import com.offhome.app.data.LoginRepository
 
 class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel() {
 
@@ -23,7 +23,7 @@ class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel(
 
         if (result is Result.Success) {
             _loginResult.value =
-                SignUpResult(success = SignedUpUserView(displayName = result.data.displayName))
+                SignUpResult(success = SignedUpUserView(displayName = result.data.displayUsername))
         } else {
             _loginResult.value = SignUpResult(error = R.string.login_failed)
         }
@@ -31,7 +31,7 @@ class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel(
 
     fun loginDataChanged(username: String, password: String) {
         if (!isUserNameValid(username)) {
-            _loginForm.value = SignUpFormState(usernameError = R.string.invalid_username)
+            _loginForm.value = SignUpFormState(usernameError = R.string.invalid_email)
         } else if (!isPasswordValid(password)) {
             _loginForm.value = SignUpFormState(passwordError = R.string.invalid_password)
         } else {

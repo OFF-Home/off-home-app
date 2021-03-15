@@ -15,9 +15,9 @@ class SignUpDataSource {
             // aixi que el backend donarà excepció si ja existeix un usuari amb aquest email o username?
 
             val fakeUser = SignedUpUser(java.util.UUID.randomUUID().toString(), "Jane Doe")
-            //return Result.Success(fakeUser)     //crec que no cal el paràmetre.
+            return Result.Success(fakeUser)     //crec que no cal el paràmetre.
             //testejant:
-            return Result.Error(IOException("Error signing up. A user with this e-mail already exists"))
+            //return Result.Error(IOException("Error signing up. A user with this e-mail already exists"))
 
         } catch (e: Throwable) {
             return Result.Error(IOException("Error signing up", e))     //TODO: afegir al string el motiu. hauria de ser que ja existeix un usuari amb aquest email o username

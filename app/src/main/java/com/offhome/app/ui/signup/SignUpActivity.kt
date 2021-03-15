@@ -1,6 +1,7 @@
 package com.offhome.app.ui.signup
 
 import android.app.Activity
+import android.content.Intent
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
@@ -11,6 +12,7 @@ import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import com.offhome.app.MainActivity
 
 import com.offhome.app.R
 
@@ -56,7 +58,7 @@ class SignUpActivity : AppCompatActivity() {
 
         //observar el resultat de signUp.
         //Si hi ha error, mostrar-lo.
-        //TODO: Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
+        //Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
         //
         signUpViewModel.signUpResult.observe(this@SignUpActivity, Observer {
             val signUpResult = it ?: return@Observer
@@ -118,6 +120,10 @@ class SignUpActivity : AppCompatActivity() {
                 signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
             }
         }
+
+        /*birthDate.setOnClickListener {
+            //ho estic fent amb onClick
+        }*/
     }
 
     private fun updateUiWithUser(model: SignedUpUserView) {
@@ -126,7 +132,7 @@ class SignUpActivity : AppCompatActivity() {
         //initiate successful logged in experience
         // TODO s'envia e-mail per a confirmar,
         // s'informa d'axiò amb un missatge,
-        // TODO i canvia a pantalla de LogIn
+        // i canvia a pantalla de LogIn
 
         //ensenya un missatge de welcome a baix
         Toast.makeText(
@@ -136,12 +142,26 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
         ).show()
 
-        //canviar a pantalla de LogIn. per ara, com a placeholder, va a Activities
-        //...anar a Activities
+        //canviar a pantalla de LogIn. //TODO per ara, com a placeholder, va a MainActivity (la de les activitats (esdeveniments, categories))
+        val intentCanviALogIn = Intent(this, MainActivity::class.java)      //.apply {        }
+        startActivity(intentCanviALogIn)
     }
 
     private fun showSignUpFailed(@StringRes errorString: Int) {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
+    }
+
+    //mostrar el fragment que permet escollir la birth date. el crida el editTextBirthDate onClick.
+    public fun showDatePicker(elTextCrec : View) {
+
+        //el que se suposa que hauriem de fer: crear-ne un de nou. pero requereix API superior
+        /*val datePickerFragment1 = DatePickerFragment()
+        datePickerFragment1.show(supportFragmentManager, "datePicker")*/
+
+        //la meva chapuza terrible: n'he creat un invisible que mostro quan cal.
+        /*val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
+        datePickerBirthDateExistent.visibility = View.VISIBLE;
+        datePickerBirthDateExistent.bringToFront()*/
     }
 }
 

@@ -6,7 +6,9 @@ import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.DatePicker
+import android.widget.NumberPicker
 import android.widget.TextView
+import android.widget.Toast
 import androidx.annotation.RequiresApi
 import com.offhome.app.R
 import java.util.*
@@ -35,6 +37,15 @@ class CreateActivity : AppCompatActivity() {
         }, day, month, year)
             bpd.show()
         }
+
+        val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
+        val btn_availability = findViewById<FloatingActionButton>(R.id.btn_availability)
+        pick_availability.maxValue = 10
+        pick_availability.minValue = 3
+        btn_availability.setOnClickListener{
+            Toast.makeText(this, pick_availability.value.toString(),Toast.LENGTH_SHORT).show()
+        }
+
     }
 
 

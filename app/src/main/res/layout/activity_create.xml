@@ -8,16 +8,16 @@
     android:padding="20dp"
     tools:context=".ui.createactivity.CreateActivity">
 
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/todo"
         android:layout_width="363dp"
         android:layout_height="661dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
-
 
     <TextView
         android:id="@+id/textTitle"
@@ -37,8 +37,8 @@
 
     <EditText
         android:id="@+id/activity_title"
-        android:layout_width="352dp"
-        android:layout_height="59dp"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
         android:layout_marginStart="12dp"
         android:autofillHints=""
         android:hint="@string/insert_title"
@@ -48,7 +48,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/todo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.061" />
+        app:layout_constraintVertical_bias="0.062" />
 
     <TextView
         android:id="@+id/textAbout"
@@ -69,9 +69,9 @@
 
     <EditText
         android:id="@+id/about_the_activity"
-        android:layout_width="356dp"
-        android:layout_height="69dp"
-        android:layout_marginStart="8dp"
+        android:layout_width="350dp"
+        android:layout_height="60dp"
+        android:layout_marginStart="12dp"
         android:autofillHints=""
         android:hint="@string/insert_text"
         android:inputType="textWebEditText"
@@ -80,42 +80,64 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="@+id/todo"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.246" />
+        app:layout_constraintVertical_bias="0.24" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnPickDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="16dp"
+        android:layout_marginStart="28dp"
+        android:layout_marginTop="217dp"
+        android:layout_marginEnd="279dp"
+        android:layout_marginBottom="267dp"
         android:backgroundTint="@color/white"
         android:contentDescription="@string/todo"
         android:src="@drawable/ic_baseline_date_range_24"
+        app:backgroundTint="#FFF"
         app:layout_constraintBottom_toBottomOf="@+id/todo"
-        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/todo"
         app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textTitle"
-        app:layout_constraintVertical_bias="0.337" />
+        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintTop_toTopOf="@+id/todo"
+        app:layout_constraintVertical_bias="0.0" />
 
     <TextView
         android:id="@+id/datepck"
         android:layout_width="72dp"
         android:layout_height="26dp"
-        android:layout_marginBottom="16dp"
         android:text="Date"
+        app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="@+id/todo"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.318"
+        app:layout_constraintHorizontal_bias="0.33"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.396"
+        app:layout_constraintVertical_bias="0.377"
         tools:ignore="MissingConstraints" />
+
+    <NumberPicker
+        android:id="@+id/pick_availability"
+        android:layout_width="38dp"
+        android:layout_height="58dp"
+        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintEnd_toEndOf="@+id/todo"
+        app:layout_constraintHorizontal_bias="0.3"
+        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintTop_toTopOf="@+id/todo" />
+
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btn_availability"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_people_24"
+        app:backgroundTint="#FFF"
+        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintEnd_toEndOf="@+id/todo"
+        app:layout_constraintHorizontal_bias="0.091"
+        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintTop_toTopOf="@+id/todo"
+        app:layout_constraintVertical_bias="0.499" />
 
     <Button
         android:id="@+id/btn_create"

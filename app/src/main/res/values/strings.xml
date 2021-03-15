@@ -10,4 +10,7 @@
     <string name="todo">TODO</string>
     <string name="about_the_activity">About the activity</string>
     <string name="insert_text">Insert text</string>
+    <string name="date">Date</string>
+    <string name="choose_location">Choose location</string>
+    <string name="set_location">Set location</string>
 </resources>

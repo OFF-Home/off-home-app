@@ -74,8 +74,7 @@ class SignUpActivity : AppCompatActivity() {
             finish()
         })
 
-        //s'executen quan es modifiquen username o password
-        //TODO: afegir email
+        //s'executen quan es modifiquen email, username o password
         //fan les comprovacions de si els strings son correctes
 
         email.afterTextChanged {
@@ -136,6 +135,9 @@ class SignUpActivity : AppCompatActivity() {
                 emailConfirmationMessage,
                 Toast.LENGTH_LONG
         ).show()
+
+        //canviar a pantalla de LogIn. per ara, com a placeholder, va a Activities
+        //...anar a Activities
     }
 
     private fun showSignUpFailed(@StringRes errorString: Int) {

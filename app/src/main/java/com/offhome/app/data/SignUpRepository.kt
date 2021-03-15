@@ -7,6 +7,7 @@ import com.offhome.app.data.model.SignedUpUser
  * maintains an in-memory cache of login status and user credentials information.
  */
 //plantilla que venia feta
+//editant
 
 class SignUpRepository(val dataSource: SignUpDataSource) {
 
@@ -32,9 +33,9 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
         // handle login
         val result = dataSource.signUp(email, username, password, birthDate)
 
-        if (result is Result.Success) {
-            setLoggedInUser(result.data)
-        }
+        /*if (result is Result.Success) {
+            //setLoggedInUser(result.data)  //no cal crec
+        }*/
 
         return result
     }

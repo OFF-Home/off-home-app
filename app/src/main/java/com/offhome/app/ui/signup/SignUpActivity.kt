@@ -142,9 +142,8 @@ class SignUpActivity : AppCompatActivity() {
                 Toast.LENGTH_LONG
         ).show()
 
-        //canviar a pantalla de LogIn. //TODO per ara, com a placeholder, va a MainActivity (la de les activitats (esdeveniments, categories))
-        val intentCanviALogIn = Intent(this, MainActivity::class.java)      //.apply {        }
-        startActivity(intentCanviALogIn)
+        //canviar a pantalla de LogIn.
+        canviALogInActivity()
     }
 
     private fun showSignUpFailed(@StringRes errorString: Int) {
@@ -162,6 +161,16 @@ class SignUpActivity : AppCompatActivity() {
         /*val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
         datePickerBirthDateExistent.visibility = View.VISIBLE;
         datePickerBirthDateExistent.bringToFront()*/
+    }
+
+    public fun textViewHereCanviarALogIn(elTextCrec : View) {
+        canviALogInActivity()
+    }
+
+    private fun canviALogInActivity() {
+        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (esdeveniments, categories))
+        val intentCanviALogIn = Intent(this, MainActivity::class.java)      //.apply {        }
+        startActivity(intentCanviALogIn)
     }
 }
 

@@ -167,7 +167,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_here"
-            android:textColor="@color/color_link" />
+            android:textColor="@color/color_link"
+            android:onClick="textViewHereCanviarALogIn"/>
     </LinearLayout>
 
     <LinearLayout

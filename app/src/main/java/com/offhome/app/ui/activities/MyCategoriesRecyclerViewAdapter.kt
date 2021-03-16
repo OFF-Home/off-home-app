@@ -44,7 +44,7 @@ class MyCategoriesRecyclerViewAdapter : RecyclerView.Adapter<MyCategoriesRecycle
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewName: TextView = mView.findViewById(R.id.textViewNameCategory)
-        val imageViewBackground: ImageView = mView.findViewById(R.id.imageViewBackground)
+        val imageViewBackground: ImageView = mView.findViewById(R.id.pinkBackground)
         val imageViewIcon: ImageView = mView.findViewById(R.id.imageViewIconCategory)
 
         override fun toString(): String {

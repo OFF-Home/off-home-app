@@ -13,3 +13,4 @@ class CategoriesViewModel : ViewModel() {
         return categories
     }
 }
+

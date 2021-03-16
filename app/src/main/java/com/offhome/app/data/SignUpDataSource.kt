@@ -12,6 +12,7 @@ class SignUpDataSource {
     fun signUp(email: String, username: String, password: String, birthDate: String): Result<SignedUpUser> {
         try {
             // TODO: handle loggedInUser authentication
+            // fer crida HTTP
             // aixi que el backend donarà excepció si ja existeix un usuari amb aquest email o username?
 
             val fakeUser = SignedUpUser(java.util.UUID.randomUUID().toString(), "Jane Doe")

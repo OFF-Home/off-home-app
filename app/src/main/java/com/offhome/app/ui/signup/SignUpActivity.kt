@@ -121,9 +121,22 @@ class SignUpActivity : AppCompatActivity() {
             }
         }
 
-        /*birthDate.setOnClickListener {
-            //ho estic fent amb onClick
-        }*/
+        //mostrar el fragment que permet escollir la birth date.
+        birthDate.setOnClickListener {
+            //per a API >=24: crear-ne un de nou.
+            /*val datePickerFragment1 = DatePickerFragment()
+            datePickerFragment1.show(supportFragmentManager, "datePicker")*/
+
+            //per a API <24: n'hem creat un invisible, que mostrem quan cal.
+            val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
+            datePickerBirthDateExistent.visibility = View.VISIBLE;
+            datePickerBirthDateExistent.bringToFront()
+            //datePickerBirthDateExistent.setOnDateChangedListener(new onDateChangedListener)
+        }
+
+        hereButton.setOnClickListener {
+            canviALogInActivity()
+        }
     }
 
     private fun updateUiWithUser(model: SignedUpUserView) {
@@ -150,25 +163,8 @@ class SignUpActivity : AppCompatActivity() {
         Toast.makeText(applicationContext, errorString, Toast.LENGTH_SHORT).show()
     }
 
-    //mostrar el fragment que permet escollir la birth date. el crida el editTextBirthDate onClick.
-    public fun showDatePicker(elTextCrec : View) {
-
-        //el que se suposa que hauriem de fer: crear-ne un de nou. pero requereix API superior
-        /*val datePickerFragment1 = DatePickerFragment()
-        datePickerFragment1.show(supportFragmentManager, "datePicker")*/
-
-        //la meva chapuza terrible: n'he creat un invisible que mostro quan cal.
-        /*val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
-        datePickerBirthDateExistent.visibility = View.VISIBLE;
-        datePickerBirthDateExistent.bringToFront()*/
-    }
-
-    public fun textViewHereCanviarALogIn(elTextCrec : View) {
-        canviALogInActivity()
-    }
-
     private fun canviALogInActivity() {
-        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (esdeveniments, categories))
+        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(this, MainActivity::class.java)      //.apply {        }
         startActivity(intentCanviALogIn)
     }

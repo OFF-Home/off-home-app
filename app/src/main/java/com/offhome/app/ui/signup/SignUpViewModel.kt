@@ -25,7 +25,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         if (result is Result.Success) {
             _signUpResult.value = SignUpResult(success = SignedUpUserView(displayName = result.data.displayName))
         } else {
-            _signUpResult.value = SignUpResult(error = R.string.login_failed)   //TODO canviar per el string que explica l'error
+            _signUpResult.value = SignUpResult(error = R.string.login_failed)   //TODO canviar per el string que explica l'error        //es un int, el ID
             //_signUpResult.value =  SignUpResult(error = result.toString())
         }
     }

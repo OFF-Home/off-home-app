@@ -20,23 +20,12 @@
         android:layout_marginEnd="16dp"
         android:background="@drawable/background_edit_text"
         android:hint="@string/hint_birth_date"
-        android:inputType="date"
+        android:inputType="none"
         android:padding="15dp"
         android:selectAllOnFocus="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword"
-        android:onClick="showDatePicker" />
-
-    <DatePicker
-        android:id="@+id/datePickerBirthDateExistent"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
 
 
     <EditText
@@ -167,8 +156,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/button_here"
-            android:textColor="@color/color_link"
-            android:onClick="textViewHereCanviarALogIn"/>
+            android:textColor="@color/color_link" />
     </LinearLayout>
 
     <LinearLayout
@@ -220,5 +208,17 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <DatePicker
+        android:id="@+id/datePickerBirthDateExistent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:headerBackground="@color/secondary"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

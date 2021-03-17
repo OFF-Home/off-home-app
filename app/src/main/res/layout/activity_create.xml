@@ -8,32 +8,31 @@
     android:padding="20dp"
     tools:context=".ui.createactivity.CreateActivity">
 
-
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/todo"
+        android:id="@+id/rvCreate"
         android:layout_width="363dp"
         android:layout_height="661dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.562"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="352dp"
+        android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/title_of_the_activity"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/black"
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todo"
+        app:layout_constraintEnd_toEndOf="@+id/rvCreate"
         app:layout_constraintHorizontal_bias="0.005"
-        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintStart_toStartOf="@+id/rvCreate"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.023" />
+
 
     <EditText
         android:id="@+id/activity_title"
@@ -46,29 +45,28 @@
         android:inputType="textWebEditText"
         android:maxLength="30"
         android:padding="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todo"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
+        app:layout_constraintEnd_toEndOf="@+id/rvCreate"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/rvCreate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.065" />
+        app:layout_constraintVertical_bias="0.069" />
 
     <TextView
         android:id="@+id/textAbout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
+        android:layout_width="352dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="11dp"
         android:text="@string/about_the_activity"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/black"
         android:textSize="20sp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todo"
-        app:layout_constraintHorizontal_bias="0.25"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="@+id/btn_create"
+        app:layout_constraintEnd_toEndOf="@+id/rvCreate"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="@+id/rvCreate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.193" />
-
+        app:layout_constraintVertical_bias="0.195" />
 
     <EditText
         android:id="@+id/about_the_activity"
@@ -81,109 +79,129 @@
         android:inputType="textWebEditText"
         android:maxLength="250"
         android:padding="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/todo"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
+        app:layout_constraintEnd_toEndOf="@+id/rvCreate"
         app:layout_constraintHorizontal_bias="1.0"
-        app:layout_constraintStart_toStartOf="@+id/todo"
+        app:layout_constraintStart_toStartOf="@+id/rvCreate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.247" />
+        app:layout_constraintVertical_bias="0.253" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnPickDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="387dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
         android:backgroundTint="@color/white"
+        android:contentDescription="rvCreate"
         android:src="@drawable/ic_baseline_date_range_24"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintBottom_toTopOf="@+id/btn_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.077"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0"
-        android:contentDescription="TODO"
-        />
+        app:layout_constraintVertical_bias="0.925" />
 
     <TextView
         android:id="@+id/datepck"
         android:layout_width="72dp"
         android:layout_height="26dp"
+        android:layout_marginBottom="32dp"
         android:text="@string/date"
         app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.389"
+        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.395" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <NumberPicker
         android:id="@+id/pick_availability"
         android:layout_width="74dp"
         android:layout_height="54dp"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
-        app:layout_constraintEnd_toEndOf="@+id/todo"
-        app:layout_constraintHorizontal_bias="0.37"
-        app:layout_constraintStart_toStartOf="@+id/todo"
-        app:layout_constraintTop_toTopOf="@+id/todo"
-        app:layout_constraintVertical_bias="0.518" />
+        android:layout_marginStart="24dp"
+        android:layout_marginBottom="24dp"
+        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.345"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.978" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_availability"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:backgroundTint="@color/white"
-        android:contentDescription="TODO"
+        android:contentDescription="rvCreate"
         android:src="@drawable/ic_baseline_people_24"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintBottom_toTopOf="@+id/btn_location"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.067"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.529" />
+        app:layout_constraintVertical_bias="0.93" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btn_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
         android:backgroundTint="@color/white"
-        android:contentDescription="TODO"
+        android:contentDescription="rvCreate"
         android:src="@drawable/ic_baseline_add_location_alt_24"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.07"
+        app:layout_constraintHorizontal_bias="0.067"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.684" />
+
+    <TextView
+        android:id="@+id/participants"
+        android:layout_width="117dp"
+        android:layout_height="24dp"
+        android:text="@string/participants"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.812"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.555" />
+
+    <EditText
+        android:id="@+id/locationpck2"
+        android:layout_width="191dp"
+        android:layout_height="49dp"
+        android:layout_marginStart="24dp"
+        android:autofillHints=""
+        android:hint="@string/set_location"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.563"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.687" />
-
-    <TextView
-        android:id="@+id/locationpck"
-        android:layout_width="183dp"
-        android:layout_height="27dp"
-        android:text="@string/set_location"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.596"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.681" />
 
     <Button
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary"
-        android:contentDescription="@string/todo"
+        android:contentDescription="@string/create"
         android:text="@string/create"
-        app:layout_constraintBottom_toBottomOf="@+id/todo"
+        app:layout_constraintBottom_toBottomOf="@+id/rvCreate"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.498"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.976" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

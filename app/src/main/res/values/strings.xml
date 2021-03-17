@@ -13,4 +13,5 @@
     <string name="date">Date</string>
     <string name="choose_location">Choose location</string>
     <string name="set_location">Set location</string>
+    <string name="participants">Participants</string>
 </resources>

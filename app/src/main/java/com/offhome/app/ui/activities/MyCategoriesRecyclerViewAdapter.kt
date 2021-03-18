@@ -1,5 +1,7 @@
 package com.offhome.app.ui.activities
 
+import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -7,13 +9,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.model.Category
 
-class MyCategoriesRecyclerViewAdapter : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as Category
+
     }
     private var categories: List<Category> = ArrayList()
 
@@ -26,9 +30,10 @@ class MyCategoriesRecyclerViewAdapter : RecyclerView.Adapter<MyCategoriesRecycle
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = categories[position]
         holder.textViewName.text = item.name
-        Glide.with(holder.mView.context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
-        Glide.with(holder.mView.context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
-
+        if (context != null) {
+            Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
+            Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
+        }
         with(holder.mView) {
             tag = item
             setOnClickListener(mOnClickListener)

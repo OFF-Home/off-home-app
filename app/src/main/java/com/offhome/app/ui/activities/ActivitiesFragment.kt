@@ -32,7 +32,7 @@ class ActivitiesFragment : Fragment() {
         val view = inflater.inflate(R.layout.fragment_activities, container, false)
 
         categoriesViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        categoryAdapter = MyCategoriesRecyclerViewAdapter()
+        categoryAdapter = MyCategoriesRecyclerViewAdapter(context)
 
         if (view is RecyclerView) {
             with(view) {

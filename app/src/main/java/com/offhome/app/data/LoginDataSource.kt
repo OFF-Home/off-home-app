@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
+import com.offhome.app.R
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
 
@@ -14,8 +15,6 @@ class LoginDataSource {
 
     private val _loggedInUser = MutableLiveData<LoggedInUser>()
     private val loggedInUser: LiveData<LoggedInUser> = _loggedInUser
-    private val emailNotVerified = "ENV"
-    private val loginFailed = "LF"
 
     fun login(email: String, password: String): Result<LiveData<LoggedInUser>> {
         try {
@@ -26,10 +25,10 @@ class LoginDataSource {
                     if (it.isSuccessful) {
                         val fUser = FirebaseAuth.getInstance().currentUser
                         if (!fUser!!.isEmailVerified) {
-                            _loggedInUser.value = LoggedInUser(emailNotVerified, null)
-                        } else _loggedInUser.value = LoggedInUser(fUser.uid, fUser.email)
+                            _loggedInUser.value = LoggedInUser(null, null, R.string.login_failed_email)
+                        } else _loggedInUser.value = LoggedInUser(fUser.uid, fUser.email, null)
                     } else {
-                        _loggedInUser.value = LoggedInUser(loginFailed, null)
+                        _loggedInUser.value = LoggedInUser(null, null, R.string.login_failed_login)
                     }
                 }
             return Result.Success(loggedInUser)

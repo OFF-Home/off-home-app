@@ -5,5 +5,6 @@ package com.offhome.app.data.model
  */
 data class LoggedInUser(
     val userId: String?,
-    val displayUsername: String?
+    val displayUsername: String?,
+    val errorLogin: Int?
 )

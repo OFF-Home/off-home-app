@@ -10,7 +10,6 @@ import com.offhome.app.data.model.LoggedInUser
 
 class LoginRepository(val dataSource: LoginDataSource) {
 
-
     var user: LoggedInUser? = null
         private set
 

@@ -6,7 +6,6 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -14,10 +13,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.data.model.LoggedInUser
 
 class LoginActivity : AppCompatActivity() {
 
@@ -33,8 +30,8 @@ class LoginActivity : AppCompatActivity() {
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnShowPassword = findViewById<ImageView>(R.id.imageViewShowPassword)
         val btnLogin = findViewById<Button>(R.id.buttonLogin)
-        //val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
-        //val btnLoginGoogle = findViewById<Button>(R.id.buttonGoogleLogin)
+        // val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
+        // val btnLoginGoogle = findViewById<Button>(R.id.buttonGoogleLogin)
         loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
@@ -123,25 +120,28 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
-        model.data.observe(this@LoginActivity, {
-            loading.visibility = View.GONE
-            val welcome = getString(R.string.welcome)
-            when {
-                it.userId.equals("ENV") -> Toast.makeText(applicationContext, getString(R.string.login_failed_email), Toast.LENGTH_LONG).show()
-                it.userId.equals("LF") -> Toast.makeText(applicationContext, getString(R.string.login_failed_login), Toast.LENGTH_LONG).show()
-                else -> {
-                    val displayName = it.displayUsername
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    Toast.makeText(
-                        applicationContext,
-                        "$welcome $displayName",
-                        Toast.LENGTH_LONG
-                    ).show()
-                    finish()
+        model.data.observe(
+            this@LoginActivity,
+            {
+                loading.visibility = View.GONE
+                val welcome = getString(R.string.welcome)
+                when {
+                    it.errorLogin != null && it.errorLogin == R.string.login_failed_email -> Toast.makeText(applicationContext, getString(R.string.login_failed_email), Toast.LENGTH_LONG).show()
+                    it.errorLogin != null && it.errorLogin == R.string.login_failed_login -> Toast.makeText(applicationContext, getString(R.string.login_failed_login), Toast.LENGTH_LONG).show()
+                    else -> {
+                        val displayName = it.displayUsername
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(
+                            applicationContext,
+                            "$welcome $displayName",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+                    }
                 }
             }
-        })
+        )
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

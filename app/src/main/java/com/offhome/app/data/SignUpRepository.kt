@@ -2,9 +2,9 @@ package com.offhome.app.data
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.model.SignedUpUser
 import androidx.lifecycle.Observer
 import com.offhome.app.R
+import com.offhome.app.data.model.SignedUpUser
 import com.offhome.app.ui.signup.SignUpResult
 
 /**
@@ -23,13 +23,13 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
     /*val isLoggedIn: Boolean
         get() = user != null*/
 
-    private val _signUpResult = MutableLiveData<SignUpResult>()        //SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
+    private val _signUpResult = MutableLiveData<SignUpResult>() // SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
     val signUpResult: LiveData<SignUpResult> = _signUpResult
 
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
-        //user = null
+        // user = null
     }
 
     fun signUp(email: String, username: String, password: String, birthDate: String) {
@@ -40,12 +40,12 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 val result = it ?: return@Observer
                 if (result.error != null) {
 
-                    val msg: String = result.error.toString()   //a ver si funciona
+                    val msg: String = result.error.toString() // a ver si funciona
                     println("msg = $msg")
                     val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
                     println("msg2 = $msg2")
 
-                    when {//TODO posar els strings de la excepcio als .equals()
+                    when { // TODO posar els strings de la excepcio als .equals()
                         msg2.equals("cosa1") -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
                         msg2.equals("cosa2") -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
                         msg2.equals("cosa3") -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
@@ -53,9 +53,9 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                     }
                 }
                 if (result.success != null) {
-                    _signUpResult.value = SignUpResult(success=result.success)
+                    _signUpResult.value = SignUpResult(success = result.success)
                 }
-                //aqui la activity fa mes coses q suposo q aqui no calen
+                // aqui la activity fa mes coses q suposo q aqui no calen
             }
         )
 
@@ -63,7 +63,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
     }
 
     private fun setLoggedInUser(signedUpUser: SignedUpUser) {
-        //this.user = signedUpUser
+        // this.user = signedUpUser
         // If user credentials will be cached in local storage, it is recommended it be encrypted
         // @see https://developer.android.com/training/articles/keystore
     }

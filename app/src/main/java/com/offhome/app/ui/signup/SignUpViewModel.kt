@@ -4,11 +4,10 @@ package com.offhome.app.ui.signup
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
-import com.offhome.app.data.Result
 import com.offhome.app.data.SignUpRepository
-import androidx.lifecycle.Observer
 
 class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewModel() {
 
@@ -26,13 +25,14 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             Observer {
                 val signUpResult = it ?: return@Observer
                 if (signUpResult.error != null) {
-                    _signUpResult.value = SignUpResult(error=signUpResult.error)
+                    _signUpResult.value = SignUpResult(error = signUpResult.error)
                 }
                 if (signUpResult.success != null) {
-                    _signUpResult.value = SignUpResult(success=signUpResult.success)
+                    _signUpResult.value = SignUpResult(success = signUpResult.success)
                 }
-                //aqui la activity fa mes coses q suposo q aqui no calen
-            })
+                // aqui la activity fa mes coses q suposo q aqui no calen
+            }
+        )
 
         signUpRepository.signUp(email, username, password, birthDate)
     }

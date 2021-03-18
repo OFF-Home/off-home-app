@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.offhome.app.ui.signup.SignUpResult
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -20,9 +19,9 @@ class SignUpDataSource {
     val signUpResult: LiveData<SignUpResult> = _signUpResult    //aquest es observat per Repository*/
 
     private var _result = MutableLiveData<Result>()
-    val result: LiveData<Result> = _result    //aquest es observat per Repository
+    val result: LiveData<Result> = _result // aquest es observat per Repository
 
-    fun signUp(email: String, username: String, password: String, birthDate: String){
+    fun signUp(email: String, username: String, password: String, birthDate: String) {
         try {
 
             firebaseAuth = Firebase.auth
@@ -30,16 +29,15 @@ class SignUpDataSource {
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information, o no. // TODO: handle loggedInUser authentication
                     Log.d(TAG, "createUserWithEmail:success")
-                    //firebaseAuth.sendSignInLinkToEmail()??
-                    //_signUpResult.value = SignUpResult(success = true)
-                    _result.value = Result(success = true)        // Result.Success(true)
-                }
-                else {
+                    // firebaseAuth.sendSignInLinkToEmail()??
+                    // _signUpResult.value = SignUpResult(success = true)
+                    _result.value = Result(success = true) // Result.Success(true)
+                } else {
                     // If sign in fails, display a message to the user.
                     Log.w(TAG, "createUserWithEmail:failure", task.exception)
-                    //Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()  //el toast el farem a Activity
+                    // Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()  //el toast el farem a Activity
 
-                    _result.value = Result(error = task.exception)  //aquesta excepcio funciona aixi?
+                    _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?
                 }
             }
 
@@ -48,9 +46,8 @@ class SignUpDataSource {
 
             // testejant:
             // return Result.Error(IOException("Error signing up. A user with this e-mail already exists"))
-
-        } catch (e: Throwable) {    //realment aqui no hauriem d'arribar si no hi ha cap problema amb la connexio a Firebase, dic jo.
-            _result.value = Result(error = e as Exception)      //cast!
+        } catch (e: Throwable) { // realment aqui no hauriem d'arribar si no hi ha cap problema amb la connexio a Firebase, dic jo.
+            _result.value = Result(error = e as Exception) // cast!
         }
     }
 }

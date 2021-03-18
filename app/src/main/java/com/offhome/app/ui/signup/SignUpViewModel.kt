@@ -22,24 +22,24 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         val result = signUpRepository.signUp(email, username, password, birthDate)
 
         if (result is Result.Success) {
-            //_signUpResult.value = SignUpResult(success = SignedUpUserView(displayName = result.data.displayName))
+            // _signUpResult.value = SignUpResult(success = SignedUpUserView(displayName = result.data.displayName))
             _signUpResult.value = SignUpResult(success = true)
         } else {
-            //tot aixo es useless?
-            val msg : String = result.toString()
+            // tot aixo es useless?
+            val msg: String = result.toString()
             println("msg = $msg")
-            val msg2 : CharSequence = msg.subSequence(16, msg.length - 1)
+            val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
             println("msg2 = $msg2")
 
             when {
-                msg2.equals("cosa1")     //canviar per el string que explica l'error        //es un int, el ID   //TODO posar els strings de la excepcio
+                msg2.equals("cosa1") // canviar per el string que explica l'error        //es un int, el ID   //TODO posar els strings de la excepcio
                 -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
                 msg2.equals("cosa2") -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
                 msg2.equals("cosa3") -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
                 else -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
             }
 
-            //_signUpResult.value = SignUpResult(error = R.string.login_failed)
+            // _signUpResult.value = SignUpResult(error = R.string.login_failed)
         }
     }
 

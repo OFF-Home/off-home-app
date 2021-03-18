@@ -10,7 +10,7 @@ package com.offhome.app.ui.signup
  */
 // plantilla que venia feta
 data class SignUpResult(
-    val success: Boolean? = null,       //bool innecessari però esque anira checkejant des de la Activity si és null.
+    val success: Boolean? = null, // bool innecessari però esque anira checkejant des de la Activity si és null.
     val error: Int? = null
 )
 

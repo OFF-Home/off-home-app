@@ -7,11 +7,14 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
 import androidx.annotation.RequiresApi
+import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
 import java.util.*
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class CreateActivity : AppCompatActivity() {
+
+    lateinit var viewModel: CreateActivityViewModel
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -19,21 +22,14 @@ class CreateActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
 
+        viewModel = ViewModelProvider(this).get(CreateActivityViewModel::class.java)
+
         val c = Calendar.getInstance()
         val year = c.get(Calendar.YEAR)
         val month = c.get(Calendar.MONTH)
         val day = c.get(Calendar.DAY_OF_MONTH)
 
-        val buttonPickDate = findViewById<FloatingActionButton>(R.id.btnPickDate)
-
         val datepick = findViewById<TextView>(R.id.datepck)
-
-        buttonPickDate.setOnClickListener{
-            val bpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ datePicker: DatePicker, i: Int, i1: Int, i2: Int ->
-            datepick.text = "$day/$month/$year"
-        }, day, month, year)
-            bpd.show()
-        }
 
         datepick.setOnClickListener{
             val bpd = DatePickerDialog(this, DatePickerDialog.OnDateSetListener{ datePicker: DatePicker, i: Int, i1: Int, i2: Int ->
@@ -52,6 +48,10 @@ class CreateActivity : AppCompatActivity() {
             //Toast.makeText(this, pick_availability.value.toString(),Toast.LENGTH_SHORT).show()
             Toast.makeText(this, "Activitat creada amb éxit!", Toast.LENGTH_SHORT).show()
         }
+
+        this.title = "Create activity"
+
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
 }

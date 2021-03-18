@@ -11,7 +11,7 @@
 
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="352dp"
+        android:layout_width="350dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/title_of_the_activity"
@@ -20,9 +20,11 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
+
 
     <EditText
         android:id="@+id/activity_title"
@@ -37,14 +39,14 @@
         android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.069" />
+        app:layout_constraintVertical_bias="0.065" />
 
     <TextView
         android:id="@+id/textAbout"
-        android:layout_width="352dp"
+        android:layout_width="350dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/about_the_activity"
@@ -53,10 +55,10 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_create"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.48"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.195" />
+        app:layout_constraintVertical_bias="0.196" />
 
     <EditText
         android:id="@+id/about_the_activity"
@@ -71,11 +73,10 @@
         android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintHorizontal_bias="0.479"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.253" />
-
+        app:layout_constraintVertical_bias="0.242" />
 
     <ImageButton
         android:id="@+id/btn_location"
@@ -106,7 +107,7 @@
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.931"
+        app:layout_constraintVertical_bias="0.87"
         tools:ignore="ContentDescription" />
 
     <ImageButton
@@ -123,7 +124,7 @@
         app:layout_constraintHorizontal_bias="0.022"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.94"
+        app:layout_constraintVertical_bias="0.868"
         tools:ignore="ContentDescription" />
 
     <EditText
@@ -132,52 +133,73 @@
         android:layout_height="49dp"
         android:autofillHints=""
         android:hint="@string/set_location"
+        android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toEndOf="@+id/btn_location"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.646" />
+        app:layout_constraintVertical_bias="0.646"
+        android:inputType="textPostalAddress" />
+
+
+    <Button
+        android:id="@+id/btn_pickdate"
+        android:layout_width="109dp"
+        android:layout_height="35dp"
+        android:layout_marginStart="6dp"
+        android:backgroundTint="@color/divider"
+        android:text="@string/choose_date"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
+        app:layout_constraintEnd_toStartOf="@+id/date_pick_text"
+        app:layout_constraintHorizontal_bias="0.241"
+        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.635" />
 
     <TextView
-        android:id="@+id/datepck"
-        android:layout_width="72dp"
-        android:layout_height="26dp"
-        android:layout_marginBottom="32dp"
-        android:text="@string/date"
+        android:id="@+id/date_pick_text"
+        android:layout_width="135dp"
+        android:layout_height="47dp"
+        android:layout_below="@+id/btn_pickdate"
+        android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
+        app:layout_constraintHorizontal_bias="0.824"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.88"
+        tools:text="@string/date" />
 
     <TextView
         android:id="@+id/participants"
         android:layout_width="117dp"
         android:layout_height="24dp"
         android:text="@string/participants"
+        android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.1"
+        app:layout_constraintHorizontal_bias="0.178"
         app:layout_constraintStart_toEndOf="@+id/pick_availability"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.537" />
+        app:layout_constraintVertical_bias="0.499" />
 
     <NumberPicker
         android:id="@+id/pick_availability"
         android:layout_width="71dp"
         android:layout_height="40dp"
         android:layout_marginBottom="24dp"
+        android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/locationpck2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.046"
         app:layout_constraintStart_toEndOf="@+id/btn_availability"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintVertical_bias="0.932" />
 
     <Button
         android:id="@+id/btn_create"

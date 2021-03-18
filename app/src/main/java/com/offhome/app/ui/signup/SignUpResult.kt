@@ -8,8 +8,13 @@ package com.offhome.app.ui.signup
  *      username ja existeix
  *      error al iniciar amb Google, suposo
  */
-//plantilla que venia feta
+// plantilla que venia feta
 data class SignUpResult(
-    val success: SignedUpUserView? = null,
+    val success: Boolean? = null,       //bool innecessari però esque anira checkejant des de la Activity si és null.
     val error: Int? = null
 )
+
+/*class SignUpResult {
+    var isSuccessful : Boolean? = null
+    var errorMessage: Int? = null
+}*/

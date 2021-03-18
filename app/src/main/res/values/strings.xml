@@ -22,4 +22,8 @@
     <string name="continue_google">Continue with Google</string>
     <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail address</string>
     <string name="invalid_email">Not a valid e-mail</string>
+    <string name = "username_taken"> Sign up error: username is taken </string>
+    <string name = "email_taken"> Sign up error: this e-mail is already registered </string>
+    <string name = "google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
+    <string name = "unknown_sign_up_error"> Sign up error: there was an unknown error </string>
 </resources>

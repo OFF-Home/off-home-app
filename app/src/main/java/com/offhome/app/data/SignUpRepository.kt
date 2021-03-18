@@ -6,8 +6,8 @@ import com.offhome.app.data.model.SignedUpUser
  * Class that requests authentication and user information from the remote data source and
  * maintains an in-memory cache of login status and user credentials information.
  */
-//plantilla que venia feta
-//editant
+// plantilla que venia feta
+// editant
 
 class SignUpRepository(val dataSource: SignUpDataSource) {
 

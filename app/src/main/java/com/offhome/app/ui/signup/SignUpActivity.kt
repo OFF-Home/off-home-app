@@ -2,21 +2,20 @@ package com.offhome.app.ui.signup
 
 import android.app.Activity
 import android.content.Intent
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.annotation.StringRes
-import androidx.appcompat.app.AppCompatActivity
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
-
 import com.offhome.app.R
 
-//la estem modificant
+// la estem modificant
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
@@ -38,52 +37,58 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)
 
-        //observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
-        signUpViewModel.signUpFormState.observe(this@SignUpActivity, Observer {
-            val signUpState = it ?: return@Observer
+        // observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
+        signUpViewModel.signUpFormState.observe(
+            this@SignUpActivity,
+            Observer {
+                val signUpState = it ?: return@Observer
 
-            // disable login button unless both username / password is valid
-            signUp.isEnabled = signUpState.isDataValid
+                // disable login button unless both username / password is valid
+                signUp.isEnabled = signUpState.isDataValid
 
-            if (signUpState.emailError != null) { //si hi ha error
-                email.error = getString(signUpState.emailError)
+                if (signUpState.emailError != null) { // si hi ha error
+                    email.error = getString(signUpState.emailError)
+                }
+                if (signUpState.usernameError != null) {
+                    username.error = getString(signUpState.usernameError)
+                }
+                if (signUpState.passwordError != null) {
+                    password.error = getString(signUpState.passwordError)
+                }
             }
-            if (signUpState.usernameError != null) {
-                username.error = getString(signUpState.usernameError)
-            }
-            if (signUpState.passwordError != null) {
-                password.error = getString(signUpState.passwordError)
-            }
-        })
+        )
 
-        //observar el resultat de signUp.
-        //Si hi ha error, mostrar-lo.
-        //Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
+        // observar el resultat de signUp.
+        // Si hi ha error, mostrar-lo.
+        // Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
         //
-        signUpViewModel.signUpResult.observe(this@SignUpActivity, Observer {
-            val signUpResult = it ?: return@Observer
+        signUpViewModel.signUpResult.observe(
+            this@SignUpActivity,
+            Observer {
+                val signUpResult = it ?: return@Observer
 
-            loading.visibility = View.GONE
-            if (signUpResult.error != null) {
-                showSignUpFailed(signUpResult.error)
+                loading.visibility = View.GONE
+                if (signUpResult.error != null) {
+                    showSignUpFailed(signUpResult.error)
+                }
+                if (signUpResult.success != null) {
+                    showSuccessAndProceed()
+                }
+                setResult(Activity.RESULT_OK)
+
+                // Complete and destroy login activity once successful
+                finish()
             }
-            if (signUpResult.success != null) {
-                updateUiWithUser(signUpResult.success)
-            }
-            setResult(Activity.RESULT_OK)
+        )
 
-            //Complete and destroy login activity once successful
-            finish()
-        })
-
-        //s'executen quan es modifiquen email, username o password
-        //fan les comprovacions de si els strings son correctes
+        // s'executen quan es modifiquen email, username o password
+        // fan les comprovacions de si els strings son correctes
 
         email.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
+                email.text.toString(),
+                username.text.toString(),
+                password.text.toString()
             )
         }
 
@@ -104,7 +109,7 @@ class SignUpActivity : AppCompatActivity() {
                 )
             }
 
-            //que es esto??
+            // que es esto??
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
@@ -113,25 +118,25 @@ class SignUpActivity : AppCompatActivity() {
                 false
             }
 
-            //listener del botó signUp, suposo
-            //crida a signUp
+            // listener del botó signUp, suposo
+            // crida a signUp
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
             }
         }
 
-        //mostrar el fragment que permet escollir la birth date.
+        // mostrar el fragment que permet escollir la birth date.
         birthDate.setOnClickListener {
-            //per a API >=24: crear-ne un de nou.
+            // per a API >=24: crear-ne un de nou.
             /*val datePickerFragment1 = DatePickerFragment()
             datePickerFragment1.show(supportFragmentManager, "datePicker")*/
 
-            //per a API <24: n'hem creat un invisible, que mostrem quan cal.
+            // per a API <24: n'hem creat un invisible, que mostrem quan cal.
             val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
-            datePickerBirthDateExistent.visibility = View.VISIBLE;
+            datePickerBirthDateExistent.visibility = View.VISIBLE
             datePickerBirthDateExistent.bringToFront()
-            //datePickerBirthDateExistent.setOnDateChangedListener(new onDateChangedListener)
+            // datePickerBirthDateExistent.setOnDateChangedListener(new onDateChangedListener)
         }
 
         hereButton.setOnClickListener {
@@ -139,23 +144,23 @@ class SignUpActivity : AppCompatActivity() {
         }
     }
 
-    private fun updateUiWithUser(model: SignedUpUserView) {
+    private fun showSuccessAndProceed() {
         val emailConfirmationMessage = getString(R.string.emailConfirmationMessage)
-        //val displayName = model.displayName
-        //initiate successful logged in experience
+        // val displayName = model.displayName
+        // initiate successful logged in experience
         // TODO s'envia e-mail per a confirmar,
         // s'informa d'axiò amb un missatge,
         // i canvia a pantalla de LogIn
 
-        //ensenya un missatge de welcome a baix
+        // ensenya un missatge de welcome a baix
         Toast.makeText(
-                applicationContext,
-                //"$emailConfirmationMessage $displayName",
-                emailConfirmationMessage,
-                Toast.LENGTH_LONG
+            applicationContext,
+            // "$emailConfirmationMessage $displayName",
+            emailConfirmationMessage,
+            Toast.LENGTH_LONG
         ).show()
 
-        //canviar a pantalla de LogIn.
+        // canviar a pantalla de LogIn.
         canviALogInActivity()
     }
 
@@ -165,7 +170,7 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun canviALogInActivity() {
         // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
-        val intentCanviALogIn = Intent(this, MainActivity::class.java)      //.apply {        }
+        val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
     }
 }

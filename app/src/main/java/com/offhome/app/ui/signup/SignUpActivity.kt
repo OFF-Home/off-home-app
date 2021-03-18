@@ -37,6 +37,7 @@ class SignUpActivity : AppCompatActivity() {
         val hereButton = findViewById<TextView>(R.id.textViewHere)
         val googleButton = findViewById<Button>(R.id.buttonGoogleSignUp)
         val loading = findViewById<ProgressBar>(R.id.loading)
+        val activity : SignUpActivity = this
 
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)
@@ -117,7 +118,7 @@ class SignUpActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
+                        signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
                 }
                 false
             }
@@ -126,7 +127,7 @@ class SignUpActivity : AppCompatActivity() {
             // crida a signUp
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
+                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
             }
         }
 

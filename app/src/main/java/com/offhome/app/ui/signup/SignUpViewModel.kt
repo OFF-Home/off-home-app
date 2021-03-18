@@ -17,11 +17,11 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     private val _signUpResult = MutableLiveData<SignUpResult>()
     val signUpResult: LiveData<SignUpResult> = _signUpResult // aquest és observat per SignUpActivity.    //pero canvia en algun moment?
 
-    fun signUp(email: String, username: String, password: String, birthDate: String) {
+    fun signUp(email: String, username: String, password: String, birthDate: String, activity :SignUpActivity) {    //he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
         // can be launched in a separate asynchronous job
 
         signUpRepository.signUpResult.observe(
-            this@SignUpViewModel,
+                activity,
             Observer {
                 val signUpResult = it ?: return@Observer
                 if (signUpResult.error != null) {
@@ -34,7 +34,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             }
         )
 
-        signUpRepository.signUp(email, username, password, birthDate)
+        signUpRepository.signUp(email, username, password, birthDate, activity)
     }
 
     fun loginDataChanged(email: String, username: String, password: String) {
@@ -54,17 +54,11 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     }
 
     private fun isUserNameValid(username: String): Boolean {
-        /*return if (username.contains('@')) {
-            Patterns.EMAIL_ADDRESS.matcher(username).matches()
-        } else {
-            username.isNotBlank()
-        }*/
-
         return username.isNotBlank()
     }
 
     // A placeholder password validation check
-    // en signUp això serà només per coses tipo numero minim de char's.
+    // això serà només per coses tipo numero minim de char's.
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }

@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.offhome.app.R
 import com.offhome.app.data.model.SignedUpUser
+import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpResult
 
 /**
@@ -32,10 +33,10 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
         // user = null
     }
 
-    fun signUp(email: String, username: String, password: String, birthDate: String) {
+    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
         // handle login
         dataSource.result.observe(
-            this@SignUpRepository,
+                activity,
             Observer {
                 val result = it ?: return@Observer
                 if (result.error != null) {
@@ -59,7 +60,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
             }
         )
 
-        dataSource.signUp(email, username, password, birthDate)
+        dataSource.signUp(email, username, password, birthDate, activity)
     }
 
     private fun setLoggedInUser(signedUpUser: SignedUpUser) {

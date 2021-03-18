@@ -1,6 +1,5 @@
 package com.offhome.app.data.retrofit
 
-import android.provider.SyncStateContract
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

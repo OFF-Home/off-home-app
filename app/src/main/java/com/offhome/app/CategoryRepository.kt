@@ -1,6 +1,5 @@
 package com.offhome.app
 
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.CategoriesClient
 import com.offhome.app.model.Category
@@ -25,7 +24,7 @@ class CategoryRepository {
             }
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
-                //Error en la connexion
+                // Error en la connexion
             }
         })
         return categories as MutableLiveData<List<Category>>

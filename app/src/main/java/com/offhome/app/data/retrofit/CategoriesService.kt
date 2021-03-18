@@ -1,7 +1,6 @@
 package com.offhome.app.data.retrofit
 
 import com.offhome.app.model.Category
-import okhttp3.RequestBody
 import retrofit2.Call
 import retrofit2.http.*
 

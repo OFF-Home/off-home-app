@@ -1,7 +1,11 @@
 package com.offhome.app.data
 
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.offhome.app.data.model.SignedUpUser
 import java.io.IOException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -9,8 +13,13 @@ import java.io.IOException
 // plantilla que venia feta
 class SignUpDataSource {
 
+    private lateinit var firebaseAuth: FirebaseAuth
+
     fun signUp(email: String, username: String, password: String, birthDate: String): Result<SignedUpUser> {
         try {
+
+            firebaseAuth = Firebase.auth
+
             // TODO: handle loggedInUser authentication
             // fer crida HTTP
             // aixi que el backend donarà excepció si ja existeix un usuari amb aquest email o username?

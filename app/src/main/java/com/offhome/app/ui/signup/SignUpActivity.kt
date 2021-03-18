@@ -14,11 +14,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
+    private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -142,6 +146,14 @@ class SignUpActivity : AppCompatActivity() {
         hereButton.setOnClickListener {
             canviALogInActivity()
         }
+
+        //Firebase
+        firebaseAuth = Firebase.auth
+
+        //diu que faci aixo
+        /*val currentUserFB = firebaseAuth.currentUser
+        if (currentUserFB != null)
+            reload();*/
     }
 
     private fun showSuccessAndProceed() {

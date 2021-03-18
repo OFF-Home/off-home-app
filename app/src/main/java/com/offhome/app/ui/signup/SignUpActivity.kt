@@ -12,11 +12,11 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.offhome.app.MainActivity
-import com.offhome.app.R
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.MainActivity
+import com.offhome.app.R
 
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
@@ -147,10 +147,10 @@ class SignUpActivity : AppCompatActivity() {
             canviALogInActivity()
         }
 
-        //Firebase
+        // Firebase
         firebaseAuth = Firebase.auth
 
-        //diu que faci aixo
+        // diu que faci aixo
         /*val currentUserFB = firebaseAuth.currentUser
         if (currentUserFB != null)
             reload();*/

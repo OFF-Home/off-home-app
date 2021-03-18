@@ -39,6 +39,7 @@
         android:padding="3dp"
         app:layout_constraintEnd_toEndOf="@+id/cardViewBackground"
         app:layout_constraintTop_toTopOf="@+id/cardViewBackground"
+        app:srcCompat="@drawable/ic_baseline_favorite_border_24"
         tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
     <TextView

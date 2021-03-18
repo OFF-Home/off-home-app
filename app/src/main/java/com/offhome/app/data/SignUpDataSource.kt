@@ -22,7 +22,7 @@ class SignUpDataSource {
     private var _result = MutableLiveData<Result>()
     val result: LiveData<Result> = _result // aquest es observat per Repository
 
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity :SignUpActivity) {
+    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
         try {
 
             firebaseAuth = Firebase.auth

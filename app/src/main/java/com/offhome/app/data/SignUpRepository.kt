@@ -36,7 +36,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
     fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
         // handle login
         dataSource.result.observe(
-                activity,
+            activity,
             Observer {
                 val result = it ?: return@Observer
                 if (result.error != null) {

@@ -17,11 +17,11 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     private val _signUpResult = MutableLiveData<SignUpResult>()
     val signUpResult: LiveData<SignUpResult> = _signUpResult // aquest és observat per SignUpActivity.    //pero canvia en algun moment?
 
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity :SignUpActivity) {    //he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
+    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) { // he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
         // can be launched in a separate asynchronous job
 
         signUpRepository.signUpResult.observe(
-                activity,
+            activity,
             Observer {
                 val signUpResult = it ?: return@Observer
                 if (signUpResult.error != null) {

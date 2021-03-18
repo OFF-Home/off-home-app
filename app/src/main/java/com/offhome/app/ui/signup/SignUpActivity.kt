@@ -37,7 +37,7 @@ class SignUpActivity : AppCompatActivity() {
         val hereButton = findViewById<TextView>(R.id.textViewHere)
         val googleButton = findViewById<Button>(R.id.buttonGoogleSignUp)
         val loading = findViewById<ProgressBar>(R.id.loading)
-        val activity : SignUpActivity = this
+        val activity: SignUpActivity = this
 
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)

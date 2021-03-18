@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -17,6 +18,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.data.Result
 
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
@@ -128,6 +130,20 @@ class SignUpActivity : AppCompatActivity() {
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
                 signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
+
+
+                /*firebaseAuth = Firebase.auth
+                firebaseAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString()).addOnCompleteListener { task ->
+                    if (task.isSuccessful) {
+                        Log.d("Sign-up", "createUserWithEmail:success")
+                        Toast.makeText(baseContext, "Authentication SUCCESS.", Toast.LENGTH_SHORT).show()
+                    } else {
+                        Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
+                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
+                    }
+                }*/
+
+
             }
         }
 

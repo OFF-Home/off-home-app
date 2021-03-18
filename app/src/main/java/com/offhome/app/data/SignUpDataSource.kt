@@ -26,7 +26,7 @@ class SignUpDataSource {
         try {
 
             firebaseAuth = Firebase.auth
-            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(activity) { task ->
+            firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) {
                     // Sign in success, update UI with the signed-in user's information, o no. // TODO: handle loggedInUser authentication
                     Log.d("Sign-up", "createUserWithEmail:success")

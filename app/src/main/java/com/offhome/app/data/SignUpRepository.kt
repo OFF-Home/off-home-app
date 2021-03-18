@@ -17,13 +17,6 @@ import com.offhome.app.ui.signup.SignUpResult
 
 class SignUpRepository(val dataSource: SignUpDataSource) {
 
-    // in-memory cache of the loggedInUser object
-    /*var user: SignedUpUser? = null
-        private set*/
-
-    /*val isLoggedIn: Boolean
-        get() = user != null*/
-
     private val _signUpResult = MutableLiveData<SignUpResult>() // SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
     val signUpResult: LiveData<SignUpResult> = _signUpResult
 

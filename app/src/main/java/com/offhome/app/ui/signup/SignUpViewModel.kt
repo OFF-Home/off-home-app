@@ -22,7 +22,8 @@ class SignUpViewModel(private val loginRepository: LoginRepository) : ViewModel(
 
         if (result is Result.Success) {
             _loginResult.value =
-                SignUpResult(success = SignedUpUserView(displayName = result.data.displayUsername))
+                SignUpResult(success = SignedUpUserView(displayName = result.data.value?.displayUsername
+                    ?: "Pau"))
         } else {
             _loginResult.value = SignUpResult(error = R.string.login_failed)
         }

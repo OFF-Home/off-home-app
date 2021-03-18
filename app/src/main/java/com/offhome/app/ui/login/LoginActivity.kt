@@ -1,9 +1,12 @@
 package com.offhome.app.ui.login
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -11,11 +14,15 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.firebase.auth.FirebaseAuth
+import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.data.model.LoggedInUser
 
 class LoginActivity : AppCompatActivity() {
 
     private lateinit var loginViewModel: LoginViewModel
+    private lateinit var loading: ProgressBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,9 +33,9 @@ class LoginActivity : AppCompatActivity() {
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnShowPassword = findViewById<ImageView>(R.id.imageViewShowPassword)
         val btnLogin = findViewById<Button>(R.id.buttonLogin)
-        val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
-        val btnLoginGoogle = findViewById<Button>(R.id.buttonGoogleLogin)
-        val loading = findViewById<ProgressBar>(R.id.loading)
+        //val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
+        //val btnLoginGoogle = findViewById<Button>(R.id.buttonGoogleLogin)
+        loading = findViewById<ProgressBar>(R.id.loading)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)
@@ -55,8 +62,8 @@ class LoginActivity : AppCompatActivity() {
             Observer {
                 val loginResult = it ?: return@Observer
 
-                loading.visibility = View.GONE
                 if (loginResult.error != null) {
+                    loading.visibility = View.GONE
                     showLoginFailed(loginResult.error)
                 }
                 if (loginResult.success != null) {
@@ -103,17 +110,38 @@ class LoginActivity : AppCompatActivity() {
                 )
             }
         }
+
+        btnShowPassword.setOnClickListener {
+            Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
+            editTextPassword.inputType = if (editTextPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            editTextPassword.setSelection(editTextPassword.text.length)
+        }
     }
 
     private fun updateUiWithUser(model: LoggedInUserView) {
-        val welcome = getString(R.string.welcome)
-        val displayName = model.displayUserName
-        // TODO : initiate successful logged in experience
-        Toast.makeText(
-            applicationContext,
-            "$welcome $displayName",
-            Toast.LENGTH_LONG
-        ).show()
+        model.data.observe(this@LoginActivity, {
+            loading.visibility = View.GONE
+            val welcome = getString(R.string.welcome)
+            when {
+                it.userId.equals("ENV") -> Toast.makeText(applicationContext, getString(R.string.login_failed_email), Toast.LENGTH_LONG).show()
+                it.userId.equals("LF") -> Toast.makeText(applicationContext, getString(R.string.login_failed_login), Toast.LENGTH_LONG).show()
+                else -> {
+                    val displayName = it.displayUsername
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    Toast.makeText(
+                        applicationContext,
+                        "$welcome $displayName",
+                        Toast.LENGTH_LONG
+                    ).show()
+                    finish()
+                }
+            }
+        })
     }
 
     private fun showLoginFailed(@StringRes errorString: Int) {

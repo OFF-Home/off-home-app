@@ -1,6 +1,8 @@
 package com.offhome.app.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
@@ -10,22 +12,29 @@ import java.io.IOException
  */
 class LoginDataSource {
 
-    fun login(email: String, password: String): Result<LoggedInUser> {
+    private val _loggedInUser = MutableLiveData<LoggedInUser>()
+    private val loggedInUser: LiveData<LoggedInUser> = _loggedInUser
+    private val emailNotVerified = "ENV"
+    private val loginFailed = "LF"
+
+    fun login(email: String, password: String): Result<LiveData<LoggedInUser>> {
         try {
-            lateinit var user: LoggedInUser
             FirebaseAuth.getInstance()
                 .signInWithEmailAndPassword(
                     email, password
                 ).addOnCompleteListener {
                     if (it.isSuccessful) {
                         val fUser = FirebaseAuth.getInstance().currentUser
-                        user = LoggedInUser(fUser.uid, fUser.displayName ?: "Pau")
+                        if (!fUser!!.isEmailVerified) {
+                            _loggedInUser.value = LoggedInUser(emailNotVerified, null)
+                        } else _loggedInUser.value = LoggedInUser(fUser.uid, fUser.email)
                     } else {
-                        Log.w("LOGIN", "signInWithEmail:failure", it.exception)
+                        _loggedInUser.value = LoggedInUser(loginFailed, null)
                     }
                 }
-            return Result.Success(user)
+            return Result.Success(loggedInUser)
         } catch (e: Throwable) {
+            Log.w("LOGIN", "signInWithEmail:failed", e)
             return Result.Error(IOException("Error logging in", e))
         }
     }

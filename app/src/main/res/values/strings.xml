@@ -23,4 +23,6 @@
     <string name="title_activity_login">LoginActivity</string>
     <string name="button_login">Log in</string>
     <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
+    <string name="login_failed_email">Email not verified</string>
+    <string name="login_failed_login">Wrong email or password</string>
 </resources>

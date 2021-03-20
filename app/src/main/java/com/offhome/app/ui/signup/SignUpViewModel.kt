@@ -27,7 +27,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             Observer {
                 val resultRepo = it ?: return@Observer
                 if (resultRepo.error != null) {
-                    val msg: String = resultRepo.error.toString() //funciona
+                    val msg: String = resultRepo.error.toString() // funciona
                     println("msg = $msg")
                     Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
                     /*val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
@@ -36,13 +36,13 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
 
                     when { // TODO posar els strings de la excepcio als .equals()
                         msg.equals("cosa1")
-                            -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
+                        -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
                         msg.equals("com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.")
-                            -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
+                        -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
                         msg.equals("cosa3")
-                            -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
+                        -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
                         else
-                            -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
+                        -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
                     }
                 }
                 if (resultRepo.success != null) {
@@ -86,7 +86,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     }
 
     // hauria de ser impossible un error restringint els possibles valors d'entrada amb la UI
-    private fun isBirthDateValid(birthDate: String): Boolean {    //nose si funciona
+    private fun isBirthDateValid(birthDate: String): Boolean { // nose si funciona
         /*var i: Int = 0
         var nSlashes: Int = 0
         while (i < birthDate.length) {

@@ -108,10 +108,10 @@ class SignUpActivity : AppCompatActivity() {
 
         birthDate.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString(),
-                    birthDate.text.toString()
+                email.text.toString(),
+                username.text.toString(),
+                password.text.toString(),
+                birthDate.text.toString()
             )
         }
 

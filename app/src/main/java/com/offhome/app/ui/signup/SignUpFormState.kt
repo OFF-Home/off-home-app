@@ -10,6 +10,6 @@ data class SignUpFormState(
     val emailError: Int? = null,
     val usernameError: Int? = null,
     val passwordError: Int? = null,
-     val birthDateError: Int? = null, //l'unic error possible hauria de ser que estigui buit.
+    val birthDateError: Int? = null, // l'unic error possible hauria de ser que estigui buit.
     val isDataValid: Boolean = false
 )

@@ -3,7 +3,6 @@ package com.offhome.app.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.offhome.app.data.model.SignedUpUser
 import com.offhome.app.ui.signup.SignUpActivity
 import java.util.*
 

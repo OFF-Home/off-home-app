@@ -27,7 +27,7 @@ class SignUpDataSource {
                     Log.d("Sign-up", "createUserWithEmail:success")
 
                     val user = firebaseAuth.currentUser
-                    user!!.sendEmailVerification().addOnCompleteListener { task ->
+                    user!!.sendEmailVerification().addOnCompleteListener { task2 ->     //TODO sembla que no funciona
                         if (task.isSuccessful) {
                             Log.d("Verification email", "Email sent.")
                         }

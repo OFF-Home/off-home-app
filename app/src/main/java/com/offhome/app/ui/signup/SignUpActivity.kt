@@ -213,7 +213,7 @@ class SignUpActivity : AppCompatActivity() {
     private fun showSuccessAndProceed() {
         val emailConfirmationMessage = getString(R.string.emailConfirmationMessage)
         // initiate signUp experience
-        // TODO s'envia e-mail per a confirmar,
+        // s'envia e-mail per a confirmar,
         // s'informa d'axiò amb un missatge,
         // i canvia a pantalla de LogIn
 

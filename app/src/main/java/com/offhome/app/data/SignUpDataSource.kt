@@ -16,9 +16,6 @@ class SignUpDataSource {
 
     private lateinit var firebaseAuth: FirebaseAuth
 
-    /*private val _signUpResult = MutableLiveData<SignUpResult>()
-    val signUpResult: LiveData<SignUpResult> = _signUpResult    //aquest es observat per Repository*/
-
     private var _result = MutableLiveData<Result>()
     val result: LiveData<Result> = _result // aquest es observat per Repository
 

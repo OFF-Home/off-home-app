@@ -2,6 +2,7 @@ package com.offhome.app.ui.signup
 
 // import android.text.TextUtils
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -26,16 +27,22 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             Observer {
                 val resultRepo = it ?: return@Observer
                 if (resultRepo.error != null) {
-                    val msg: String = resultRepo.error.toString() // a ver si funciona
+                    val msg: String = resultRepo.error.toString() //funciona
                     println("msg = $msg")
-                    val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
+                    Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
+                    /*val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
                     println("msg2 = $msg2")
+                    Toast.makeText(activity, "msg2 = $msg2", Toast.LENGTH_LONG).show()*/
 
                     when { // TODO posar els strings de la excepcio als .equals()
-                        msg2.equals("cosa1") -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
-                        msg2.equals("cosa2") -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
-                        msg2.equals("cosa3") -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
-                        else -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
+                        msg.equals("cosa1")
+                            -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
+                        msg.equals("com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.")
+                            -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
+                        msg.equals("cosa3")
+                            -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
+                        else
+                            -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
                     }
                 }
                 if (resultRepo.success != null) {
@@ -50,16 +57,16 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
-    fun loginDataChanged(email: String, username: String, password: String) {
+    fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
-        } /* else if (!isBirthDateValid(birthDate)) {
+        } else if (!isBirthDateValid(birthDate)) {
             _signUpForm.value = SignUpFormState(birthDateError = R.string.invalid_birth_date)
-        }*/ else {
+        } else {
             _signUpForm.value = SignUpFormState(isDataValid = true)
         }
     }
@@ -78,8 +85,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         return password.length > 5
     }
 
-    /*private fun isBirthDateValid(birthDate: String): Boolean {    //nose si funciona
-        var i: Int = 0
+    // hauria de ser impossible un error restringint els possibles valors d'entrada amb la UI
+    private fun isBirthDateValid(birthDate: String): Boolean {    //nose si funciona
+        /*var i: Int = 0
         var nSlashes: Int = 0
         while (i < birthDate.length) {
             //val num:Int = birthDate[i] as Int
@@ -103,8 +111,10 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             ++i
         }
 
-        return (nSlashes == 2)
-    }*/
+        return (nSlashes == 2)*/
+
+        return birthDate.isNotBlank()
+    }
 
     private fun getDateFromString(string1: String): Date {
         var i: Int = 0

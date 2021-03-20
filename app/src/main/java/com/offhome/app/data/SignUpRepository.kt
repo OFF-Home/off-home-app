@@ -19,12 +19,6 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
     private val _result = MutableLiveData<Result>() // SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
     val result: LiveData<Result> = _result
 
-    init {
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
-        // user = null
-    }
-
     fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) {
         dataSource.result.observe(
             activity,
@@ -41,13 +35,6 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }
         )
-
         dataSource.signUp(email, username, password, birthDate)
-    }
-
-    private fun setLoggedInUser(signedUpUser: SignedUpUser) {
-        // this.user = signedUpUser
-        // If user credentials will be cached in local storage, it is recommended it be encrypted
-        // @see https://developer.android.com/training/articles/keystore
     }
 }

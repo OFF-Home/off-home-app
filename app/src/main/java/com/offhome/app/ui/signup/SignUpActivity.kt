@@ -56,9 +56,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (signUpStateVM.passwordError != null) {
                     password.error = getString(signUpStateVM.passwordError)
                 }
-                /*if (signUpStateVM.birthDateError != null) {
+                if (signUpStateVM.birthDateError != null) {
                     birthDate.error = getString(signUpStateVM.birthDateError)
-                }*/
+                }
             }
         )
 
@@ -92,7 +92,8 @@ class SignUpActivity : AppCompatActivity() {
             signUpViewModel.loginDataChanged(
                 email.text.toString(),
                 username.text.toString(),
-                password.text.toString()
+                password.text.toString(),
+                birthDate.text.toString()
             )
         }
 
@@ -100,7 +101,17 @@ class SignUpActivity : AppCompatActivity() {
             signUpViewModel.loginDataChanged(
                 email.text.toString(),
                 username.text.toString(),
-                password.text.toString()
+                password.text.toString(),
+                birthDate.text.toString()
+            )
+        }
+
+        birthDate.afterTextChanged {
+            signUpViewModel.loginDataChanged(
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString(),
+                    birthDate.text.toString()
             )
         }
 
@@ -109,7 +120,8 @@ class SignUpActivity : AppCompatActivity() {
                 signUpViewModel.loginDataChanged(
                     email.text.toString(),
                     username.text.toString(),
-                    password.text.toString()
+                    password.text.toString(),
+                    birthDate.text.toString()
                 )
             }
 
@@ -171,7 +183,8 @@ class SignUpActivity : AppCompatActivity() {
                 val humanMonth = month + 1 // perque els mesos comencen a 0
                 val textDate = "$dayOfMonth/$humanMonth/$year"
                 birthDate.setText(textDate)
-                datePickerBirthDateExistent.visibility = View.GONE
+                datePickerBirthDateExistent.visibility = View.INVISIBLE
+                signUpViewModel.loginDataChanged(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
             }
 
             // not bad?

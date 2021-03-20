@@ -21,13 +21,18 @@ class SignUpDataSource {
 
     fun signUp(email: String, username: String, password: String, birthDate: Date) {
         try {
-
             firebaseAuth = Firebase.auth
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
                 if (task.isSuccessful) { // Sign in success
                     Log.d("Sign-up", "createUserWithEmail:success")
-                    // firebaseAuth.sendSignInLinkToEmail()??
-                    // _signUpResult.value = SignUpResult(success = true)
+
+                    val user = firebaseAuth.currentUser
+                    user!!.sendEmailVerification().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("Verification email", "Email sent.")
+                        }
+                    }
+
                     _result.value = Result(success = true) // Result.Success(true)
                 } else {
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)

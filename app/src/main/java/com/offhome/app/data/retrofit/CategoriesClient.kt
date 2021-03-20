@@ -8,11 +8,11 @@ class CategoriesClient {
     private var categoriesService: CategoriesService? = null
     private var retrofit: Retrofit? = null
 
-    fun CategoriesClient() {
+    init {
         retrofit = Retrofit.Builder()
-            .baseUrl("htpps://")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
+                .baseUrl("https://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+                .addConverterFactory(GsonConverterFactory.create())
+                .build()
         categoriesService = retrofit!!.create(CategoriesService::class.java)
     }
 

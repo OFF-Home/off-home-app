@@ -11,7 +11,7 @@ class CategoryRepository {
 
     var categories: MutableLiveData<List<Category>>? = null
     private val categoriesClient = CategoriesClient()
-    val categoriesService = categoriesClient.getCategoriesService()
+    private val categoriesService = categoriesClient.getCategoriesService()
 
     fun getAll(): MutableLiveData<List<Category>> {
         if (categories == null) categories = MutableLiveData<List<Category>>()

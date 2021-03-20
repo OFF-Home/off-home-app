@@ -50,16 +50,16 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
-    fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
+    fun loginDataChanged(email: String, username: String, password: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
-        } else if (!isBirthDateValid(birthDate)) {
+        }/* else if (!isBirthDateValid(birthDate)) {
             _signUpForm.value = SignUpFormState(birthDateError = R.string.invalid_birth_date)
-        } else {
+        }*/ else {
             _signUpForm.value = SignUpFormState(isDataValid = true)
         }
     }
@@ -78,9 +78,33 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         return password.length > 5
     }
 
-    private fun isBirthDateValid(birthDate: String): Boolean {
-        return true // TODO
-    }
+    /*private fun isBirthDateValid(birthDate: String): Boolean {    //nose si funciona
+        var i: Int = 0
+        var nSlashes: Int = 0
+        while (i < birthDate.length) {
+            //val num:Int = birthDate[i] as Int
+            //if (num !in 47..57)
+                // he intentat ferho bonic pero tot son objectes o algo
+            if (birthDate[i] != '/' &&
+                    birthDate[i] != '0' &&
+                    birthDate[i] != '1' &&
+                    birthDate[i] != '2' &&
+                    birthDate[i] != '3' &&
+                    birthDate[i] != '4' &&
+                    birthDate[i] != '5' &&
+                    birthDate[i] != '6' &&
+                    birthDate[i] != '7' &&
+                    birthDate[i] != '8' &&
+                    birthDate[i] != '9')
+                        return false
+
+            if (birthDate[i] == '/')
+                ++nSlashes
+            ++i
+        }
+
+        return (nSlashes == 2)
+    }*/
 
     private fun getDateFromString(string1: String): Date {
         var i: Int = 0

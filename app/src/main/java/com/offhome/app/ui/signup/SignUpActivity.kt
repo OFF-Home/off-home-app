@@ -4,7 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
-import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -57,9 +56,9 @@ class SignUpActivity : AppCompatActivity() {
                 if (signUpStateVM.passwordError != null) {
                     password.error = getString(signUpStateVM.passwordError)
                 }
-                if (signUpStateVM.birthDateError != null) {
+                /*if (signUpStateVM.birthDateError != null) {
                     birthDate.error = getString(signUpStateVM.birthDateError)
-                }
+                }*/
             }
         )
 
@@ -91,29 +90,26 @@ class SignUpActivity : AppCompatActivity() {
 
         email.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString(),
-                birthDate.text.toString()
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString()
             )
         }
 
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString(),
-                birthDate.text.toString()
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString()
             )
         }
 
         password.apply {
             afterTextChanged {
                 signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString(),
-                    birthDate.text.toString()
+                        email.text.toString(),
+                        username.text.toString(),
+                        password.text.toString()
                 )
             }
 
@@ -228,15 +224,6 @@ class SignUpActivity : AppCompatActivity() {
         // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
-    }
-
-    /**
-     * Disable soft keyboard from appearing, use in conjunction with android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"
-     * @param editText
-     */
-    fun disableSoftInputFromAppearing(editText: EditText) {
-        editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
-        editText.setTextIsSelectable(true)
     }
 }
 

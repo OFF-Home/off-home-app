@@ -29,6 +29,7 @@
             android:alpha="0.24"
             android:background="@color/secondary_light" />
 
+
     </androidx.cardview.widget.CardView>
 
     <ImageView
@@ -57,20 +58,40 @@
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteY="16dp" />
 
+    <ImageView
+        android:id="@+id/imageViewDataTime"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewDataTimeActivity"
+        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNameActivity"
+        app:srcCompat="@drawable/ic_baseline_access_time_filled_24"
+        tools:layout_editor_absoluteY="14dp" />
+
     <TextView
         android:id="@+id/textViewDataTimeActivity"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
+        android:padding="4dp"
         android:text="TextView"
         android:textColor="@color/black"
         android:textSize="15sp"
-        android:padding="4dp"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNameActivity"
         app:layout_constraintBottom_toTopOf="@+id/textViewCapacity"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="16dp" />
+        app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNameActivity"
+        tools:ignore="MissingConstraints" />
+
+    <ImageView
+        android:id="@+id/imageViewCapacity"
+        android:layout_width="28dp"
+        android:layout_height="28dp"
+        android:padding="4dp"
+        app:layout_constraintEnd_toStartOf="@+id/textViewCapacity"
+        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
+        app:srcCompat="@drawable/ic_baseline_people_alt_24" />
 
     <TextView
         android:id="@+id/textViewCapacity"
@@ -81,7 +102,7 @@
         android:textColor="@color/black"
         android:textSize="15sp"
         android:padding="4dp"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
         app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity"
         tools:ignore="MissingConstraints" />
 

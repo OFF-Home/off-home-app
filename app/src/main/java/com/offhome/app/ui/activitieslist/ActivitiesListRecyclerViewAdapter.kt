@@ -28,7 +28,9 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
         holder.textViewName.text = item.name
         holder.textViewDataTime.text = item.dataTime
         holder.textViewCapacity.text = item.capacity
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.imageViewIconLike)
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
 
         with(holder.mView) {
             tag = item
@@ -36,12 +38,12 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
         }
         var clicked = false
 
-        holder.imageViewIconLike.setOnClickListener {
+        holder.iconLikeImage.setOnClickListener {
             clicked = !clicked
             if (clicked) {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.imageViewIconLike)
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
             } else {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.imageViewIconLike)
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
             }
         }
     }
@@ -57,7 +59,9 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
         val textViewName: TextView = mView.findViewById(R.id.textViewNameActivity)
         val textViewDataTime: TextView = mView.findViewById(R.id.textViewDataTimeActivity)
         val textViewCapacity: TextView = mView.findViewById(R.id.textViewCapacity)
-        val imageViewIconLike: ImageView = mView.findViewById(R.id.imageViewIconLike)
+        val dataTimeImage: ImageView = mView.findViewById(R.id.imageViewDataTime)
+        val capacityImage: ImageView = mView.findViewById(R.id.imageViewCapacity)
+        val iconLikeImage: ImageView = mView.findViewById(R.id.imageViewIconLike)
 
         override fun toString(): String {
             return super.toString()

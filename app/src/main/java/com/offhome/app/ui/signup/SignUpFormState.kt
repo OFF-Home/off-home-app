@@ -10,6 +10,7 @@ data class SignUpFormState(
     val emailError: Int? = null,
     val usernameError: Int? = null,
     val passwordError: Int? = null,
+    val birthDateError: Int? = null,
     // val birthDateError: Int? = null,  //impossible, restringirem els possibles valors d'entrada amb la UI
     val isDataValid: Boolean = false
 )

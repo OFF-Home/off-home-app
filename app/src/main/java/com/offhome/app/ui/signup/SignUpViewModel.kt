@@ -8,6 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
 import com.offhome.app.data.SignUpRepository
+import java.util.*
 
 class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewModel() {
 
@@ -43,16 +44,21 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }
         )
-        signUpRepository.signUp(email, username, password, birthDate, activity)
+
+        val fecha = getDateFromString(birthDate)
+
+        signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
-    fun loginDataChanged(email: String, username: String, password: String) {
+    fun loginDataChanged(email: String, username: String, password: String, birthDate:String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
+        } else if (!isBirthDateValid(birthDate)) {
+            _signUpForm.value = SignUpFormState(birthDateError = R.string.invalid_birth_date)
         } else {
             _signUpForm.value = SignUpFormState(isDataValid = true)
         }
@@ -70,5 +76,30 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     // això serà només per coses tipo numero minim de char's.
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
+    }
+
+    private fun isBirthDateValid(birthDate: String): Boolean {
+        return true //TODO
+    }
+
+    private fun getDateFromString(string1: String):Date {
+        var i:Int = 0
+        while(string1[i] != '/') {
+            ++i
+        }
+        var stringPart = string1.subSequence(0, i) as String
+        val dayOfMonth : Int = stringPart.toInt()
+
+        var j : Int = i+1
+        while(string1[j] != '/') {
+            ++j
+        }
+        stringPart = string1.subSequence(i+1, j) as String
+        val month : Int = stringPart.toInt()
+
+        stringPart = string1.subSequence(j+1, string1.length) as String
+        val year :Int = stringPart.toInt()
+
+        return Date(year, month, dayOfMonth)    //asumint que "date" (el nom del 3r parametre) vol dir dayOfMonth
     }
 }

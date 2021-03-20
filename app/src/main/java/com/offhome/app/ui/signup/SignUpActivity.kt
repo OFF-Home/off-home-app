@@ -2,8 +2,10 @@ package com.offhome.app.ui.signup
 
 import android.app.Activity
 import android.content.Intent
+import android.os.Build
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -15,11 +17,11 @@ import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 
+
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
-    // private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,23 +43,26 @@ class SignUpActivity : AppCompatActivity() {
 
         // observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
         signUpViewModel.signUpFormState.observe(
-            this@SignUpActivity,
-            Observer {
-                val signUpStateVM = it ?: return@Observer
+                this@SignUpActivity,
+                Observer {
+                    val signUpStateVM = it ?: return@Observer
 
-                // disable login button unless both username / password is valid
-                signUp.isEnabled = signUpStateVM.isDataValid
+                    // disable login button unless both username / password is valid
+                    signUp.isEnabled = signUpStateVM.isDataValid
 
-                if (signUpStateVM.emailError != null) { // si hi ha error
-                    email.error = getString(signUpStateVM.emailError)
+                    if (signUpStateVM.emailError != null) { // si hi ha error
+                        email.error = getString(signUpStateVM.emailError)
+                    }
+                    if (signUpStateVM.usernameError != null) {
+                        username.error = getString(signUpStateVM.usernameError)
+                    }
+                    if (signUpStateVM.passwordError != null) {
+                        password.error = getString(signUpStateVM.passwordError)
+                    }
+                    if (signUpStateVM.birthDateError != null) {
+                        birthDate.error = getString(signUpStateVM.birthDateError)
+                    }
                 }
-                if (signUpStateVM.usernameError != null) {
-                    username.error = getString(signUpStateVM.usernameError)
-                }
-                if (signUpStateVM.passwordError != null) {
-                    password.error = getString(signUpStateVM.passwordError)
-                }
-            }
         )
 
         // observar el resultat de signUp.
@@ -65,22 +70,22 @@ class SignUpActivity : AppCompatActivity() {
         // Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
         //
         signUpViewModel.signUpResult.observe(
-            this@SignUpActivity,
-            Observer {
-                val signUpResultVM = it ?: return@Observer
+                this@SignUpActivity,
+                Observer {
+                    val signUpResultVM = it ?: return@Observer
 
-                loading.visibility = View.GONE
-                if (signUpResultVM.error != null) {
-                    showSignUpFailed(signUpResultVM.error)
-                }
-                if (signUpResultVM.success != null) {
-                    showSuccessAndProceed()
-                }
-                setResult(Activity.RESULT_OK)
+                    loading.visibility = View.GONE
+                    if (signUpResultVM.error != null) {
+                        showSignUpFailed(signUpResultVM.error)
+                    }
+                    if (signUpResultVM.success != null) {
+                        showSuccessAndProceed()
+                    }
+                    setResult(Activity.RESULT_OK)
 
-                // Complete and destroy login activity once successful
-                // finish()  //treure oi?
-            }
+                    // Complete and destroy login activity once successful
+                    // finish()  //treure oi?
+                }
         )
 
         // s'executen quan es modifiquen email, username o password
@@ -88,26 +93,29 @@ class SignUpActivity : AppCompatActivity() {
 
         email.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString()
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString(),
+                    birthDate.text.toString()
             )
         }
 
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString()
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString(),
+                    birthDate.text.toString()
             )
         }
 
         password.apply {
             afterTextChanged {
                 signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
+                        email.text.toString(),
+                        username.text.toString(),
+                        password.text.toString(),
+                        birthDate.text.toString()
                 )
             }
 
@@ -124,18 +132,8 @@ class SignUpActivity : AppCompatActivity() {
             // crida a signUp
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
-                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
 
-                /*firebaseAuth = Firebase.auth
-                firebaseAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString()).addOnCompleteListener { task ->
-                    if (task.isSuccessful) {
-                        Log.d("Sign-up", "createUserWithEmail:success")
-                        Toast.makeText(baseContext, "Authentication SUCCESS.", Toast.LENGTH_SHORT).show()
-                    } else {
-                        Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
-                         Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
-                    }
-                }*/
+                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
             }
         }
 
@@ -176,7 +174,8 @@ class SignUpActivity : AppCompatActivity() {
             })*/
 
             datePickerBirthDateExistent.init(2020, 11, 29) { datePicker: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
-                val textDate = "$dayOfMonth/$month/$year"
+                val humanMonth = month+1        //perque els mesos comencen a 0
+                val textDate = "$dayOfMonth/$humanMonth/$year"
                 birthDate.setText(textDate)
                 datePickerBirthDateExistent.visibility = View.GONE
             }
@@ -190,6 +189,7 @@ class SignUpActivity : AppCompatActivity() {
 
             datePickerBirthDateExistent.visibility = View.GONE*/
         }
+
 
         hereButton.setOnClickListener {
             canviALogInActivity()
@@ -206,18 +206,17 @@ class SignUpActivity : AppCompatActivity() {
 
     private fun showSuccessAndProceed() {
         val emailConfirmationMessage = getString(R.string.emailConfirmationMessage)
-        // val displayName = model.displayName
-        // initiate successful logged in experience
+        // initiate signUp experience
         // TODO s'envia e-mail per a confirmar,
         // s'informa d'axiò amb un missatge,
         // i canvia a pantalla de LogIn
 
-        // ensenya un missatge de welcome a baix
+        // ensenyar missatge de welcome a baix
         Toast.makeText(
-            applicationContext,
-            // "$emailConfirmationMessage $displayName",
-            emailConfirmationMessage,
-            Toast.LENGTH_LONG
+                applicationContext,
+                // "$emailConfirmationMessage $displayName",
+                emailConfirmationMessage,
+                Toast.LENGTH_LONG
         ).show()
 
         // canviar a pantalla de LogIn.
@@ -232,6 +231,15 @@ class SignUpActivity : AppCompatActivity() {
         // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
+    }
+
+    /**
+     * Disable soft keyboard from appearing, use in conjunction with android:windowSoftInputMode="stateAlwaysHidden|adjustNothing"
+     * @param editText
+     */
+    fun disableSoftInputFromAppearing(editText: EditText) {
+        editText.setRawInputType(InputType.TYPE_CLASS_TEXT)
+        editText.setTextIsSelectable(true)
     }
 }
 

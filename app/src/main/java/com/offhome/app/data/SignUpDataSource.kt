@@ -6,7 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.offhome.app.ui.signup.SignUpActivity
+import java.util.*
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
@@ -19,7 +19,7 @@ class SignUpDataSource {
     private var _result = MutableLiveData<Result>()
     val result: LiveData<Result> = _result // aquest es observat per Repository
 
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
+    fun signUp(email: String, username: String, password: String, birthDate: Date) {
         try {
 
             firebaseAuth = Firebase.auth

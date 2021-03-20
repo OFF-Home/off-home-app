@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import com.offhome.app.data.model.SignedUpUser
 import com.offhome.app.ui.signup.SignUpActivity
+import java.util.*
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -24,7 +25,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
         // user = null
     }
 
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
+    fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) {
         dataSource.result.observe(
             activity,
             Observer {
@@ -41,7 +42,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
             }
         )
 
-        dataSource.signUp(email, username, password, birthDate, activity)
+        dataSource.signUp(email, username, password, birthDate)
     }
 
     private fun setLoggedInUser(signedUpUser: SignedUpUser) {

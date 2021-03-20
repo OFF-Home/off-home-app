@@ -26,4 +26,5 @@
     <string name = "email_taken"> Sign up error: this e-mail is already registered </string>
     <string name = "google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
     <string name = "unknown_sign_up_error"> Sign up error: there was an unknown error </string>
+    <string name = "invalid_birth_date"> Not a valid birth date </string>
 </resources>

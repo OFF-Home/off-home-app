@@ -26,7 +26,7 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = categories[position]
-        holder.textViewName.text = item.name
+        holder.textViewName.text = item.nom
         if (context != null) {
             Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
             Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)

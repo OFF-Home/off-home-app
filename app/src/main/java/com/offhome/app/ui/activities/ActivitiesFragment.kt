@@ -31,7 +31,6 @@ class ActivitiesFragment : Fragment() {
             ViewModelProvider(this).get(CategoriesViewModel::class.java)
         val view = inflater.inflate(R.layout.fragment_activities, container, false)
 
-        categoriesViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
         categoryAdapter = MyCategoriesRecyclerViewAdapter(context)
 
         if (view is RecyclerView) {
@@ -43,7 +42,7 @@ class ActivitiesFragment : Fragment() {
 
         categoriesViewModel.getCategories().observe(
             viewLifecycleOwner,
-            Observer {
+            {
                 categories = it
                 categoryAdapter.setData(categories)
             }

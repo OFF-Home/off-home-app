@@ -10,9 +10,9 @@ class CategoriesClient {
 
     init {
         retrofit = Retrofit.Builder()
-                .baseUrl("https://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
-                .addConverterFactory(GsonConverterFactory.create())
-                .build()
+            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
         categoriesService = retrofit!!.create(CategoriesService::class.java)
     }
 

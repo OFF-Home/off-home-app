@@ -7,7 +7,7 @@ import com.offhome.app.model.Category
 
 class CategoriesViewModel : ViewModel() {
     private var repository: CategoryRepository = CategoryRepository()
-    private var categories: LiveData<List<Category>> = repository.getAll()!!
+    private var categories: LiveData<List<Category>> = repository.getAll()
 
     fun getCategories(): LiveData<List<Category>> {
         return categories

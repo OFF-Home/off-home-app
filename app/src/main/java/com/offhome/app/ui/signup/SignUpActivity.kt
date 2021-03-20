@@ -90,26 +90,26 @@ class SignUpActivity : AppCompatActivity() {
 
         email.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
+                email.text.toString(),
+                username.text.toString(),
+                password.text.toString()
             )
         }
 
         username.afterTextChanged {
             signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString()
+                email.text.toString(),
+                username.text.toString(),
+                password.text.toString()
             )
         }
 
         password.apply {
             afterTextChanged {
                 signUpViewModel.loginDataChanged(
-                        email.text.toString(),
-                        username.text.toString(),
-                        password.text.toString()
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString()
                 )
             }
 

@@ -57,7 +57,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
-        }/* else if (!isBirthDateValid(birthDate)) {
+        } /* else if (!isBirthDateValid(birthDate)) {
             _signUpForm.value = SignUpFormState(birthDateError = R.string.invalid_birth_date)
         }*/ else {
             _signUpForm.value = SignUpFormState(isDataValid = true)

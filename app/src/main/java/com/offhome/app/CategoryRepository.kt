@@ -1,7 +1,6 @@
 package com.offhome.app
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.CategoriesClient
 import com.offhome.app.model.Category

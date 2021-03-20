@@ -17,8 +17,8 @@ import com.offhome.app.ui.signup.SignUpResult
 
 class SignUpRepository(val dataSource: SignUpDataSource) {
 
-    private val _signUpResult = MutableLiveData<SignUpResult>() // SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
-    val signUpResult: LiveData<SignUpResult> = _signUpResult
+    private val _result = MutableLiveData<Result>() // SignUpResult serà d'un package diferent... mal disseny? fer capa transversal?
+    val result: LiveData<Result> = _result
 
     init {
         // If user credentials will be cached in local storage, it is recommended it be encrypted
@@ -27,27 +27,17 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
     }
 
     fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
-        // handle login
         dataSource.result.observe(
             activity,
             Observer {
-                val result = it ?: return@Observer
-                if (result.error != null) {
+                val resultDS = it ?: return@Observer
+                //_result.value = resultDS  //aixo fa el mateix?
 
-                    val msg: String = result.error.toString() // a ver si funciona
-                    println("msg = $msg")
-                    val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
-                    println("msg2 = $msg2")
-
-                    when { // TODO posar els strings de la excepcio als .equals()
-                        msg2.equals("cosa1") -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
-                        msg2.equals("cosa2") -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
-                        msg2.equals("cosa3") -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
-                        else -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
-                    }
+                if (resultDS.error != null) {
+                    _result.value = Result(error=resultDS.error)
                 }
-                if (result.success != null) {
-                    _signUpResult.value = SignUpResult(success = result.success)
+                if (resultDS.success != null) {
+                    _result.value = Result(success = resultDS.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }

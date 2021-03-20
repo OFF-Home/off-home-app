@@ -27,26 +27,22 @@ class SignUpDataSource {
 
             firebaseAuth = Firebase.auth
             firebaseAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener { task ->
-                if (task.isSuccessful) {
-                    // Sign in success, update UI with the signed-in user's information, o no. // TODO: handle loggedInUser authentication
+                if (task.isSuccessful) {// Sign in success
                     Log.d("Sign-up", "createUserWithEmail:success")
                     // firebaseAuth.sendSignInLinkToEmail()??
                     // _signUpResult.value = SignUpResult(success = true)
                     _result.value = Result(success = true) // Result.Success(true)
                 } else {
-                    // If sign in fails, display a message to the user.
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
-                    // Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()  //el toast el farem a Activity
 
                     _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?
                 }
+                //_result.value = Result(error = java.lang.Exception("Error[exception=AIXO Es UNA EXCEPCIO]\""))      //hardcode testing exceptions
             }
 
             // fer crida HTTP
             // aixi que el backend donarà excepció si ja existeix un usuari amb aquest email o username?
 
-            // testejant:
-            // return Result.Error(IOException("Error signing up. A user with this e-mail already exists"))
         } catch (e: Throwable) { // realment aqui no hauriem d'arribar si no hi ha cap problema amb la connexio a Firebase, dic jo.
             _result.value = Result(error = e as Exception) // cast!
         }

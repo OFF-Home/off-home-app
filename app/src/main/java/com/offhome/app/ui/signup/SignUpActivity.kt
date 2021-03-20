@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -13,18 +12,14 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
-import com.google.firebase.ktx.Firebase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.data.Result
 
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
-    private lateinit var firebaseAuth: FirebaseAuth
+    //private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -48,19 +43,19 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel.signUpFormState.observe(
             this@SignUpActivity,
             Observer {
-                val signUpState = it ?: return@Observer
+                val signUpStateVM = it ?: return@Observer
 
                 // disable login button unless both username / password is valid
-                signUp.isEnabled = signUpState.isDataValid
+                signUp.isEnabled = signUpStateVM.isDataValid
 
-                if (signUpState.emailError != null) { // si hi ha error
-                    email.error = getString(signUpState.emailError)
+                if (signUpStateVM.emailError != null) { // si hi ha error
+                    email.error = getString(signUpStateVM.emailError)
                 }
-                if (signUpState.usernameError != null) {
-                    username.error = getString(signUpState.usernameError)
+                if (signUpStateVM.usernameError != null) {
+                    username.error = getString(signUpStateVM.usernameError)
                 }
-                if (signUpState.passwordError != null) {
-                    password.error = getString(signUpState.passwordError)
+                if (signUpStateVM.passwordError != null) {
+                    password.error = getString(signUpStateVM.passwordError)
                 }
             }
         )
@@ -72,19 +67,19 @@ class SignUpActivity : AppCompatActivity() {
         signUpViewModel.signUpResult.observe(
             this@SignUpActivity,
             Observer {
-                val signUpResult = it ?: return@Observer
+                val signUpResultVM = it ?: return@Observer
 
                 loading.visibility = View.GONE
-                if (signUpResult.error != null) {
-                    showSignUpFailed(signUpResult.error)
+                if (signUpResultVM.error != null) {
+                    showSignUpFailed(signUpResultVM.error)
                 }
-                if (signUpResult.success != null) {
+                if (signUpResultVM.success != null) {
                     showSuccessAndProceed()
                 }
                 setResult(Activity.RESULT_OK)
 
                 // Complete and destroy login activity once successful
-                finish()
+                //finish()  //treure oi?
             }
         )
 
@@ -142,8 +137,6 @@ class SignUpActivity : AppCompatActivity() {
                          Toast.makeText(baseContext, "Authentication failed.", Toast.LENGTH_SHORT).show()
                     }
                 }*/
-
-
             }
         }
 
@@ -165,7 +158,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         // Firebase
-        firebaseAuth = Firebase.auth
+        //firebaseAuth = Firebase.auth
 
         // diu que faci aixo
         /*val currentUserFB = firebaseAuth.currentUser

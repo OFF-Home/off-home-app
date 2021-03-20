@@ -20,20 +20,29 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) { // he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
         // can be launched in a separate asynchronous job
 
-        signUpRepository.signUpResult.observe(
+        signUpRepository.result.observe(
             activity,
             Observer {
-                val signUpResult = it ?: return@Observer
-                if (signUpResult.error != null) {
-                    _signUpResult.value = SignUpResult(error = signUpResult.error)
+                val resultRepo = it ?: return@Observer
+                if (resultRepo.error != null) {
+                    val msg: String = resultRepo.error.toString() // a ver si funciona
+                    println("msg = $msg")
+                    val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
+                    println("msg2 = $msg2")
+
+                    when { // TODO posar els strings de la excepcio als .equals()
+                        msg2.equals("cosa1") -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
+                        msg2.equals("cosa2") -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
+                        msg2.equals("cosa3") -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
+                        else -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
+                    }
                 }
-                if (signUpResult.success != null) {
-                    _signUpResult.value = SignUpResult(success = signUpResult.success)
+                if (resultRepo.success != null) {
+                    _signUpResult.value = SignUpResult(success = resultRepo.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }
         )
-
         signUpRepository.signUp(email, username, password, birthDate, activity)
     }
 

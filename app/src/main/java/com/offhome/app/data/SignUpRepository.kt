@@ -3,10 +3,8 @@ package com.offhome.app.data
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.offhome.app.R
 import com.offhome.app.data.model.SignedUpUser
 import com.offhome.app.ui.signup.SignUpActivity
-import com.offhome.app.ui.signup.SignUpResult
 
 /**
  * Class that requests authentication and user information from the remote data source and
@@ -31,10 +29,10 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
             activity,
             Observer {
                 val resultDS = it ?: return@Observer
-                //_result.value = resultDS  //aixo fa el mateix?
+                // _result.value = resultDS  //aixo fa el mateix?
 
                 if (resultDS.error != null) {
-                    _result.value = Result(error=resultDS.error)
+                    _result.value = Result(error = resultDS.error)
                 }
                 if (resultDS.success != null) {
                     _result.value = Result(success = resultDS.success)

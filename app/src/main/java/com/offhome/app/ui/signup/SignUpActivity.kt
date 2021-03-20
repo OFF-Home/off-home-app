@@ -19,7 +19,7 @@ import com.offhome.app.R
 class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
-    //private lateinit var firebaseAuth: FirebaseAuth
+    // private lateinit var firebaseAuth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -79,7 +79,7 @@ class SignUpActivity : AppCompatActivity() {
                 setResult(Activity.RESULT_OK)
 
                 // Complete and destroy login activity once successful
-                //finish()  //treure oi?
+                // finish()  //treure oi?
             }
         )
 
@@ -126,7 +126,6 @@ class SignUpActivity : AppCompatActivity() {
                 loading.visibility = View.VISIBLE
                 signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
 
-
                 /*firebaseAuth = Firebase.auth
                 firebaseAuth.createUserWithEmailAndPassword(email.text.toString(), password.text.toString()).addOnCompleteListener { task ->
                     if (task.isSuccessful) {
@@ -158,7 +157,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         // Firebase
-        //firebaseAuth = Firebase.auth
+        // firebaseAuth = Firebase.auth
 
         // diu que faci aixo
         /*val currentUserFB = firebaseAuth.currentUser

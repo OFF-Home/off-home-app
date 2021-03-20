@@ -1,89 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+<androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/listActivities"
+    android:name="com.offhome.app.ui.activitieslist.ActivitiesList"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="16dp"
-    tools:context=".ui.activitieslist.ActivitiesList">
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/cardViewBackground"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:clickable="true"
-        android:focusable="true"
-        android:foreground="?android:selectableItemBackground"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="0dp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <View
-            android:id="@+id/viewBackground"
-            android:layout_width="350dp"
-            android:layout_height="100dp"
-            android:alpha="0.24"
-            android:background="@color/secondary_light" />
-
-    </androidx.cardview.widget.CardView>
-
-    <ImageView
-        android:id="@+id/imageViewIconLike"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:contentDescription="Icon"
-        android:padding="3dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toTopOf="@+id/cardViewBackground"
-        app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-        tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
-    <TextView
-        android:id="@+id/textViewNameActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="20sp"
-        android:padding="3dp"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toTopOf="@+id/cardViewBackground"
-        app:layout_constraintBottom_toTopOf="@+id/textViewDataTimeActivity"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <TextView
-        android:id="@+id/textViewDataTimeActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:padding="4dp"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toBottomOf="@+id/textViewNameActivity"
-        app:layout_constraintBottom_toTopOf="@+id/textViewCapacity"
-        tools:ignore="MissingConstraints"
-        tools:layout_editor_absoluteY="16dp" />
-
-    <TextView
-        android:id="@+id/textViewCapacity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:text="TextView"
-        android:textColor="@color/black"
-        android:textSize="15sp"
-        android:padding="4dp"
-        app:layout_constraintStart_toStartOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity"
-        tools:ignore="MissingConstraints" />
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    app:layoutManager="LinearLayoutManager"
+    tools:context=".ui.activitieslist.ActivitiesList"
+    tools:listitem="@layout/fragment_activity" />

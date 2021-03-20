@@ -19,7 +19,7 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.activity_activities_list, parent, false)
+                .inflate(R.layout.fragment_activity, parent, false)
         return ViewHolder(view)
     }
 
@@ -34,11 +34,21 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
             tag = item
             setOnClickListener(mOnClickListener)
         }
+        var clicked = false
+
+        holder.imageViewIconLike.setOnClickListener {
+            clicked = !clicked
+            if (clicked) {
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.imageViewIconLike)
+            } else {
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.imageViewIconLike)
+            }
+        }
     }
 
     override fun getItemCount(): Int = activitiesList.size
 
-    fun setData(categories: List<ActivityFromList>?) {
+    fun setData(activitiesList: List<ActivityFromList>?) {
         this.activitiesList = activitiesList!!
         notifyDataSetChanged()
     }

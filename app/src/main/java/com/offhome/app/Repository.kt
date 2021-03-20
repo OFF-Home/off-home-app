@@ -19,9 +19,9 @@ class Repository {
 
     fun getAllActivities(): MutableLiveData<List<ActivityFromList>> {
         val activityFromList = ActivityFromList("Running in La Barceloneta", "17/03/2021", "8", "url")
-        /*if (categories == null) {
-            categories = MutableLiveData<List<Category>>(listOf(category, category, category, category, category, category, category, category, category, category, category, category, category, category, category))
-        }*/
-        return categories as MutableLiveData<List<ActivityFromList>>
+        if (activitiesList == null) {
+            activitiesList = MutableLiveData<List<ActivityFromList>>(listOf(activityFromList, activityFromList, activityFromList, activityFromList, activityFromList))
+        }
+        return activitiesList as MutableLiveData<List<ActivityFromList>>
     }
 }

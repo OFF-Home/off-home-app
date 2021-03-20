@@ -50,7 +50,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
-    fun loginDataChanged(email: String, username: String, password: String, birthDate:String) {
+    fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {
@@ -79,27 +79,27 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     }
 
     private fun isBirthDateValid(birthDate: String): Boolean {
-        return true //TODO
+        return true // TODO
     }
 
-    private fun getDateFromString(string1: String):Date {
-        var i:Int = 0
-        while(string1[i] != '/') {
+    private fun getDateFromString(string1: String): Date {
+        var i: Int = 0
+        while (string1[i] != '/') {
             ++i
         }
         var stringPart = string1.subSequence(0, i) as String
-        val dayOfMonth : Int = stringPart.toInt()
+        val dayOfMonth: Int = stringPart.toInt()
 
-        var j : Int = i+1
-        while(string1[j] != '/') {
+        var j: Int = i + 1
+        while (string1[j] != '/') {
             ++j
         }
-        stringPart = string1.subSequence(i+1, j) as String
-        val month : Int = stringPart.toInt()
+        stringPart = string1.subSequence(i + 1, j) as String
+        val month: Int = stringPart.toInt()
 
-        stringPart = string1.subSequence(j+1, string1.length) as String
-        val year :Int = stringPart.toInt()
+        stringPart = string1.subSequence(j + 1, string1.length) as String
+        val year: Int = stringPart.toInt()
 
-        return Date(year, month, dayOfMonth)    //asumint que "date" (el nom del 3r parametre) vol dir dayOfMonth
+        return Date(year, month, dayOfMonth) // asumint que "date" (el nom del 3r parametre) vol dir dayOfMonth
     }
 }

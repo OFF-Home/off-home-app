@@ -4,22 +4,34 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.Repository
-import com.offhome.app.model.Category
+import com.offhome.app.domain.ActivityUseCase
+import com.offhome.app.model.Activity
 
 class CreateActivityViewModel : ViewModel() {
-    private var repository: Repository = Repository()
-    private var categories: LiveData<List<Category>> = repository.getAll()!!
+    private val repository: Repository = Repository()
 
-    private val _text = MutableLiveData<String>().apply {
+    val activityUseCase = ActivityUseCase()
+    private val activitylistData = MutableLiveData<List<Activity>>()
+
+    /*private val _text = MutableLiveData<String>().apply {
         value = "This is CreationActivity Activity"
-    }
-    val text: LiveData<String> = _text
+    }*/
 
-    fun getCategories(): LiveData<List<Category>> {
-        return categories
+    init{
+        getActivitiesList()
     }
 
-    fun checkedCorrectCategory(){
-        getCategories()
+    fun setListData(activitylist:List<Activity>){
+        activitylistData.value = activitylist
     }
+
+    fun getActivitiesList() {
+        setListData(activityUseCase.getActivityList())
+    }
+
+    fun getActivitiesListLiveData(): LiveData<List<Activity>>{
+        return activitylistData
+    }
+
+
 }

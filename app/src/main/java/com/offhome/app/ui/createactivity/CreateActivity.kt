@@ -1,22 +1,24 @@
+@file:Suppress("DEPRECATION")
+
 package com.offhome.app.ui.createactivity
 
 import android.annotation.SuppressLint
+import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
 import com.offhome.app.R
-import java.time.DayOfWeek
-import java.time.Month
 import java.util.*
 
 class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
-
-    lateinit var viewModel: CreateActivityViewModel
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -42,29 +44,26 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         minute = cal.get(Calendar.MINUTE)
     }
 
-
+    private lateinit var viewModel: CreateActivityViewModel
     @RequiresApi(Build.VERSION_CODES.N)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
 
-        viewModel = ViewModelProvider(this).get(CreateActivityViewModel::class.java)
+        //viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
+        viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
+
+        val activityObserver = Observer<List<com.offhome.app.model.Activity>>{
+            Log.d("Activity", it.toString())
+        }
+
+        viewModel.getActivitiesListLiveData().observe(this,activityObserver)
 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         pickDate()
-
-        /*val datePicker = findViewById<TextView>(R.id.date_pick_text)
-
-        datePicker.setOnClickListener{
-            DatePickerDialog(this, { _: DatePicker, i: Int, i1: Int, i2: Int ->
-                "$day/$month/$year".also { datePicker.text = it }
-            }, day, month, year).apply {
-                show()
-            }
-        }*/
 
         val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
         val btn_activity_created = findViewById<Button>(R.id.btn_create)
@@ -105,6 +104,5 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
     }
 
-
-
 }
+

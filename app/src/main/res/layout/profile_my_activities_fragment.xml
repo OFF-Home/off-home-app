@@ -34,6 +34,8 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonLikedActivities"
         tools:listitem="@+id/cardViewProfileActivities" />
 
+
+    <!--> substituir per un fragment d'activitat? <-->
     <androidx.cardview.widget.CardView
         android:id="@+id/cardViewProfileActivities"
         android:layout_width="wrap_content"
@@ -43,14 +45,13 @@
         app:layout_constraintTop_toBottomOf="@+id/buttonLikedActivities">
         <!--> el top esta MAL?? <-->
 
-        <EditText
+        <TextView
             android:id="@+id/PlaceHolderText"
             android:layout_width="259dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="48dp"
             android:ems="10"
-            android:inputType="textPersonName"
-            android:text="this is a placeholder text!!" />
+            android:text="this is supposed to be an activity" />
     </androidx.cardview.widget.CardView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -34,6 +34,8 @@ class ActivitiesList : AppCompatActivity() {
         val titleActivity = arguments?.getString("amount")
         title = titleActivity
 
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
 
         activitiesListViewModel =
                 ViewModelProvider(this).get(ActivitiesListViewModel::class.java)

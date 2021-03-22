@@ -34,6 +34,6 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }
         )
-        dataSource.signUp(email, username, password, birthDate)
+        dataSource.signUp(email, username, password, birthDate, activity)
     }
 }

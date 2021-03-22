@@ -131,8 +131,10 @@
         android:id="@+id/locationpck2"
         android:layout_width="191dp"
         android:layout_height="49dp"
+        android:autoLink="map"
         android:autofillHints=""
         android:hint="@string/set_location"
+        android:inputType="textPostalAddress"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -140,8 +142,7 @@
         app:layout_constraintHorizontal_bias="0.107"
         app:layout_constraintStart_toEndOf="@+id/btn_location"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.646"
-        android:inputType="textPostalAddress" />
+        app:layout_constraintVertical_bias="0.646" />
 
 
     <Button
@@ -200,6 +201,39 @@
         app:layout_constraintStart_toEndOf="@+id/btn_availability"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.932" />
+
+    <EditText
+        android:id="@+id/invite_friends"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+        android:layout_width="302dp"
+        android:layout_height="45dp"
+        android:autoText="false"
+        android:backgroundTint="@color/black"
+        android:backgroundTintMode="src_atop"
+        android:hint="@string/invite_friends"
+        android:selectAllOnFocus="true"
+        android:singleLine="true"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.838" />
+
+    <ImageButton
+        android:id="@+id/image_search"
+        android:layout_width="39dp"
+        android:layout_height="41dp"
+        android:layout_marginStart="8dp"
+        android:background="?attr/selectableItemBackgroundBorderless"
+        android:src="@drawable/ic_baseline_search_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.833"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/btn_create"

@@ -8,6 +8,14 @@ import com.offhome.app.R
 import com.offhome.app.data.LoginRepository
 import com.offhome.app.data.Result
 
+/**
+ * View Model for Login activity
+ * @param loginRepository references the Repository for the Login
+ * @property _loginForm is the private mutable live data of the form state
+ * @property loginFormState is the public live data of the form state
+ * @property _loginResult is the private mutable live data for the result of the login
+ * @property loginResult is the public live data for the result of the login
+ * */
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
@@ -15,6 +23,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    /**
+     * It calls te repository to login and treats the result to set the mutable live data of the result of the login
+     */
     fun login(username: String, password: String) {
         // can be launched in a separate asynchronous job
         val result = loginRepository.login(username, password)
@@ -29,6 +40,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
+    /**
+     * It validates the state of the data when this is modified
+     */
     fun loginDataChanged(email: String, password: String) {
         if (!isEmailValid(email)) {
             _loginForm.value = LoginFormState(emailError = R.string.invalid_email)
@@ -39,12 +53,16 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    // A placeholder username validation check
+    /**
+     * It checks if the email introduced by the user is valid, that is, if it fulfill the patters of a email
+     */
     private fun isEmailValid(email: String): Boolean {
         return email.contains('@') && Patterns.EMAIL_ADDRESS.matcher(email).matches()
     }
 
-    // A placeholder password validation check
+    /**
+     * It checks if the password introduced by the user is valid. Specifically checks if the sufficiently large
+     */
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }

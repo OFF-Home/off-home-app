@@ -11,7 +11,7 @@
         android:id="@+id/buttonOlderActivities"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="@string/older_activities"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -20,7 +20,7 @@
         android:id="@+id/buttonLikedActivities"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Button"
+        android:text="@string/liked_activities"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"

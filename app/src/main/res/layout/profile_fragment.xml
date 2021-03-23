@@ -18,7 +18,7 @@
             android:layout_height="match_parent">
 
             <ImageView
-                android:id="@+id/imageView"
+                android:id="@+id/imageViewProfilePic"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -26,17 +26,11 @@
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars" />
-
-            <Button
-                android:id="@+id/buttonMyActivities"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:text="Button"
-                app:layout_constraintEnd_toStartOf="@+id/buttonAboutMe"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+                tools:src="@tools:sample/avatars"/>
+            <!-->tools:src="@tools:sample/avatars"<-->
+            <!-->android:layout_width="wrap_content"
+            android:layout_height="wrap_content"<-->
+            <!-->android:src="@drawable/profile_pic_placeholder"<-->
 
             <TextView
                 android:id="@+id/textViewNomUsuari"
@@ -46,33 +40,47 @@
                 android:text="TextView"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageView" />
+                app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePic" />
 
             <RatingBar
                 android:id="@+id/ratingBarEstrellesUsuari"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textViewNomUsuari" />
 
             <Button
-                android:id="@+id/buttonAboutMe"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/buttonMyActivities"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:text="Button"
-                app:layout_constraintEnd_toEndOf="parent"
+                android:text="@string/my_activities"
+                app:layout_constraintEnd_toStartOf="@+id/buttonAboutMe"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
 
             <Button
-                android:id="@+id/buttonSettings"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:id="@+id/buttonAboutMe"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
                 android:layout_marginTop="8dp"
-                android:text="Button"
+                android:text="@string/about_me"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
+                app:layout_constraintStart_toEndOf="@+id/buttonMyActivities"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+
+            <Button
+                android:id="@+id/buttonSettings"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/buttonAboutMe"
                 app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />

@@ -10,12 +10,17 @@ import java.io.IOException
 
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
+ * @author Pau Cuesta Arcos
  */
 class LoginDataSource {
 
     private val _loggedInUser = MutableLiveData<LoggedInUser>()
     private val loggedInUser: LiveData<LoggedInUser> = _loggedInUser
 
+    /**
+     * It makes the call to Firebase to do the login with email and passwword
+     * @return the result, if the connection was successful or not
+     */
     fun login(email: String, password: String): Result<LiveData<LoggedInUser>> {
         try {
             FirebaseAuth.getInstance()
@@ -38,6 +43,9 @@ class LoginDataSource {
         }
     }
 
+    /**
+     * It log outs from the instance of firebase authenticator
+     */
     fun logout() {
         // TODO: revoke authentication
         FirebaseAuth.getInstance().signOut()

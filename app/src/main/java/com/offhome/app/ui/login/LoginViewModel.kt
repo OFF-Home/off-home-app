@@ -10,6 +10,7 @@ import com.offhome.app.data.Result
 
 /**
  * View Model for Login activity
+ * @author Pau Cuesta Arcos
  * @param loginRepository references the Repository for the Login
  * @property _loginForm is the private mutable live data of the form state
  * @property loginFormState is the public live data of the form state

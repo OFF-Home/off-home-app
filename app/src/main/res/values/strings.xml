@@ -17,7 +17,7 @@
     <string name="hint_birth_date">Birth date</string>
     <string name="button_sign_up">Sign up</string>
     <string name="have_an_account_already">Have an account already? Log in  </string>
-    <string name="button_here"><u>here</u></string>
+    <string name="button_here"> <u>here</u></string>
     <string name="text_view_or">or</string>
     <string name="continue_google">Continue with Google</string>
     <string name="title_activity_login">LoginActivity</string>

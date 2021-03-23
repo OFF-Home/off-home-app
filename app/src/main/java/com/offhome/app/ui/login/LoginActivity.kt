@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.signup.SignUpActivity
 
 class LoginActivity : AppCompatActivity() {
 
@@ -30,7 +31,7 @@ class LoginActivity : AppCompatActivity() {
         val editTextPassword = findViewById<EditText>(R.id.editTextPassword)
         val btnShowPassword = findViewById<ImageView>(R.id.imageViewShowPassword)
         val btnLogin = findViewById<Button>(R.id.buttonLogin)
-        // val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
+        val btnToSignUp = findViewById<TextView>(R.id.textViewHere)
         // val btnLoginGoogle = findViewById<Button>(R.id.buttonGoogleLogin)
         loading = findViewById<ProgressBar>(R.id.loading)
 
@@ -45,11 +46,13 @@ class LoginActivity : AppCompatActivity() {
                 // disable login button unless both username / password is valid
                 btnLogin.isEnabled = loginState.isDataValid
 
-                if (loginState.emailError != null) {
-                    editTextEmail.error = getString(loginState.emailError)
+                if (editTextEmail.text.isNotEmpty() && loginState.emailError != null) {
+                    editTextEmail.setBackgroundResource(R.drawable.background_edit_text_wrong)
+                    Toast.makeText(this, getString(loginState.emailError), Toast.LENGTH_LONG).show()
                 }
-                if (loginState.passwordError != null) {
-                    editTextPassword.error = getString(loginState.passwordError)
+                if (editTextPassword.text.isNotEmpty() && loginState.passwordError != null) {
+                    editTextPassword.setBackgroundResource(R.drawable.background_edit_text_wrong)
+                    Toast.makeText(this, getString(loginState.passwordError), Toast.LENGTH_LONG).show()
                 }
             }
         )
@@ -74,18 +77,28 @@ class LoginActivity : AppCompatActivity() {
         )
 
         editTextEmail.afterTextChanged {
-            loginViewModel.loginDataChanged(
-                editTextEmail.text.toString(),
-                editTextPassword.text.toString()
-            )
+            editTextEmail.setBackgroundResource(R.drawable.background_edit_text)
         }
 
-        editTextPassword.apply {
-            afterTextChanged {
+        editTextEmail.setOnFocusChangeListener { _, hasFocus ->
+            if (!hasFocus)
                 loginViewModel.loginDataChanged(
                     editTextEmail.text.toString(),
                     editTextPassword.text.toString()
                 )
+        }
+
+        editTextPassword.apply {
+            setOnFocusChangeListener { _, hasFocus ->
+                if (!hasFocus)
+                    loginViewModel.loginDataChanged(
+                        editTextEmail.text.toString(),
+                        editTextPassword.text.toString()
+                    )
+            }
+
+            afterTextChanged {
+                setBackgroundResource(R.drawable.background_edit_text)
             }
 
             setOnEditorActionListener { _, actionId, _ ->
@@ -109,13 +122,17 @@ class LoginActivity : AppCompatActivity() {
         }
 
         btnShowPassword.setOnClickListener {
-            Toast.makeText(applicationContext, "Clicked", Toast.LENGTH_SHORT).show()
             editTextPassword.inputType = if (editTextPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                 InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
             } else {
                 InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
             }
             editTextPassword.setSelection(editTextPassword.text.length)
+        }
+
+        btnToSignUp.setOnClickListener {
+            val intent = Intent(this, SignUpActivity::class.java)
+            startActivity(intent)
         }
     }
 

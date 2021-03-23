@@ -16,7 +16,7 @@ class CategoriesClient {
         categoriesService = retrofit!!.create(CategoriesService::class.java)
     }
 
-    fun getInstance(): CategoriesClient? {
+    fun getInstance(): CategoriesClient {
         return instance
     }
 

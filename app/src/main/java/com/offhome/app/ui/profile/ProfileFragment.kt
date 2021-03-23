@@ -16,7 +16,7 @@ class ProfileFragment : Fragment() {
     }*/
 
     private lateinit var viewModel: ProfileViewModel
-    lateinit var imageViewProfilePic:ImageView// = findViewById<ImageView>
+    lateinit var imageViewProfilePic: ImageView // = findViewById<ImageView>
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +37,5 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java) // descomentar?
         // TODO: Use the ViewModel
-
     }
 }

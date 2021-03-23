@@ -1,23 +1,24 @@
 package com.offhome.app.ui.createactivity
 
 import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.Repository
-import com.offhome.app.domain.ActivityUseCase
-import com.offhome.app.model.Activity
+import com.offhome.app.model.ActivityFromList
 
 class CreateActivityViewModel : ViewModel() {
-    private val repository: Repository = Repository()
 
-    val activityUseCase = ActivityUseCase()
-    private val activitylistData = MutableLiveData<List<Activity>>()
-
-    /*private val _text = MutableLiveData<String>().apply {
-        value = "This is CreationActivity Activity"
+    /*cosas BD si algun dia lo puedo probar
+    private var repository: ActivitiesRepository = ActivitiesRepository()
+    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAll()!!
+    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
+        return activitiesList
+    }
+    fun getNewActivities(): LiveData<List<ActivityFromList>> {
+        activitiesList = repository.getAll()
+        return activitiesList
     }*/
 
-    init{
+   /* init{
         getActivitiesList()
     }
 
@@ -33,5 +34,13 @@ class CreateActivityViewModel : ViewModel() {
         return activitylistData
     }
 
+    fun addActivity(){
+    }*/
 
+    private var repository: Repository = Repository()
+    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()!!
+
+    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
+        return activitiesList
+    }
 }

@@ -3,7 +3,6 @@
 package com.offhome.app.ui.createactivity
 
 import android.annotation.SuppressLint
-import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
 import android.content.Intent
@@ -13,7 +12,6 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.*
 import androidx.annotation.RequiresApi
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.offhome.app.R
@@ -54,11 +52,11 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
         viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
 
-        val activityObserver = Observer<List<com.offhome.app.model.Activity>>{
+        val activityObserver = Observer<List<com.offhome.app.model.ActivityFromList>>{
             Log.d("Activity", it.toString())
         }
 
-        viewModel.getActivitiesListLiveData().observe(this,activityObserver)
+        viewModel.getActivitiesList().observe(this,activityObserver)
 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -69,15 +67,20 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
 
-        val btn_activity_created = findViewById<Button>(R.id.btn_create)
-        val act_title = findViewById<EditText>(R.id.activity_title)
-        btn_activity_created.setOnClickListener{
+
+        val btn_CREATED = findViewById<Button>(R.id.btn_create)
+        btn_CREATED.setOnClickListener{
+
+
+
+
             Toast.makeText(this, "Activitat creada amb éxit!", Toast.LENGTH_SHORT).show()
+            //viewModel.addActivity()
+
         }
 
         val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
-
-
+        val act_title = findViewById<EditText>(R.id.activity_title)
         btn_invitefriends.setOnClickListener{
             //val message: String = etUserMessage.text.toString()
             val message : String = act_title.text.toString();
@@ -89,6 +92,8 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
             startActivity(Intent.createChooser(intent, "Invite friends from:"))
         }
+
+        val ch_category = findViewById<Spinner>(R.id.sp_choose_category)
 
     }
 
@@ -114,7 +119,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int){
         savedHour = hourOfDay
         savedMinute = minute
-
         val pickText = findViewById<TextView>(R.id.date_pick_text)
         pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
     }

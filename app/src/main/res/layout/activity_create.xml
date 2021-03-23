@@ -17,7 +17,7 @@
         android:text="@string/title_of_the_activity"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"
         android:textColor="@color/black"
-        android:textSize="20sp"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.48"
@@ -87,28 +87,44 @@
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_add_location_alt_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintEnd_toStartOf="@+id/locationpck2"
+        app:layout_constraintHorizontal_bias="0.148"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.64"
+        app:layout_constraintVertical_bias="0.589"
         tools:ignore="ContentDescription" />
 
     <ImageButton
         android:id="@+id/btnPickDate"
-        android:layout_width="47dp"
-        android:layout_height="48dp"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_baseline_event_24"
         app:layout_constraintBottom_toTopOf="@+id/btn_availability"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pickdate"
+        app:layout_constraintHorizontal_bias="0.129"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.87"
+        app:layout_constraintVertical_bias="0.906"
         tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/date_pick_text"
+        android:layout_width="135dp"
+        android:layout_height="47dp"
+        android:layout_below="@+id/btn_pickdate"
+        android:textColor="@color/black"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/pick_availability"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.88"
+        tools:text="@string/date" />
+
 
     <ImageButton
         android:id="@+id/btn_availability"
@@ -120,11 +136,11 @@
         android:src="@drawable/ic_baseline_people_alt_24"
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/btn_location"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.022"
+        app:layout_constraintEnd_toStartOf="@+id/pick_availability"
+        app:layout_constraintHorizontal_bias="0.137"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.868"
+        app:layout_constraintVertical_bias="0.906"
         tools:ignore="ContentDescription" />
 
     <EditText
@@ -139,68 +155,79 @@
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.107"
-        app:layout_constraintStart_toEndOf="@+id/btn_location"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.646" />
+        app:layout_constraintVertical_bias="0.596" />
 
 
     <Button
         android:id="@+id/btn_pickdate"
         android:layout_width="109dp"
         android:layout_height="35dp"
-        android:layout_marginStart="6dp"
         android:backgroundTint="@color/divider"
         android:text="@string/choose_date"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/locationpck2"
-        app:layout_constraintEnd_toStartOf="@+id/date_pick_text"
-        app:layout_constraintHorizontal_bias="0.241"
-        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.635" />
-
-    <TextView
-        android:id="@+id/date_pick_text"
-        android:layout_width="135dp"
-        android:layout_height="47dp"
-        android:layout_below="@+id/btn_pickdate"
-        android:textColor="@color/black"
-        app:autoSizeTextType="uniform"
-        app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.824"
-        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintHorizontal_bias="0.357"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.88"
-        tools:text="@string/date" />
+        app:layout_constraintVertical_bias="0.711" />
 
     <TextView
         android:id="@+id/participants"
-        android:layout_width="117dp"
-        android:layout_height="24dp"
-        android:text="@string/participants"
+        android:layout_width="199dp"
+        android:layout_height="25dp"
+        android:text="Maximum participants"
         android:textColor="@color/black"
-        app:autoSizeTextType="uniform"
+        android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.178"
+        app:layout_constraintHorizontal_bias="0.459"
         app:layout_constraintStart_toEndOf="@+id/pick_availability"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.499" />
+        app:layout_constraintVertical_bias="0.484" />
 
     <NumberPicker
         android:id="@+id/pick_availability"
-        android:layout_width="71dp"
-        android:layout_height="40dp"
+        android:layout_width="34dp"
+        android:layout_height="39dp"
         android:layout_marginBottom="24dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/locationpck2"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.046"
-        app:layout_constraintStart_toEndOf="@+id/btn_availability"
+        app:layout_constraintHorizontal_bias="0.286"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.932" />
+        app:layout_constraintVertical_bias="0.985" />
+
+    <Spinner
+        android:id="@+id/sp_choose_category"
+        android:layout_width="213dp"
+        android:layout_height="31dp"
+        android:entries="@array/select_category"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.555"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.695" />
+
+    <ImageButton
+        android:id="@+id/btn_select_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_category_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/sp_choose_category"
+        app:layout_constraintHorizontal_bias="0.153"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.692"
+        tools:ignore="ContentDescription" />
 
     <Button
         android:id="@+id/btn_invite_friends"
@@ -210,10 +237,10 @@
         android:text="@string/invite_friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.495"
+        app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.838" />
+        app:layout_constraintVertical_bias="0.845" />
 
     <ImageButton
         android:id="@+id/image_search"

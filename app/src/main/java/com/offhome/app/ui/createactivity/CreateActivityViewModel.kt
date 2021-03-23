@@ -7,7 +7,7 @@ import com.offhome.app.model.ActivityFromList
 
 class CreateActivityViewModel : ViewModel() {
 
-    /*cosas BD si algun dia lo puedo probar
+    /*per provar amb la BD
     private var repository: ActivitiesRepository = ActivitiesRepository()
     private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAll()!!
     fun getActivitiesList(): LiveData<List<ActivityFromList>> {

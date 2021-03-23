@@ -70,13 +70,10 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
         val btn_CREATED = findViewById<Button>(R.id.btn_create)
         btn_CREATED.setOnClickListener{
-
-
-
-
-            Toast.makeText(this, "Activitat creada amb éxit!", Toast.LENGTH_SHORT).show()
-            //viewModel.addActivity()
-
+            if (validate()) {
+                Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
+                //viewModel.addActivity()
+            }
         }
 
         val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
@@ -94,7 +91,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
 
         val ch_category = findViewById<Spinner>(R.id.sp_choose_category)
-
     }
 
     private fun pickDate(){
@@ -121,6 +117,33 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         savedMinute = minute
         val pickText = findViewById<TextView>(R.id.date_pick_text)
         pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
+    }
+
+
+    private fun validate() :Boolean{
+        val title = findViewById<EditText>(R.id.activity_title)
+        val description = findViewById<EditText>(R.id.about_the_activity)
+        val date = findViewById<TextView>(R.id.date_pick_text)
+        val location = findViewById<EditText>(R.id.locationpck2)
+
+        if (title.text.toString().isEmpty()){
+            title.error = "Name should not be blank"
+            return false
+        }
+        else if (description.text.toString().isEmpty()){
+            description.error = "Name should not be blank"
+            return false
+        }
+        //no funciona
+        else if (date == null){
+            Toast.makeText(this, "Date should not be blank", Toast.LENGTH_SHORT).show()
+            return false
+        }
+        else if (location.text.toString().isEmpty()){
+            location.error = "Location should not be blank"
+            return false
+        }
+        return true
     }
 
 }

@@ -25,4 +25,6 @@
     <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
     <string name="login_failed_email">Email not verified</string>
     <string name="login_failed_login">Wrong email or password</string>
+    <string name="off_home_logo">OFF Home logo</string>
+    <string name="show_password_description">Show Password</string>
 </resources>

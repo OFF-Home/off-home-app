@@ -5,4 +5,7 @@
     <string name="title_chats">Chats</string>
     <string name="title_profile">Profile</string>
     <string name="title_activity_info">Map</string>
+    <string name="join">JOIN</string>
+    <string name="participants">Participants:</string>
+    <string name="about_the_activity">About the activity:</string>
 </resources>

@@ -4,14 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".InfoActivity" >
+    tools:context=".ui.infoactivity.InfoActivity" >
 
     <fragment
         android:id="@+id/map"
         android:name="com.google.android.gms.maps.SupportMapFragment"
         android:layout_width="412dp"
         android:layout_height="240dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -30,6 +33,7 @@
         android:id="@+id/view"
         android:layout_width="323dp"
         android:layout_height="438dp"
+        android:padding="5dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -37,8 +41,8 @@
 
     <ImageView
         android:id="@+id/imageViewDataTime"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toTopOf="@+id/view"
@@ -51,16 +55,16 @@
         android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:padding="6dp"
-        android:text="TextView"
+        android:text="DataTime"
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
         app:layout_constraintTop_toTopOf="@+id/view" />
 
     <ImageView
         android:id="@+id/imageViewCapacity"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
@@ -73,16 +77,16 @@
         android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:padding="6dp"
-        android:text="TextView"
+        android:text="Places available"
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
         app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
 
     <ImageView
         android:id="@+id/imageViewCreator"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/imageViewCapacity"
@@ -95,9 +99,9 @@
         android:fontFamily="sans-serif"
         android:textStyle="bold"
         android:padding="6dp"
-        android:text="TextView"
+        android:text="Created by "
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewCreator"
         app:layout_constraintTop_toBottomOf="@+id/textViewCapacity" />
 
@@ -107,10 +111,10 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:padding="6dp"
-        android:text="About the activity:"
+        android:text="@string/about_the_activity"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/imageViewCreator" />
 
@@ -122,14 +126,14 @@
         android:padding="6dp"
         android:text="This is the best activity ever it is so much fun come join us you will love it."
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/textViewAbout" />
 
     <ImageView
         android:id="@+id/imageViewParticipants"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
         android:padding="6dp"
         app:layout_constraintStart_toStartOf="@+id/view"
         app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
@@ -141,12 +145,26 @@
         android:layout_height="wrap_content"
         android:fontFamily="sans-serif"
         android:padding="6dp"
-        android:text="TextView"
+        android:text="@string/participants"
         android:textStyle="bold"
         android:textColor="@color/black"
-        android:textSize="21sp"
+        android:textSize="18sp"
         app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
         app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="148dp"
+        android:layout_height="58dp"
+        android:backgroundTint="@color/secondary"
+        android:text="@string/join"
+        android:textSize="20dp"
+        app:cornerRadius="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintVertical_bias="0.976"
+        app:layout_constraintHorizontal_bias="0.498" />
 
 
 

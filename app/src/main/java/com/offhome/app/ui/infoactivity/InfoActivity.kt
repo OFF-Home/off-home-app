@@ -1,14 +1,14 @@
-package com.offhome.app
+package com.offhome.app.ui.infoactivity
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.ImageView
+import com.bumptech.glide.Glide
+import com.google.android.gms.maps.*
 
-import com.google.android.gms.maps.CameraUpdateFactory
-import com.google.android.gms.maps.GoogleMap
-import com.google.android.gms.maps.OnMapReadyCallback
-import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.offhome.app.R
 
 class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -21,6 +21,27 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
+
+
+        //recibir nombre actividad seleccionada
+        val arguments = intent.extras
+        val titleActivity = arguments?.getString("amount")
+        title = titleActivity
+
+        //canviar like al clicar
+        var clicked = false
+
+        val imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
+        imageLike.setOnClickListener {
+            clicked = !clicked
+            if (clicked) {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_24)
+            } else {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+        }
+
+
     }
 
     /**
@@ -34,10 +55,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
+        mMap.uiSettings.setZoomControlsEnabled(true)
 
         // Add a marker in Sydney and move the camera
-        val sydney = LatLng(-34.0, 151.0)
-        mMap.addMarker(MarkerOptions().position(sydney).title("Marker in Sydney"))
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(sydney))
+        val barceloneta = LatLng(41.378424083335744, 2.192471014674651)
+        mMap.addMarker(MarkerOptions().position(barceloneta).title("Barceloneta Beach"))
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(barceloneta, 16.0f))
     }
 }

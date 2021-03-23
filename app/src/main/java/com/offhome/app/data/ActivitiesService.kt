@@ -1,4 +1,4 @@
-package com.offhome.app
+package com.offhome.app.data
 
 import com.offhome.app.model.ActivityFromList
 import retrofit2.Call

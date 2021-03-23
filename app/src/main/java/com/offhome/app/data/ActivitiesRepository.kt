@@ -1,7 +1,8 @@
-package com.offhome.app
+package com.offhome.app.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.ActivitiesClient
 import com.offhome.app.model.ActivityFromList
 import retrofit2.Call
 import retrofit2.Callback

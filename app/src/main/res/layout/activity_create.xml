@@ -202,17 +202,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.932" />
 
-    <EditText
-        android:id="@+id/invite_friends"
+    <Button
+        android:id="@+id/btn_invite_friends"
         style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
-        android:layout_width="302dp"
-        android:layout_height="45dp"
-        android:autoText="false"
-        android:backgroundTint="@color/black"
-        android:backgroundTintMode="src_atop"
-        android:hint="@string/invite_friends"
-        android:selectAllOnFocus="true"
-        android:singleLine="true"
+        android:layout_width="301dp"
+        android:layout_height="53dp"
+        android:text="@string/invite_friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
@@ -229,10 +224,10 @@
         android:src="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.892"
+        app:layout_constraintHorizontal_bias="0.862"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.833"
+        app:layout_constraintVertical_bias="0.837"
         tools:ignore="ContentDescription" />
 
     <Button
@@ -240,7 +235,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:backgroundTint="@color/primary"
-        android:contentDescription="@string/create"
         android:text="@string/create"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

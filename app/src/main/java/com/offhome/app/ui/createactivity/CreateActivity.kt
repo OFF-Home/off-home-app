@@ -6,6 +6,7 @@ import android.annotation.SuppressLint
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.app.TimePickerDialog
+import android.content.Intent
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -51,7 +52,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
 
-        //viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
         viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
 
         val activityObserver = Observer<List<com.offhome.app.model.Activity>>{
@@ -66,13 +66,28 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         pickDate()
 
         val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
-        val btn_activity_created = findViewById<Button>(R.id.btn_create)
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
 
+        val btn_activity_created = findViewById<Button>(R.id.btn_create)
         val act_title = findViewById<EditText>(R.id.activity_title)
         btn_activity_created.setOnClickListener{
             Toast.makeText(this, "Activitat creada amb éxit!", Toast.LENGTH_SHORT).show()
+        }
+
+        val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
+
+
+        btn_invitefriends.setOnClickListener{
+            //val message: String = etUserMessage.text.toString()
+            val message : String = act_title.text.toString();
+
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT,message)
+            intent.type = "text/plain"
+
+            startActivity(Intent.createChooser(intent, "Invite friends from:"))
         }
 
     }

@@ -3,8 +3,6 @@ package com.offhome.app.ui.signup
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
-import android.graphics.Color
-import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -165,17 +163,21 @@ class SignUpActivity : AppCompatActivity() {
             val year: Int = cal.get(Calendar.YEAR)
             val month: Int = cal.get(Calendar.MONTH)
             val day: Int = cal.get(Calendar.DAY_OF_MONTH)
-            val datePicker = DatePickerDialog(this, { view, year, month, dayOfMonth ->
-                val humanMonth = month + 1 // perque els mesos comencen a 0
-                val textDate = "$dayOfMonth/$humanMonth/$year"
-                birthDate.setText(textDate)
-                signUpViewModel.loginDataChanged(
-                    email.text.toString(),
-                    username.text.toString(),
-                    password.text.toString(),
-                    birthDate.text.toString()
-                )
-            }, year, month, day)
+            val datePicker = DatePickerDialog(
+                this,
+                { view, year, month, dayOfMonth ->
+                    val humanMonth = month + 1 // perque els mesos comencen a 0
+                    val textDate = "$dayOfMonth/$humanMonth/$year"
+                    birthDate.setText(textDate)
+                    signUpViewModel.loginDataChanged(
+                        email.text.toString(),
+                        username.text.toString(),
+                        password.text.toString(),
+                        birthDate.text.toString()
+                    )
+                },
+                year, month, day
+            )
             datePicker.show()
         }
 

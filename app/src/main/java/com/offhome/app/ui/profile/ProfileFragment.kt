@@ -37,7 +37,7 @@ class ProfileFragment : Fragment() {
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
         textViewUsername = view.findViewById(R.id.textViewUsername)
         buttonAboutMe = view.findViewById(R.id.buttonAboutMe)
-        //fragmentDinsProfile = view.findViewById(R.id.fragmentDinsProfile) // aixo peta pq fragmentDinsProfile es com un link directe al fragment (crec), i considera q és un constraintLayout enlloc d'un fragment.
+        // fragmentDinsProfile = view.findViewById(R.id.fragmentDinsProfile) // aixo peta pq fragmentDinsProfile es com un link directe al fragment (crec), i considera q és un constraintLayout enlloc d'un fragment.
 
         buttonAboutMe.setOnClickListener {
             aboutMeFragment = ProfileAboutBeFragment() // inicialitzo
@@ -69,8 +69,8 @@ class ProfileFragment : Fragment() {
     }
 
     // aixo es pot fer multiusos
-    //s'hauria de fer al VM?
-    //fer servir lo de jetpack?
+    // s'hauria de fer al VM?
+    // fer servir lo de jetpack?
     private fun canviAAboutMeFragment() {
         val fragmentManager: FragmentManager = childFragmentManager
 

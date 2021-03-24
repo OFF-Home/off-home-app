@@ -19,14 +19,14 @@
 
             <ImageView
                 android:id="@+id/imageViewProfilePic"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
                 android:layout_marginTop="16dp"
+                android:src="@drawable/profile_pic_placeholder"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.498"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:src="@tools:sample/avatars"/>
+                app:layout_constraintTop_toTopOf="parent" />
             <!-->tools:src="@tools:sample/avatars"<-->
             <!-->android:layout_width="wrap_content"
             android:layout_height="wrap_content"<-->

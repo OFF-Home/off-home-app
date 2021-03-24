@@ -10,21 +10,41 @@
     <Button
         android:id="@+id/buttonOlderActivities"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/primary_light"
+        android:drawableEnd="@drawable/abc_vector_test"
+        android:drawableTint="@color/icons"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/older_activities"
+        android:textColor="@color/primary_text"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:strokeColor="@color/divider"
+        app:strokeWidth="1dp"
+
+        />
 
     <Button
         android:id="@+id/buttonLikedActivities"
         android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_height="48dp"
+        android:backgroundTint="@color/primary_light"
+        android:drawableRight="@drawable/abc_vector_test"
+        android:drawableTint="@color/icons"
+        android:insetTop="0dp"
+        android:insetBottom="0dp"
         android:text="@string/liked_activities"
+        android:textColor="@color/primary_text"
+        app:cornerRadius="0dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/buttonOlderActivities" />
+        app:layout_constraintTop_toBottomOf="@+id/buttonOlderActivities"
+        app:strokeColor="@color/divider"
+        app:strokeWidth="1dp" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/RecyclerViewProfileActivities"

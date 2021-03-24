@@ -27,8 +27,8 @@ class ProfileFragment : Fragment() {
         // viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
 
-        /*imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
-        imageViewProfilePic.setImageDrawable( "@drawable/profile_pic_placeholder")*/
+        imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
+        //imageViewProfilePic.setImageDrawable( "@drawable/profile_pic_placeholder")
 
         return view
     }

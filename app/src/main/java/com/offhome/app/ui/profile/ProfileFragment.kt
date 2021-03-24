@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.ImageView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +18,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
     lateinit var imageViewProfilePic: ImageView // = findViewById<ImageView>
+    lateinit var buttonAboutMe : Button
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -29,6 +31,7 @@ class ProfileFragment : Fragment() {
 
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
         // imageViewProfilePic.setImageDrawable( "@drawable/profile_pic_placeholder")
+        buttonAboutMe = view.findViewById(R.id.buttonAboutMe)
 
         return view
     }

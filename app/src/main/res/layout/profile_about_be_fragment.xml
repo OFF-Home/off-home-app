@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/frameLayout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfileAboutBeFragment">
+
+    <TextView
+        android:id="@+id/textViewProfileDescriptionTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/description"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/textViewProfileDescription"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="I love running and being outdoors with my friends"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewProfileDescriptionTitle" />
+
+    <TextView
+        android:id="@+id/textViewBirthDateTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="@string/birth_date"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewProfileDescription" />
+
+    <TextView
+        android:id="@+id/textViewBirthDate"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="19/12/2000"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewBirthDateTitle" />
+
+    <View
+        android:id="@+id/lineaEstetica1"
+        android:layout_width="0dp"
+        android:layout_height="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_weight="0.35"
+        android:background="@color/divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewBirthDate" />
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

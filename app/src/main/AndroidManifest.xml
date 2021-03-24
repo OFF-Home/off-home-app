@@ -1,26 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.offhome.app">
+
     <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.INTERNET"/>
     <application
-        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:allowBackup="true">
         <activity android:name=".ui.createactivity.CreateActivity"
             android:parentActivityName=".MainActivity"
             >
-        </activity>
-        <activity android:name=".MainActivity">
+      </activity>
+        <activity
+            android:name=".ui.login.LoginActivity"
+            android:label="@string/title_activity_login">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.signup.SignUpActivity"
+            android:label="@string/title_activity_sign_up">
+        </activity>
+        <activity android:name=".MainActivity" />
     </application>
-
 </manifest>

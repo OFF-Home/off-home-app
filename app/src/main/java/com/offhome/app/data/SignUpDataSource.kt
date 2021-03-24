@@ -45,13 +45,13 @@ class SignUpDataSource {
 
                     val user = firebaseAuth.currentUser
                     user!!.sendEmailVerification().addOnCompleteListener { task2 -> // TODO sembla que no funciona
-                        if (task.isSuccessful) {
+                        if (task2.isSuccessful) {
                             Log.d("Verification email", "Email sent.")
                         }
                     }
 
                     _result.value = Result(success = true) // Result.Success(true)
-
+/*
                     // parlar amb el nostre client
                     val call: Call<String> = signUpService.createProfile(username)
                     val response = call.execute() // we actually execute the call. I agafo el body perque potser conte la resposta xd
@@ -71,6 +71,8 @@ class SignUpDataSource {
                             Toast.LENGTH_LONG
                         ).show()
                     }
+
+ */
                 } else {
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 

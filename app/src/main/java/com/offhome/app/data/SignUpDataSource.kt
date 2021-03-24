@@ -104,7 +104,6 @@ class SignUpDataSource {
                     _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?
                 }
             }
-
         } catch (e: Throwable) {
             _result.value = Result(error = e as Exception) // cast!
         }

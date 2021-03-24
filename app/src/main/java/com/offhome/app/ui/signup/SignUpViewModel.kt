@@ -31,7 +31,6 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
     private val _signUpResult = MutableLiveData<SignUpResult>()
     val signUpResult: LiveData<SignUpResult> = _signUpResult // aquest és observat per SignUpActivity.
 
-
     /**
      * Initiates the Sign-up process
      *

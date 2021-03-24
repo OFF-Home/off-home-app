@@ -36,14 +36,14 @@ class SignUpActivity : AppCompatActivity() {
 
     private lateinit var signUpViewModel: SignUpViewModel
 
-    private lateinit var email : EditText
-    private lateinit var username : EditText
-    private lateinit var password : EditText
-    private lateinit var birthDate : EditText
-    private lateinit var signUp : Button
-    private lateinit var hereButton : TextView
-    private lateinit var googleButton : Button
-    private lateinit var loading : ProgressBar
+    private lateinit var email: EditText
+    private lateinit var username: EditText
+    private lateinit var password: EditText
+    private lateinit var birthDate: EditText
+    private lateinit var signUp: Button
+    private lateinit var hereButton: TextView
+    private lateinit var googleButton: Button
+    private lateinit var loading: ProgressBar
     private val activity: SignUpActivity = this
 
     /**
@@ -71,7 +71,6 @@ class SignUpActivity : AppCompatActivity() {
         hereButton = findViewById(R.id.textViewHere)
         googleButton = findViewById(R.id.buttonGoogleSignUp)
         loading = findViewById(R.id.loading)
-
 
         // observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
         signUpViewModel.signUpFormState.observe(
@@ -252,7 +251,7 @@ class SignUpActivity : AppCompatActivity() {
         val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 
-        //aqui s'hauria de fer un finish() i potser un setResult(), crec
+        // aqui s'hauria de fer un finish() i potser un setResult(), crec
     }
 }
 

@@ -1,7 +1,10 @@
 package com.offhome.app.ui.signup
 
 import android.app.Activity
+import android.app.DatePickerDialog
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -14,6 +17,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import java.util.*
 
 // la estem modificant
 class SignUpActivity : AppCompatActivity() {
@@ -129,7 +133,13 @@ class SignUpActivity : AppCompatActivity() {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->
-                        signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
+                        signUpViewModel.signUp(
+                            email.text.toString(),
+                            username.text.toString(),
+                            password.text.toString(),
+                            birthDate.text.toString(),
+                            activity
+                        )
                 }
                 false
             }
@@ -139,62 +149,34 @@ class SignUpActivity : AppCompatActivity() {
             signUp.setOnClickListener {
                 loading.visibility = View.VISIBLE
 
-                signUpViewModel.signUp(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString(), activity)
+                signUpViewModel.signUp(
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString(),
+                    birthDate.text.toString(),
+                    activity
+                )
             }
         }
 
         // mostrar el fragment que permet escollir la birth date.
         birthDate.setOnClickListener {
-            // per a API >=24: crear-ne un de nou.
-            /*val datePickerFragment1 = DatePickerFragment()
-            datePickerFragment1.show(supportFragmentManager, "datePicker")*/
-
-            // per a API <24: n'hem creat un invisible, que mostrem quan cal.
-            val datePickerBirthDateExistent = findViewById<DatePicker>(R.id.datePickerBirthDateExistent)
-            datePickerBirthDateExistent.visibility = View.VISIBLE
-            datePickerBirthDateExistent.bringToFront()
-            // datePickerBirthDateExistent.setOnDateChangedListener(new onDateChangedListener)
-            // val calendarView = datePickerBirthDateExistent.getCalendarView()     //DEPRACATED
-            /*calendarView.setOnDateChangeListener(OnDateChangeListener() {
-
-            })
-            overridePendingTransition(0, 0)*/
-
-            /*calendarView.setOnDateChangeListener { view, year, month, dayOfMonth ->
-                // Note that months are indexed from 0. So, 0 means January, 1 means february, 2 means march etc.
-                val msg = "Selected date is " + dayOfMonth + "/" + (month + 1) + "/" + year
-                birthDate.setText(msg)
-
-            }*/
-
-            /*datePickerBirthDateExistent.init(2020, 11, 29, DatePicker.OnDateChangedListener(
-                    birthDate
-            ))*/
-            /*datePickerBirthDateExistent.init(2020, 11, 29,  DatePicker.OnDateChangedListener() {
-                @Override
-                fun onDateChanged(datePicker:DatePicker, year:Int, month:Int, dayOfMonth:Int) {
-                    val textDate = "$dayOfMonth/$month/$year"
-                    birthDate.setText(textDate)
-                    datePickerBirthDateExistent.visibility = View.GONE
-                }
-            })*/
-
-            datePickerBirthDateExistent.init(2020, 11, 29) { datePicker: DatePicker, year: Int, month: Int, dayOfMonth: Int ->
+            val cal: Calendar = Calendar.getInstance()
+            val year: Int = cal.get(Calendar.YEAR)
+            val month: Int = cal.get(Calendar.MONTH)
+            val day: Int = cal.get(Calendar.DAY_OF_MONTH)
+            val datePicker = DatePickerDialog(this, { view, year, month, dayOfMonth ->
                 val humanMonth = month + 1 // perque els mesos comencen a 0
                 val textDate = "$dayOfMonth/$humanMonth/$year"
                 birthDate.setText(textDate)
-                datePickerBirthDateExistent.visibility = View.INVISIBLE
-                signUpViewModel.loginDataChanged(email.text.toString(), username.text.toString(), password.text.toString(), birthDate.text.toString())
-            }
-
-            // not bad?
-            /*val year1 = datePickerBirthDateExistent.year
-            val month1= datePickerBirthDateExistent.month + 1
-            val dayOfMonth1 = datePickerBirthDateExistent.dayOfMonth
-            val textDate = "$dayOfMonth1/$month1/$year1"
-            birthDate.setText(textDate)
-
-            datePickerBirthDateExistent.visibility = View.GONE*/
+                signUpViewModel.loginDataChanged(
+                    email.text.toString(),
+                    username.text.toString(),
+                    password.text.toString(),
+                    birthDate.text.toString()
+                )
+            }, year, month, day)
+            datePicker.show()
         }
 
         hereButton.setOnClickListener {

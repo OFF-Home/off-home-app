@@ -35,8 +35,9 @@ class ProfileFragment : Fragment() {
         val view = inflater.inflate(R.layout.profile_fragment, container, false)
 
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
+        textViewUsername = view.findViewById(R.id.textViewUsername)
         buttonAboutMe = view.findViewById(R.id.buttonAboutMe)
-        fragmentDinsProfile = view.findViewById(R.id.fragmentDinsProfile) // aixo peta pq fragmentDinsProfile es com un link directe al fragment (crec), i considera q és un constraintLayout enlloc d'un fragment.
+        //fragmentDinsProfile = view.findViewById(R.id.fragmentDinsProfile) // aixo peta pq fragmentDinsProfile es com un link directe al fragment (crec), i considera q és un constraintLayout enlloc d'un fragment.
 
         buttonAboutMe.setOnClickListener {
             aboutMeFragment = ProfileAboutBeFragment() // inicialitzo
@@ -53,7 +54,6 @@ class ProfileFragment : Fragment() {
         // obtenir nom, foto i estrelles de la BD
         // i posar-los als views
 
-        // val topProfileInfo: TopProfileInfo = viewModel.getTopProfileInfo()
         viewModel.topProfileInfo.observe(
             viewLifecycleOwner,
             Observer {
@@ -68,7 +68,10 @@ class ProfileFragment : Fragment() {
         viewModel.getTopProfileInfo()
     }
 
-    private fun canviAAboutMeFragment() { // aixo es pot fer multiusos
+    // aixo es pot fer multiusos
+    //s'hauria de fer al VM?
+    //fer servir lo de jetpack?
+    private fun canviAAboutMeFragment() {
         val fragmentManager: FragmentManager = childFragmentManager
 
         fragmentManager.commit {

@@ -11,15 +11,7 @@ class ProfileViewModel : ViewModel() {
     private val _topProfileInfo = MutableLiveData<TopProfileInfo>()
     val topProfileInfo: LiveData<TopProfileInfo> = _topProfileInfo
 
-    fun getTopProfileInfo(/*viewLifecycleOwner : LifecycleOwner*/) {
-
-        // return repository.getTopProfileInfo()
-       /*repository.topProfileInfo.observe(viewLifecycleOwner, Observer {
-           val topProfileInfoRepo = it ?: return@Observer
-
-           _topProfileInfo.value = topProfileInfoRepo
-       })*/
-
+    fun getTopProfileInfo() {
         _topProfileInfo.value = repository.getTopProfileInfo()
     }
 }

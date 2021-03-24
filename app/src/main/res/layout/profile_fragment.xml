@@ -33,7 +33,7 @@
             <!-->android:src="@drawable/profile_pic_placeholder"<-->
 
             <TextView
-                android:id="@+id/textViewNomUsuari"
+                android:id="@+id/textViewUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
@@ -53,7 +53,7 @@
                 android:focusableInTouchMode="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewNomUsuari" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
 
             <Button
                 android:id="@+id/buttonMyActivities"

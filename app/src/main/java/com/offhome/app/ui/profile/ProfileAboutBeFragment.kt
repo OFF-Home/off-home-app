@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
@@ -15,13 +16,26 @@ class ProfileAboutBeFragment : Fragment() {
     }
 
     private lateinit var viewModel: ProfileAboutBeViewModel
+    private lateinit var textViewProfileDescription: TextView
+    private lateinit var textViewBirthDate: TextView
+    private lateinit var textViewFollowerCount: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.profile_about_be_fragment, container, false)
+        val view = inflater.inflate(R.layout.profile_about_be_fragment, container, false)
+
+        textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
+        textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
+        textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
+
+        //TODO obtenir les dades de BD
+        // i posar-les als textView's
+
+
+        return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

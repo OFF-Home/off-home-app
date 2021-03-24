@@ -1,7 +1,6 @@
 package com.offhome.app.data
 
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -9,7 +8,6 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.data.retrofit.SignUpService
 import com.offhome.app.ui.signup.SignUpActivity
-import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import java.util.*
@@ -45,13 +43,13 @@ class SignUpDataSource {
 
                     val user = firebaseAuth.currentUser
                     user!!.sendEmailVerification().addOnCompleteListener { task2 -> // TODO sembla que no funciona
-                        if (task.isSuccessful) {
+                        if (task2.isSuccessful) {
                             Log.d("Verification email", "Email sent.")
                         }
                     }
 
                     _result.value = Result(success = true) // Result.Success(true)
-
+/*
                     // parlar amb el nostre client
                     val call: Call<String> = signUpService.createProfile(username)
                     val response = call.execute() // we actually execute the call. I agafo el body perque potser conte la resposta xd
@@ -71,6 +69,8 @@ class SignUpDataSource {
                             Toast.LENGTH_LONG
                         ).show()
                     }
+
+ */
                 } else {
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 

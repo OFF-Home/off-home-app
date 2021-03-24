@@ -25,7 +25,7 @@ class PlaceholderFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val root = inflater.inflate(R.layout.profile_fragment, container, false)
+        val root = inflater.inflate(R.layout.profile_placeholder_fragment, container, false)
 
         return root
     }

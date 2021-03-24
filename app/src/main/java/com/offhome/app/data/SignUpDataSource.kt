@@ -58,7 +58,7 @@ class SignUpDataSource {
                     // parlar amb el nostre client
                     val signedUpUser = SignedUpUser(email, username, password, birthDate.toString())
                     val call: Call<String> = signUpService.createProfile(username, signedUpUser)
-                    call.enqueue(object: Callback<String> {
+                    call.enqueue(object : Callback<String> {
                         override fun onResponse(call: Call<String>, response: Response<String>) {
                             if (response.isSuccessful) {
                                 Toast.makeText(
@@ -84,7 +84,6 @@ class SignUpDataSource {
                                 Toast.LENGTH_LONG
                             ).show()
                         }
-
                     })
                 } else {
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)

@@ -5,14 +5,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.model.Category
 
-class ActivitiesFragment : Fragment() {
+class CategoriesFragment : Fragment() {
 
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var categoryAdapter: MyCategoriesRecyclerViewAdapter
@@ -29,7 +28,7 @@ class ActivitiesFragment : Fragment() {
     ): View? {
         categoriesViewModel =
             ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        val view = inflater.inflate(R.layout.fragment_activities, container, false)
+        val view = inflater.inflate(R.layout.fragment_categories, container, false)
 
         categoriesViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
         categoryAdapter = MyCategoriesRecyclerViewAdapter()
@@ -43,7 +42,7 @@ class ActivitiesFragment : Fragment() {
 
         categoriesViewModel.getCategories().observe(
             viewLifecycleOwner,
-            Observer {
+            {
                 categories = it
                 categoryAdapter.setData(categories)
             }

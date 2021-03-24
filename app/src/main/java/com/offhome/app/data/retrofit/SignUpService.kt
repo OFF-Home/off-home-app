@@ -11,6 +11,7 @@ interface SignUpService {
     @POST("/users/{username}/create")
     fun createProfile(@Path("username") username: String, @Body signedUpUser: SignedUpUser): Call<String>
 
+
 /* make sure you add @Query or @Field for all the parameters , depending on whether you issuing GET/POST.
 eg:
 @GET("/api/Books/GetAll")

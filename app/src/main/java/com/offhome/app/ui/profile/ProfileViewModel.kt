@@ -13,7 +13,7 @@ class ProfileViewModel : ViewModel() {
 
     fun getTopProfileInfo(/*viewLifecycleOwner : LifecycleOwner*/) {
 
-        //return repository.getTopProfileInfo()
+        // return repository.getTopProfileInfo()
        /*repository.topProfileInfo.observe(viewLifecycleOwner, Observer {
            val topProfileInfoRepo = it ?: return@Observer
 

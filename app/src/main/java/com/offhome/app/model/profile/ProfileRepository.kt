@@ -1,7 +1,5 @@
 package com.offhome.app.model.profile
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.ProfileDataSource
 
 class ProfileRepository {
@@ -12,10 +10,7 @@ class ProfileRepository {
     val topProfileInfo: LiveData<TopProfileInfo> = _topProfileInfo // aquest és observat pel VM*/
 
     fun getTopProfileInfo(): TopProfileInfo {
-        //dataSource.topProfileInfo.observe()
+        // dataSource.topProfileInfo.observe()
         return dataSource.getTopProfileInfo()
     }
-
-
-
 }

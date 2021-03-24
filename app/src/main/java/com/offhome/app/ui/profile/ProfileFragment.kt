@@ -13,7 +13,6 @@ import androidx.fragment.app.commit
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
-import com.offhome.app.model.profile.TopProfileInfo
 
 class ProfileFragment : Fragment() {
 
@@ -52,21 +51,24 @@ class ProfileFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
 
-        //obtenir nom, foto i estrelles de la BD
-        //i posar-los als views
+        // obtenir nom, foto i estrelles de la BD
+        // i posar-los als views
 
-        //val topProfileInfo: TopProfileInfo = viewModel.getTopProfileInfo()
-        viewModel.topProfileInfo.observe(viewLifecycleOwner, Observer {
-            val topProfileInfoVM = it ?: return@Observer
+        // val topProfileInfo: TopProfileInfo = viewModel.getTopProfileInfo()
+        viewModel.topProfileInfo.observe(
+            viewLifecycleOwner,
+            Observer {
+                val topProfileInfoVM = it ?: return@Observer
 
-            //TODO
-            textViewUsername.text = topProfileInfoVM.username
-        })
+                // TODO
+                textViewUsername.text = topProfileInfoVM.username
+            }
+        )
 
         viewModel.getTopProfileInfo()
     }
 
-    private fun canviAAboutMeFragment() {   //aixo es pot fer multiusos
+    private fun canviAAboutMeFragment() { // aixo es pot fer multiusos
         val fragmentManager: FragmentManager = childFragmentManager
 
         fragmentManager.commit {

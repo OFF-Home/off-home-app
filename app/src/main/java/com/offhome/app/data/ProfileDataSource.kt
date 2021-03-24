@@ -11,6 +11,6 @@ class ProfileDataSource {
         // TODO accés a Backend
         // _topProfileInfo.value = TopProfileInfo(username="Maria", starRating = 6)
 
-        return TopProfileInfo(username = "Maria", starRating = 6)   //stub
+        return TopProfileInfo(username = "Maria", starRating = 6) // stub
     }
 }

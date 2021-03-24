@@ -61,7 +61,7 @@ class ProfileFragment : Fragment() {
 
                 // TODO els altres
                 textViewUsername.text = topProfileInfoVM.username
-                //imageViewProfilePic.setImageDrawable(/**/)
+                // imageViewProfilePic.setImageDrawable(/**/)
             }
         )
 

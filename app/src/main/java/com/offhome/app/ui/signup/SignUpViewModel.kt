@@ -11,14 +11,38 @@ import com.offhome.app.R
 import com.offhome.app.data.SignUpRepository
 import java.util.*
 
+/**
+ * Class *SignUpViewModel*
+ *
+ * ViewModel for the signUp screen.
+ * @author Ferran
+ * @param signUpRepository is the reference to the repository object that plays the role of the Model in this screen's MVVM
+ * @property _signUpForm private mutable live data of the form state. Indicates whether the input data fields are correct
+ * @property signUpFormState public live data of the form state
+ * @property _signUpResult private mutable live data of the result of the SignUp (success/error and further info)
+ * @property signUpResult public live data for the result of the SignUp
+ *
+ * */
 class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewModel() {
 
     private val _signUpForm = MutableLiveData<SignUpFormState>()
     val signUpFormState: LiveData<SignUpFormState> = _signUpForm
 
     private val _signUpResult = MutableLiveData<SignUpResult>()
-    val signUpResult: LiveData<SignUpResult> = _signUpResult // aquest és observat per SignUpActivity.    //pero canvia en algun moment?
+    val signUpResult: LiveData<SignUpResult> = _signUpResult // aquest és observat per SignUpActivity.
 
+
+    /**
+     * Initiates the Sign-up process
+     *
+     * makes the call to the Repository and observes its live data for the result.
+     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * @param email user's email
+     * @param username user's username
+     * @param password
+     * @param birthDate user's birth date
+     * @param activity pointer to the activity, used by the observers
+     */
     fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) { // he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
         // can be launched in a separate asynchronous job
 
@@ -57,6 +81,14 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
+    /**
+     * Updates the live data _signUpForm depending on whether the data in the parameters has the proper format
+     *
+     * @param email email field string
+     * @param username username field string
+     * @param password password field string
+     * @param birthDate birth date field string
+     */
     fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
@@ -71,51 +103,53 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         }
     }
 
+    /**
+     * Returns true <=> the email string follows the expected e-mail format
+     *
+     * @param email email field string
+     * @return Returns true <=> the input email string follows the expected e-mail format (something@something.something)
+     */
     private fun isEmailValid(email: String): Boolean {
         return email.isNotBlank() && Patterns.EMAIL_ADDRESS.matcher(email).matches() // de stackoverflow
     }
 
+    /**
+     * Returns true <=> the username string follows the expected format
+     *
+     * @param username username field string
+     * @return Returns true <=> the username string follows the expected format (it's not empty)
+     */
     private fun isUserNameValid(username: String): Boolean {
         return username.isNotBlank()
     }
 
-    // A placeholder password validation check
-    // això serà només per coses tipo numero minim de char's.
+    /**
+     * Returns true <=> the password string follows the expected format
+     *
+     * It's just a placeholder for now
+     * @param password password field string
+     * @return Returns true <=> the password string follows the expected format (it is over 5 char's long)
+     */
     private fun isPasswordValid(password: String): Boolean {
         return password.length > 5
     }
 
-    // hauria de ser impossible un error restringint els possibles valors d'entrada amb la UI
-    private fun isBirthDateValid(birthDate: String): Boolean { // nose si funciona
-        /*var i: Int = 0
-        var nSlashes: Int = 0
-        while (i < birthDate.length) {
-            //val num:Int = birthDate[i] as Int
-            //if (num !in 47..57)
-                // he intentat ferho bonic pero tot son objectes o algo
-            if (birthDate[i] != '/' &&
-                    birthDate[i] != '0' &&
-                    birthDate[i] != '1' &&
-                    birthDate[i] != '2' &&
-                    birthDate[i] != '3' &&
-                    birthDate[i] != '4' &&
-                    birthDate[i] != '5' &&
-                    birthDate[i] != '6' &&
-                    birthDate[i] != '7' &&
-                    birthDate[i] != '8' &&
-                    birthDate[i] != '9')
-                        return false
-
-            if (birthDate[i] == '/')
-                ++nSlashes
-            ++i
-        }
-
-        return (nSlashes == 2)*/
-
+    /**
+     * Returns true <=> the birthDate string is not empty
+     *
+     * @param birthDate birthDate field string
+     * @return Returns true <=> the birthDate string is not empty (its format correctness is guaranteed by the UI)
+     */
+    private fun isBirthDateValid(birthDate: String): Boolean {
         return birthDate.isNotBlank()
     }
 
+    /**
+     * Returns the Date object corresponding to the input string
+     *
+     * @param string1: date in string format
+     * @return the input date string in a Date object
+     */
     private fun getDateFromString(string1: String): Date {
         var i: Int = 0
         while (string1[i] != '/') {

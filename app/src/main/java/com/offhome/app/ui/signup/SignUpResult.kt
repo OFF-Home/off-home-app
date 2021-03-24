@@ -1,20 +1,14 @@
 package com.offhome.app.ui.signup
 
 /**
- * Authentication result : success (user details) or error message.
+ * Data Class *SignUpResult*
  *
- * aixo es el resultat del SIGN UP. per tant, els possibles errors son:
- *      email ja existeix
- *      username ja existeix
- *      error al iniciar amb Google, suposo
+ * expresses the result of a sign-up execution.
+ * @property success: means that the sign-up was successful
+ * @property error: means that there was an error signing up. contains the ID to a string explaining the error.
  */
-// plantilla que venia feta
+
 data class SignUpResult(
     val success: Boolean? = null, // bool innecessari però esque anira checkejant des de la Activity si és null.
     val error: Int? = null
 )
-
-/*class SignUpResult {
-    var isSuccessful : Boolean? = null
-    var errorMessage: Int? = null
-}*/

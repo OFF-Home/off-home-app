@@ -9,7 +9,7 @@ class ProfileViewModel : ViewModel() {
     private var repository = ProfileRepository()
 
     private val _topProfileInfo = MutableLiveData<TopProfileInfo>()
-    val topProfileInfo: LiveData<TopProfileInfo> = _topProfileInfo // TODO aquest és observat pel fragment.
+    val topProfileInfo: LiveData<TopProfileInfo> = _topProfileInfo
 
     fun getTopProfileInfo(/*viewLifecycleOwner : LifecycleOwner*/) {
 

@@ -38,10 +38,9 @@ class ProfileFragment : Fragment() {
         buttonAboutMe = view.findViewById(R.id.buttonAboutMe)
         fragmentDinsProfile = view.findViewById(R.id.fragmentDinsProfile) // aixo peta pq fragmentDinsProfile es com un link directe al fragment (crec), i considera q és un constraintLayout enlloc d'un fragment.
 
-        // imageViewProfilePic.setImageDrawable( "@drawable/profile_pic_placeholder")
-
         buttonAboutMe.setOnClickListener {
             aboutMeFragment = ProfileAboutBeFragment() // inicialitzo
+            canviAAboutMeFragment()
         }
 
         return view
@@ -60,8 +59,9 @@ class ProfileFragment : Fragment() {
             Observer {
                 val topProfileInfoVM = it ?: return@Observer
 
-                // TODO
+                // TODO els altres
                 textViewUsername.text = topProfileInfoVM.username
+                //imageViewProfilePic.setImageDrawable(/**/)
             }
         )
 

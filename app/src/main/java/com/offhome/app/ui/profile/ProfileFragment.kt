@@ -11,8 +11,8 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.offhome.app.R
 
-class Profile : Fragment() {
-    private lateinit var viewModel: ProfileViewModel
+class ProfileFragment : Fragment() {
+    private lateinit var fragmentViewModel: ProfileFragmentViewModel
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
 
@@ -31,8 +31,8 @@ class Profile : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
-        viewModel = ViewModelProvider(this).get(ProfileViewModel::class.java)
-        viewModel.topProfileInfo.observe(
+        fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
+        fragmentViewModel.topProfileInfo.observe(
             viewLifecycleOwner,
             Observer {
                 val topProfileInfoVM = it ?: return@Observer
@@ -43,7 +43,7 @@ class Profile : Fragment() {
             }
         )
 
-        viewModel.getTopProfileInfo()
+        fragmentViewModel.getTopProfileInfo()
 
         return view
     }

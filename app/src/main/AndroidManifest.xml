@@ -10,7 +10,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
         <activity
-            android:name=".ui.profile.Profile"
+            android:name=".ui.profile.ProfileFragment"
             android:label="@string/title_activity_profile"
             android:theme="@style/Theme.OFFHome.NoActionBar"></activity>
         <activity android:name=".MainActivity">

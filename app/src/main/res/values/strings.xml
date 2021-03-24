@@ -113,7 +113,7 @@
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
-    <string name="tab_text_1">My Activities</string>
+    <string name="tab_text_1">Activities</string>
     <string name="tab_text_2">About Me</string>
     <string name="tab_text_3">Settings</string>
 </resources>

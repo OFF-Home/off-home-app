@@ -11,13 +11,10 @@ import com.offhome.app.R
 /**
  * A placeholder fragment containing a simple view.
  */
-class PlaceholderFragment : Fragment() {
-
-    private lateinit var pageViewModel: PageViewModel
+class ProfilePlaceholderFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        pageViewModel = ViewModelProvider(this).get(PageViewModel::class.java)
     }
 
     override fun onCreateView(

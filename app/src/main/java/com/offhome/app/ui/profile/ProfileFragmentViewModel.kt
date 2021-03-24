@@ -4,7 +4,7 @@ import androidx.lifecycle.*
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TopProfileInfo
 
-class ProfileViewModel : ViewModel() {
+class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
 

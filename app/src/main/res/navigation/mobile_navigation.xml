@@ -25,7 +25,7 @@
 
     <fragment
         android:id="@+id/navigation_profile"
-        android:name="com.offhome.app.ui.profile.Profile"
+        android:name="com.offhome.app.ui.profile.ProfileFragment"
         android:label="@string/title_profile"
         tools:layout="@layout/profile_placeholder_fragment" />
 </navigation>

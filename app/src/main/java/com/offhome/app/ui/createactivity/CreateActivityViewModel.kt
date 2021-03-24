@@ -38,7 +38,7 @@ class CreateActivityViewModel : ViewModel() {
     }*/
 
     private var repository: Repository = Repository()
-    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()!!
+    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()
 
     fun getActivitiesList(): LiveData<List<ActivityFromList>> {
         return activitiesList

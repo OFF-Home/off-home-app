@@ -90,7 +90,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             startActivity(Intent.createChooser(intent, "Invite friends from:"))
         }
 
-        val ch_category = findViewById<Spinner>(R.id.sp_choose_category)
+        //val ch_category = findViewById<Spinner>(R.id.sp_choose_category)
     }
 
     private fun pickDate(){

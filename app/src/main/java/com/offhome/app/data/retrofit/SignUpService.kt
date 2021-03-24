@@ -1,12 +1,15 @@
 package com.offhome.app.data.retrofit
 
+import com.offhome.app.data.model.SignedUpUser
 import retrofit2.Call
+import retrofit2.http.Body
 import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface SignUpService {
 
-    @POST(":username/create") // TODO el ":"?? va el user allà? //he de treure el ":" i posar alla el username
-    fun createProfile(/*@algo*/ username: String): Call<String> // retorna algo per saber si ha funcionat suposo. no se si ha de ser string
+    @POST("/users/{username}/create")
+    fun createProfile(@Path("username") username: String, @Body signedUpUser: SignedUpUser): Call<String>
 
 /* make sure you add @Query or @Field for all the parameters , depending on whether you issuing GET/POST.
 eg:

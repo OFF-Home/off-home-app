@@ -4,4 +4,27 @@
     <string name="title_explore">Explore</string>
     <string name="title_chats">Chats</string>
     <string name="title_profile">Profile</string>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_birth_date">Birth date</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="have_an_account_already">Have an account already? Log in  </string>
+    <string name="button_here"> <u>here</u></string>
+    <string name="text_view_or">or</string>
+    <string name="continue_google">Continue with Google</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="button_login">Log in</string>
+    <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
+    <string name="login_failed_email">Email not verified</string>
+    <string name="login_failed_login">Wrong email or password</string>
+    <string name="off_home_logo">OFF Home logo</string>
+    <string name="show_password_description">Show Password</string>
 </resources>

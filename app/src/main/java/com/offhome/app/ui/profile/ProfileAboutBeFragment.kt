@@ -1,11 +1,11 @@
 package com.offhome.app.ui.profile
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
 
 class ProfileAboutBeFragment : Fragment() {
@@ -16,8 +16,11 @@ class ProfileAboutBeFragment : Fragment() {
 
     private lateinit var viewModel: ProfileAboutBeViewModel
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         return inflater.inflate(R.layout.profile_about_be_fragment, container, false)
     }
 
@@ -26,5 +29,4 @@ class ProfileAboutBeFragment : Fragment() {
         viewModel = ViewModelProvider(this).get(ProfileAboutBeViewModel::class.java)
         // TODO: Use the ViewModel
     }
-
 }

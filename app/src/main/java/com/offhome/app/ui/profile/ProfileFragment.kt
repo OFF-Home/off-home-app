@@ -18,7 +18,7 @@ class ProfileFragment : Fragment() {
 
     private lateinit var viewModel: ProfileViewModel
     lateinit var imageViewProfilePic: ImageView // = findViewById<ImageView>
-    lateinit var buttonAboutMe : Button
+    lateinit var buttonAboutMe: Button
 
     override fun onCreateView(
         inflater: LayoutInflater,

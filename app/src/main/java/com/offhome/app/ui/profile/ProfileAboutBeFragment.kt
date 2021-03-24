@@ -16,6 +16,7 @@ class ProfileAboutBeFragment : Fragment() {
 
     private lateinit var viewModel: ProfileAboutBeViewModel
 
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

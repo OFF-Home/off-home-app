@@ -109,4 +109,7 @@
     <string name="liked_activities">Liked activities</string>
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
+    <string name="tags">Tags</string>
+    <string name="followers">Followers</string>
+    <string name="following">Following</string>
 </resources>

@@ -9,13 +9,13 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
 
-class ProfileAboutBeFragment : Fragment() {
+class ProfileAboutMeFragment : Fragment() {
 
     companion object {
-        fun newInstance() = ProfileAboutBeFragment()
+        fun newInstance() = ProfileAboutMeFragment()
     }
 
-    private lateinit var viewModel: ProfileAboutBeViewModel
+    private lateinit var viewModel: ProfileAboutMeViewModel
     private lateinit var textViewProfileDescription: TextView
     private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
@@ -25,7 +25,7 @@ class ProfileAboutBeFragment : Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.profile_about_be_fragment, container, false)
+        val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
@@ -39,7 +39,7 @@ class ProfileAboutBeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileAboutBeViewModel::class.java)
+        viewModel = ViewModelProvider(this).get(ProfileAboutMeViewModel::class.java)
         // TODO: Use the ViewModel
     }
 }

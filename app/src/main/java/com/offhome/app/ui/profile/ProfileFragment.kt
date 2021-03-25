@@ -11,6 +11,17 @@ import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.offhome.app.R
 
+/**
+ * Class *ProfileFragment*
+ *
+ * Fragment for the Profile screen. On its ViewPager it can show either of the 3 fragments: MyActivities, AboutMe, Settings.
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * author Pau and Ferran
+ * @property fragmentViewModel
+ * @property imageViewProfilePic
+ * @property textViewUsername
+ */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
     lateinit var imageViewProfilePic: ImageView

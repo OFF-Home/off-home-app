@@ -67,7 +67,6 @@ class SignUpDataSource {
                         }
                     }
 
-                    _result.value = Result(success = true)
                     // parlar amb el nostre client
                     val signedUpUser = SignUpUserData(email, username, password, birthDate.toString())
                     val call: Call<String> = signUpService.createProfile(username, signedUpUser)
@@ -80,13 +79,18 @@ class SignUpDataSource {
                                     "HTTP call success",
                                     Toast.LENGTH_LONG
                                 ).show()
-                            } else {
+
+                                _result.value = Result(success = true)
+
+                            } else {    //si rebem resposta de la BD pero ens informa d'un error
                                 Toast.makeText(
                                     activity,
                                     // "$emailConfirmationMessage $displayName",
                                     "HTTP call error",
                                     Toast.LENGTH_LONG
                                 ).show()
+
+                                _result.value = Result(error = Exception("response received. Error in the server"))
                             }
                         }
 
@@ -96,9 +100,11 @@ class SignUpDataSource {
                                 "Connection error",
                                 Toast.LENGTH_LONG
                             ).show()
+
+                            _result.value = Result(error = Exception("connection error. Server not reached"))
                         }
                     })
-                } else {
+                } else {    //error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 
                     _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?

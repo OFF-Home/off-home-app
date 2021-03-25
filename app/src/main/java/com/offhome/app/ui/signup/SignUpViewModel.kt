@@ -2,6 +2,7 @@ package com.offhome.app.ui.signup
 
 // import android.text.TextUtils
 import android.util.Patterns
+import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -51,15 +52,23 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 if (resultRepo.error != null) {
                     val msg: String = resultRepo.error.toString()
                     // println("msg = $msg")
-                    // Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
+                     //Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
 
                     when { // TODO posar els strings de la excepcio als .equals()
-                        msg.equals("cosa1")
+                        msg == "cosa1"
                         -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
-                        msg.equals("com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account.")
+                        msg == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."
                         -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
-                        msg.equals("cosa3")
+                        msg == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted."
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_bad_email_format)
+                        msg == "cosa3"
                         -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
+
+                        (msg == "connection error. Server not reached" || msg == "java.lang.Exception: connection error. Server not reached")   //crec q nomes serà el 2n.
+                        -> _signUpResult.value = SignUpResult(error =R.string.sign_up_connection_error)
+                        (msg == "response received. Error in the server" || msg == "java.lang.Exception: response received. Error in the server")
+                        -> _signUpResult.value = SignUpResult(error =R.string.sign_up_server_error)
+
                         else
                         -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
                     }

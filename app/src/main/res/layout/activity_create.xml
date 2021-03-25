@@ -178,7 +178,7 @@
         android:id="@+id/participants"
         android:layout_width="199dp"
         android:layout_height="25dp"
-        android:text="Maximum participants"
+        android:text="Max participants"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"

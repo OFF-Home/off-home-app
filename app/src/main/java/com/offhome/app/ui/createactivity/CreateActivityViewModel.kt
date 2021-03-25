@@ -7,7 +7,7 @@ import com.offhome.app.model.ActivityFromList
 
 
 /**
- * Create Activity View Model
+ * Create Activity View Model (not fully implemented yet)
  */
 class CreateActivityViewModel : ViewModel() {
 

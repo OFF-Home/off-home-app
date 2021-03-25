@@ -18,7 +18,8 @@ import com.offhome.app.R
 import java.util.*
 
 /**
- * Create Activity class
+ * Create Activity class that let the user create a new activity indicating its parameters
+ * @author Maria
  **/
 
 
@@ -39,6 +40,9 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     var savedHour = 0
     var savedMinute = 0
 
+    /**
+     * This function represents the current time using current locale and timezone
+     */
     private fun getDateTimeCalendar(){
         val cal = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
@@ -51,6 +55,9 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     private lateinit var viewModel: CreateActivityViewModel
     @RequiresApi(Build.VERSION_CODES.N)
 
+    /**
+     * This function initializes the activity [CreateActivity]
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create)
@@ -68,36 +75,16 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
         pickDate()
 
-        val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
-        pick_availability.maxValue = 10
-        pick_availability.minValue = 3
+        pickAvailability()
 
+        inviteFriends()
 
-        val btn_CREATED = findViewById<Button>(R.id.btn_create)
-        btn_CREATED.setOnClickListener{
-            if (validate()) {
-                Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
-                //viewModel.addActivity()
-            }
-        }
-
-        val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
-        val act_title = findViewById<EditText>(R.id.activity_title)
-        btn_invitefriends.setOnClickListener{
-            //val message: String = etUserMessage.text.toString()
-            val message : String = act_title.text.toString();
-
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,message)
-            intent.type = "text/plain"
-
-            startActivity(Intent.createChooser(intent, "Invite friends from:"))
-        }
-
-        //val ch_category = findViewById<Spinner>(R.id.sp_choose_category)
+        createTheActivity()
     }
 
+    /**
+     * This function let the user pick a date where the activity created will take place
+     */
     private fun pickDate(){
         val datePicker = findViewById<TextView>(R.id.btn_pickdate)
         datePicker.setOnClickListener{
@@ -107,24 +94,51 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
     }
 
-    override fun onDateSet(view: DatePicker?,year: Int, month: Int, dayOfMonth: Int){
-        savedDay = dayOfMonth
-        savedMonth = month
-        savedYear = year
-
-        getDateTimeCalendar()
-        TimePickerDialog(this,this,hour,minute,true).show()
+    /**
+     * This function let the user pick the number maximum of participants that the activity created will have
+     */
+    private fun pickAvailability(){
+        val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
+        pick_availability.maxValue = 10
+        pick_availability.minValue = 3
     }
 
-    @SuppressLint("SetTextI18n")
-    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int){
-        savedHour = hourOfDay
-        savedMinute = minute
-        val pickText = findViewById<TextView>(R.id.date_pick_text)
-        pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
+    /**
+     * This function let the user invite friends by sending the data of the new activity to other apps of the user's device
+     */
+    private fun inviteFriends(){
+        val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
+        val act_title = findViewById<EditText>(R.id.activity_title)
+        btn_invitefriends.setOnClickListener{
+            val message : String = act_title.text.toString();
+
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT,message)
+            intent.type = "text/plain"
+
+            startActivity(Intent.createChooser(intent, "Invite friends from:"))
+        }
     }
 
+    /**
+     * This functions let the user create the new activity by pressing the [CREATE] button
+     */
+    private fun createTheActivity(){
+        val btn_CREATED = findViewById<Button>(R.id.btn_create)
+        btn_CREATED.setOnClickListener{
+            if (validate()) {
+                Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
+                //viewModel.addActivity()
+            }
+        }
+    }
 
+    /**
+     * This function validates whereas the activity can be created depending on the information that has introduced the user, and also shows the corresponding
+     * error message on the screen
+     * @return true if the activity can be created or otherwise; otherwise return false
+     */
     private fun validate() :Boolean{
         val title = findViewById<EditText>(R.id.activity_title)
         val description = findViewById<EditText>(R.id.about_the_activity)
@@ -151,5 +165,28 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         return true
     }
 
+    /**
+     * This function is called every time the user changes the date picked
+     */
+    override fun onDateSet(view: DatePicker?,year: Int, month: Int, dayOfMonth: Int){
+        savedDay = dayOfMonth
+        savedMonth = month
+        savedYear = year
+
+        getDateTimeCalendar()
+        TimePickerDialog(this,this,hour,minute,true).show()
+    }
+
+    @SuppressLint("SetTextI18n")
+
+    /**
+     * This function is called when the user is done setting a new time and the dialog has closed
+     */
+    override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int){
+        savedHour = hourOfDay
+        savedMinute = minute
+        val pickText = findViewById<TextView>(R.id.date_pick_text)
+        pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
+    }
 }
 

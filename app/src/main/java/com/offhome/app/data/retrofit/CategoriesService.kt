@@ -5,6 +5,9 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface CategoriesService {
+    /**
+     * This is the call for getting the categories
+     */
     @GET("categories")
     fun getAllCategories(): Call<List<Category>>
 

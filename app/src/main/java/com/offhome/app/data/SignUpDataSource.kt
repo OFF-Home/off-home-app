@@ -101,7 +101,8 @@ class SignUpDataSource {
                                 "Connection error",
                                 Toast.LENGTH_LONG
                             ).show()
-
+                            t.printStackTrace()
+                            Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
                             _result.value = Result(error = Exception("connection error. Server not reached"))
                         }
                     })

@@ -9,10 +9,22 @@ import com.google.android.gms.maps.*
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.offhome.app.R
+import com.offhome.app.ui.activitieslist.ActivitiesListViewModel
 
+/**
+ * Class *InfoActicity*
+ *
+ * This class is the one that displays the information about an Activity
+ * @author Emma Pereira
+ * @property InfoActivityViewModel references the ViewModel class for this Activity
+ * @property mMap references the GoogleMap that appears in the screen with the activity's location
+ * @property imageLike references the ImageView to add an activity to a user's liked activities
+ */
 class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
+    private lateinit var imageLike: ImageView
+    private lateinit var infoActivityViewModel: InfoActivityViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -34,7 +46,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         //canviar like al clicar
         var clicked = false
 
-        val imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
+        imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
         imageLike.setOnClickListener {
             clicked = !clicked
             if (clicked) {

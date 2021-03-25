@@ -104,7 +104,7 @@ class LoginActivity : AppCompatActivity() {
                     Toast.makeText(this, getString(loginState.emailError), Toast.LENGTH_LONG).show()
                 }
                 if (editTextPassword.text.isNotEmpty() && loginState.passwordError != null) {
-                    editTextPassword.setBackgroundResource(R.drawable.background_edit_text_wrong)
+                    //editTextPassword.setBackgroundResource(R.drawable.background_edit_text_wrong)
                     Toast.makeText(this, getString(loginState.passwordError), Toast.LENGTH_LONG).show()
                 }
             }
@@ -157,6 +157,10 @@ class LoginActivity : AppCompatActivity() {
 
             afterTextChanged {
                 setBackgroundResource(R.drawable.background_edit_text)
+                loginViewModel.loginDataChanged(
+                    editTextEmail.text.toString(),
+                    editTextPassword.text.toString()
+                )
             }
 
             setOnEditorActionListener { _, actionId, _ ->

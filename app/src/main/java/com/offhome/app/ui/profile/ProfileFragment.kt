@@ -17,16 +17,26 @@ import com.offhome.app.R
  * Fragment for the Profile screen. On its ViewPager it can show either of the 3 fragments: MyActivities, AboutMe, Settings.
  * This class is one of the Views in this screen's MVVM's
  *
- * author Pau and Ferran
- * @property fragmentViewModel
- * @property imageViewProfilePic
- * @property textViewUsername
+ * @author Pau and Ferran
+ * @property fragmentViewModel reference to the ViewModel object
+ * @property imageViewProfilePic reference to profile pic ImageView
+ * @property textViewUsername reference to the username TextView
  */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
 
+    /**
+     * Override the onCreateView method
+     *
+     * Does the fragment inflation
+     * Initializes the attributes
+     *
+     * Makes the call to the VM to obtain the topProfileInfo and observes its live data for the result
+     *
+     * @param
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

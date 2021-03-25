@@ -22,8 +22,10 @@ import java.util.*
  *
  * Activity for the signUp screen. This class is the View in this screen's MVVM
  * @author Ferran and Pau
+ * @property signUpViewModel references this activity's ViewModel
  * @property email references the e-mail EditText
  * @property username references the username EditText
+ * @property password references the password EditText
  * @property birthDate references the birth date EditText. This field will be filled using a DatePickerDialog
  * @property signUp references the sign-up Button
  * @property hereButton references the Button used to swap to the log-in screen

@@ -53,7 +53,7 @@ class SignUpDataSource {
      * @param password
      * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) { // TODO treure activity quan acabi de debugejar
+    fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) { // TODO treure activity i toasts quan acabem de debugejar
 
         try {
             firebaseAuth = Firebase.auth
@@ -109,7 +109,7 @@ class SignUpDataSource {
                 } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 
-                    _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?
+                    _result.value = Result(error = task.exception)
                 }
             }
         } catch (e: Throwable) {

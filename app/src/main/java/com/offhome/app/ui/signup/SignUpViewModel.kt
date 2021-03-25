@@ -53,13 +53,13 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                     // println("msg = $msg")
                     // Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
 
-                    when { // TODO posar els strings de la excepcio als .equals()
-                        msg == "cosa1"
-                        -> _signUpResult.value = SignUpResult(error = R.string.username_taken)
+                    when { // quan el backend implementi noves excepcions, haurem d'afegir entrades aqui
                         msg == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."
                         -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
                         msg == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted."
                         -> _signUpResult.value = SignUpResult(error = R.string.sign_up_bad_email_format)
+                        msg == "com.google.firebase.FirebaseNetworkException: A network error (such as timeout, interrupted connection or unreachable host) has occurred."
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_fb_connection_error)
                         msg == "cosa3"
                         -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
 
@@ -67,6 +67,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                         -> _signUpResult.value = SignUpResult(error = R.string.sign_up_connection_error)
                         (msg == "response received. Error in the server" || msg == "java.lang.Exception: response received. Error in the server")
                         -> _signUpResult.value = SignUpResult(error = R.string.sign_up_server_error)
+
+                        /*msg == "cosa1"
+                        -> _signUpResult.value = SignUpResult(error = R.string.username_taken)*/
 
                         else
                         -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)

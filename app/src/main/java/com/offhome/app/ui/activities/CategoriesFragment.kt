@@ -36,7 +36,7 @@ class CategoriesFragment : Fragment() {
     ): View? {
         categoriesViewModel =
             ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        val view = inflater.inflate(R.layout.fragment_activities, container, false)
+        val view = inflater.inflate(R.layout.fragment_categories, container, false)
 
         categoryAdapter = MyCategoriesRecyclerViewAdapter(context)
 

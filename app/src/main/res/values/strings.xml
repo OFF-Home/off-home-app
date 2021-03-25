@@ -1,8 +1,65 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">OFF Home</string>
     <string name="title_activities">Activities</string>
     <string name="title_explore">Explore</string>
     <string name="title_chats">Chats</string>
     <string name="title_profile">Profile</string>
     <string name="category_name">EXTRA_CATEGORY_NAME</string>
+    <string name="title_of_the_activity">Title of the activity</string>
+    <string name="create">CREATE</string>
+    <string name="insert_title">Insert title</string>
+    <string name="about_the_activity">About the activity</string>
+    <string name="insert_text">Insert text</string>
+    <string name="date">Date</string>
+    <string name="choose_location">Choose location</string>
+    <string name="set_location">Set location</string>
+    <string name="participants">Participants</string>
+    <string name="choose_date">Choose date</string>
+    <string name="invite_friends">Invite friends</string>
+    <string name="select_category">Select category:</string>
+    <string-array name="select_category">
+        <item>Select category</item>5
+        <item>SPORTS</item>
+        <item>BICYCLING</item>
+        <item>CULTURAL</item>
+        <item>DANCING</item>
+        <item>VOLUNTEERING</item>
+        <item>WALKING</item>
+        <item>SELF CARE</item>
+        <item>GARDERING</item>
+    </string-array>
+    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="welcome">"Welcome !"</string>
+    <string name="invalid_email">Not a valid email</string>
+    <string name="invalid_password">Password must be >5 characters</string>
+    <string name="login_failed">"Login failed"</string>
+    <string name="hint_username">Username</string>
+    <string name="hint_birth_date">Birth date</string>
+    <string name="button_sign_up">Sign up</string>
+    <string name="have_an_account_already">"Have an account already? Log in "</string>
+    <string name="button_here"><u>here</u></string>
+    <string name="text_view_or">or</string>
+    <string name="continue_google">Continue with Google</string>
+    <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail address</string>
+    <string name = "username_taken"> Sign up error: username is taken </string>
+    <string name = "email_taken"> Sign up error: this e-mail is already registered </string>
+    <string name = "google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
+    <string name = "unknown_sign_up_error"> Sign up error: there was an unknown error </string>
+    <string name = "invalid_birth_date"> Not a valid birth date </string>
+    <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
+    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
+    <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
+    <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="button_login">Log in</string>
+    <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
+    <string name="login_failed_email">Email not verified</string>
+    <string name="login_failed_login">Wrong email or password</string>
+    <string name="off_home_logo">OFF Home logo</string>
+    <string name="show_password_description">Show Password</string>
+    <string name="invalid_username">Not a valid username</string>
 </resources>

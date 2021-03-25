@@ -98,74 +98,19 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle" />
 
-    <LinearLayout
-        android:id="@+id/linearLayout"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
-        android:gravity="center_horizontal"
-        android:orientation="horizontal"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lineaEstetica2">
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:orientation="vertical">
-            <!--> pot faltar cosa <-->
-
-            <TextView
-                android:id="@+id/textViewFollowersTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="top"
-                android:text="@string/followers"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewFollowerCount"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:gravity="bottom"
-                android:text="14"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <!--> pot faltar cosa <-->
-
-            <TextView
-                android:id="@+id/textViewFollowingTitle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/following"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-
-    </LinearLayout>
-
     <!--> provant sense linear layout: <-->
 
     <TextView
         android:id="@+id/textViewFollowersTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:gravity="top"
         android:text="@string/followers"
         android:textStyle="bold"
+        app:layout_constraintEnd_toStartOf="@+id/textViewFollowingTitle2"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout"
-        app:layout_constraintEnd_toStartOf="@+id/textViewFollowingTitle2"/>
+        app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
         android:id="@+id/textViewFollowerCount2"
@@ -182,12 +127,13 @@
         android:id="@+id/textViewFollowingTitle2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:text="@string/following"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.277"
         app:layout_constraintStart_toEndOf="@+id/textViewFollowersTitle2"
-        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+        app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
         android:id="@+id/textViewFollowingCount2"

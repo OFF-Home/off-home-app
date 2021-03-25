@@ -29,7 +29,7 @@ class ProfileAboutMeFragment : Fragment() {
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
-        textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
+        textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
 
         // TODO obtenir les dades de BD
         // i posar-les als textView's

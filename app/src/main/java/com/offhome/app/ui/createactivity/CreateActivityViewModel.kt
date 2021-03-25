@@ -5,6 +5,10 @@ import androidx.lifecycle.ViewModel
 import com.offhome.app.Repository
 import com.offhome.app.model.ActivityFromList
 
+
+/**
+ * Create Activity View Model
+ */
 class CreateActivityViewModel : ViewModel() {
 
     /*per provar amb la BD

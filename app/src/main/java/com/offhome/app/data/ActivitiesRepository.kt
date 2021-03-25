@@ -5,6 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.ActivitiesClient
 import com.offhome.app.model.ActivityFromList
 
+/**
+ * Activities repository
+ */
 class ActivitiesRepository {
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     private val activitiesClient = ActivitiesClient()

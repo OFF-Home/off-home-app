@@ -14,11 +14,12 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import java.util.*
 
 /**
- * Create Activity class that let the user create a new activity indicating its parameters
+ * Create Activity class that let the user create a new activity indicating its parameters on the corresponding screen
  * @author Maria
  **/
 
@@ -39,6 +40,16 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    private lateinit var pick_availability: NumberPicker
+    private lateinit var datePicker: TextView
+    private lateinit var btn_invitefriends: Button
+    private lateinit var act_title: EditText
+    private lateinit var btn_CREATED: Button
+    private lateinit var description: EditText
+    private lateinit var date: TextView
+    private lateinit var location: EditText
+    private lateinit var pickText: TextView
 
     /**
      * This function represents the current time using current locale and timezone
@@ -86,7 +97,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This function let the user pick a date where the activity created will take place
      */
     private fun pickDate(){
-        val datePicker = findViewById<TextView>(R.id.btn_pickdate)
+        datePicker = findViewById(R.id.btn_pickdate)
         datePicker.setOnClickListener{
             getDateTimeCalendar()
 
@@ -95,10 +106,10 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     }
 
     /**
-     * This function let the user pick the number maximum of participants that the activity created will have
+     * This function let the user pick the number maximum of participants allowed by the activity created
      */
     private fun pickAvailability(){
-        val pick_availability = findViewById<NumberPicker>(R.id.pick_availability)
+        pick_availability = findViewById(R.id.pick_availability)
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
     }
@@ -107,8 +118,8 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This function let the user invite friends by sending the data of the new activity to other apps of the user's device
      */
     private fun inviteFriends(){
-        val btn_invitefriends = findViewById<Button>(R.id.btn_invite_friends)
-        val act_title = findViewById<EditText>(R.id.activity_title)
+        btn_invitefriends = findViewById(R.id.btn_invite_friends)
+        act_title = findViewById(R.id.activity_title)
         btn_invitefriends.setOnClickListener{
             val message : String = act_title.text.toString();
 
@@ -125,40 +136,41 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This functions let the user create the new activity by pressing the [CREATE] button
      */
     private fun createTheActivity(){
-        val btn_CREATED = findViewById<Button>(R.id.btn_create)
+        btn_CREATED = findViewById(R.id.btn_create)
         btn_CREATED.setOnClickListener{
             if (validate()) {
                 Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
                 //viewModel.addActivity()
+                val intent = Intent(this, MainActivity::class.java);
+                startActivity(intent)
             }
         }
     }
 
     /**
-     * This function validates whereas the activity can be created depending on the information that has introduced the user, and also shows the corresponding
+     * This function validates whereas the activity can be created depending on the information introduced by the user, and also shows the corresponding
      * error message on the screen
      * @return true if the activity can be created or otherwise; otherwise return false
      */
     private fun validate() :Boolean{
-        val title = findViewById<EditText>(R.id.activity_title)
-        val description = findViewById<EditText>(R.id.about_the_activity)
-        val date = findViewById<TextView>(R.id.date_pick_text)
-        val location = findViewById<EditText>(R.id.locationpck2)
+        act_title = findViewById(R.id.activity_title)
+        description = findViewById(R.id.about_the_activity)
+        date = findViewById(R.id.date_pick_text)
+        location = findViewById(R.id.locationpck2)
 
-        if (title.text.toString().isEmpty()){
-            title.error = "Name should not be blank"
+        if (act_title.text.toString().isEmpty()){
+            act_title.error = "Name should not be blank"
             return false
         }
-        else if (description.text.toString().isEmpty()){
+        if (description.text.toString().isEmpty()){
             description.error = "Name should not be blank"
             return false
         }
-        //no funciona
-        else if (date == null){
-            Toast.makeText(this, "Date should not be blank", Toast.LENGTH_SHORT).show()
+        if (date.text.toString() == ""){
+            date.error = "Date should not be blank"
             return false
         }
-        else if (location.text.toString().isEmpty()){
+        if (location.text.toString().isEmpty()){
             location.error = "Location should not be blank"
             return false
         }
@@ -185,7 +197,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int){
         savedHour = hourOfDay
         savedMinute = minute
-        val pickText = findViewById<TextView>(R.id.date_pick_text)
+        pickText = findViewById(R.id.date_pick_text)
         pickText.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
     }
 }

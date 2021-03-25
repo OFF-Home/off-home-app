@@ -1,14 +1,14 @@
-package com.offhome.app.ui.signup
+package com.offhome.app.data
 
 /**
- * Data Class *SignUpResult*
+ * Data Class *ResultSignUp*
  *
  * expresses the result of a sign-up execution.
  * @author Ferran
  * @property success: means that the sign-up was successful
- * @property error: means that there was an error signing up. contains the ID to a string explaining the error.
+ * @property error: means that there was an error signing up. contains the exception obtained.
  */
-data class SignUpResult(
+data class ResultSignUp(
     val success: Boolean? = null, // bool innecessari però esque anira checkejant des de la Activity si és null.
-    val error: Int? = null
+    val error: Exception? = null
 )

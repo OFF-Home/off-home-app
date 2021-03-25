@@ -1,14 +1,18 @@
 package com.offhome.app.data
 
 /**
- * Data Class *Result*
- *
- * expresses the result of a sign-up execution.
- * @author Ferran
- * @property success: means that the sign-up was successful
- * @property error: means that there was an error signing up. contains the exception obtained.
+ * A generic class that holds a value with its loading status.
+ * @param <T>
  */
-data class Result(
-    val success: Boolean? = null, // bool innecessari però esque anira checkejant des de la Activity si és null.
-    val error: Exception? = null
-)
+sealed class Result<out T : Any> {
+
+    data class Success<out T : Any>(val data: T) : Result<T>()
+    data class Error(val exception: Exception) : Result<Nothing>()
+
+    override fun toString(): String {
+        return when (this) {
+            is Success<*> -> "Success[data=$data]"
+            is Error -> "Error[exception=$exception]"
+        }
+    }
+}

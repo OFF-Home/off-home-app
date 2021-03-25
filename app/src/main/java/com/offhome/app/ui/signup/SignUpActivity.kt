@@ -64,7 +64,6 @@ class SignUpActivity : AppCompatActivity() {
 
         signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
             .get(SignUpViewModel::class.java)
-
         email = findViewById(R.id.editTextEmail)
         username = findViewById(R.id.editTextUsername)
         password = findViewById(R.id.editTextPassword)

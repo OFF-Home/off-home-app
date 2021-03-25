@@ -1,6 +1,5 @@
 package com.offhome.app.ui.signup
 
-// import android.text.TextUtils
 import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
@@ -43,7 +42,6 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      */
     fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
         // can be launched in a separate asynchronous job
-
         signUpRepository.result.observe(
             activity,
             Observer {

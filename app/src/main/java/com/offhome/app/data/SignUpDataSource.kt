@@ -30,8 +30,8 @@ import java.util.*
  * */
 class SignUpDataSource {
 
-    private var _result = MutableLiveData<Result>()
-    val result: LiveData<Result> = _result // aquest es observat per Repository
+    private var _result = MutableLiveData<ResultSignUp>()
+    val result: LiveData<ResultSignUp> = _result // aquest es observat per Repository
 
     private lateinit var firebaseAuth: FirebaseAuth
     private var retrofit: Retrofit =
@@ -82,7 +82,7 @@ class SignUpDataSource {
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                _result.value = Result(success = true)
+                                _result.value = ResultSignUp(success = true)
                             } else { // si rebem resposta de la BD pero ens informa d'un error
                                 Toast.makeText(
                                     activity,
@@ -91,7 +91,7 @@ class SignUpDataSource {
                                     Toast.LENGTH_LONG
                                 ).show()
 
-                                _result.value = Result(error = Exception("response received. Error in the server"))
+                                _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
                             }
                         }
 
@@ -103,17 +103,17 @@ class SignUpDataSource {
                             ).show()
                             t.printStackTrace()
                             Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
-                            _result.value = Result(error = Exception("connection error. Server not reached"))
+                            _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))
                         }
                     })
                 } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 
-                    _result.value = Result(error = task.exception)
+                    _result.value = ResultSignUp(error = task.exception)
                 }
             }
         } catch (e: Throwable) {
-            _result.value = Result(error = e as Exception) // cast!
+            _result.value = ResultSignUp(error = e as Exception) // cast!
         }
     }
 }

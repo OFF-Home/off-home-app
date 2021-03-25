@@ -18,8 +18,8 @@ import java.util.*
  * */
 class SignUpRepository(val dataSource: SignUpDataSource) {
 
-    private val _result = MutableLiveData<Result>()
-    val result: LiveData<Result> = _result
+    private val _result = MutableLiveData<ResultSignUp>()
+    val result: LiveData<ResultSignUp> = _result
 
     /**
      * Propagates the Sign-up process to the Data Source
@@ -40,10 +40,10 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
 
                 // _result.value = resultDS  //potser es pot substituir per això
                 if (resultDS.error != null) {
-                    _result.value = Result(error = resultDS.error)
+                    _result.value = ResultSignUp(error = resultDS.error)
                 }
                 if (resultDS.success != null) {
-                    _result.value = Result(success = resultDS.success)
+                    _result.value = ResultSignUp(success = resultDS.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
             }

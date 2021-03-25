@@ -10,7 +10,7 @@ class InfoActivityClient {
 
     init {
         retrofit = Retrofit.Builder()
-                .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/categories/:email/:datahora/")
+                .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/activities/:email/:datahora/")
                 .addConverterFactory(GsonConverterFactory.create())
                 .build()
         infoActivityService = retrofit!!.create(InfoActivityService::class.java)
@@ -20,7 +20,7 @@ class InfoActivityClient {
         return instance
     }
 
-    fun getActivitiesService(): InfoActivityService? {
+    fun getInfoActivityService(): InfoActivityService? {
         return infoActivityService
     }
 }

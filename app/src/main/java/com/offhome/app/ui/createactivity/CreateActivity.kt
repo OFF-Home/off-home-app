@@ -121,7 +121,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_invitefriends = findViewById(R.id.btn_invite_friends)
         act_title = findViewById(R.id.activity_title)
         btn_invitefriends.setOnClickListener{
-            val message : String = act_title.text.toString();
+            val message : String = act_title.text.toString()
 
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
@@ -133,15 +133,16 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     }
 
     /**
-     * This functions let the user create the new activity by pressing the [CREATE] button
+     * This functions let the user create the new activity by pressing the CREATED button
      */
     private fun createTheActivity(){
         btn_CREATED = findViewById(R.id.btn_create)
         btn_CREATED.setOnClickListener{
             if (validate()) {
                 Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
-                //viewModel.addActivity()
-                val intent = Intent(this, MainActivity::class.java);
+                //NewActivity = new instance of Activity
+                //viewModel.addActivity(NewActivity)
+                val intent = Intent(this, MainActivity::class.java)
                 startActivity(intent)
             }
         }

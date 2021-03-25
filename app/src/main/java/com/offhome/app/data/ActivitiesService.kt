@@ -1,9 +1,10 @@
 package com.offhome.app.data
 
+import android.telecom.Call
 import com.offhome.app.model.ActivityFromList
 
 interface ActivitiesService {
-    /*@GET("activities")
-    fun getAllActivities(): Call<List<ActivityFromList>>
+    /*@POST("activities")
+    fun addActivity(activity: ActivityFromList)
 */
 }

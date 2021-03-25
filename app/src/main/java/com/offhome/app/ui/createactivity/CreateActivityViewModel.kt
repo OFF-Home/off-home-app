@@ -10,19 +10,8 @@ import com.offhome.app.model.ActivityFromList
  * Create Activity View Model (not fully implemented yet)
  */
 class CreateActivityViewModel : ViewModel() {
-
-    /*per provar amb la BD
-    private var repository: ActivitiesRepository = ActivitiesRepository()
-    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAll()!!
-    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
-        return activitiesList
-    }
-    fun getNewActivities(): LiveData<List<ActivityFromList>> {
-        activitiesList = repository.getAll()
-        return activitiesList
-    }*/
-
-   /* init{
+   /*
+    init{
         getActivitiesList()
     }
 
@@ -38,7 +27,7 @@ class CreateActivityViewModel : ViewModel() {
         return activitylistData
     }
 
-    fun addActivity(){
+    fun addActivity(activity: Activity){
     }*/
 
     private var repository: Repository = Repository()

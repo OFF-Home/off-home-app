@@ -81,8 +81,7 @@ class SignUpDataSource {
                                 ).show()
 
                                 _result.value = Result(success = true)
-
-                            } else {    //si rebem resposta de la BD pero ens informa d'un error
+                            } else { // si rebem resposta de la BD pero ens informa d'un error
                                 Toast.makeText(
                                     activity,
                                     // "$emailConfirmationMessage $displayName",
@@ -104,7 +103,7 @@ class SignUpDataSource {
                             _result.value = Result(error = Exception("connection error. Server not reached"))
                         }
                     })
-                } else {    //error a Firebase
+                } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 
                     _result.value = Result(error = task.exception) // aquesta excepcio funciona aixi?

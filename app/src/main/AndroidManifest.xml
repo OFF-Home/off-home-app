@@ -10,26 +10,26 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome"
+        android:networkSecurityConfig="@xml/network_security_config"
         android:allowBackup="true">
-        <activity android:name=".ui.createactivity.CreateActivity"
-            android:parentActivityName=".MainActivity"
-            >
-
-      </activity>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity
             android:name=".ui.signup.SignUpActivity"
             android:label="@string/title_activity_sign_up">
-        </activity>
-        <activity android:name=".MainActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter></activity>
+        </activity>
+        <activity
+            android:name=".ui.createactivity.CreateActivity"/>
+        <activity android:name=".MainActivity" >
+
+        </activity>
     </application>
 </manifest>

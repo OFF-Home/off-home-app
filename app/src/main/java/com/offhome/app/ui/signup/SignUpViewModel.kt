@@ -42,7 +42,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) { // he fet la de passar la activity cap a baix pq mha semblat que els observers la volen. no se si funciona
+    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
         // can be launched in a separate asynchronous job
 
         signUpRepository.result.observe(
@@ -50,12 +50,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             Observer {
                 val resultRepo = it ?: return@Observer
                 if (resultRepo.error != null) {
-                    val msg: String = resultRepo.error.toString() // funciona
-                    println("msg = $msg")
-                    Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
-                    /*val msg2: CharSequence = msg.subSequence(16, msg.length - 1)
-                    println("msg2 = $msg2")
-                    Toast.makeText(activity, "msg2 = $msg2", Toast.LENGTH_LONG).show()*/
+                    val msg: String = resultRepo.error.toString()
+                    //println("msg = $msg")
+                    //Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
 
                     when { // TODO posar els strings de la excepcio als .equals()
                         msg.equals("cosa1")

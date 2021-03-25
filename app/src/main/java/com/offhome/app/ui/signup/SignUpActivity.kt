@@ -98,8 +98,7 @@ class SignUpActivity : AppCompatActivity() {
 
         // observar el resultat de signUp.
         // Si hi ha error, mostrar-lo.
-        // Si hi ha success, s'envia e-mail per a confirmar, s'informa d'axiò amb un missatge, i canvia a pantalla de LogIn
-        //
+        // Si hi ha success, s'informa d'aixoamb un missatge, i canvia a pantalla de LogIn
         signUpViewModel.signUpResult.observe(
             this@SignUpActivity,
             Observer {
@@ -159,7 +158,7 @@ class SignUpActivity : AppCompatActivity() {
                 )
             }
 
-            // que es esto??
+            // -
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
                     EditorInfo.IME_ACTION_DONE ->

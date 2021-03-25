@@ -10,6 +10,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
 import com.offhome.app.ui.signup.SignUpActivity
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -69,9 +70,10 @@ class SignUpDataSource {
 
                     // parlar amb el nostre client
                     val signedUpUser = SignUpUserData(email, username, password, birthDate.toString())
-                    val call: Call<String> = signUpService.createProfile(username, signedUpUser)
-                    call.enqueue(object : Callback<String> {
-                        override fun onResponse(call: Call<String>, response: Response<String>) {
+                    val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
+
+                    call.enqueue(object : Callback<ResponseBody> {
+                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                             if (response.isSuccessful) {
                                 Toast.makeText(
                                     activity,
@@ -93,7 +95,7 @@ class SignUpDataSource {
                             }
                         }
 
-                        override fun onFailure(call: Call<String>, t: Throwable) {
+                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                             Toast.makeText(
                                 activity,
                                 "Connection error",

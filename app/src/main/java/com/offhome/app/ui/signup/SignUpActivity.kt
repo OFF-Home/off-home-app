@@ -196,9 +196,9 @@ class SignUpActivity : AppCompatActivity() {
             val day: Int = cal.get(Calendar.DAY_OF_MONTH)
             val datePicker = DatePickerDialog(
                 this,
-                { view, year, month, dayOfMonth ->
-                    val humanMonth = month + 1 // perque els mesos comencen a 0
-                    val textDate = "$dayOfMonth/$humanMonth/$year"
+                { _, selectedYear, selectedMonth, selectedDay ->
+                    val humanMonth = selectedMonth + 1 // perque els mesos comencen a 0
+                    val textDate = "$selectedDay/$humanMonth/$selectedYear"
                     birthDate.setText(textDate)
                     signUpViewModel.loginDataChanged(
                         email.text.toString(),

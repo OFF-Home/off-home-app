@@ -1,6 +1,7 @@
 package com.offhome.app.data.retrofit
 
 import com.offhome.app.data.model.SignUpUserData
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.Body
 import retrofit2.http.POST
@@ -21,6 +22,6 @@ interface SignUpService {
      * @param signUpUserData : the user's data; it includes email, username, password, birthDate. It is passed in the body.
      * @return returns the call to be executed
      */
-    @POST("/users/{username}/create")
-    fun createProfile(@Path("username") username: String, @Body signUpUserData: SignUpUserData): Call<String>
+    @POST("users/{username}/create")
+    fun createProfile(@Path("username") username: String, @Body signUpUserData: SignUpUserData): Call<ResponseBody>
 }

@@ -1,9 +1,6 @@
 package com.offhome.app.ui.createactivity
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.offhome.app.Repository
-import com.offhome.app.model.ActivityFromList
 
 
 /**
@@ -30,10 +27,10 @@ class CreateActivityViewModel : ViewModel() {
     fun addActivity(activity: Activity){
     }*/
 
-    private var repository: Repository = Repository()
-    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()
+    //private var repository: Repository = Repository()
+    //private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()
 
-    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
-        return activitiesList
-    }
+    //fun getActivitiesList(): LiveData<List<ActivityFromList>> {
+    //    return activitiesList
+    //}
 }

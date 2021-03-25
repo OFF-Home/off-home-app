@@ -79,7 +79,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             Log.d("Activity", it.toString())
         }
 
-        viewModel.getActivitiesList().observe(this,activityObserver)
+        //viewModel.getActivitiesList().observe(this,activityObserver)
 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

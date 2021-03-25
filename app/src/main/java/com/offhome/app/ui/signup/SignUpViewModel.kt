@@ -2,7 +2,6 @@ package com.offhome.app.ui.signup
 
 // import android.text.TextUtils
 import android.util.Patterns
-import android.widget.Toast
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -51,8 +50,8 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 val resultRepo = it ?: return@Observer
                 if (resultRepo.error != null) {
                     val msg: String = resultRepo.error.toString()
-                    //println("msg = $msg")
-                    //Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
+                    // println("msg = $msg")
+                    // Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
 
                     when { // TODO posar els strings de la excepcio als .equals()
                         msg.equals("cosa1")

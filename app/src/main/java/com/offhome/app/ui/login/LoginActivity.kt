@@ -157,6 +157,10 @@ class LoginActivity : AppCompatActivity() {
 
             afterTextChanged {
                 setBackgroundResource(R.drawable.background_edit_text)
+                loginViewModel.loginDataChanged(
+                    editTextEmail.text.toString(),
+                    editTextPassword.text.toString()
+                )
             }
 
             setOnEditorActionListener { _, actionId, _ ->

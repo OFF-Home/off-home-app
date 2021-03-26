@@ -11,13 +11,23 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Activities repository
+ * This class requests the response of the creation of the activities
+ * @author Maria Nievas Viñals
+ * @property mutableLiveData where the result from creating the activity is saved
+ * @property activitiesClient references the instance of the [ActivitiesClient] class
+ * @property activitiesService  references the instance initialized of the [ActivitiesService] class from the [ActivitiesClient] class
+ *
  */
 class ActivitiesRepository {
     private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
 
+    /**
+     * This function calls the [activitiesService] in order to create the activity and set the MutableLiveData with the result
+     * @param newActivity is an instance of the data class [ActivityData]
+     * @return the result with a live data string type
+     */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
         val call = activitiesService?.createActivityByUser(emailCreator = "victorfer@gmai.com", newActivity)
         call!!.enqueue(object: Callback<ResponseBody> {

@@ -1,5 +1,9 @@
 package com.offhome.app.model
 
+/**
+ * Data class [ActivityData]
+ * It contains the activity information that the database needs to receive
+ */
 data class ActivityData(
         val nomCarrer: String,
         val carrerNum: Int,

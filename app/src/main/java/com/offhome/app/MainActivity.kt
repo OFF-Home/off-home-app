@@ -1,5 +1,6 @@
 package com.offhome.app
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -7,6 +8,8 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.offhome.app.ui.createactivity.CreateActivity
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +26,14 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_activities, R.id.navigation_explore, R.id.navigation_chats, R.id.navigation_profile
             )
         )
+
+        val buttonCreate = findViewById<FloatingActionButton>(R.id.buttonCreateActivity)
+
+        buttonCreate.setOnClickListener{
+            val intent = Intent(this, CreateActivity::class.java);
+            startActivity(intent)
+        }
+
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
     }

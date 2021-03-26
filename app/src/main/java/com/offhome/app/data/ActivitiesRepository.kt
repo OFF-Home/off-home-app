@@ -13,9 +13,9 @@ class ActivitiesRepository {
     private val activitiesClient = ActivitiesClient()
     private val activitiesService = activitiesClient.getActivitiesService()
 
-    fun getAll(): MutableLiveData<List<ActivityFromList>> {
+    fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
-        val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {

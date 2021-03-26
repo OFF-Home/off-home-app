@@ -9,14 +9,15 @@ import com.offhome.app.model.ActivityFromList
 class ActivitiesListViewModel: ViewModel() {
     /*cosas BD si algun dia lo puedo probar*/
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAll()!!
+    private lateinit var activitiesList: LiveData<List<ActivityFromList>>
 
-    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
+    fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
+        activitiesList = repository.getAll(categoryName)
         return activitiesList
     }
 
-    fun getNewActivities(): LiveData<List<ActivityFromList>> {
-        activitiesList = repository.getAll()
+    fun getNewActivities(categoryName: String): LiveData<List<ActivityFromList>> {
+        activitiesList = repository.getAll(categoryName)
         return activitiesList
     }
     /*

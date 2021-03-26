@@ -31,7 +31,7 @@ class MainActivity : AppCompatActivity() {
 
         buttonCreate.setOnClickListener{
             val intent = Intent(this, ActivitiesList::class.java);
-            intent.putExtra("amount", "Running")
+            intent.putExtra("category", "Running")
             startActivity(intent)
         }
 

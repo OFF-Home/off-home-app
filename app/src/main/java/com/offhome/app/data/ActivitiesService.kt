@@ -5,7 +5,7 @@ import retrofit2.Call
 import retrofit2.http.*
 
 interface ActivitiesService {
-    @GET("activities")
-    fun getAllActivities(): Call<List<ActivityFromList>>
+    @GET("categories/{category}")
+    fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 
 }

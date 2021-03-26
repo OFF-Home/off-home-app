@@ -31,8 +31,8 @@ class ActivitiesList : AppCompatActivity() {
 
         //recibir nombre categoria seleccionada
         val arguments = intent.extras
-        val titleActivity = arguments?.getString("category")
-        title = titleActivity
+        val categoryName = arguments?.getString("category")
+        title = categoryName
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -47,7 +47,7 @@ class ActivitiesList : AppCompatActivity() {
         layout.adapter = activitiesListAdapter
 
 
-        activitiesListViewModel.getActivitiesList().observe(
+        activitiesListViewModel.getActivitiesList(categoryName!!).observe(
                 this,
                 Observer {
                     activitiesList = it

@@ -1,10 +1,12 @@
 package com.offhome.app.model
 
 data class ActivityFromList (
-    val name: String,
-    val dataTime: String,
-    val dataTimeImage: String,
-    val capacity: String,
-    val capacityImage: String,
-    val iconLikeImage: String,
+    val nomCarrer: String,
+    val carrerNum: Int,
+    val dataHoraIni: String,
+    val categoria: String,
+    val maxParticipant: String,
+    val titol: String,
+    val descripcio: String,
+    val dataHoraFi: String
 )

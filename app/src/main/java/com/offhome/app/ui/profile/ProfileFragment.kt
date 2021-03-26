@@ -57,7 +57,7 @@ class ProfileFragment : Fragment() {
         tabs.setupWithViewPager(viewPager)
 
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
-        fragmentViewModel.topProfileInfo.observe(
+        fragmentViewModel.ProfileInfo.observe(
             viewLifecycleOwner,
             Observer {
                 val topProfileInfoVM = it ?: return@Observer
@@ -68,7 +68,7 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        fragmentViewModel.getTopProfileInfo()
+        fragmentViewModel.getProfileInfo()
 
         return view
     }

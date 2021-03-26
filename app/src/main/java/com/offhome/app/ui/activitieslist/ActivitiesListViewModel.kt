@@ -7,7 +7,7 @@ import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
 
 class ActivitiesListViewModel: ViewModel() {
-    /*cosas BD si algun dia lo puedo probar*/
+    /*cosas BD ya funcionan*/
     private var repository: ActivitiesRepository = ActivitiesRepository()
     private lateinit var activitiesList: LiveData<List<ActivityFromList>>
 
@@ -20,7 +20,7 @@ class ActivitiesListViewModel: ViewModel() {
         activitiesList = repository.getAll(categoryName)
         return activitiesList
     }
-    /*
+    /* old stuff
     private var repository: Repository = Repository()
     private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()!!
 

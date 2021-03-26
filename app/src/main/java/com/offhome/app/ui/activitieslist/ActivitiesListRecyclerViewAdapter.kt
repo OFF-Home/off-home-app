@@ -6,7 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
@@ -29,7 +28,7 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
         val item = activitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
-        holder.textViewCapacity.text = item.maxParticipant
+        holder.textViewCapacity.text = item.maxParticipant.toString()
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)

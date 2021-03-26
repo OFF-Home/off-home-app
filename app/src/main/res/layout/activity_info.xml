@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.infoactivity.InfoActivity" >
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="412dp"
+        android:layout_height="240dp"
+        android:layout_marginBottom="12dp"
+        app:layout_constraintBottom_toTopOf="@+id/view"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/imageViewIconLike"
+        android:layout_width="46dp"
+        android:layout_height="46dp"
+        android:contentDescription="Icon"
+        android:padding="5dp"
+        app:layout_constraintEnd_toEndOf="@+id/map"
+        app:layout_constraintTop_toTopOf="@+id/map"
+        app:srcCompat="@drawable/ic_baseline_favorite_border_24"
+        tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="323dp"
+        android:layout_height="438dp"
+        android:padding="5dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/map" />
+
+    <ImageView
+        android:id="@+id/imageViewDataTime"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@+id/view"
+        app:srcCompat="@drawable/ic_baseline_access_time_filled_24" />
+
+    <TextView
+        android:id="@+id/textViewDataTimeActivity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:padding="6dp"
+        android:text="DataTime"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
+        app:layout_constraintTop_toTopOf="@+id/view" />
+
+    <ImageView
+        android:id="@+id/imageViewCapacity"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
+        app:srcCompat="@drawable/ic_baseline_people_alt_24" />
+
+    <TextView
+        android:id="@+id/textViewCapacity"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:padding="6dp"
+        android:text="Places available"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
+
+    <ImageView
+        android:id="@+id/imageViewCreator"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCapacity"
+        app:srcCompat="@drawable/ic_baseline_face_24" />
+
+    <TextView
+        android:id="@+id/textViewCreator"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:textStyle="bold"
+        android:padding="6dp"
+        android:text="Created by "
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewCreator"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCapacity" />
+
+    <TextView
+        android:id="@+id/textViewAbout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:padding="6dp"
+        android:text="@string/about_the_activity"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/imageViewCreator" />
+
+    <TextView
+        android:id="@+id/textViewDescription"
+        android:layout_width="323dp"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:padding="6dp"
+        android:text="This is the best activity ever it is so much fun come join us you will love it."
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/textViewAbout" />
+
+    <ImageView
+        android:id="@+id/imageViewParticipants"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:padding="6dp"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+        app:srcCompat="@drawable/ic_baseline_people_24" />
+
+    <TextView
+        android:id="@+id/textViewParticipants"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="sans-serif"
+        android:padding="6dp"
+        android:text="@string/participants"
+        android:textStyle="bold"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+    <Button
+        android:id="@+id/btn_create"
+        android:layout_width="148dp"
+        android:layout_height="58dp"
+        android:backgroundTint="@color/secondary"
+        android:text="@string/join"
+        android:textSize="20dp"
+        app:cornerRadius="18dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintVertical_bias="0.976"
+        app:layout_constraintHorizontal_bias="0.498" />
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

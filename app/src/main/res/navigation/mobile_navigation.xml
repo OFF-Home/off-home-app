@@ -7,19 +7,25 @@
 
     <fragment
         android:id="@+id/navigation_activities"
-        android:name="com.offhome.app.ui.activities.ActivitiesFragment"
+        android:name="com.offhome.app.ui.activities.CategoriesFragment"
         android:label="@string/title_activities"
-        tools:layout="@layout/fragment_activities" />
+        tools:layout="@layout/fragment_categories" />
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.offhome.app.ui.activities.ActivitiesFragment"
+        android:name="com.offhome.app.ui.activities.CategoriesFragment"
         android:label="@string/title_explore"
-        tools:layout="@layout/fragment_activities" />
+        tools:layout="@layout/fragment_categories" />
 
     <fragment
         android:id="@+id/navigation_chats"
         android:name="com.offhome.app.ui.notifications.NotificationsFragment"
         android:label="@string/title_chats"
         tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_profile"
+        android:name="com.offhome.app.ui.profile.ProfileFragment"
+        android:label="@string/title_profile"
+        tools:layout="@layout/profile_placeholder_fragment" />
 </navigation>

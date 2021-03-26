@@ -1,5 +1,6 @@
 package com.offhome.app.ui.activitieslist
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -8,13 +9,20 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.infoactivity.InfoActivity
 
-class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class  ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as ActivityFromList
+        val intent = Intent(context, InfoActivity::class.java)
+        intent.putExtra("activity", GsonBuilder().create().toJson(item))
+        if (context != null) {
+            context.startActivity(intent)
+        }
     }
     private var activitiesList: List<ActivityFromList> = ArrayList()
 

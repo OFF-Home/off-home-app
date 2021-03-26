@@ -1,15 +1,18 @@
 package com.offhome.app.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.Category
+import com.offhome.app.ui.activitieslist.ActivitiesList
 
 /**
  * Adpter for the recycler view of the categories list
@@ -22,6 +25,11 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
      */
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as Category
+        val intent = Intent(context, ActivitiesList::class.java)
+        intent.putExtra("category", item.categoria)
+        if (context != null) {
+            context.startActivity(intent)
+        }
     }
     private var categories: List<Category> = ArrayList()
 

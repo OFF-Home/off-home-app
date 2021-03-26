@@ -27,3 +27,4 @@ class CategoriesViewModel : ViewModel() {
     }
  */
 }
+

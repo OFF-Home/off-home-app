@@ -14,4 +14,13 @@
         <!-- Customize your theme here. -->
         <item name="android:fontFamily">@font/montserrat</item>
     </style>
+
+    <style name="Theme.OFFHome.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.OFFHome.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="Theme.OFFHome.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 </resources>

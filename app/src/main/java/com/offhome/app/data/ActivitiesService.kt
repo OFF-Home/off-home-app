@@ -1,5 +1,6 @@
 package com.offhome.app.data
 
+import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -16,4 +17,7 @@ interface ActivitiesService {
   
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
+
+    @POST("/insertusuari")
+    fun joinActivity(@Body join: JoInActivity): Call<ResponseBody>
 }

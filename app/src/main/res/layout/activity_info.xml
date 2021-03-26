@@ -4,7 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
-    tools:context=".ui.infoactivity.InfoActivity" >
+    tools:context=".ui.infoactivity.InfoActivity"
+    android:id="@+id/content">
 
     <fragment
         android:id="@+id/map"
@@ -153,7 +154,7 @@
         app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
     <Button
-        android:id="@+id/btn_create"
+        android:id="@+id/btn_join"
         android:layout_width="148dp"
         android:layout_height="58dp"
         android:backgroundTint="@color/secondary"

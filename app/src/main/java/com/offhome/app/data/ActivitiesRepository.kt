@@ -8,6 +8,7 @@ import okhttp3.ResponseBody
 import retrofit2.Callback
 import retrofit2.Response
 import android.util.Log
+import com.offhome.app.data.model.JoInActivity
 import retrofit2.Call
 
 /**
@@ -21,6 +22,7 @@ import retrofit2.Call
 class ActivitiesRepository {
     private var activities : MutableLiveData<List<ActivityFromList>>? = null
     private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseJoin : MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
 
@@ -65,5 +67,24 @@ class ActivitiesRepository {
             }
         })
         return mutableLiveData as MutableLiveData<String>
+    }
+
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
+        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val call = activitiesService?.joinActivity(join)
+        call!!.enqueue(object: Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseJoin?.value = "You have joined the activity!"
+                } else responseJoin?.value =
+                    "It has been an error and you haven't joined the activity!"
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseJoin?.value =
+                    "It has been an error and you haven't joined the activity!"
+            }
+        })
+        return responseJoin as MutableLiveData<String>
     }
 }

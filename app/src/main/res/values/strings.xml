@@ -169,4 +169,5 @@
     <string name="show_password_description">Show Password</string>
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
+    <string name="go_chat">Go chat!</string>
 </resources>

@@ -16,8 +16,8 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.model.ActivityData
 import java.util.*
-
 /**
  * Create Activity class that let the user create a new activity indicating its parameters on the corresponding screen
  * @author Maria
@@ -79,8 +79,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             Log.d("Activity", it.toString())
         }
 
-        viewModel.getActivitiesList().observe(this,activityObserver)
-
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -139,11 +137,15 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED = findViewById(R.id.btn_create)
         btn_CREATED.setOnClickListener{
             if (validate()) {
-                Toast.makeText(this, "Activity created!", Toast.LENGTH_SHORT).show()
-                //NewActivity = new instance of Activity
-                //viewModel.addActivity(NewActivity)
-                val intent = Intent(this, MainActivity::class.java)
-                startActivity(intent)
+
+                val activitydata = ActivityData("Balmes2", 11, "13h", "Walking", 7, "Running in La Barce", "so much fun!!!", " 13/5/2021")
+
+                viewModel.addActivity(activitydata).observe(this,{
+                    if (it != " ") {
+                        Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                        if (it == "Activity created") startActivity(Intent(this, MainActivity::class.java))
+                    }
+                })
             }
         }
     }

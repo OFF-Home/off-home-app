@@ -1,9 +1,12 @@
 package com.offhome.app.ui.createactivity
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.Repository
+import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.ActivityData
 
 
 /**
@@ -27,13 +30,12 @@ class CreateActivityViewModel : ViewModel() {
         return activitylistData
     }
 
-    fun addActivity(activity: Activity){
-    }*/
+*/
 
-    private var repository: Repository = Repository()
-    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()
+    private var repository: ActivitiesRepository = ActivitiesRepository()
 
-    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
-        return activitiesList
+    fun addActivity(activity: ActivityData): MutableLiveData<String> {
+        return repository.addActivity(activity)
     }
+
 }

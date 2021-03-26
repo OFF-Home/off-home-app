@@ -1,28 +1,40 @@
 package com.offhome.app.data
 
 import android.telecom.Call
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.android.gms.common.api.Response
-import com.offhome.app.data.ActivitiesClient
 import com.offhome.app.model.ActivityFromList
-import javax.security.auth.callback.Callback
+import com.offhome.app.model.ActivityData
+import okhttp3.ResponseBody
+import retrofit2.Callback
+import retrofit2.Response
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 
 /**
  * Activities repository
  */
 class ActivitiesRepository {
-   /* var activities: MutableLiveData<List<ActivityFromList>>? = null
-    private val activitiesService = ActivitiesService? = null
+    private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
+    private val activitiesClient = ActivitiesClient()
+    private var activitiesService = activitiesClient.getActivitiesService()
 
-    init {
-        retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .build()
-        activitiesService = retrofit!!.create(ActivitiesService::class.java)
+    fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
+        val call = activitiesService?.createActivityByUser(emailCreator = "victorfer@gmai.com", newActivity)
+        call!!.enqueue(object: Callback<ResponseBody> {
+            override fun onResponse(
+                call: retrofit2.Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    mutableLiveData?.value = "Activity created!"
+                } else mutableLiveData?.value =
+                    "It has been an error and the activity could not be created"
+            }
+            override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
+                mutableLiveData?.value =
+                    "It has been an error and the activity could not be created"
+            }
+        })
+        return mutableLiveData as MutableLiveData<String>
     }
-
-    fun addActivity(activity: ActivityFromList){
-        if (activity != null) val call: Call<List<ActivityFromList>> = activitiesService!!.addActivity(activity)*/
 }

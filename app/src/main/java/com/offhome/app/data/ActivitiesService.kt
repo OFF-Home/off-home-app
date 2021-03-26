@@ -1,10 +1,13 @@
 package com.offhome.app.data
 
-import android.telecom.Call
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.ActivityData
+import okhttp3.ResponseBody
+import retrofit2.Call
+import retrofit2.http.Body
+import retrofit2.http.POST
+import retrofit2.http.Path
 
 interface ActivitiesService {
-    /*@POST("activities")
-    fun addActivity(activity: ActivityFromList)
-*/
+    @POST("activitats/create/{emailCreator}")
+    fun createActivityByUser(@Path("emailCreator") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
 }

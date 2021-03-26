@@ -69,6 +69,13 @@ class ActivitiesRepository {
         return mutableLiveData as MutableLiveData<String>
     }
 
+    /**
+     * This function calls the [activitiesService] in order to join to an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to join the activity
+     * @return the result with a live data string type
+     */
     fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
         val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
         val call = activitiesService?.joinActivity(join)

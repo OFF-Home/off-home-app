@@ -54,16 +54,16 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val arguments = intent.extras
         val activityString = arguments?.getString("activity")
         //val activityString = "{\n" +
-                "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
-                "        \"nomCarrer\": \"Balmes2\",\n" +
-                "        \"numCarrer\": 11,\n" +
-                "        \"dataHoraIni\": \"13h\",\n" +
-                "        \"categoria\": \"Walking\",\n" +
-                "        \"maxParticipant\": 7,\n" +
-                "        \"titol\": \"Running in La Barce\",\n" +
-                "        \"descripcio\": \"so much fun!!!\",\n" +
-                "        \"dataHoraFi\": \" 13/5/2021\"\n" +
-                "    }"
+//                "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
+//                "        \"nomCarrer\": \"Balmes2\",\n" +
+//                "        \"numCarrer\": 11,\n" +
+//                "        \"dataHoraIni\": \"13h\",\n" +
+//                "        \"categoria\": \"Walking\",\n" +
+//                "        \"maxParticipant\": 7,\n" +
+//                "        \"titol\": \"Running in La Barce\",\n" +
+//                "        \"descripcio\": \"so much fun!!!\",\n" +
+//                "        \"dataHoraFi\": \" 13/5/2021\"\n" +
+//                "    }"
         activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)

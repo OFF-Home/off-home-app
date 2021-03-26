@@ -18,6 +18,9 @@ interface ActivitiesService {
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 
+    /**
+     * This call is for joining an activity
+     */
     @POST("/insertusuari")
     fun joinActivity(@Body join: JoInActivity): Call<ResponseBody>
 }

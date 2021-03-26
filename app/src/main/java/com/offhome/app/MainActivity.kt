@@ -9,6 +9,7 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
+import com.offhome.app.ui.activitieslist.ActivitiesList
 import com.offhome.app.ui.createactivity.CreateActivity
 
 class MainActivity : AppCompatActivity() {
@@ -23,7 +24,7 @@ class MainActivity : AppCompatActivity() {
         // menu should be considered as top level destinations.
         val appBarConfiguration = AppBarConfiguration(
             setOf(
-                R.id.navigation_activities, R.id.navigation_explore, R.id.navigation_chats
+                R.id.navigation_activities, R.id.navigation_explore, R.id.navigation_chats, R.id.navigation_profile
             )
         )
 

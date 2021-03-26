@@ -1,6 +1,6 @@
 package com.offhome.app.data
 
-import android.telecom.Call
+
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.ActivityData
@@ -9,6 +9,13 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import android.util.Log
+import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.ActivitiesClient
+import com.offhome.app.model.ActivityFromList
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 /**
  * This class requests the response of the creation of the activities
@@ -22,6 +29,24 @@ class ActivitiesRepository {
     private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+
+    fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
+        if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    activities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Erro getting info")
+            }
+        })
+        return activities as MutableLiveData<List<ActivityFromList>>
+    }
 
     /**
      * This function calls the [activitiesService] in order to create the activity and set the MutableLiveData with the result

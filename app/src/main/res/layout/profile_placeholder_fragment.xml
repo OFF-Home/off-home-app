@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.ProfilePlaceholderFragment">
+
+    <!--> perquè tinc un frameLayout? es de quan estava experimentant? <-->
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        <!--> tools:context=".ui.profile.ProfileFragment"<-->
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/imageViewProfilePic"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/profile_pic_placeholder"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.498"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+            <!-->tools:src="@tools:sample/avatars"<-->
+            <!-->android:layout_width="wrap_content"
+            android:layout_height="wrap_content"<-->
+            <!-->android:src="@drawable/profile_pic_placeholder"<-->
+
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePic" />
+
+            <RatingBar
+                android:id="@+id/ratingBarEstrellesUsuari"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
+
+            <Button
+                android:id="@+id/buttonMyActivities"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/my_activities"
+                app:layout_constraintEnd_toStartOf="@+id/buttonAboutMe"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+
+            <Button
+                android:id="@+id/buttonAboutMe"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/about_me"
+                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
+                app:layout_constraintStart_toEndOf="@+id/buttonMyActivities"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+
+            <Button
+                android:id="@+id/buttonSettings"
+                android:layout_width="0dp"
+                android:layout_height="56dp"
+                android:layout_marginTop="8dp"
+                android:text="@string/settings"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/buttonAboutMe"
+                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+
+            <fragment
+                android:id="@+id/fragmentDinsProfile"
+                android:name="com.offhome.app.ui.profile.ProfileMyActivitiesFragment"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/buttonAboutMe" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+</FrameLayout>

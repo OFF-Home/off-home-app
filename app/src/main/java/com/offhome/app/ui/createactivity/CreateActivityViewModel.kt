@@ -16,5 +16,4 @@ class CreateActivityViewModel : ViewModel() {
     fun addActivity(activity: ActivityData): MutableLiveData<String> {
         return repository.addActivity(activity)
     }
-
 }

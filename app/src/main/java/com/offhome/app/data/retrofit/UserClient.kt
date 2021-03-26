@@ -1,12 +1,11 @@
-
-package com.offhome.app.data
+package com.offhome.app.data.retrofit
 
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ActivitiesClient {
-    private lateinit var instance: ActivitiesClient
-    private var activitiesService: ActivitiesService? = null
+class UserClient {
+    private lateinit var instance: UserClient
+    private var userService: UserService? = null
     private var retrofit: Retrofit? = null
 
     init {
@@ -14,14 +13,14 @@ class ActivitiesClient {
             .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        activitiesService = retrofit!!.create(ActivitiesService::class.java)
+        userService = retrofit!!.create(UserService::class.java)
     }
 
-    fun getInstance(): ActivitiesClient? {
+    fun getInstance(): UserClient? {
         return instance
     }
 
-    fun getActivitiesService(): ActivitiesService? {
-        return activitiesService
+    fun getUserService(): UserService? {
+        return userService
     }
 }

@@ -1,5 +1,8 @@
 package com.offhome.app.model
 
+/**
+ * Data class with the Activity's atributes
+ */
 data class ActivityFromList (
     val nomCarrer: String,
     val carrerNum: Int,

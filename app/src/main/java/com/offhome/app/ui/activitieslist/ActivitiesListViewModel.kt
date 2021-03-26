@@ -2,7 +2,6 @@ package com.offhome.app.ui.activitieslist
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
-import com.offhome.app.Repository
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
 

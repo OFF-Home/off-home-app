@@ -8,6 +8,9 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+/**
+ * Activities repository
+ */
 class ActivitiesRepository {
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     private val activitiesClient = ActivitiesClient()
@@ -30,4 +33,17 @@ class ActivitiesRepository {
         })
         return activities as MutableLiveData<List<ActivityFromList>>
     }
+   /* var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private val activitiesService = ActivitiesService? = null
+
+    init {
+        retrofit = Retrofit.Builder()
+            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .build()
+        activitiesService = retrofit!!.create(ActivitiesService::class.java)
+    }
+
+    fun addActivity(activity: ActivityFromList){
+        if (activity != null) val call: Call<List<ActivityFromList>> = activitiesService!!.addActivity(activity)*/
 }

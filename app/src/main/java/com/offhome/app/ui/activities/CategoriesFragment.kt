@@ -5,23 +5,30 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.model.Category
 
-class ActivitiesFragment : Fragment() {
+/**
+ * Class that defines the fragment to show the Categories
+ * @property categoriesViewModel references the viewmodel of this fragment
+ * @property categoryAdapter is the adapter for the RecyclerView of the cateories
+ * @property categories is the list of categories
+ */
+class CategoriesFragment : Fragment() {
 
     private lateinit var categoriesViewModel: CategoriesViewModel
     private lateinit var categoryAdapter: MyCategoriesRecyclerViewAdapter
     private var categories: List<Category> = ArrayList()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
+    /**
+     * Called when view created and has the observers
+     * @param inflater is the Layout inflater to inflate the view
+     * @param container is the part which contains the view
+     * @param savedInstanceState is the last saved instance of the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -29,10 +36,9 @@ class ActivitiesFragment : Fragment() {
     ): View? {
         categoriesViewModel =
             ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        val view = inflater.inflate(R.layout.fragment_activities, container, false)
+        val view = inflater.inflate(R.layout.fragment_categories, container, false)
 
-        categoriesViewModel = ViewModelProvider(this).get(CategoriesViewModel::class.java)
-        categoryAdapter = MyCategoriesRecyclerViewAdapter()
+        categoryAdapter = MyCategoriesRecyclerViewAdapter(context)
 
         if (view is RecyclerView) {
             with(view) {
@@ -43,7 +49,7 @@ class ActivitiesFragment : Fragment() {
 
         categoriesViewModel.getCategories().observe(
             viewLifecycleOwner,
-            Observer {
+            {
                 categories = it
                 categoryAdapter.setData(categories)
             }

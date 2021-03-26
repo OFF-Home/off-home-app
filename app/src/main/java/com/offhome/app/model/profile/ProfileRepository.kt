@@ -1,6 +1,5 @@
 package com.offhome.app.model.profile
 
-import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.ProfileDataSource
 
 /**

@@ -25,6 +25,6 @@ class ProfileFragmentViewModel : ViewModel() {
      * obtains topProfileInfo from the lower level and places it on the live data
      */
     fun getTopProfileInfo() {
-        //_topProfileInfo = repository.getTopProfileInfo()!!
+        // _topProfileInfo = repository.getTopProfileInfo()!!
     }
 }

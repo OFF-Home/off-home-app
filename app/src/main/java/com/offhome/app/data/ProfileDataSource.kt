@@ -1,9 +1,5 @@
 package com.offhome.app.data
 
-import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.retrofit.ProfileDataService
-import com.offhome.app.model.profile.TopProfileInfo
 /*import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

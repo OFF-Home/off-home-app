@@ -20,13 +20,14 @@ import java.util.*
 
 
 /**
- * Class *InfoActicity*
- *
+ * Class *InfoActivity*
  * This class is the one that displays the information about an Activity
  * @author Emma Pereira
- * @property InfoActivityViewModel references the ViewModel class for this Activity
  * @property mMap references the GoogleMap that appears in the screen with the activity's location
  * @property imageLike references the ImageView to add an activity to a user's liked activities
+ * @property activity references the ActivityFromList that we get as a parameter from the previous screen
+ * @property latitude references the latitude coordinate of the activity's location the map
+ * @property longitude references the longitude coordinate of the activity's location on the map
  */
 class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
@@ -35,17 +36,19 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var activity: ActivityFromList
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
-    private lateinit var infoActivityViewModel: InfoActivityViewModel
 
-    @SuppressLint("WrongViewCast")
+    /**
+     * This is executed when the activity is launched for first time or created again.
+     * @param savedInstanceState is the instance of the saved State of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
         //recibir actividad seleccionada de la otra pantalla
         val arguments = intent.extras
-        //val activityString = arguments?.getString("activity")
-        val activityString = "{\n" +
+        val activityString = arguments?.getString("activity")
+        /*val activityString = "{\n" +
                 "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
                 "        \"nomCarrer\": \"Balmes2\",\n" +
                 "        \"numCarrer\": 11,\n" +
@@ -55,7 +58,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 "        \"titol\": \"Running in La Barce\",\n" +
                 "        \"descripcio\": \"so much fun!!!\",\n" +
                 "        \"dataHoraFi\": \" 13/5/2021\"\n" +
-                "    }"
+                "    }"*/
         activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -103,7 +106,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera.
+     * This is where we add the marker and move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.

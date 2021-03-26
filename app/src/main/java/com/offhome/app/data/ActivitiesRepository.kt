@@ -7,15 +7,8 @@ import com.offhome.app.model.ActivityData
 import okhttp3.ResponseBody
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Retrofit
-import retrofit2.converter.gson.GsonConverterFactory
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.ActivitiesClient
-import com.offhome.app.model.ActivityFromList
 import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * This class requests the response of the creation of the activities
@@ -26,6 +19,7 @@ import retrofit2.Response
  *
  */
 class ActivitiesRepository {
+    private var activities : MutableLiveData<List<ActivityFromList>>? = null
     private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()

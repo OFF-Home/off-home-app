@@ -32,10 +32,14 @@ class ProfileFragment : Fragment() {
      *
      * Does the fragment inflation
      * Initializes the attributes
+     * Sets up the ViewPager and its tabs
      *
      * Makes the call to the VM to obtain the topProfileInfo and observes its live data for the result
      *
-     * @param
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
      */
     override fun onCreateView(
         inflater: LayoutInflater,

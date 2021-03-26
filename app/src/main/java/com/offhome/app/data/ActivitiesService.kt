@@ -2,9 +2,9 @@ package com.offhome.app.data
 
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
+import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
 import retrofit2.Call
-import com.offhome.app.model.ActivityFromList
 import retrofit2.http.*
 
 interface ActivitiesService {
@@ -14,7 +14,7 @@ interface ActivitiesService {
      */
     @POST("activitats/create/{emailCreator}")
     fun createActivityByUser(@Path("emailCreator") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
-  
+
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 

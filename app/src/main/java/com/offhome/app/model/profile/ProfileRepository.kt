@@ -20,7 +20,7 @@ class ProfileRepository {
 
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
-    var userInfo : MutableLiveData<UserInfo>? = null
+    var userInfo: MutableLiveData<UserInfo>? = null
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -41,6 +41,6 @@ class ProfileRepository {
         })
 
         return userInfo as MutableLiveData<UserInfo>
-        //return TopProfileInfo(username = "Maria", starRating = 6) // stub
+        // return TopProfileInfo(username = "Maria", starRating = 6) // stub
     }
 }

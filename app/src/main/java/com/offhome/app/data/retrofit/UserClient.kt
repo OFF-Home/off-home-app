@@ -1,7 +1,5 @@
 package com.offhome.app.data.retrofit
 
-import com.offhome.app.data.ActivitiesClient
-import com.offhome.app.data.ActivitiesService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 

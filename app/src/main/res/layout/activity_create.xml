@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--  Create Activity layout  -->
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -8,7 +9,7 @@
     android:padding="20dp"
     tools:context=".ui.createactivity.CreateActivity">
 
-
+    <!--  Text View to show the text "Title of the activity"  -->
     <TextView
         android:id="@+id/textTitle"
         android:layout_width="350dp"
@@ -25,7 +26,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.022" />
 
-
+    <!--  Edit Text for input the title of the activity  -->
     <EditText
         android:id="@+id/activity_title"
         android:layout_width="350dp"
@@ -44,6 +45,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.065" />
 
+    <!-- Text View to show the text "About of the activity"  -->
     <TextView
         android:id="@+id/textAbout"
         android:layout_width="350dp"
@@ -60,6 +62,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.196" />
 
+    <!--  Edit Text for input the description of the activity  -->
     <EditText
         android:id="@+id/about_the_activity"
         android:layout_width="350dp"
@@ -78,6 +81,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.242" />
 
+    <!--  Image Button to show the image of the location  -->
     <ImageButton
         android:id="@+id/btn_location"
         android:layout_width="wrap_content"
@@ -94,6 +98,7 @@
         app:layout_constraintVertical_bias="0.589"
         tools:ignore="ContentDescription" />
 
+    <!-- Image Button to show the image of the calendar -->
     <ImageButton
         android:id="@+id/btnPickDate"
         android:layout_width="45dp"
@@ -110,6 +115,7 @@
         app:layout_constraintVertical_bias="0.906"
         tools:ignore="ContentDescription" />
 
+    <!--  Text View to show the date and hour selected for the activity  -->
     <TextView
         android:id="@+id/date_pick_text"
         android:layout_width="135dp"
@@ -126,6 +132,7 @@
         tools:text="@string/date" />
 
 
+    <!-- Image Button to show the image of people  -->
     <ImageButton
         android:id="@+id/btn_availability"
         android:layout_width="wrap_content"
@@ -143,6 +150,7 @@
         app:layout_constraintVertical_bias="0.906"
         tools:ignore="ContentDescription" />
 
+    <!--  Edit Text for input the activity location  -->
     <EditText
         android:id="@+id/locationpck2"
         android:layout_width="191dp"
@@ -159,14 +167,14 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.596" />
 
-
+    <!--  Button for input the date and hour of the activity -->
     <Button
         android:id="@+id/btn_pickdate"
         android:layout_width="109dp"
         android:layout_height="35dp"
         android:backgroundTint="@color/divider"
         android:text="@string/choose_date"
-        android:textSize="10sp"
+        android:textSize="12sp"
         app:layout_constraintBottom_toTopOf="@+id/locationpck2"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.357"
@@ -174,11 +182,12 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.711" />
 
+    <!--  Text View to show the text "Max participants"  -->
     <TextView
         android:id="@+id/participants"
         android:layout_width="199dp"
         android:layout_height="25dp"
-        android:text="Max participants"
+        android:text="@string/max_participants"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -188,6 +197,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.484" />
 
+    <!--  Number Picker to select the maximum number of participants for the activity  -->
     <NumberPicker
         android:id="@+id/pick_availability"
         android:layout_width="34dp"
@@ -201,6 +211,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.985" />
 
+    <!--  Spinner to choose the category that fits better the activity  -->
     <Spinner
         android:id="@+id/sp_choose_category"
         android:layout_width="213dp"
@@ -213,6 +224,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.695" />
 
+    <!-- Image Button to show the image of the categories  -->
     <ImageButton
         android:id="@+id/btn_select_category"
         android:layout_width="wrap_content"
@@ -229,6 +241,7 @@
         app:layout_constraintVertical_bias="0.692"
         tools:ignore="ContentDescription" />
 
+    <!--  Button to invite friends for the activity through other apps  -->
     <Button
         android:id="@+id/btn_invite_friends"
         style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
@@ -242,6 +255,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.845" />
 
+    <!--  Image Button the show the image of the loupe  -->
     <ImageButton
         android:id="@+id/image_search"
         android:layout_width="39dp"
@@ -257,6 +271,7 @@
         app:layout_constraintVertical_bias="0.837"
         tools:ignore="ContentDescription" />
 
+    <!--  Button to create the activity  -->
     <Button
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"

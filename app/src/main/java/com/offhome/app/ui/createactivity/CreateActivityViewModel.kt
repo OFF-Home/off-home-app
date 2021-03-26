@@ -1,36 +1,19 @@
 package com.offhome.app.ui.createactivity
 
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-
+import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.model.ActivityData
 
 /**
- * Create Activity View Model (not fully implemented yet)
+ * View Model for CreateActivity Activity
+ * @author Maria Nievas Viñals
  */
 class CreateActivityViewModel : ViewModel() {
-   /*
-    init{
-        getActivitiesList()
+
+    private var repository: ActivitiesRepository = ActivitiesRepository()
+
+    fun addActivity(activity: ActivityData): MutableLiveData<String> {
+        return repository.addActivity(activity)
     }
-
-    fun setListData(activitylist:List<Activity>){
-        activitylistData.value = activitylist
-    }
-
-    fun getActivitiesList() {
-        setListData(activityUseCase.getActivityList())
-    }
-
-    fun getActivitiesListLiveData(): LiveData<List<Activity>>{
-        return activitylistData
-    }
-
-    fun addActivity(activity: Activity){
-    }*/
-
-    //private var repository: Repository = Repository()
-    //private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()
-
-    //fun getActivitiesList(): LiveData<List<ActivityFromList>> {
-    //    return activitiesList
-    //}
 }

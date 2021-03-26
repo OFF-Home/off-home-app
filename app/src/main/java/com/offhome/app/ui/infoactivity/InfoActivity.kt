@@ -1,9 +1,11 @@
 package com.offhome.app.ui.infoactivity
 
+import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -35,6 +37,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var longitude: Double = 0.0
     private lateinit var infoActivityViewModel: InfoActivityViewModel
 
+    @SuppressLint("WrongViewCast")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
@@ -56,6 +59,19 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
+        datahora.text = activity.dataHoraIni
+
+        val capacity = findViewById<TextView>(R.id.textViewCapacity)
+        capacity.text = activity.maxParticipant.toString()
+
+        val creator = findViewById<TextView>(R.id.textViewCreator)
+        creator.text = getString(R.string.created_by) + activity.usuariCreador
+
+        val description = findViewById<TextView>(R.id.textViewDescription)
+        description.text = activity.descripcio
+
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager

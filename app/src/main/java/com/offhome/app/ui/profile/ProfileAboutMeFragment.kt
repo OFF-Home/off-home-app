@@ -27,6 +27,8 @@ class ProfileAboutMeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
+        viewModel = ViewModelProvider(this).get(ProfileAboutMeViewModel::class.java)
+
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
@@ -39,7 +41,5 @@ class ProfileAboutMeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileAboutMeViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 }

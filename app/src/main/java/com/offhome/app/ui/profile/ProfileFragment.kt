@@ -3,6 +3,7 @@ package com.offhome.app.ui.profile
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -26,6 +27,7 @@ class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
+    lateinit var estrelles : RatingBar
 
     /**
      * Override the onCreateView method
@@ -50,6 +52,8 @@ class ProfileFragment : Fragment() {
 
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
         textViewUsername = view.findViewById(R.id.textViewUsername)
+        estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
+
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
         viewPager.adapter = sectionsPagerAdapter
@@ -60,11 +64,11 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.ProfileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val topProfileInfoVM = it ?: return@Observer
+                val profileInfoVM = it ?: return@Observer
 
-                // TODO els altres
-                textViewUsername.text = topProfileInfoVM.username
-                // imageViewProfilePic.setImageDrawable(/**/)
+                textViewUsername.text = profileInfoVM.username
+                estrelles.numStars = profileInfoVM.estrelles
+                // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
             }
         )
 

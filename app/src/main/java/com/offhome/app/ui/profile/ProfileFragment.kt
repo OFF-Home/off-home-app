@@ -12,6 +12,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.offhome.app.R
+import com.offhome.app.model.profile.ProfileRepository
 
 /**
  * Class *ProfileFragment*
@@ -62,21 +63,14 @@ class ProfileFragment : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
-        //a ver
-        //aboutMeFragment = viewPager.getChildAt(1)
-
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
-            Observer {
+            Observer {          //aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
                 val profileInfoVM = it ?: return@Observer
 
                 //debug
-                Toast.makeText(
-                    context,
-                    "arribo al fragmentViewModel.ProfileInfo.observe()",
-                    Toast.LENGTH_LONG
-                ).show()
+                //Toast.makeText(context,"arribo al fragmentViewModel.ProfileInfo.observe()",Toast.LENGTH_LONG).show()
 
                 textViewUsername.text = profileInfoVM.username
                 estrelles.numStars = profileInfoVM.estrelles
@@ -84,7 +78,22 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        fragmentViewModel.getProfileInfo()
+        //era per debugejar
+        /*val profileRepo: ProfileRepository = getViewModel().getRepository()
+        profileRepo.userInfo?.observe(
+            viewLifecycleOwner,
+            Observer {
+                val profileInfoRepo = it ?: return@Observer
+                //debug
+                Toast.makeText(context,"arribo al Repo.ProfileInfo.observe(); a ProfileFragment",Toast.LENGTH_LONG).show()
+
+                textViewUsername.text = profileInfoRepo.username
+                estrelles.numStars = profileInfoRepo.estrelles
+            }
+        )*/
+        Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
+
+        fragmentViewModel.getProfileInfo(context)
 
         return view
     }

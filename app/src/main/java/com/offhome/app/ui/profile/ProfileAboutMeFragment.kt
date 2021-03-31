@@ -61,12 +61,13 @@ class ProfileAboutMeFragment : Fragment() {
 
         //obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment:ProfileFragment = parentFragment as ProfileFragment
-        val profileRepo:ProfileRepository = profileFragment.getViewModel().getRepository()
 
+        val profileRepo:ProfileRepository = profileFragment.getViewModel().getRepository()
         profileRepo.userInfo?.observe(
             viewLifecycleOwner,
             Observer {
                 val profileInfoVM = it ?: return@Observer
+                Toast.makeText(context,"arribo al Repo.ProfileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
                 textViewProfileDescription.text = profileInfoVM.description
                 textViewBirthDate.text = profileInfoVM.birthDate
                 textViewFollowerCount.text = profileInfoVM.followers.toString()
@@ -75,12 +76,9 @@ class ProfileAboutMeFragment : Fragment() {
                 omplirTagGroup(profileInfoVM.tags)
             }
         )
-        //val profileInfoRepo = profileRepo.getProfileInfo("victorfer")
 
         //testing
-        omplirTagGroup("aixo no s'arriba a llegir, lol")
-
-        Toast.makeText(context, "arribo a omplirTagGroup()", Toast.LENGTH_LONG).show()
+        omplirTagGroup("aquest string encara no el llegim")
 
         return view
     }

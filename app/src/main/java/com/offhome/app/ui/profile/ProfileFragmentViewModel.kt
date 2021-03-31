@@ -1,5 +1,6 @@
 package com.offhome.app.ui.profile
 
+import android.content.Context
 import androidx.lifecycle.*
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
@@ -24,10 +25,10 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * obtains topProfileInfo from the lower level and places it on the live data
      */
-    fun getProfileInfo() {
+    fun getProfileInfo(context: Context?) {
         val username = "victorfer" // stub
 
-        _profileInfo = repository.getProfileInfo(username)!!
+        _profileInfo = repository.getProfileInfo(username, context)!!
     }
 
     fun getRepository():ProfileRepository {

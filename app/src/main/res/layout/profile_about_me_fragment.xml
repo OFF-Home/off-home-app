@@ -95,7 +95,6 @@
         android:contextClickable="false"
         android:focusableInTouchMode="false"
         android:hapticFeedbackEnabled="false"
-        app:chipSpacingVertical="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle"
@@ -110,7 +109,9 @@
             android:layout_marginEnd="5dp"
             android:text="trash"
             android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            app:chipSurfaceColor="@color/primary_light"/>
+            android:textSize="14sp"
+            app:chipStrokeColor="@color/primary_light"
+            app:chipSurfaceColor="@color/primary_light" />
 
         <!-- una altra opcio de style es action. crec que es el que farem servir a veurePerfilAltreUsuari -->
 

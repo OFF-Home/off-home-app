@@ -1,11 +1,14 @@
 package com.offhome.app.ui.profile
 
+import android.content.res.ColorStateList
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.graphics.toColor
+import androidx.core.graphics.toColorLong
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -68,12 +71,14 @@ class ProfileAboutMeFragment : Fragment() {
                 textViewBirthDate.text = profileInfoVM.birthDate
                 textViewFollowerCount.text = profileInfoVM.followers.toString()
                 textViewFollowingCount.text = profileInfoVM.following.toString()
+
+                omplirTagGroup(profileInfoVM.tags)
             }
         )
         //val profileInfoRepo = profileRepo.getProfileInfo("victorfer")
 
         //testing
-        omplirTagGroupPlaceholder()
+        omplirTagGroup("aixo no s'arriba a llegir, lol")
 
         Toast.makeText(context, "arribo a omplirTagGroup()", Toast.LENGTH_LONG).show()
 
@@ -82,6 +87,18 @@ class ProfileAboutMeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    private fun omplirTagGroup(tagString:String) {
+        var i = 0
+        val nTags = 10 //stub
+        while (i<nTags) {
+            //agafar tag del string
+            val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
+            tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))      // Color("@color/primary_light")    ;  // R.id.@color/primary_light
+            tag1.chipStrokeWidth = 5F
+            ++i
+        }
     }
 
     private fun omplirTagGroupPlaceholder() {

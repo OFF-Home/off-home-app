@@ -5,9 +5,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.material.chip.Chip
+import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
 import com.offhome.app.model.profile.ProfileRepository
 
@@ -22,6 +25,7 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
+    private lateinit var chipGroupTags : ChipGroup
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -36,6 +40,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount2)
+        chipGroupTags = view.findViewById(R.id.chipGroupTags)
 
 
         /*viewModel.ProfileInfo.observe(
@@ -67,10 +72,32 @@ class ProfileAboutMeFragment : Fragment() {
         )
         //val profileInfoRepo = profileRepo.getProfileInfo("victorfer")
 
+        //testing
+        omplirTagGroupPlaceholder()
+
+        Toast.makeText(context, "arribo a omplirTagGroup()", Toast.LENGTH_LONG).show()
+
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+    }
+
+    private fun omplirTagGroupPlaceholder() {
+        //val tagList : java.util.ArrayList<View> = ArrayList()
+        val tag1 = Chip(context); tag1.text = "tag1"; chipGroupTags.addView(tag1)
+        val tag2 = Chip(context); tag2.text = "tag2"; chipGroupTags.addView(tag2)
+        val tag3 = Chip(context); tag3.text = "tag3"; chipGroupTags.addView(tag3)
+
+
+        /*val tag1 = TextView(context); tag1.text = "tag1"; tagList.add(tag1); chipGroupTags.addView(tag1)
+        val tag2 = TextView(context); tag2.text = "tag2"; tagList.add(tag2); chipGroupTags.addView(tag2)
+        val tag3 = TextView(context); tag3.text = "tag3"; tagList.add(tag3); chipGroupTags.addView(tag3)
+        val tag4 = TextView(context); tag4.text = "tag4"; tagList.add(tag4); chipGroupTags.addView(tag4)*/
+
+        //chipGroupTags.
+
+        //chipGroupTags.addChildrenForAccessibility(tagList)
     }
 }

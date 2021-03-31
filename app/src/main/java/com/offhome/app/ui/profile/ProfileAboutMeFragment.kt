@@ -102,19 +102,8 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     private fun omplirTagGroupPlaceholder() {
-        //val tagList : java.util.ArrayList<View> = ArrayList()
         val tag1 = Chip(context); tag1.text = "tag1"; chipGroupTags.addView(tag1)
         val tag2 = Chip(context); tag2.text = "tag2"; chipGroupTags.addView(tag2)
         val tag3 = Chip(context); tag3.text = "tag3"; chipGroupTags.addView(tag3)
-
-
-        /*val tag1 = TextView(context); tag1.text = "tag1"; tagList.add(tag1); chipGroupTags.addView(tag1)
-        val tag2 = TextView(context); tag2.text = "tag2"; tagList.add(tag2); chipGroupTags.addView(tag2)
-        val tag3 = TextView(context); tag3.text = "tag3"; tagList.add(tag3); chipGroupTags.addView(tag3)
-        val tag4 = TextView(context); tag4.text = "tag4"; tagList.add(tag4); chipGroupTags.addView(tag4)*/
-
-        //chipGroupTags.
-
-        //chipGroupTags.addChildrenForAccessibility(tagList)
     }
 }

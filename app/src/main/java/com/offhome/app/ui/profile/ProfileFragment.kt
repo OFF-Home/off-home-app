@@ -5,6 +5,7 @@ import android.view.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -28,6 +29,7 @@ class ProfileFragment : Fragment() {
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
     lateinit var estrelles : RatingBar
+    //lateinit var aboutMeFragment :View
 
     /**
      * Override the onCreateView method
@@ -60,11 +62,21 @@ class ProfileFragment : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
+        //a ver
+        //aboutMeFragment = viewPager.getChildAt(1)
+
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
-        fragmentViewModel.ProfileInfo.observe(
+        fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
                 val profileInfoVM = it ?: return@Observer
+
+                //debug
+                Toast.makeText(
+                    context,
+                    "arribo al fragmentViewModel.ProfileInfo.observe()",
+                    Toast.LENGTH_LONG
+                ).show()
 
                 textViewUsername.text = profileInfoVM.username
                 estrelles.numStars = profileInfoVM.estrelles
@@ -75,5 +87,9 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.getProfileInfo()
 
         return view
+    }
+
+    fun getViewModel():ProfileFragmentViewModel {
+        return fragmentViewModel
     }
 }

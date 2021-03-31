@@ -9,6 +9,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
+import com.offhome.app.model.profile.ProfileRepository
 
 class ProfileAboutMeFragment : Fragment() {
 
@@ -36,9 +37,8 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount2)
 
-        // TODO obtenir les dades de BD
-        // i posar-les als textView's
-        viewModel.ProfileInfo.observe(
+
+        /*viewModel.ProfileInfo.observe(
             viewLifecycleOwner,
             Observer {
                 val profileInfoVM = it ?: return@Observer
@@ -48,7 +48,24 @@ class ProfileAboutMeFragment : Fragment() {
                 textViewFollowerCount.text = profileInfoVM.followers.toString()
                 textViewFollowingCount.text = profileInfoVM.following.toString()
             }
+        )*/
+        //viewModel.getProfileInfo()
+
+        //obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
+        val profileFragment:ProfileFragment = parentFragment as ProfileFragment
+        val profileRepo:ProfileRepository = profileFragment.getViewModel().getRepository()
+
+        profileRepo.userInfo?.observe(
+            viewLifecycleOwner,
+            Observer {
+                val profileInfoVM = it ?: return@Observer
+                textViewProfileDescription.text = profileInfoVM.description
+                textViewBirthDate.text = profileInfoVM.birthDate
+                textViewFollowerCount.text = profileInfoVM.followers.toString()
+                textViewFollowingCount.text = profileInfoVM.following.toString()
+            }
         )
+        //val profileInfoRepo = profileRepo.getProfileInfo("victorfer")
 
         return view
     }

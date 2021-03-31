@@ -1,11 +1,15 @@
 package com.offhome.app.model.profile
 
+import android.graphics.Bitmap
+import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.UserClient
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
+import java.io.InputStream
 
 /**
  * Class *ProfileRepository*
@@ -50,5 +54,19 @@ class ProfileRepository {
 */
         return userInfo as MutableLiveData<UserInfo>
         // return TopProfileInfo(username = "Maria", starRating = 6) // stub
+    }
+
+    //per quan agafem la profilePic de backend
+    private fun getBitmapFromURL(url1:String):Bitmap? {
+        var bitmap : Bitmap? = null
+        try {
+            val inputStream: InputStream = java.net.URL(url1).openStream()
+            bitmap = BitmapFactory.decodeStream(inputStream)
+        }
+        catch (e: IOException) {
+            e.printStackTrace()
+        }
+
+        return bitmap
     }
 }

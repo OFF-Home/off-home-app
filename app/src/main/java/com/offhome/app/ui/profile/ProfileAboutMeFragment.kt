@@ -118,12 +118,14 @@ class ProfileAboutMeFragment : Fragment() {
     private fun paintEditButtons() {
         //editViewDescription = ImageView(constraintLayout2.context)
         editDescriptionButton = ImageView(activity)
-        //editDescriptionButton.id = R.id.editDescriptionButton
-        editDescriptionButton.setImageResource(R.drawable.google_logo)
+        editDescriptionButton.id = R.id.editDescriptionButton       //funciona somehow
+        //editDescriptionButton.setImageResource(R.drawable.ic_menu_edit)
+        editDescriptionButton.setImageResource(R.drawable.google_logo_small)
 
         constraintLayout2.addView(editDescriptionButton)
-        var constraintSet1 = ConstraintSet()
+        val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
-        //constraintSet1.connect(editDescriptionButton, ConstraintSet.LEFT, R.id.textViewProfileDescriptionTitle, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editDescriptionButton, ConstraintSet.LEFT, R.id.textViewProfileDescriptionTitle, ConstraintSet.RIGHT, 8)
+        constraintSet1.applyTo(constraintLayout2)
     }
 }

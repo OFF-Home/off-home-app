@@ -78,19 +78,6 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        //era per debugejar
-        /*val profileRepo: ProfileRepository = getViewModel().getRepository()
-        profileRepo.userInfo?.observe(
-            viewLifecycleOwner,
-            Observer {
-                val profileInfoRepo = it ?: return@Observer
-                //debug
-                Toast.makeText(context,"arribo al Repo.ProfileInfo.observe(); a ProfileFragment",Toast.LENGTH_LONG).show()
-
-                textViewUsername.text = profileInfoRepo.username
-                estrelles.numStars = profileInfoRepo.estrelles
-            }
-        )*/
         Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
 
         fragmentViewModel.getProfileInfo(context)

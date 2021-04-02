@@ -5,10 +5,11 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.graphics.toColor
-import androidx.core.graphics.toColorLong
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -30,6 +31,9 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags : ChipGroup
 
+    private lateinit var editDescriptionButton : ImageView
+    private lateinit var constraintLayout2 : ConstraintLayout
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -44,6 +48,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount2)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
+        constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
 
 
         /*viewModel.ProfileInfo.observe(
@@ -80,11 +85,16 @@ class ProfileAboutMeFragment : Fragment() {
         //testing
         omplirTagGroup("aquest string encara no el llegim")
 
+        paintEditButtons()
+
         return view
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
+
+        //constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
+        //paintEditButtons()
     }
 
     private fun omplirTagGroup(tagString:String) {
@@ -103,5 +113,17 @@ class ProfileAboutMeFragment : Fragment() {
         val tag1 = Chip(context); tag1.text = "tag1"; chipGroupTags.addView(tag1)
         val tag2 = Chip(context); tag2.text = "tag2"; chipGroupTags.addView(tag2)
         val tag3 = Chip(context); tag3.text = "tag3"; chipGroupTags.addView(tag3)
+    }
+
+    private fun paintEditButtons() {
+        //editViewDescription = ImageView(constraintLayout2.context)
+        editDescriptionButton = ImageView(activity)
+        //editDescriptionButton.id = R.id.editDescriptionButton
+        editDescriptionButton.setImageResource(R.drawable.google_logo)
+
+        constraintLayout2.addView(editDescriptionButton)
+        var constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout2)
+        //constraintSet1.connect(editDescriptionButton, ConstraintSet.LEFT, R.id.textViewProfileDescriptionTitle, ConstraintSet.RIGHT, 8)
     }
 }

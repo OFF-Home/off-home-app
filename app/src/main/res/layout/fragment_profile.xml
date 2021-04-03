@@ -2,6 +2,7 @@
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/profileCoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileFragment">
@@ -16,10 +17,10 @@
             android:id="@+id/imageViewProfilePic"
             android:layout_width="104dp"
             android:layout_height="104dp"
+            android:layout_gravity="center"
             android:layout_marginTop="16dp"
             android:src="@drawable/profile_pic_placeholder"
-            app:layout_anchor="@+id/appBarLayout"
-            android:layout_gravity="center"/>
+            app:layout_anchor="@+id/appBarLayout" />
 
         <TextView
             android:id="@+id/textViewUsername"
@@ -35,21 +36,21 @@
             android:id="@+id/ratingBarEstrellesUsuari"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:layout_marginTop="8dp"
             android:clickable="false"
             android:contextClickable="false"
             android:focusable="false"
-            android:focusableInTouchMode="false"
-            android:layout_gravity="center"/>
+            android:focusableInTouchMode="false" />
 
         <com.google.android.material.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:background="?attr/colorPrimary"
-            app:tabSelectedTextColor="@color/white"
             app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="4dp"/>
+            app:tabIndicatorHeight="4dp"
+            app:tabSelectedTextColor="@color/white" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.viewpager.widget.ViewPager

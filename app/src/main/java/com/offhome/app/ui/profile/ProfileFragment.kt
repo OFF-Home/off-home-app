@@ -1,5 +1,8 @@
 package com.offhome.app.ui.profile
 
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
 import android.widget.ImageView
@@ -7,10 +10,13 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
 import com.offhome.app.R
 
@@ -31,6 +37,8 @@ class ProfileFragment : Fragment() {
     lateinit var textViewUsername: TextView
     lateinit var estrelles : RatingBar
     //lateinit var aboutMeFragment :View
+    private lateinit var editUsernameButton : ImageView
+    private lateinit var layout1 : AppBarLayout
 
     /**
      * Override the onCreateView method
@@ -56,6 +64,7 @@ class ProfileFragment : Fragment() {
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
         textViewUsername = view.findViewById(R.id.textViewUsername)
         estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
+        layout1 = view.findViewById(R.id.appBarLayout)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
@@ -82,10 +91,29 @@ class ProfileFragment : Fragment() {
 
         fragmentViewModel.getProfileInfo(context)
 
+        paintEditButtons()
+
         return view
     }
 
     fun getViewModel():ProfileFragmentViewModel {
         return fragmentViewModel
+    }
+
+    private fun paintEditButtons() {
+        editUsernameButton = ImageView(activity)
+        //editUsernameButton.id = R.id.editUsernameButton
+
+        //codi repetit de ProfileAboutMeFragment
+        //to resize the drawable, we create a local drawable here
+        val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit);
+        val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
+        // we scale it
+        val d :Drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true));
+        // we set our new scaled drawable "d"
+        editUsernameButton.setImageDrawable(d)
+
+        layout1.addView(editUsernameButton)
+
     }
 }

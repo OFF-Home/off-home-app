@@ -1,6 +1,9 @@
 package com.offhome.app.ui.profile
 
 import android.content.res.ColorStateList
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -10,6 +13,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -119,8 +123,18 @@ class ProfileAboutMeFragment : Fragment() {
         //editViewDescription = ImageView(constraintLayout2.context)
         editDescriptionButton = ImageView(activity)
         editDescriptionButton.id = R.id.editDescriptionButton       //funciona somehow
-        //editDescriptionButton.setImageResource(R.drawable.ic_menu_edit)
-        editDescriptionButton.setImageResource(R.drawable.google_logo_small)
+        //editDescriptionButton.setImageResource(android.R.drawable.ic_menu_edit)//         android:drawable/ic_menu_edit)
+        //editDescriptionButton.setImageResource(R.drawable.google_logo_small)
+
+        //val dr: Drawable = /*ResourcesCompat.getDrawable(android.R.drawable.ic_menu_edit)*/     getResources().getDrawable(android.R.drawable.ic_menu_edit);
+
+        //to resize the drawable, we create a local drawable here
+        val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit);
+        val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
+        // we scale it
+        val d :Drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true));
+        // we set our new scaled drawable "d"
+        editDescriptionButton.setImageDrawable(d)
 
         constraintLayout2.addView(editDescriptionButton)
         val constraintSet1 = ConstraintSet()

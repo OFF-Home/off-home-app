@@ -19,11 +19,6 @@
         android:theme="@style/Theme.OFFHome">
         <activity android:name=".ui.otherprofile.OtherProfileActivity">
 
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -51,6 +46,11 @@
             android:label="@string/title_activity_sign_up"></activity>
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
     </application>
 

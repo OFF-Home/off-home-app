@@ -91,7 +91,7 @@ class ProfileAboutMeFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val profileInfoVM = it ?: return@Observer
-                Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
+                //Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
                 textViewProfileDescription.text = profileInfoVM.description
                 textViewBirthDate.text = profileInfoVM.birthDate
                 textViewFollowerCount.text = profileInfoVM.followers.toString()
@@ -100,8 +100,6 @@ class ProfileAboutMeFragment : Fragment() {
                 omplirTagGroup(profileInfoVM.tags)
             }
         )
-        profileVM.getProfileInfo(context)
-
 
         //testing
         omplirTagGroup("aquest string encara no el llegim")

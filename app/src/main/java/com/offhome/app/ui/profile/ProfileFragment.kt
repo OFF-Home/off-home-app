@@ -73,10 +73,11 @@ class ProfileFragment : Fragment() {
         tabs.setupWithViewPager(viewPager)
 
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
+        fragmentViewModel.getProfileInfo(context)
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {          //aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
-                val profileInfoVM = it ?: return@Observer
+                val profileInfoVM = it?: return@Observer
 
                 //debug
                 //Toast.makeText(context,"arribo al fragmentViewModel.ProfileInfo.observe()",Toast.LENGTH_LONG).show()
@@ -87,9 +88,9 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
+        //Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
 
-        fragmentViewModel.getProfileInfo(context)
+
 
         paintEditButtons()
 

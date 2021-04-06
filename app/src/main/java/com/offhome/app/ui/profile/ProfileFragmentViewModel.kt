@@ -20,7 +20,7 @@ class ProfileFragmentViewModel : ViewModel() {
     private var repository = ProfileRepository()
 
     private var _profileInfo = MutableLiveData<UserInfo>()
-    val profileInfo: LiveData<UserInfo> = _profileInfo
+    var profileInfo: LiveData<UserInfo> = _profileInfo
 
     /**
      * obtains topProfileInfo from the lower level and places it on the live data
@@ -28,7 +28,7 @@ class ProfileFragmentViewModel : ViewModel() {
     fun getProfileInfo(context: Context?) {
         val username = "victorfer" // stub
 
-        _profileInfo = repository.getProfileInfo(username, context)!!
+        profileInfo = repository.getProfileInfo(username, context)!!
     }
 
     fun getRepository():ProfileRepository {

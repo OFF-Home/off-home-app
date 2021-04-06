@@ -32,7 +32,7 @@ class ProfileRepository {
      * obtains topProfileInfo from the lower level and returns it   //TODO
      */
     fun getProfileInfo(username: String, context:Context?): MutableLiveData<UserInfo>? {
-        Toast.makeText(context,"arribo al repo.getProfileInfo",Toast.LENGTH_LONG).show()
+        //Toast.makeText(context,"arribo al repo.getProfileInfo",Toast.LENGTH_LONG).show()
 
         if (userInfo ==null) userInfo = MutableLiveData<UserInfo>() //linea afegida perque no peti. la he copiat de ActivitiesRepository
 
@@ -42,7 +42,7 @@ class ProfileRepository {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
                     userInfo!!.value = response.body()
-                    Toast.makeText(context,"success response---------------------------------",Toast.LENGTH_LONG).show()
+                    //Toast.makeText(context,"success response---------------------------------",Toast.LENGTH_LONG).show()
                 }
                 else {
                     Toast.makeText(context,"failure response---------------------------------",Toast.LENGTH_LONG).show()

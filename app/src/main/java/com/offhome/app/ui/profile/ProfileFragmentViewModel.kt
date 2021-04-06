@@ -31,7 +31,7 @@ class ProfileFragmentViewModel : ViewModel() {
         profileInfo = repository.getProfileInfo(username, context)!!
     }
 
-    fun getRepository():ProfileRepository {
+    fun getRepository(): ProfileRepository {
         return repository
     }
 }

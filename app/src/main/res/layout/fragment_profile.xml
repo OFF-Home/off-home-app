@@ -1,62 +1,72 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/profileCoordinatorLayout"
+
+<!-- nestedScrollView, srolleja "infinitament" perquè el ViewPager és "infinitament" alt. No he trobat com arreglar-ho.  /-->
+<androidx.core.widget.NestedScrollView
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.profile.ProfileFragment">
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".ui.profile.ProfileFragment"
+    android:fillViewport="true">
 
-    <com.google.android.material.appbar.AppBarLayout
-        android:id="@+id/appBarLayout"
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/profileCoordinatorLayout"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:theme="@style/Theme.OFFHome.AppBarOverlay">
+        android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/imageViewProfilePic"
-            android:layout_width="104dp"
-            android:layout_height="104dp"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:src="@drawable/profile_pic_placeholder"
-            app:layout_anchor="@+id/appBarLayout" />
-
-        <TextView
-            android:id="@+id/textViewUsername"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="16dp"
-            android:text="TextView"
-            android:textAllCaps="false"
-            android:textStyle="bold" />
-
-        <RatingBar
-            android:id="@+id/ratingBarEstrellesUsuari"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:layout_marginTop="8dp"
-            android:clickable="false"
-            android:contextClickable="false"
-            android:focusable="false"
-            android:focusableInTouchMode="false" />
-
-        <com.google.android.material.tabs.TabLayout
-            android:id="@+id/tabs"
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appBarLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            app:tabIndicatorColor="@color/white"
-            app:tabIndicatorHeight="4dp"
-            app:tabSelectedTextColor="@color/white" />
-    </com.google.android.material.appbar.AppBarLayout>
+            android:theme="@style/Theme.OFFHome.AppBarOverlay">
 
-    <androidx.viewpager.widget.ViewPager
-        android:id="@+id/view_pager"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+            <ImageView
+                android:id="@+id/imageViewProfilePic"
+                android:layout_width="104dp"
+                android:layout_height="104dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:src="@drawable/profile_pic_placeholder"
+                app:layout_anchor="@+id/appBarLayout" />
 
-</androidx.coordinatorlayout.widget.CoordinatorLayout>
+            <TextView
+                android:id="@+id/textViewUsername"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="16dp"
+                android:text="TextView"
+                android:textAllCaps="false"
+                android:textStyle="bold" />
+
+            <RatingBar
+                android:id="@+id/ratingBarEstrellesUsuari"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="8dp"
+                android:clickable="false"
+                android:contextClickable="false"
+                android:focusable="false"
+                android:focusableInTouchMode="false" />
+
+            <com.google.android.material.tabs.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="?attr/colorPrimary"
+                app:tabIndicatorColor="@color/white"
+                app:tabIndicatorHeight="4dp"
+                app:tabSelectedTextColor="@color/white" />
+        </com.google.android.material.appbar.AppBarLayout>
+
+        <androidx.viewpager.widget.ViewPager
+            android:id="@+id/view_pager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</androidx.core.widget.NestedScrollView>

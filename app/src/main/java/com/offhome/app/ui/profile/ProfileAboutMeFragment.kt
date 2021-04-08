@@ -46,8 +46,8 @@ class ProfileAboutMeFragment : Fragment() {
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
-        textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount2)
-        textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount2)
+        textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
+        textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
 

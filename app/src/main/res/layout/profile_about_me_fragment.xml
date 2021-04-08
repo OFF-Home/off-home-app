@@ -128,7 +128,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
-        android:id="@+id/textViewFollowerCount2"
+        android:id="@+id/textViewFollowerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
@@ -151,7 +151,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
-        android:id="@+id/textViewFollowingCount2"
+        android:id="@+id/textViewFollowingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"

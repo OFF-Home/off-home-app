@@ -23,8 +23,9 @@ class OtherProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_other_profile)
 
         //recibir user seleccionado de la otra pantalla. //robat de infoActivity
+        //a la pantalla anterior ja hem d'haver fet l'acces a backend. perque hi necessitavem la fotoPerfil     (des de chats, des de la pagina d'una activity, ...)
         val arguments = intent.extras
-        val otherUserString = arguments?.getString("???")     //TODO
+        val otherUserString = arguments?.getString("user_info")
         otherUser = GsonBuilder().create().fromJson(otherUserString, UserInfo::class.java)
         imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
         //imageViewProfilePic. //ficar-hi la imatge

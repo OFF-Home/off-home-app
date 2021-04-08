@@ -3,6 +3,7 @@ package com.offhome.app.ui.otherprofile
 import android.content.res.ColorStateList
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -35,8 +36,17 @@ class AboutThemFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
+
+        //treure els log
+        Log.d("inflate", "inflated successfully")
+        if (parentFragment == null)
+            Log.d("nullParent", "parentfragment is null")
+        else
+            Log.d("parent ok", "parentfragment is NOT null")
+
         //viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)
-        viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
+       //viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
+        viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)

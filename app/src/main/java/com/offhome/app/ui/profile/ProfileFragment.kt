@@ -1,5 +1,6 @@
 package com.offhome.app.ui.profile
 
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -14,7 +15,12 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.UserInfo
+import com.google.gson.GsonBuilder
+import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.model.profile.TopProfileInfo
+import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Class *ProfileFragment*
@@ -86,7 +92,7 @@ class ProfileFragment : Fragment() {
 
         // Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
 
-        paintEditButtons()
+        addEditButtons()
 
         return view
     }
@@ -95,7 +101,7 @@ class ProfileFragment : Fragment() {
         return fragmentViewModel
     }
 
-    private fun paintEditButtons() {
+    private fun addEditButtons() {
         editUsernameButton = ImageView(activity)
         // editUsernameButton.id = R.id.editUsernameButton
 
@@ -109,5 +115,8 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setImageDrawable(d)
 
         layout1.addView(editUsernameButton)
+
+        editUsernameButton.setOnClickListener {
+        }
     }
 }

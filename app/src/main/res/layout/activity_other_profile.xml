@@ -43,24 +43,29 @@
                 android:id="@+id/otherUsername"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="15dp"
                 android:text="otherUsername"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/otherUserProfilePic" />
+                app:layout_constraintTop_toBottomOf="@+id/otherUserProfilePic"
+                android:textAllCaps="false"
+                android:textSize="20sp"
+                android:textStyle="bold"     />
 
             <RatingBar
                 android:id="@+id/otherUserRatingBar"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:contextClickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/otherUsername" />
+                app:layout_constraintTop_toBottomOf="@+id/otherUsername"
+
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:isIndicator="true"
+                android:max="5"
+                android:numStars="5"/>
 
             <Button
                 android:id="@+id/buttonFollow"

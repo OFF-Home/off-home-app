@@ -35,21 +35,27 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="15dp"
                 android:text="TextView"
                 android:textAllCaps="false"
+                android:textSize="20sp"
                 android:textStyle="bold" />
 
             <RatingBar
                 android:id="@+id/ratingBarEstrellesUsuari"
+                style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:contextClickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false" />
+                android:layout_marginTop="5dp"
+                android:isIndicator="true"
+                android:max="5"
+                android:numStars="5" />
+
+            <!-- android:transformPivotX="0dp"
+                android:transformPivotY="0dp"
+                android:scaleX=".6"
+                android:scaleY=".6"/-->
 
             <com.google.android.material.tabs.TabLayout
                 android:id="@+id/tabs"

@@ -38,7 +38,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var longitude: Double = 0.0
 
     /**
-     * This is executed when the activity is launched for first time or created again.
+     * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
     override fun onCreate(savedInstanceState: Bundle?) {

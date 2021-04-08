@@ -1,6 +1,5 @@
 package com.offhome.app.ui.activitieslist
 
-import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
@@ -14,7 +13,7 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 
-class  ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class  ActivitiesListRecyclerViewAdapter(private val context: Activities) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as ActivityFromList

@@ -1,4 +1,4 @@
-package com.offhome.app.ui.activities
+package com.offhome.app.ui.categories
 
 
 import android.os.Bundle

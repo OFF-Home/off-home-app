@@ -14,7 +14,6 @@ import com.google.api.services.people.v1.model.Person
 import java.lang.Enum
 import java.util.*
 
-
 object PeopleApi {
     const val CONTACT_SCOPE = "https://www.googleapis.com/auth/contacts.readonly"
     const val BIRTHDAY_SCOPE = "https://www.googleapis.com/auth/user.birthday.read"

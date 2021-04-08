@@ -83,11 +83,9 @@ class LoginActivity : AppCompatActivity() {
                 .requestScopes(Scope(PeopleApi.CONTACT_SCOPE), Scope(PeopleApi.BIRTHDAY_SCOPE))
                 .requestEmail()
                 .build()
-            val googleClient = GoogleSignIn.getClient(this, gso);
+            val googleClient = GoogleSignIn.getClient(this, gso)
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
-
-
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -101,7 +99,7 @@ class LoginActivity : AppCompatActivity() {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
 
-                        //updateUiWithUser(LoggedInUserView())
+                        // updateUiWithUser(LoggedInUserView())
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(

@@ -66,6 +66,18 @@ class AboutThemFragment : Fragment() {
         textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
-        //metode tipo ProfileAboutMeFragment::omplirTagGroup()
+        omplirTagGroup(uinfo.tags)
+    }
+
+    private fun omplirTagGroup(tagString: String) {
+        //decodificar el Json
+
+        //while (i < nTags) {
+
+            val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
+            tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
+            tag1.chipStrokeWidth = 5F
+        //    ++i
+        //}
     }
 }

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <item name="editDescriptionButton" type="id"></item>
+    <item name="editDescriptionButton" type="id">@+id/editDescriptionButton</item>
+    <item name="editTextProfileDescription" type="id" >@+id/editTextProfileDescription</item>
 </resources>

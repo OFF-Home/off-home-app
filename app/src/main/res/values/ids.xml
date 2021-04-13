@@ -2,4 +2,5 @@
 <resources>
     <item name="editDescriptionButton" type="id">@+id/editDescriptionButton</item>
     <item name="editTextProfileDescription" type="id" >@+id/editTextProfileDescription</item>
+    <item name="editTextProfileDescription2" type="id">@+id/editTextProfileDescription2 </item>
 </resources>

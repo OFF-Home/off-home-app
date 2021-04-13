@@ -181,6 +181,8 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription = EditText(activity)
         editTextProfileDescription.id = R.id.editTextProfileDescription
 
+
+        constraintLayout2.addView(editTextProfileDescription)
         //add the EditText's constraints to the layout
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
@@ -192,6 +194,9 @@ class ProfileAboutMeFragment : Fragment() {
         constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8)    //a ver
 
         constraintSet1.applyTo(constraintLayout2)
+
+        val editTextlayoutParams: ViewGroup.LayoutParams = editTextProfileDescription.layoutParams
+        editTextlayoutParams.width = 0
 
         editTextProfileDescription.visibility = View.GONE
     }
@@ -207,8 +212,9 @@ class ProfileAboutMeFragment : Fragment() {
         constraintSet1.clone(constraintLayout2)
         constraintSet1.connect(R.id.textViewBirthDateTitle, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8)
         constraintSet1.applyTo(constraintLayout2)*/
-        editTextProfileDescription.setText(/*textViewProfileDescription.text*/"AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA AAAAAAAAAAAAAAAAAAA")
-        editTextProfileDescription.setBackgroundColor(resources.getColor(R.color.black))    //per a trobarlo
+        editTextProfileDescription.setText(textViewProfileDescription.text)
+        editTextProfileDescription.setHint(R.string.description)
+        //editTextProfileDescription.setBackgroundColor(resources.getColor(R.color.black))    //per a trobarlo
 
         editTextProfileDescription.visibility = View.VISIBLE
         textViewProfileDescription.visibility = View.GONE

@@ -1,14 +1,14 @@
 package com.offhome.app.ui.activities
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.R.menu.bottom_search
 import com.offhome.app.model.Category
 
 /**
@@ -54,7 +54,25 @@ class CategoriesFragment : Fragment() {
                 categoryAdapter.setData(categories)
             }
         )
-
         return view
     }
-}
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(bottom_search, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+
+        //aixo es per fer la cerca però encara no funciona IN PROCESS
+        val menuItem = menu.findItem(R.id.search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                return true
+            }
+
+        })
+    }}
+

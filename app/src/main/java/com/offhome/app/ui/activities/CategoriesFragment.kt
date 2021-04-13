@@ -8,7 +8,6 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.R.menu.bottom_search
 import com.offhome.app.model.Category
 
 /**
@@ -56,8 +55,9 @@ class CategoriesFragment : Fragment() {
         )
         return view
     }
+    /*
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(bottom_search, menu)
+        inflater.inflate(button_search, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         //aixo es per fer la cerca però encara no funciona IN PROCESS
@@ -74,5 +74,6 @@ class CategoriesFragment : Fragment() {
             }
 
         })
-    }}
+    }*/
+}
 

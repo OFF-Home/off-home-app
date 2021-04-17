@@ -80,10 +80,10 @@ class LoginActivity : AppCompatActivity() {
             loading.visibility = View.VISIBLE
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
-                .requestScopes(Scope(PeopleApi.CONTACT_SCOPE), Scope(PeopleApi.BIRTHDAY_SCOPE))
                 .requestEmail()
                 .build()
             val googleClient = GoogleSignIn.getClient(this, gso)
+            googleClient.signOut()
             startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
         }
     }
@@ -98,7 +98,7 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
-
+                        
                         // updateUiWithUser(LoggedInUserView())
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)

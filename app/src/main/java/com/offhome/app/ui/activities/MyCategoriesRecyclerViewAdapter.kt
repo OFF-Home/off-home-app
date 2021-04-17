@@ -105,32 +105,32 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
 
     override fun getFilter(): Filter {
         return object : Filter() {
-            /*
-            Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
-            */
-            override fun performFiltering(constraint: CharSequence?): FilterResults {
-                val charSearch = constraint.toString()
-                if (charSearch.isEmpty()) {
-                    listCategoriesFull = listCategories
-                } else {
-                    val resultList  : List<Category> = ArrayList()
-                    for (row in listCategories) {
-                        if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
-                           // resultList.add(Pair(row.categoria, row.descripcio))
-                        }
+        /*
+        Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
+        */
+        override fun performFiltering(constraint: CharSequence?): FilterResults {
+            val charSearch = constraint.toString()
+            if (charSearch.isEmpty()) {
+                listCategoriesFull = listCategories
+            } else {
+                val resultList = ArrayList<Category>()
+                for (row in listCategories) {
+                    if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                        resultList.add(row)
                     }
-                    listCategoriesFull = resultList
                 }
-                val filterResults = FilterResults()
-                filterResults.values = listCategoriesFull
-                return filterResults
+                listCategoriesFull = resultList
             }
+            val filterResults = FilterResults()
+            filterResults.values = listCategoriesFull
+            return filterResults
+        }
 
-            @Suppress("UNCHECKED_CAST")
-            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-                //listCategoriesFull = results?.values as ArrayList<String>
-                notifyDataSetChanged()
-            }
+        @Suppress("UNCHECKED_CAST")
+        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+            listCategoriesFull = results?.values as ArrayList<Category>
+            notifyDataSetChanged()
+        }
 
         }
     }

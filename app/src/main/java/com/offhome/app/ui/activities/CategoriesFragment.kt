@@ -58,7 +58,6 @@ class CategoriesFragment : Fragment() {
                 adapter = categoryAdapter
             }
         }
-
         categoriesViewModel.getCategories().observe(
             viewLifecycleOwner,
             {
@@ -74,29 +73,24 @@ class CategoriesFragment : Fragment() {
         inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
-        //aixo es per fer la cerca però encara no funciona IN PROCESS
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                categoriesViewModel.filterData(query)
+               // categoriesViewModel.filterData(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                return true
+                categoryAdapter.filter.filter(newText)
+                return false
             }
 
         })
     }
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-     /*   categoriesViewModel.getSearchResults().observe(viewLifecycleOwner, { searchResults->
-            Log.w("onActivityCreated()", "new search list received :" +searchResults)
-            categoryAdapter.setData(searchResults)
-        });*/
     }
 }
 

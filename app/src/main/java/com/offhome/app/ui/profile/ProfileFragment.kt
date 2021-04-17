@@ -6,20 +6,19 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
+import android.widget.EditText
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
-import com.google.android.material.appbar.AppBarLayout
 import com.google.android.material.tabs.TabLayout
-import com.google.firebase.auth.UserInfo
 import com.google.gson.GsonBuilder
-import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.profile.TopProfileInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -40,7 +39,11 @@ class ProfileFragment : Fragment() {
     lateinit var estrelles: RatingBar
     // lateinit var aboutMeFragment :View
     private lateinit var editUsernameButton: ImageView
-    private lateinit var layout1: AppBarLayout
+    private lateinit var constraintLayout1: ConstraintLayout
+
+    private lateinit var editIconDrawable:Drawable
+    private lateinit var saveIconDrawable:Drawable
+    private lateinit var editTextUsername : EditText
 
     /**
      * Override the onCreateView method
@@ -66,7 +69,7 @@ class ProfileFragment : Fragment() {
         imageViewProfilePic = view.findViewById(R.id.imageViewProfilePic)
         textViewUsername = view.findViewById(R.id.textViewUsername)
         estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
-        layout1 = view.findViewById(R.id.appBarLayout)
+        constraintLayout1 = view.findViewById(R.id.profileConstraintLayoutDinsAppBarLO)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
@@ -92,7 +95,12 @@ class ProfileFragment : Fragment() {
 
         // Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
 
-        addEditButtons()
+        iniEditElements()
+
+        imageViewProfilePic.setOnClickListener {
+            //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU.
+            canviAOtherProfile()
+        }
 
         return view
     }
@@ -101,26 +109,104 @@ class ProfileFragment : Fragment() {
         return fragmentViewModel
     }
 
-    private fun addEditButtons() {
-        editUsernameButton = ImageView(activity)
-        // editUsernameButton.id = R.id.editUsernameButton
+    private fun iniEditElements() {
+        iniEditUsernameButton()
 
-        // codi repetit de ProfileAboutMeFragment
+        // we set our new scaled drawable
+        editUsernameButton.setImageDrawable(editIconDrawable)
+
+        editUsernameButton.setOnClickListener {
+            changeUsernameToEdit()
+        }
+        iniEditTextUsername()
+
+        //fer iniEditProfilePicButton aquí
+    }
+
+    private fun iniEditUsernameButton() {
+        editUsernameButton = ImageView(activity)
+        editUsernameButton.id = R.id.editUsernameButton
+
+        //TODO codi repetit de ProfileAboutMeFragment. fer algo?
+
         // to resize the drawable, we create a local drawable here
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
         // we scale it
-        val d: Drawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
-        // we set our new scaled drawable "d"
-        editUsernameButton.setImageDrawable(d)
+        editIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
+        //we prepare the saveIconDrawable, resizing it
+        val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
+        val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
+        // we scale it
+        saveIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap2, 70, 70, true))
 
-        layout1.addView(editUsernameButton)
+        constraintLayout1.addView(editUsernameButton)
 
-        editUsernameButton.setOnClickListener {
-            //aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU.
-            canviAOtherProfile()
-        }
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout1)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.textViewUsername, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.textViewUsername, ConstraintSet.TOP)
+        constraintSet1.applyTo(constraintLayout1)
     }
+
+    private fun iniEditTextUsername() {
+        editTextUsername = EditText(activity)
+        editTextUsername.id= R.id.editTextUsername2 //li he dit 2 perquè ja existia un editTextUsername aparentment
+
+        constraintLayout1.addView(editTextUsername)
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout1)
+        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.LEFT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.LEFT)
+        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.RIGHT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.RIGHT)
+        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.TOP, R.id.imageViewProfilePic, ConstraintSet.BOTTOM)
+        //falta clear?
+        constraintSet1.connect(R.id.textViewUsername, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.BOTTOM)
+
+        constraintSet1.applyTo(constraintLayout1)
+
+        val editTextlayoutParams: ViewGroup.LayoutParams = editTextUsername.layoutParams
+        editTextlayoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
+
+        editTextUsername.visibility = View.GONE
+    }
+
+    private fun changeUsernameToEdit() {
+        editUsernameButton.setImageDrawable(saveIconDrawable)
+        editUsernameButton.setOnClickListener {
+            changeUsernameToDisplay()
+        }
+        editTextUsername.setText(textViewUsername.text)
+        editTextUsername.setHint(R.string.hint_username)
+
+        editUsernameButton
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout1)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.editTextUsername2, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.TOP)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.BOTTOM, R.id.editTextUsername2, ConstraintSet.BOTTOM)
+        constraintSet1.applyTo(constraintLayout1)
+
+        editTextUsername.visibility = View.VISIBLE
+        textViewUsername.visibility = View.GONE
+    }
+
+    private fun changeUsernameToDisplay() {
+        editUsernameButton.setImageDrawable(editIconDrawable)
+        editUsernameButton.setOnClickListener {
+            changeUsernameToEdit()
+        }
+
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout1)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.textViewUsername, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.textViewUsername, ConstraintSet.TOP)
+        constraintSet1.clear(R.id.editUsernameButton, ConstraintSet.BOTTOM)
+        constraintSet1.applyTo(constraintLayout1)
+
+        textViewUsername.visibility = View.VISIBLE
+        editTextUsername.visibility = View.GONE
+    }
+
     //aixo es completament per a testejar
     private fun canviAOtherProfile() {
 

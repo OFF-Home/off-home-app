@@ -3,4 +3,6 @@
     <item name="editDescriptionButton" type="id">@+id/editDescriptionButton</item>
     <item name="editTextProfileDescription" type="id" >@+id/editTextProfileDescription</item>
     <item name="editTextProfileDescription2" type="id">@+id/editTextProfileDescription2 </item>
+    <item name="editUsernameButton" type="id">@+id/editUsernameButton</item>
+    <item name="editTextUsername2" type="id">@+id/editTextUsername2</item>
 </resources>

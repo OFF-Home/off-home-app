@@ -57,36 +57,8 @@ class ProfileAboutMeFragment : Fragment() {
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
 
-        /*viewModel.ProfileInfo.observe(
-            viewLifecycleOwner,
-            Observer {
-                val profileInfoVM = it ?: return@Observer
-
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
-            }
-        )*/
-        // viewModel.getProfileInfo()
-
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
-
-        /*val profileRepo:ProfileRepository = profileFragment.getViewModel().getRepository()
-        profileRepo.userInfo?.observe(
-            viewLifecycleOwner,
-            Observer {
-                val profileInfoVM = it ?: return@Observer
-                Toast.makeText(context,"arribo al Repo.ProfileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
-
-                omplirTagGroup(profileInfoVM.tags)
-            }
-        )*/
 
         val profileVM: ProfileFragmentViewModel = profileFragment.getViewModel()
         profileVM.profileInfo.observe(
@@ -207,14 +179,8 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setOnClickListener{
             changeDescriptionToDisplay()
         }
-
-        /*val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.textViewBirthDateTitle, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8)
-        constraintSet1.applyTo(constraintLayout2)*/
         editTextProfileDescription.setText(textViewProfileDescription.text)
         editTextProfileDescription.setHint(R.string.description)
-        //editTextProfileDescription.setBackgroundColor(resources.getColor(R.color.black))    //per a trobarlo
 
         editTextProfileDescription.visibility = View.VISIBLE
         textViewProfileDescription.visibility = View.GONE

@@ -9,7 +9,6 @@ import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
-import com.offhome.app.ui.activitieslist.ActivitiesList
 import com.offhome.app.ui.createactivity.CreateActivity
 
 class MainActivity : AppCompatActivity() {
@@ -30,8 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val buttonCreate = findViewById<FloatingActionButton>(R.id.buttonCreateActivity)
 
-        buttonCreate.setOnClickListener{
-            val intent = Intent(this, CreateActivity::class.java);
+        buttonCreate.setOnClickListener {
+            val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
 

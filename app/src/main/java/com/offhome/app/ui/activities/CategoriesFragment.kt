@@ -1,8 +1,13 @@
 package com.offhome.app.ui.activities
 
+import android.app.SearchManager
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
+import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
@@ -67,12 +72,6 @@ class CategoriesFragment : Fragment() {
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_button, menu)
-
-    }
-
-    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        MenuInflater.inflate(R.menu.search_button, menu)
-        inflater.inflate(search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         //aixo es per fer la cerca però encara no funciona IN PROCESS
@@ -81,7 +80,8 @@ class CategoriesFragment : Fragment() {
         searchView.maxWidth = Int.MAX_VALUE
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-                return true
+                categoriesViewModel.filterData(query)
+                return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
@@ -89,6 +89,14 @@ class CategoriesFragment : Fragment() {
             }
 
         })
-    }*/
+    }
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+
+     /*   categoriesViewModel.getSearchResults().observe(viewLifecycleOwner, { searchResults->
+            Log.w("onActivityCreated()", "new search list received :" +searchResults)
+            categoryAdapter.setData(searchResults)
+        });*/
+    }
 }
 

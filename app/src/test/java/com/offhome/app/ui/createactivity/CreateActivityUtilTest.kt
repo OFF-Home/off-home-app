@@ -1,9 +1,8 @@
 package com.offhome.app.ui.createactivity
 
 import org.junit.Assert.*
-import org.junit.Test
 
-class CreateActivityUtilTest{
+class CreateActivityUtilTest {
 /*
     @Test
     fun 'empty title returns false' (){

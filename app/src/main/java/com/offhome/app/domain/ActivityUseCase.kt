@@ -1,6 +1,5 @@
 package com.offhome.app.domain
 
-
 /**
  * Activity Use Case from Domain (not implemented yet)
  */
@@ -11,5 +10,4 @@ class ActivityUseCase {
     fun getActivityList(): List<Activity>{
         return activityDataSet.getAll()
 }*/
-
 }

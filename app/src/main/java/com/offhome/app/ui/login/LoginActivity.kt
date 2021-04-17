@@ -17,7 +17,6 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.common.api.Scope
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
@@ -98,7 +97,7 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
-                        
+
                         // updateUiWithUser(LoggedInUserView())
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)

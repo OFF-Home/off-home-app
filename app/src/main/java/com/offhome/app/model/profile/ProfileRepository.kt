@@ -1,13 +1,10 @@
 package com.offhome.app.model.profile
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.UserClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,7 +74,7 @@ class ProfileRepository {
     }
 
     fun setUsername(newUsername: String) {
-        //TODO
-        //val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
+        // TODO
+        // val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
     }
 }

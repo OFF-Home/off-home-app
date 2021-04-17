@@ -1,6 +1,5 @@
 package com.offhome.app.ui.activitieslist
 
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,7 @@ import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 
-class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as ActivityFromList
@@ -20,7 +19,7 @@ class  ActivitiesListRecyclerViewAdapter : RecyclerView.Adapter<ActivitiesListRe
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_activity, parent, false)
+            .inflate(R.layout.fragment_activity, parent, false)
         return ViewHolder(view)
     }
 

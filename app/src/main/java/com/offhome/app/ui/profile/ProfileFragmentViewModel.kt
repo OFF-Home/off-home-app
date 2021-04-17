@@ -1,6 +1,5 @@
 package com.offhome.app.ui.profile
 
-import android.content.Context
 import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.model.profile.ProfileRepository

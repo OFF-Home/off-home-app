@@ -10,7 +10,6 @@ import com.offhome.app.R
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
 
-
 /**
  * Class that handles authentication w/ login credentials and retrieves user information.
  * @author Pau Cuesta Arcos

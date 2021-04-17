@@ -78,14 +78,11 @@ class ProfileFragment : Fragment() {
         tabs.setupWithViewPager(viewPager)
 
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
-        fragmentViewModel.getProfileInfo(context)
+        fragmentViewModel.getProfileInfo()
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer { // aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
                 val profileInfoVM = it ?: return@Observer
-
-                // debug
-                // Toast.makeText(context,"arribo al fragmentViewModel.ProfileInfo.observe()",Toast.LENGTH_LONG).show()
 
                 textViewUsername.text = profileInfoVM.username
                 estrelles.rating = profileInfoVM.estrelles.toFloat()
@@ -93,12 +90,10 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        // Toast.makeText(context,"s'executa onCreate de ProfileFragment",Toast.LENGTH_LONG).show()
-
         iniEditElements()
 
         imageViewProfilePic.setOnClickListener {
-            //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU.
+            //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
             canviAOtherProfile()
         }
 

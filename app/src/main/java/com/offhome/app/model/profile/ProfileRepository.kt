@@ -32,8 +32,7 @@ class ProfileRepository {
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
      */
-    fun getProfileInfo(username: String, context: Context?): MutableLiveData<UserInfo>? {
-        // Toast.makeText(context,"arribo al repo.getProfileInfo",Toast.LENGTH_LONG).show()
+    fun getProfileInfo(username: String): MutableLiveData<UserInfo>? {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
@@ -43,16 +42,14 @@ class ProfileRepository {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
                     userInfo!!.value = response.body()
-                    // Toast.makeText(context,"success response---------------------------------",Toast.LENGTH_LONG).show()
+                    Log.d("success response", "got a response indicating success")
                 } else {
-                    Toast.makeText(context, "failure response---------------------------------", Toast.LENGTH_LONG).show()
+                    Log.d("failure response", "got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                Log.d("GET", "Error getting topProfileInfo")
-
-                Toast.makeText(context, "communication failure (no response)-------------------------------------", Toast.LENGTH_LONG).show()
+                Log.d("GET", "Error getting topProfileInfo. communication failure (no response)")
             }
         })
 
@@ -61,7 +58,6 @@ class ProfileRepository {
             description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
             followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags="a b c d e", language = "esp")
 */
-        // Toast.makeText(context,"return",Toast.LENGTH_LONG).show()
 
         return userInfo as MutableLiveData<UserInfo>
         // return TopProfileInfo(username = "Maria", starRating = 6) // stub

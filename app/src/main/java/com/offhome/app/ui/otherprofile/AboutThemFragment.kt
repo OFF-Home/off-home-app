@@ -47,7 +47,7 @@ class AboutThemFragment : Fragment() {
         else
             Log.d("parent ok", "parentfragment is NOT null")
 
-        //viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)
+        //viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)       //intents vells d'agafar el viewModel de la activity "parent"
        //viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
         viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 

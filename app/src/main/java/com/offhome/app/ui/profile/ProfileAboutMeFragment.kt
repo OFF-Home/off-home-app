@@ -85,16 +85,13 @@ class ProfileAboutMeFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-        // constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
-        // paintEditButtons()
     }
 
     private fun omplirTagGroup(tagString: String) {
         var i = 0
         val nTags = 10 // stub
         while (i <nTags) {
-            // agafar tag del string
+            // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
             val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
             tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
             tag1.chipStrokeWidth = 5F
@@ -123,11 +120,6 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton = ImageView(activity)
         editDescriptionButton.id = R.id.editDescriptionButton // funciona somehow
 
-        // editDescriptionButton.setImageResource(android.R.drawable.ic_menu_edit)//         android:drawable/ic_menu_edit)
-        // editDescriptionButton.setImageResource(R.drawable.google_logo_small)
-
-        // val dr: Drawable = /*ResourcesCompat.getDrawable(android.R.drawable.ic_menu_edit)*/     getResources().getDrawable(android.R.drawable.ic_menu_edit);
-
         //we prepare the editIconDrawable, resizing it
         // to resize the drawable, we create a local drawable here
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
@@ -152,7 +144,6 @@ class ProfileAboutMeFragment : Fragment() {
     private fun iniEditTextDescription() {
         editTextProfileDescription = EditText(activity)
         editTextProfileDescription.id = R.id.editTextProfileDescription
-
 
         constraintLayout2.addView(editTextProfileDescription)
         //add the EditText's constraints to the layout

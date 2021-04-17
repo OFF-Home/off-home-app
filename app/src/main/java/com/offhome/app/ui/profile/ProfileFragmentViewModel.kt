@@ -26,10 +26,10 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * obtains topProfileInfo from the lower level and places it on the live data
      */
-    fun getProfileInfo(context: Context?) {
+    fun getProfileInfo() {
         val username = "victorfer" // stub
 
-        profileInfo = repository.getProfileInfo(username, context)!!
+        profileInfo = repository.getProfileInfo(username)!!
     }
 
     /*fun getRepository(): ProfileRepository {

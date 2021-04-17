@@ -7,6 +7,7 @@ import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.UserClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -77,5 +78,10 @@ class ProfileRepository {
         }
 
         return bitmap
+    }
+
+    fun setUsername(newUsername: String) {
+        //TODO
+        //val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
     }
 }

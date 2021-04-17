@@ -1,6 +1,7 @@
 package com.offhome.app.ui.profile
 
 import android.content.Context
+import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
@@ -31,7 +32,11 @@ class ProfileFragmentViewModel : ViewModel() {
         profileInfo = repository.getProfileInfo(username, context)!!
     }
 
-    fun getRepository(): ProfileRepository {
+    /*fun getRepository(): ProfileRepository {
         return repository
+    }*/
+
+    fun usernameChangedByUser(text: Editable) {
+        repository.setUsername(text.toString())
     }
 }

@@ -177,6 +177,8 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
         editDescriptionButton.setOnClickListener{
+            textViewProfileDescription.text = editTextProfileDescription.text
+            //viewModel.descriptionChangedByUser()  //crec que ho faré amb el VM de Profile.
             changeDescriptionToDisplay()
         }
         editTextProfileDescription.setText(textViewProfileDescription.text)

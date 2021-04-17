@@ -173,6 +173,8 @@ class ProfileFragment : Fragment() {
     private fun changeUsernameToEdit() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
+            textViewUsername.text = editTextUsername.text
+            fragmentViewModel.usernameChangedByUser(editTextUsername.text)
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)

@@ -4,19 +4,32 @@ import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.Category
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Adpter for the recycler view of the categories list
  * @param context is the context of the activity
  * @property categories is the list of categories
  */
-class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(),
+    Filterable {
+
+    private var listCategories : List<Category> = ArrayList()
+    private var listCategoriesFull : List<Category> = ArrayList()
+
+    init{
+        this.listCategoriesFull = ArrayList(listCategories)
+    }
+
     /**
      * Onclick to item. Updated when activitiesList developed
      */
@@ -89,4 +102,37 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             return super.toString()
         }
     }
+
+    override fun getFilter(): Filter {
+        return object : Filter() {
+            /*
+            Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
+            */
+            override fun performFiltering(constraint: CharSequence?): FilterResults {
+                val charSearch = constraint.toString()
+                if (charSearch.isEmpty()) {
+                    listCategoriesFull = listCategories
+                } else {
+                    val resultList  : List<Category> = ArrayList()
+                    for (row in listCategories) {
+                        if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                           // resultList.add(Pair(row.categoria, row.descripcio))
+                        }
+                    }
+                    listCategoriesFull = resultList
+                }
+                val filterResults = FilterResults()
+                filterResults.values = listCategoriesFull
+                return filterResults
+            }
+
+            @Suppress("UNCHECKED_CAST")
+            override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
+                //listCategoriesFull = results?.values as ArrayList<String>
+                notifyDataSetChanged()
+            }
+
+        }
+    }
+
 }

@@ -22,6 +22,11 @@ class CategoriesFragment : Fragment() {
     private lateinit var categoryAdapter: MyCategoriesRecyclerViewAdapter
     private var categories: List<Category> = ArrayList()
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+    }
+
     /**
      * Called when view created and has the observers
      * @param inflater is the Layout inflater to inflate the view
@@ -39,6 +44,9 @@ class CategoriesFragment : Fragment() {
 
         categoryAdapter = MyCategoriesRecyclerViewAdapter(context)
 
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+
         if (view is RecyclerView) {
             with(view) {
                 layoutManager = GridLayoutManager(context, 2)
@@ -53,11 +61,18 @@ class CategoriesFragment : Fragment() {
                 categoryAdapter.setData(categories)
             }
         )
+
         return view
     }
-    /*
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(button_search, menu)
+        inflater.inflate(R.menu.search_button, menu)
+
+    }
+
+    /*override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        MenuInflater.inflate(R.menu.search_button, menu)
+        inflater.inflate(search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
 
         //aixo es per fer la cerca però encara no funciona IN PROCESS

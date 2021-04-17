@@ -24,6 +24,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    lateinit var recoverResult: LiveData<String>
+
     /**
      * It calls te repository to login and treats the result to set the mutable live data of the result of the login
      */
@@ -39,6 +41,10 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
         }
+    }
+
+    fun recoverPassword(email: String) {
+        recoverResult = loginRepository.recoverPassword(email)
     }
 
     /**

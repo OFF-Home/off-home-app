@@ -55,19 +55,19 @@
         android:layout_height="50dp"
         android:layout_gravity="start"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="20dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="16dp"
         android:background="@color/primary"
+        android:enabled="false"
         android:text="@string/button_login"
         android:textAllCaps="false"
         android:textColor="@color/black"
         android:textSize="22sp"
         android:textStyle="bold"
-        android:enabled="false"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.495"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/editTextPassword" />
+        app:layout_constraintTop_toBottomOf="@+id/linearLayoutRecover" />
 
     <!--  Progress bar that will be shown while logging in in background  -->
     <ProgressBar
@@ -193,5 +193,32 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout2" />
+
+    <LinearLayout
+        android:id="@+id/linearLayoutRecover"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:gravity="center_horizontal"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/editTextPassword">
+
+        <!--  TextView that tells the user if doesn't have an account -->
+        <TextView
+            android:id="@+id/textViewRecoverPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/text_view_recover_password" />
+
+        <!-- TextView that allows the user to navigate to another activity to Sign Up -->
+        <TextView
+            android:id="@+id/textViewHereRecover"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/button_here"
+            android:textColor="@color/color_link" />
+    </LinearLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

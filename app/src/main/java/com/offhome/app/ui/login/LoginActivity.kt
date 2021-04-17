@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 
 /**
@@ -40,6 +41,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnToSignUp: TextView
     private lateinit var btnLoginGoogle: Button
+    private lateinit var btnRecoverPassword: TextView
 
     /**
      * It is executed when the activity is launched for first time or created again following
@@ -66,6 +68,11 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        btnRecoverPassword.setOnClickListener {
+            val intent = Intent(this, RecoverPasswordActivity::class.java)
+            startActivity(intent)
+        }
     }
 
     /**
@@ -81,6 +88,7 @@ class LoginActivity : AppCompatActivity() {
         btnToSignUp = findViewById(R.id.textViewHere)
         btnLoginGoogle = findViewById(R.id.buttonGoogleLogin)
         loading = findViewById(R.id.loading)
+        btnRecoverPassword = findViewById(R.id.textViewHereRecover)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)

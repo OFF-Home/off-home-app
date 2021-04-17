@@ -170,4 +170,7 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="text_view_recover_password">Don\'t remember your password? Recover it </string>
+    <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
+    <string name="btn_recover_password">Recover password</string>
 </resources>

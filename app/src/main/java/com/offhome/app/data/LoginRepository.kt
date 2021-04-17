@@ -54,4 +54,8 @@ class LoginRepository(val dataSource: LoginDataSource) {
     private fun setLoggedInUser(loggedInUser: LoggedInUser?) {
         this.user = loggedInUser
     }
+
+    fun recoverPassword(email: String): LiveData<String> {
+        return dataSource.recoverPassword(email)
+    }
 }

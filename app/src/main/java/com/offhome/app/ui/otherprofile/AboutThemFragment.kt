@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.lifecycle.ViewModelStore
@@ -82,5 +84,9 @@ class AboutThemFragment : Fragment() {
             tag1.chipStrokeWidth = 5F
         //    ++i
         //}
+    }
+
+    fun updateFollowes() {
+        textViewFollowerCount.text = viewModel.getUserInfo().followers.toString()
     }
 }

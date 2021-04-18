@@ -2,9 +2,8 @@ package com.offhome.app.ui.otherprofile
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
@@ -17,6 +16,8 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
+    private lateinit var btnFollowFollowing: Button
+    private lateinit var fragment: AboutThemFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +34,43 @@ class OtherProfileActivity : AppCompatActivity() {
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
+        btnFollowFollowing = findViewById(R.id.buttonFollow)
+        fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java)  //funcionarà?
 
         viewModel.setUserInfo(otherUser)
+
+        if (viewModel.isFollowing() == true) {
+            btnFollowFollowing.text = getString(R.string.btn_following)
+        } else {
+            btnFollowFollowing.text = getString(R.string.btn_follow)
+        }
+
+        btnFollowFollowing.setOnClickListener {
+            if (btnFollowFollowing.text == getString(R.string.btn_follow))
+                viewModel.follow()
+            else viewModel.stopFollowing()
+        }
+
+        observe()
+    }
+
+    private fun observe() {
+        viewModel.followResult.observe(this, {
+            if (it)
+                changeFollowButtonText()
+            else
+                Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+        })
+    }
+
+    private fun changeFollowButtonText() {
+        btnFollowFollowing.text = if (btnFollowFollowing.text == getString(R.string.btn_follow)) {
+            getString(R.string.btn_following)
+        } else {
+            getString(R.string.btn_follow)
+        }
+        fragment.updateFollowes()
     }
 }

@@ -1,18 +1,17 @@
 package com.offhome.app.model.profile
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.Toast
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.UserClient
-import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import java.io.IOException
 import java.io.InputStream
+import kotlin.Boolean as Boolean
 
 /**
  * Class *ProfileRepository*
@@ -79,5 +78,68 @@ class ProfileRepository {
     fun setUsername(newUsername: String) {
         //TODO
         //val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
+    }
+
+    fun follow(currentUser: String, email: String): LiveData<String> {
+        val result = MutableLiveData<String>()
+
+        val call: Call<String> = userService!!.follow(currentUser, email)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
+    }
+
+    fun stopFollowing(currentUser: String, email: String): LiveData<String> {
+        val result = MutableLiveData<String>()
+
+        val call: Call<String> = userService!!.stopFollowing(currentUser, email)
+        call.enqueue(object : Callback<String> {
+            override fun onResponse(call: Call<String>, response: Response<String>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<String>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
+    }
+
+    fun isFollowing(currentUser: String, email: String): LiveData<Boolean> {
+        val result = MutableLiveData<Boolean>()
+
+        val call: Call<Boolean> = userService!!.isFollowing(currentUser, email)
+        call.enqueue(object : Callback<Boolean> {
+            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
     }
 }

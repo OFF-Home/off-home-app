@@ -12,7 +12,7 @@ import com.offhome.app.R
 class Activities : AppCompatActivity() {
 
     lateinit var categoryName: String
-    lateinit var buttonScreens: ToggleButton
+    //lateinit var buttonScreens: ToggleButton
     lateinit var buttonlist: Button
     lateinit var buttonmap: Button
 
@@ -30,25 +30,32 @@ class Activities : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         buttonlist = findViewById<Button>(R.id.btn_list)
-        buttonScreens = findViewById<ToggleButton>(R.id.toggleButton)
+        buttonmap = findViewById<Button>(R.id.btn_map)
+
+        //buttonScreens = findViewById<ToggleButton>(R.id.toggleButton)
+
+        //esto es lo que hace que cambie de fragment, al clicar a list
+        //primero cambio colores botones
         buttonlist.setOnClickListener {
             if (savedInstanceState == null) {
-                //esto es lo que hace que cambie de fragment, usarlo para el boton de list - map
-                //primero cambio colores botones
                 buttonlist.setBackgroundColor(getColor(R.color.secondary))
                 buttonmap.setBackgroundColor(getColor(R.color.secondary_light))
                 supportFragmentManager.beginTransaction()
-                    .replace(R.id.container, MapsFragment.newInstance())
+                    .replace(R.id.container, ActivitiesListFragment.newInstance())
                     .commitNow()
-                }
-
+            }
         }
 
-        if (savedInstanceState == null) {
-            //esto es lo que hace que cambie de fragment, usarlo para el boton de list - map
-            supportFragmentManager.beginTransaction()
-                .replace(R.id.container, MapsFragment.newInstance())
-                .commitNow()
+        //esto es lo que hace que cambie de fragment, al clicar a map
+        //primero cambio colores botones
+        buttonmap.setOnClickListener {
+            if (savedInstanceState == null) {
+                buttonmap.setBackgroundColor(getColor(R.color.secondary))
+                buttonlist.setBackgroundColor(getColor(R.color.secondary_light))
+                supportFragmentManager.beginTransaction()
+                    .replace(R.id.container, MapsFragment.newInstance())
+                    .commitNow()
+            }
         }
     }
 }

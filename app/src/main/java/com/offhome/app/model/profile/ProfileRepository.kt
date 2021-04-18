@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.ResultSignUp
 import com.offhome.app.data.retrofit.UserClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -77,7 +78,28 @@ class ProfileRepository {
     }
 
     fun setUsername(newUsername: String) {
-        //TODO
-        //val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
+        //in progress
+        /*val call: Call<ResponseBody> = userService.setUsername(username = newUsername)   //o algo tipo updateUser()
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "response: is successful")
+                    //_result.value = ResultSignUp(success = true) //old de sign up
+                } else { // si rebem resposta de la BD pero ens informa d'un error
+                    Log.d("response", "response: unsuccessful")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "no response")
+                t.printStackTrace()
+                Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
+            }
+        })*/
+    }
+
+    fun setDescription(newDescription:String) {
+        //fer quan sapiga fer el setUsername()
     }
 }

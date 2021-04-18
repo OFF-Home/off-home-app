@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -27,7 +26,8 @@ class ProfileAboutMeFragment : Fragment() {
         fun newInstance() = ProfileAboutMeFragment()
     }
 
-    private lateinit var viewModel: ProfileAboutMeViewModel
+    private lateinit var viewModel: ProfileAboutMeViewModel     //té pinta que la classe ProfileAboutMeViewModel la borraré i faré servir ProfileFragmentViewModel
+    private lateinit var profileVM: ProfileFragmentViewModel    //fem servir el viewModel de Profile
     private lateinit var textViewProfileDescription: TextView
     private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
@@ -40,6 +40,7 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var editIconDrawable:Drawable
     private lateinit var saveIconDrawable:Drawable
     private lateinit var editTextProfileDescription : EditText
+
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -60,7 +61,7 @@ class ProfileAboutMeFragment : Fragment() {
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
 
-        val profileVM: ProfileFragmentViewModel = profileFragment.getViewModel()
+        profileVM = profileFragment.getViewModel()
         profileVM.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
@@ -169,7 +170,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription
         editDescriptionButton.setOnClickListener{
             textViewProfileDescription.text = editTextProfileDescription.text
-            //viewModel.descriptionChangedByUser()  //crec que ho faré amb el VM de Profile.
+            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
             changeDescriptionToDisplay()
         }
         editTextProfileDescription.setText(textViewProfileDescription.text)

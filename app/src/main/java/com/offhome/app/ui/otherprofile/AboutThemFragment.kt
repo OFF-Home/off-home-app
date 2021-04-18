@@ -1,18 +1,14 @@
 package com.offhome.app.ui.otherprofile
 
 import android.content.res.ColorStateList
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
 import android.widget.TextView
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.constraintlayout.widget.ConstraintSet
-import androidx.lifecycle.ViewModelStore
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
@@ -25,30 +21,31 @@ class AboutThemFragment : Fragment() {
         fun newInstance() = AboutThemFragment()
     }
 
-    //private lateinit var viewModel: AboutThemViewModel
+    // private lateinit var viewModel: AboutThemViewModel
     private lateinit var viewModel: OtherProfileViewModel
 
     private lateinit var textViewProfileDescription: TextView
     private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
-    private lateinit var chipGroupTags : ChipGroup
+    private lateinit var chipGroupTags: ChipGroup
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
-        //treure els log
+        // treure els log
         Log.d("inflate", "inflated successfully")
         if (parentFragment == null)
             Log.d("nullParent", "parentfragment is null")
         else
             Log.d("parent ok", "parentfragment is NOT null")
 
-        //viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)       //intents vells d'agafar el viewModel de la activity "parent"
-       //viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
+        // viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)       //intents vells d'agafar el viewModel de la activity "parent"
+        // viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
         viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
@@ -73,14 +70,14 @@ class AboutThemFragment : Fragment() {
     }
 
     private fun omplirTagGroup(tagString: String) {
-        //decodificar el Json
+        // decodificar el Json
 
-        //while (i < nTags) {
+        // while (i < nTags) {
 
-            val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
-            tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
-            tag1.chipStrokeWidth = 5F
+        val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
+        tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
+        tag1.chipStrokeWidth = 5F
         //    ++i
-        //}
+        // }
     }
 }

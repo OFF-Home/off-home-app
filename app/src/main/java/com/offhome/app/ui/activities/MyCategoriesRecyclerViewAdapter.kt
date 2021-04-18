@@ -1,6 +1,7 @@
 package com.offhome.app.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.Category
+import com.offhome.app.ui.activitieslist.ActivitiesList
 
 /**
  * Adpter for the recycler view of the categories list
@@ -22,6 +24,9 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
      */
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as Category
+        val intent = Intent(context, ActivitiesList::class.java)
+        intent.putExtra("category", item.categoria)
+        context?.startActivity(intent)
     }
     private var categories: List<Category> = ArrayList()
 
@@ -49,7 +54,7 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
             Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
         }
-        with(holder.mView) {
+        with(holder.imageViewBackground) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
@@ -81,7 +86,6 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
         val textViewName: TextView = mView.findViewById(R.id.textViewNameCategory)
         val imageViewBackground: ImageView = mView.findViewById(R.id.pinkBackground)
         val imageViewIcon: ImageView = mView.findViewById(R.id.imageViewIconCategory)
-
         /**
          * General function that returns the string
          */

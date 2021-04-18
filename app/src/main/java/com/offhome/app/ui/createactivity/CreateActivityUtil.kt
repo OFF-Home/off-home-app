@@ -1,6 +1,5 @@
 package com.offhome.app.ui.createactivity
 
-
 /**
  * Create Activity Util for testing with JUnit (not implemented yet)
  */

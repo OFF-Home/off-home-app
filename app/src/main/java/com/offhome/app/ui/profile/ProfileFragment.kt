@@ -41,9 +41,9 @@ class ProfileFragment : Fragment() {
     private lateinit var editUsernameButton: ImageView
     private lateinit var constraintLayout1: ConstraintLayout
 
-    private lateinit var editIconDrawable:Drawable
-    private lateinit var saveIconDrawable:Drawable
-    private lateinit var editTextUsername : EditText
+    private lateinit var editIconDrawable: Drawable
+    private lateinit var saveIconDrawable: Drawable
+    private lateinit var editTextUsername: EditText
 
     /**
      * Override the onCreateView method
@@ -93,7 +93,7 @@ class ProfileFragment : Fragment() {
         iniEditElements()
 
         imageViewProfilePic.setOnClickListener {
-            //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
+            // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
             canviAOtherProfile()
         }
 
@@ -115,21 +115,21 @@ class ProfileFragment : Fragment() {
         }
         iniEditTextUsername()
 
-        //fer iniEditProfilePicButton aquí
+        // fer iniEditProfilePicButton aquí
     }
 
     private fun iniEditUsernameButton() {
         editUsernameButton = ImageView(activity)
         editUsernameButton.id = R.id.editUsernameButton
 
-        //TODO codi repetit de ProfileAboutMeFragment. fer algo?
+        // TODO codi repetit de ProfileAboutMeFragment. fer algo?
 
         // to resize the drawable, we create a local drawable here
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
         // we scale it
         editIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
-        //we prepare the saveIconDrawable, resizing it
+        // we prepare the saveIconDrawable, resizing it
         val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
@@ -146,7 +146,7 @@ class ProfileFragment : Fragment() {
 
     private fun iniEditTextUsername() {
         editTextUsername = EditText(activity)
-        editTextUsername.id= R.id.editTextUsername2 //li he dit 2 perquè ja existia un editTextUsername aparentment
+        editTextUsername.id = R.id.editTextUsername2 // li he dit 2 perquè ja existia un editTextUsername aparentment
 
         constraintLayout1.addView(editTextUsername)
         val constraintSet1 = ConstraintSet()
@@ -154,7 +154,7 @@ class ProfileFragment : Fragment() {
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.LEFT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.LEFT)
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.RIGHT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.RIGHT)
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.TOP, R.id.imageViewProfilePic, ConstraintSet.BOTTOM)
-        //falta clear?
+        // falta clear?
         constraintSet1.connect(R.id.textViewUsername, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.BOTTOM)
 
         constraintSet1.applyTo(constraintLayout1)
@@ -204,13 +204,15 @@ class ProfileFragment : Fragment() {
         editTextUsername.visibility = View.GONE
     }
 
-    //aixo es completament per a testejar
+    // aixo es completament per a testejar
     private fun canviAOtherProfile() {
 
-        //stub
-        val userInfo = com.offhome.app.model.profile.UserInfo(email="yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-2012",
+        // stub
+        val userInfo = com.offhome.app.model.profile.UserInfo(
+            email = "yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-2012",
             description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags="a b c d e", language = "esp")
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
+        )
 
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))

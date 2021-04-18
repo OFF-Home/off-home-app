@@ -1,14 +1,14 @@
 package com.offhome.app.data
 
-
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
+import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
+import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import android.util.Log
-import retrofit2.Call
 
 /**
  * This class requests the response of the creation of the activities
@@ -19,8 +19,9 @@ import retrofit2.Call
  *
  */
 class ActivitiesRepository {
-    private var activities : MutableLiveData<List<ActivityFromList>>? = null
-    private var mutableLiveData : MutableLiveData<String>? = MutableLiveData(" ")
+    private var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
 
@@ -49,7 +50,7 @@ class ActivitiesRepository {
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
         val call = activitiesService?.createActivityByUser(emailCreator = "victorfer@gmai.com", newActivity)
-        call!!.enqueue(object: Callback<ResponseBody> {
+        call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: retrofit2.Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -65,5 +66,31 @@ class ActivitiesRepository {
             }
         })
         return mutableLiveData as MutableLiveData<String>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to join to an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to join the activity
+     * @return the result with a live data string type
+     */
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
+        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val call = activitiesService?.joinActivity(join)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseJoin?.value = "You have joined the activity!"
+                } else responseJoin?.value =
+                    "It has been an error and you haven't joined the activity!"
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseJoin?.value =
+                    "It has been an error and you haven't joined the activity!"
+            }
+        })
+        return responseJoin as MutableLiveData<String>
     }
 }

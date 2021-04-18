@@ -1,11 +1,13 @@
 package com.offhome.app.ui.activitieslist
 
+import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
@@ -13,21 +15,19 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 
-class  ActivitiesListRecyclerViewAdapter(private val context: Activities) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as ActivityFromList
         val intent = Intent(context, InfoActivity::class.java)
         intent.putExtra("activity", GsonBuilder().create().toJson(item))
-        if (context != null) {
-            context.startActivity(intent)
-        }
+        context.startActivity(intent)
     }
     private var activitiesList: List<ActivityFromList> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-                .inflate(R.layout.fragment_activity, parent, false)
+            .inflate(R.layout.fragment_activity, parent, false)
         return ViewHolder(view)
     }
 
@@ -40,7 +40,7 @@ class  ActivitiesListRecyclerViewAdapter(private val context: Activities) : Recy
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
 
-        with(holder.mView) {
+        with(holder.background) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
@@ -77,6 +77,7 @@ class  ActivitiesListRecyclerViewAdapter(private val context: Activities) : Recy
         val dataTimeImage: ImageView = mView.findViewById(R.id.imageViewDataTime)
         val capacityImage: ImageView = mView.findViewById(R.id.imageViewCapacity)
         val iconLikeImage: ImageView = mView.findViewById(R.id.imageViewIconLike)
+        val background: CardView = mView.findViewById(R.id.cardViewBackground)
 
         override fun toString(): String {
             return super.toString()

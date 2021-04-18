@@ -2,15 +2,13 @@ package com.offhome.app.ui.activitieslist
 
 import android.location.Address
 import android.location.Geocoder
-import androidx.fragment.app.Fragment
-
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -51,9 +49,9 @@ class MapsFragment : Fragment() {
         val barcelona = LatLng(41.3879, 2.16992)
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(barcelona, 12.5f))
 
-        //set markers in map with all the activities
+        // set markers in map with all the activities
         for (item in activitiesList) {
-            //transform address to coordinates
+            // transform address to coordinates
             val geocoder = Geocoder(context, Locale.getDefault())
             val addresses: List<Address>
             addresses = geocoder.getFromLocationName(item.nomCarrer + " " + item.carrerNum, 1)
@@ -61,7 +59,7 @@ class MapsFragment : Fragment() {
                 latitude = addresses[0].latitude
                 longitude = addresses[0].longitude
             }
-            //set marker in place
+            // set marker in place
             val place = LatLng(latitude, longitude)
             mMap.addMarker(MarkerOptions().position(place).title(item.titol))
         }
@@ -88,6 +86,5 @@ class MapsFragment : Fragment() {
                 mapFragment?.getMapAsync(callback)
             }
         )
-
     }
 }

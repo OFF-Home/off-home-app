@@ -1,23 +1,26 @@
 package com.offhome.app.ui.infoactivity
 
-import android.annotation.SuppressLint
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.View
+import android.widget.Button
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import java.util.*
-
 
 /**
  * Class *InfoActivity*
@@ -36,6 +39,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var activity: ActivityFromList
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
+    private lateinit var viewModel: InfoActivityViewModel
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -45,23 +49,25 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        //recibir actividad seleccionada de la otra pantalla
+        // recibir actividad seleccionada de la otra pantalla
         val arguments = intent.extras
         val activityString = arguments?.getString("activity")
-        /*val activityString = "{\n" +
-                "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
-                "        \"nomCarrer\": \"Balmes2\",\n" +
-                "        \"numCarrer\": 11,\n" +
-                "        \"dataHoraIni\": \"13h\",\n" +
-                "        \"categoria\": \"Walking\",\n" +
-                "        \"maxParticipant\": 7,\n" +
-                "        \"titol\": \"Running in La Barce\",\n" +
-                "        \"descripcio\": \"so much fun!!!\",\n" +
-                "        \"dataHoraFi\": \" 13/5/2021\"\n" +
-                "    }"*/
+        // val activityString = "{\n" +
+//                "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
+//                "        \"nomCarrer\": \"Balmes2\",\n" +
+//                "        \"numCarrer\": 11,\n" +
+//                "        \"dataHoraIni\": \"13h\",\n" +
+//                "        \"categoria\": \"Walking\",\n" +
+//                "        \"maxParticipant\": 7,\n" +
+//                "        \"titol\": \"Running in La Barce\",\n" +
+//                "        \"descripcio\": \"so much fun!!!\",\n" +
+//                "        \"dataHoraFi\": \" 13/5/2021\"\n" +
+//                "    }"
         activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
@@ -75,19 +81,38 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
+        val layout = findViewById<View>(R.id.content)
+
+        val btnJoin = findViewById<Button>(R.id.btn_join)
+        btnJoin.setOnClickListener {
+            viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                this,
+                {
+                    if (it != " ") {
+                        if (it == "You have joined the activity!") {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.go_chat)) {
+                                    Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                }
+                            snackbar.show()
+                        } else {
+                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            )
+        }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
 
-
-        //asignar título actividad como título de la pantalla
+        // asignar título actividad como título de la pantalla
         title = activity.titol
 
-
-
-        //canviar like al clicar
+        // canviar like al clicar
         var clicked = false
 
         imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
@@ -99,8 +124,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
-
-
     }
 
     /**
@@ -115,7 +138,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         mMap.uiSettings.setZoomControlsEnabled(true)
 
-        //transform address to coordinates
+        // transform address to coordinates
         val geocoder = Geocoder(this, Locale.getDefault())
         val addresses: List<Address>
         addresses = geocoder.getFromLocationName(activity.nomCarrer + " " + activity.carrerNum, 1)

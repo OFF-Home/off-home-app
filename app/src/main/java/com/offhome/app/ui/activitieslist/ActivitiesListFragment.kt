@@ -1,12 +1,12 @@
 package com.offhome.app.ui.activitieslist
 
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
@@ -24,7 +24,8 @@ class ActivitiesListFragment : Fragment() {
     private var activitiesList: List<ActivityFromList> = ArrayList()
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         return inflater.inflate(R.layout.activities_list_fragment, container, false)
@@ -40,7 +41,6 @@ class ActivitiesListFragment : Fragment() {
         layout.layoutManager = LinearLayoutManager(context)
         layout.adapter = activitiesListAdapter
 
-
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
@@ -49,5 +49,4 @@ class ActivitiesListFragment : Fragment() {
             }
         )
     }
-
 }

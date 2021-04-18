@@ -18,4 +18,11 @@ class ActivitiesViewModel : ViewModel() {
         activitiesList = repository.getAll(categoryName)
         return activitiesList
     }
+    /* old stuff
+    private var repository: Repository = Repository()
+    private var activitiesList: LiveData<List<ActivityFromList>> = repository.getAllActivities()!!
+
+    fun getActivitiesList(): LiveData<List<ActivityFromList>> {
+        return activitiesList
+    }*/
 }

@@ -29,8 +29,8 @@ class MainActivity : AppCompatActivity() {
 
         val buttonCreate = findViewById<FloatingActionButton>(R.id.buttonCreateActivity)
 
-        buttonCreate.setOnClickListener{
-            val intent = Intent(this, CreateActivity::class.java);
+        buttonCreate.setOnClickListener {
+            val intent = Intent(this, CreateActivity::class.java)
             startActivity(intent)
         }
 

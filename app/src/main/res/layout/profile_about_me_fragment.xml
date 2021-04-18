@@ -2,21 +2,19 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/frameLayout"
+    android:id="@+id/aboutMeConstraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileAboutMeFragment">
 
     <TextView
         android:id="@+id/textViewProfileDescriptionTitle"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
-        android:layout_marginEnd="16dp"
         android:text="@string/description"
         android:textStyle="bold"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -28,6 +26,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
         android:text="I love running and being outdoors with my friends"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewProfileDescriptionTitle" />
@@ -83,7 +82,24 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/lineaEstetica1" />
 
-    <!--> aqui van els tags <-->
+    <!--> tags: <-->
+    <com.google.android.material.chip.ChipGroup
+        android:id="@+id/chipGroupTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:clickable="false"
+        android:contextClickable="false"
+        android:focusableInTouchMode="false"
+        android:hapticFeedbackEnabled="false"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle"
+        app:singleLine="false">
+
+    </com.google.android.material.chip.ChipGroup>
 
     <View
         android:id="@+id/lineaEstetica2"
@@ -96,7 +112,7 @@
         android:background="@color/divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle" />
+        app:layout_constraintTop_toBottomOf="@id/chipGroupTags" />
 
     <!--> provant sense linear layout: <-->
 
@@ -113,7 +129,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
-        android:id="@+id/textViewFollowerCount2"
+        android:id="@+id/textViewFollowerCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
@@ -136,7 +152,7 @@
         app:layout_constraintTop_toBottomOf="@+id/lineaEstetica2" />
 
     <TextView
-        android:id="@+id/textViewFollowingCount2"
+        android:id="@+id/textViewFollowingCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"

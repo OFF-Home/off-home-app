@@ -22,6 +22,8 @@ import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.ui.signup.SignUpActivity
+import com.offhome.app.ui.signup.SignUpViewModel
+import com.offhome.app.ui.signup.SignUpViewModelFactory
 
 /**
  * Class *LoginActicity*
@@ -97,7 +99,15 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
-
+                        val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
+                            .get(SignUpViewModel::class.java)
+                        signUpViewModel.signUp(
+                            account.email.toString(),
+                            account.displayName.toString(),
+                            null,
+                            null,
+                            this
+                        )
                         // updateUiWithUser(LoggedInUserView())
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)

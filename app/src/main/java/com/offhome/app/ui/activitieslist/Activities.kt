@@ -34,6 +34,13 @@ class Activities : AppCompatActivity() {
 
         //buttonScreens = findViewById<ToggleButton>(R.id.toggleButton)
 
+        //cargar por defecto el listado de actividades
+        if (savedInstanceState == null) {
+            supportFragmentManager.beginTransaction()
+                .replace(R.id.container, ActivitiesListFragment.newInstance())
+                .commitNow()
+        }
+
         //esto es lo que hace que cambie de fragment, al clicar a list
         //primero cambio colores botones
         buttonlist.setOnClickListener {

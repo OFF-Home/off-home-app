@@ -2,15 +2,8 @@ package com.offhome.app.ui.activitieslist
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.LinearLayout
-import android.widget.RelativeLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
@@ -41,7 +34,7 @@ class ActivitiesList : AppCompatActivity() {
                 ViewModelProvider(this).get(ActivitiesListViewModel::class.java)
 
         activitiesListViewModel = ViewModelProvider(this).get(ActivitiesListViewModel::class.java)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter()
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(applicationContext)
 
         layout.layoutManager = LinearLayoutManager(applicationContext)
         layout.adapter = activitiesListAdapter

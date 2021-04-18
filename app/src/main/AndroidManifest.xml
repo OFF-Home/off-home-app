@@ -31,13 +31,12 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
-
         <activity
             android:name=".ui.infoactivity.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName="com.offhome.app.ui.activitieslist.ActivitiesList"/>
+            android:parentActivityName="com.offhome.app.ui.activitieslist.Activities"/>
         <activity
-            android:name=".ui.activitieslist.ActivitiesList"
+            android:name=".ui.activitieslist.Activities"
             android:parentActivityName="com.offhome.app.MainActivity"
             android:launchMode="singleTop"/>
         <activity

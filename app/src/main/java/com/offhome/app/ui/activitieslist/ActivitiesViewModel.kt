@@ -5,8 +5,7 @@ import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
 
-class ActivitiesListViewModel : ViewModel() {
-    /*cosas BD ya funcionan*/
+class ActivitiesViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
     private lateinit var activitiesList: LiveData<List<ActivityFromList>>
 

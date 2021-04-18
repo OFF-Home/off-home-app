@@ -15,7 +15,7 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 
-class ActivitiesListRecyclerViewAdapter(context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as ActivityFromList

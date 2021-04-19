@@ -1,10 +1,13 @@
 package com.offhome.app.ui.profile
 
+import android.app.Activity
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.view.*
 import android.widget.EditText
 import android.widget.ImageView
@@ -17,9 +20,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
+import java.io.ByteArrayOutputStream
 
 /**
  * Class *ProfileFragment*
@@ -44,6 +50,9 @@ class ProfileFragment : Fragment() {
     private lateinit var editIconDrawable: Drawable
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
+
+    private val REQUEST_IMAGE_CAPTURE = 100
+    private lateinit var imageUri : Uri
 
     /**
      * Override the onCreateView method
@@ -218,4 +227,58 @@ class ProfileFragment : Fragment() {
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
     }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        imageViewProfilePic.setOnClickListener {
+            takePictureIntent()
+        }
+    }
+
+    private fun takePictureIntent(){
+        Intent(MediaStore.ACTION_IMAGE_CAPTURE).also{ pictureIntent ->
+            pictureIntent.resolveActivity(activity?.packageManager!!)?.also{
+                startActivityForResult(pictureIntent,REQUEST_IMAGE_CAPTURE)
+            }
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            uploadImageAndSaveUri(imageBitmap)
+        }
+    }
+
+    private fun uploadImageAndSaveUri(bitmap: Bitmap){
+        val baos = ByteArrayOutputStream()
+        val storageRef = FirebaseStorage.getInstance()
+            .reference
+            .child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,baos)
+        val image = baos.toByteArray()
+
+        val upload = storageRef.putBytes(image)
+
+        constraintLayout1.visibility = View.VISIBLE
+        upload.addOnCompleteListener{ uploadTask ->
+            if(uploadTask.isSuccessful){
+                constraintLayout1.visibility = View.INVISIBLE
+                storageRef.downloadUrl.addOnCompleteListener{ urlTask ->
+                    urlTask.result?.let {
+                        imageUri = it
+                        //   activity?.toast(imageUri.toString())
+                        imageViewProfilePic.setImageBitmap(bitmap)
+                    }
+                }
+            }
+            else{
+                uploadTask.exception?.let {
+                    // activity?.toast(it.message!!)
+                }
+            }
+        }
+    }
+
 }

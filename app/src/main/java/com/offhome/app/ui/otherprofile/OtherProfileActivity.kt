@@ -94,7 +94,6 @@ class OtherProfileActivity : AppCompatActivity() {
                     urlTask.result?.let {
                         imageUri = it
                         Toast.makeText(this, imageUri.toString(), Toast.LENGTH_LONG).show()
-                        //OtherProfileActivity?.toast(imageUri.toString())
                         imageViewProfilePic.setImageBitmap(bitmap)
                     }
                 }

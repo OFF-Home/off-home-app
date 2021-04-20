@@ -100,10 +100,11 @@ class ProfileRepository {
                 setUsernameSuccessfully!!.value = false
             }
         })
+
         return setUsernameSuccessfully as MutableLiveData<Boolean>
     }
 
     fun setDescription(email:String, newDescription:String) {
-        //fer quan sapiga fer el setUsername()
+
     }
 }

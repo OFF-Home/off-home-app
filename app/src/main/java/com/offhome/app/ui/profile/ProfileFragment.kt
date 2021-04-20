@@ -88,9 +88,8 @@ class ProfileFragment : Fragment() {
             }
         )
 
-        iniEditionResultListeners()
-
         iniEditElements()
+        iniEditionResultListeners()
 
         imageViewProfilePic.setOnClickListener {
             //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
@@ -101,6 +100,9 @@ class ProfileFragment : Fragment() {
     }
 
     private fun iniEditionResultListeners() {
+
+        //inutil, intentant que salti el observer de setUsernameSuccessfully
+        fragmentViewModel.simularResposta()
 
         fragmentViewModel.setUsernameSuccessfully.observe(  //observer no salta. no sé perquè.
             viewLifecycleOwner,

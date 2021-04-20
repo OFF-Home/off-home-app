@@ -81,8 +81,13 @@ class ProfileAboutMeFragment : Fragment() {
         omplirTagGroup("aquest string encara no el llegim")
 
         iniEditElements()
+        iniEditionResultListeners()
 
         return view
+    }
+
+    private fun iniEditionResultListeners() {
+        //profileVM.
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -99,7 +104,7 @@ class ProfileAboutMeFragment : Fragment() {
             //val tag2 = Chip(context, null, R.attr.customChipStyleDeletable);
             val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
             //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Action);
-            Log.d("chips", "chip tag1 created")
+            //Log.d("chips", "chip tag1 created")
             tag1.text = "stub"; chipGroupTags.addView(tag1)
             tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
             tag1.chipStrokeWidth = 5F

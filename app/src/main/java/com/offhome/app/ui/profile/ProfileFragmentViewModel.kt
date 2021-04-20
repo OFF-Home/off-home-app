@@ -1,6 +1,7 @@
 package com.offhome.app.ui.profile
 
 import android.text.Editable
+import android.util.Log
 import androidx.lifecycle.*
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
@@ -25,6 +26,9 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _setUsernameSuccessfully = MutableLiveData<Boolean>()
     var setUsernameSuccessfully: LiveData<Boolean> = _setUsernameSuccessfully
 
+    private var _setDescriptionSuccessfully = MutableLiveData<Boolean>()
+    var setDescriptionSuccessfully : LiveData<Boolean> = _setDescriptionSuccessfully
+
     /**
      * obtains topProfileInfo from the lower level and places it on the live data
      */
@@ -36,10 +40,20 @@ class ProfileFragmentViewModel : ViewModel() {
 
     fun usernameChangedByUser(newUsername: Editable) {
         val email = "victor@gmai.com" // stub
-        setUsernameSuccessfully = repository.setUsername(email, newUsername.toString())!!
+        _setUsernameSuccessfully = repository.setUsername(email, newUsername.toString())!!
     }
 
     fun descriptionChangedByUser(newDescription: Editable) {
-        repository.setDescription("victor@gmai.com", newDescription.toString())
+        //_setDescriptionSuccessfully= repository.setDescription("victor@gmai.com", newDescription.toString())
+    }
+
+    //inutil, intentant que salti el observer de setUsernameSuccessfully
+    fun simularResposta() {
+        Log.d("simular resposta", "SIMULA RESPOSTA")
+
+        var setUsernameSuccessfully2 : MutableLiveData<Boolean>? = null
+        setUsernameSuccessfully2 = MutableLiveData<Boolean>()
+
+        _setUsernameSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
     }
 }

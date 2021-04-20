@@ -13,11 +13,15 @@ interface UserService {
     @GET("/users/{username}/show")
     fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
 
+
     //in progress
 
-    /*@POST("users/{username}/update")
-    fun setUsername(@Path("username") username: String): Call<ResponseBody>*/ //però username segueix sent la PK de user a la BD??
+    /*@GET("/tags/{username}/show")
+    fun getTags(@Path("username") username: String): Call< ??? >*/
 
-    /*@POST("users/{username}/update")
-    fun setDescription(@Path("username") username: String, @Body description:String): Call<ResponseBody>*/
+    @POST("users/{username}/update")
+    fun setUsername(@Path("username") email:String, @Body username: String): Call<ResponseBody> //email (aka username, lol) identifica a l'user
+
+    @POST("users/{username}/update")
+    fun setDescription(@Path("username") email: String, @Body description:String): Call<ResponseBody>
 }

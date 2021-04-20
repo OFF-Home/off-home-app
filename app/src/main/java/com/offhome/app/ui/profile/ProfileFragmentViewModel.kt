@@ -22,6 +22,9 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo
 
+    private var _setUsernameSuccessfully = MutableLiveData<Boolean>()
+    var setUsernameSuccessfully: LiveData<Boolean> = _setUsernameSuccessfully
+
     /**
      * obtains topProfileInfo from the lower level and places it on the live data
      */
@@ -32,10 +35,11 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun usernameChangedByUser(newUsername: Editable) {
-        repository.setUsername(newUsername.toString())
+        val email = "victor@gmai.com" // stub
+        setUsernameSuccessfully = repository.setUsername(email, newUsername.toString())!!
     }
 
     fun descriptionChangedByUser(newDescription: Editable) {
-        repository.setDescription(newDescription.toString())
+        repository.setDescription("victor@gmai.com", newDescription.toString())
     }
 }

@@ -5,11 +5,9 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -81,7 +79,7 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.getProfileInfo()
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
-            Observer { // aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
+            Observer {
                 val profileInfoVM = it ?: return@Observer
 
                 textViewUsername.text = profileInfoVM.username
@@ -89,6 +87,8 @@ class ProfileFragment : Fragment() {
                 // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
             }
         )
+
+        iniEditionResultListeners()
 
         iniEditElements()
 
@@ -98,6 +98,25 @@ class ProfileFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun iniEditionResultListeners() {
+
+        fragmentViewModel.setUsernameSuccessfully.observe(  //observer no salta. no sé perquè.
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
+
+                if (resultVM) {
+                    Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
     }
 
     fun getViewModel(): ProfileFragmentViewModel {

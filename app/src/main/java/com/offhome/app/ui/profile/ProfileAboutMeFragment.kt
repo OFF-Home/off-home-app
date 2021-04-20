@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -93,7 +94,13 @@ class ProfileAboutMeFragment : Fragment() {
         val nTags = 10 // stub
         while (i <nTags) {
             // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
-            val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
+            //val tag1 = Chip(context/*, null, android.style.Widget.MaterialComponents.Chip.Entry*/);
+            //val tag1 = Chip(context, null, R.attr.chipStyle);
+            //val tag2 = Chip(context, null, R.attr.customChipStyleDeletable);
+            val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
+            //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Action);
+            Log.d("chips", "chip tag1 created")
+            tag1.text = "stub"; chipGroupTags.addView(tag1)
             tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
             tag1.chipStrokeWidth = 5F
             ++i

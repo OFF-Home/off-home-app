@@ -1,12 +1,9 @@
 package com.offhome.app.model.profile
 
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.ResultSignUp
 import com.offhome.app.data.retrofit.UserClient
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -29,6 +26,7 @@ class ProfileRepository {
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
+    var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -77,17 +75,21 @@ class ProfileRepository {
         return bitmap
     }
 
-    fun setUsername(newUsername: String) {
+    fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean>? {    //email identifica a l'user
         //in progress
-        /*val call: Call<ResponseBody> = userService.setUsername(username = newUsername)   //o algo tipo updateUser()
+        if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
+
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = newUsername)   //o algo tipo updateUser()        //he posat "!!"
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("response", "response: is successful")
-                    //_result.value = ResultSignUp(success = true) //old de sign up
+
+                    setUsernameSuccessfully!!.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "response: unsuccessful")
+                    setUsernameSuccessfully!!.value = false
                 }
             }
 
@@ -95,11 +97,13 @@ class ProfileRepository {
                 Log.d("no response", "no response")
                 t.printStackTrace()
                 Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
+                setUsernameSuccessfully!!.value = false
             }
-        })*/
+        })
+        return setUsernameSuccessfully as MutableLiveData<Boolean>
     }
 
-    fun setDescription(newDescription:String) {
+    fun setDescription(email:String, newDescription:String) {
         //fer quan sapiga fer el setUsername()
     }
 }

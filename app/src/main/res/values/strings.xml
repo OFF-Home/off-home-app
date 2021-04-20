@@ -170,4 +170,6 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="username_updated_toast">Username updated.</string>
+    <string name="username_update_error_toast">Couldn\'t update username. Please try again later.</string>
 </resources>

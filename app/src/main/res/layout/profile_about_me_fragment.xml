@@ -99,6 +99,21 @@
         app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle"
         app:singleLine="false">
 
+        <com.google.android.material.chip.Chip
+            android:id="@+id/chip6"
+            style="@style/Widget.MaterialComponents.Chip.Entry"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="5dp"
+            android:layout_marginEnd="5dp"
+            android:text="trash"
+            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
+            android:textSize="14sp"
+            app:chipStrokeColor="@color/primary_light"
+            app:chipSurfaceColor="@color/primary_light" />
+
+        <!-- una altra opcio de style es action. crec que es el que farem servir a veurePerfilAltreUsuari -->
+
     </com.google.android.material.chip.ChipGroup>
 
     <View

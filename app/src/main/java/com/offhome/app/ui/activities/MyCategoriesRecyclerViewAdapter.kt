@@ -104,24 +104,28 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
         /*
         Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
         */
-        fun performFiltering(constraint: CharSequence?) {
-            val charSearch = constraint.toString()
-            val tempListCat = categories
-            if (charSearch.isEmpty()) {
-                listCategoriesFull = listCategories
-            } else {
-                val resultList = ArrayList<Category>()
-                for (row in listCategories) {
-                    if (row.categoria.toLowerCase(Locale.ROOT)
-                            .contains(charSearch.toLowerCase(Locale.ROOT))
-                    ) {
-                        resultList.add(row)
-                    }
+    /**
+     * Function that checks if we have typed a text in the SeachView. If there is no text, it will return all items
+     * @param constraint is the input text that will be filteredw
+     */
+    fun performFiltering(constraint: CharSequence?) {
+        val charSearch = constraint.toString()
+        //val tempListCat = categories
+        if (charSearch.isEmpty()) {
+            listCategoriesFull = listCategories
+            categories = listCategories
+        } else {
+            val resultList = ArrayList<Category>()
+            for (row in listCategories) {
+                if (row.categoria.toLowerCase(Locale.ROOT)
+                        .contains(charSearch.toLowerCase(Locale.ROOT))
+                ) {
+                    resultList.add(row)
                 }
-                listCategoriesFull = resultList
             }
-            categories = listCategoriesFull
-            notifyDataSetChanged()
-            //categories = tempListCat
+            listCategoriesFull = resultList
         }
+        categories = listCategoriesFull
+        notifyDataSetChanged()
+    }
 }

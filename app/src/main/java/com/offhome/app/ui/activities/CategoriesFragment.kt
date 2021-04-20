@@ -69,6 +69,11 @@ class CategoriesFragment : Fragment() {
         return view
     }
 
+    /**
+     * It creates the options menu and it is called when the user opens the menu for the first time
+     * @param menu is the menu provided in the callback
+     * @param inflater it inflates the menu and adds items
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
@@ -86,9 +91,9 @@ class CategoriesFragment : Fragment() {
                 categoryAdapter.performFiltering(newText)
                 return false
             }
-
         })
     }
+
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
     }

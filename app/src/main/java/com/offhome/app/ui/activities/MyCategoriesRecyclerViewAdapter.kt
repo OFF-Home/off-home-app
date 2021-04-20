@@ -20,8 +20,7 @@ import kotlin.collections.ArrayList
  * @param context is the context of the activity
  * @property categories is the list of categories
  */
-class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(),
-    Filterable {
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(){
 
     private var listCategories : List<Category> = ArrayList()
     private var listCategoriesFull : List<Category> = ArrayList()
@@ -102,37 +101,27 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             return super.toString()
         }
     }
-
-    override fun getFilter(): Filter {
-        return object : Filter() {
         /*
         Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
         */
-        override fun performFiltering(constraint: CharSequence?): FilterResults {
+        fun performFiltering(constraint: CharSequence?) {
             val charSearch = constraint.toString()
+            val tempListCat = categories
             if (charSearch.isEmpty()) {
                 listCategoriesFull = listCategories
             } else {
                 val resultList = ArrayList<Category>()
                 for (row in listCategories) {
-                    if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) {
+                    if (row.categoria.toLowerCase(Locale.ROOT)
+                            .contains(charSearch.toLowerCase(Locale.ROOT))
+                    ) {
                         resultList.add(row)
                     }
                 }
                 listCategoriesFull = resultList
             }
-            val filterResults = FilterResults()
-            filterResults.values = listCategoriesFull
-            return filterResults
-        }
-
-        @Suppress("UNCHECKED_CAST")
-        override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
-            listCategoriesFull = results?.values as ArrayList<Category>
+            categories = listCategoriesFull
             notifyDataSetChanged()
+            //categories = tempListCat
         }
-
-        }
-    }
-
 }

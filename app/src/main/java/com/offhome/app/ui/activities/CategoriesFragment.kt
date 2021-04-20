@@ -78,12 +78,12 @@ class CategoriesFragment : Fragment() {
         searchView.maxWidth = Int.MAX_VALUE
         searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
             override fun onQueryTextSubmit(query: String?): Boolean {
-               // categoriesViewModel.filterData(query)
+                categoryAdapter.performFiltering(query)
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                categoryAdapter.filter.filter(newText)
+                categoryAdapter.performFiltering(newText)
                 return false
             }
 

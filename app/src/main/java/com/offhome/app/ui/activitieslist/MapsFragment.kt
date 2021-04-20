@@ -1,5 +1,6 @@
 package com.offhome.app.ui.activitieslist
 
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
@@ -15,9 +16,12 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
+
 
 class MapsFragment : Fragment() {
 
@@ -62,6 +66,13 @@ class MapsFragment : Fragment() {
             // set marker in place
             val place = LatLng(latitude, longitude)
             mMap.addMarker(MarkerOptions().position(place).title(item.titol))
+
+            mMap.setOnInfoWindowClickListener {
+                //al clicar al título, se abre la pantalla con la info de la activity
+                val intent = Intent(context, InfoActivity::class.java)
+                intent.putExtra("activity", GsonBuilder().create().toJson(item))
+                context?.startActivity(intent)
+            }
         }
     }
 

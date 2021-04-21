@@ -1,9 +1,8 @@
 package com.offhome.app.ui.activitieslist
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
+import android.widget.SearchView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -41,6 +40,8 @@ class ActivitiesListFragment : Fragment() {
         layout.layoutManager = LinearLayoutManager(context)
         layout.adapter = activitiesListAdapter
 
+        setHasOptionsMenu(true)
+
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
@@ -49,4 +50,23 @@ class ActivitiesListFragment : Fragment() {
             }
         )
     }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.search_button, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+        val menuItem = menu.findItem(R.id.search)
+        val searchView = menuItem.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                activitiesListAdapter.performFiltering(newText)
+                return false
+            }
+        })
+    }
+
 }

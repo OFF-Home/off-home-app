@@ -32,7 +32,7 @@ class ActivitiesList : AppCompatActivity() {
             ViewModelProvider(this).get(ActivitiesListViewModel::class.java)
 
         activitiesListViewModel = ViewModelProvider(this).get(ActivitiesListViewModel::class.java)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter()
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(applicationContext)
 
         layout.layoutManager = LinearLayoutManager(applicationContext)
         layout.adapter = activitiesListAdapter

@@ -1,27 +1,41 @@
 package com.offhome.app.ui.activities
 
 import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Filter
+import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.Category
+import java.util.*
+import kotlin.collections.ArrayList
+import com.offhome.app.ui.activitieslist.ActivitiesList
 
 /**
  * Adpter for the recycler view of the categories list
  * @param context is the context of the activity
  * @property categories is the list of categories
  */
-class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(){
+
+    private var listCategoriesFull : List<Category> = ArrayList()
+    private var tempListCat : List<Category> = ArrayList()
+
+
     /**
      * Onclick to item. Updated when activitiesList developed
      */
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as Category
+        val intent = Intent(context, ActivitiesList::class.java)
+        intent.putExtra("category", item.categoria)
+        context?.startActivity(intent)
     }
     private var categories: List<Category> = ArrayList()
 
@@ -49,7 +63,7 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
             Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
         }
-        with(holder.mView) {
+        with(holder.imageViewBackground) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
@@ -81,12 +95,35 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
         val textViewName: TextView = mView.findViewById(R.id.textViewNameCategory)
         val imageViewBackground: ImageView = mView.findViewById(R.id.pinkBackground)
         val imageViewIcon: ImageView = mView.findViewById(R.id.imageViewIconCategory)
-
         /**
          * General function that returns the string
          */
         override fun toString(): String {
             return super.toString()
         }
+    }
+
+    /**
+     * Function that checks if we have typed a text in the SeachView. If there is no text, it will return all items
+     * @param constraint is the input text that the user wants to filter
+     */
+    fun performFiltering(constraint: CharSequence?) {
+        if (tempListCat.isNotEmpty()) categories = tempListCat
+
+        tempListCat = ArrayList<Category>(categories)
+        this.listCategoriesFull = ArrayList<Category>(categories)
+
+        val charSearch = constraint.toString()
+        listCategoriesFull = if (charSearch.isEmpty()) tempListCat
+        else {
+            val resultList = ArrayList<Category>()
+            for (row in categories) {
+                if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
+            }
+            resultList
+        }
+
+        categories = listCategoriesFull
+        notifyDataSetChanged()
     }
 }

@@ -151,11 +151,11 @@
     <string name="text_view_or">or</string>
     <string name="continue_google">Continue with Google</string>
     <string name="emailConfirmationMessage">Success! A confirmation link will be sent to your e-mail address</string>
-    <string name = "username_taken"> Sign up error: username is taken </string>
-    <string name = "email_taken"> Sign up error: this e-mail is already registered </string>
-    <string name = "google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
-    <string name = "unknown_sign_up_error"> Sign up error: there was an unknown error </string>
-    <string name = "invalid_birth_date"> Not a valid birth date </string>
+    <string name="username_taken"> Sign up error: username is taken </string>
+    <string name="email_taken"> Sign up error: this e-mail is already registered </string>
+    <string name="google_sign_up_error"> Sign up error: there was an error signing up with Google </string>
+    <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
+    <string name="invalid_birth_date"> Not a valid birth date </string>
     <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
     <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
     <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
@@ -170,4 +170,6 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="search_title">search_title</string>
+    <string name="search_hint">search_hint</string>
 </resources>

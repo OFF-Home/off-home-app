@@ -118,6 +118,7 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             }
             resultList
         }
+
         categories = listCategoriesFull
         notifyDataSetChanged()
     }

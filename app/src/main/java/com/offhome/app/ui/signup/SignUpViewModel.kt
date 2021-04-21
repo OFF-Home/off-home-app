@@ -1,6 +1,7 @@
 package com.offhome.app.ui.signup
 
 import android.util.Patterns
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -40,7 +41,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String, birthDate: String, activity: SignUpActivity) {
+    fun signUp(email: String, username: String, password: String?, birthDate: String?, activity: AppCompatActivity) {
         // can be launched in a separate asynchronous job
         signUpRepository.result.observe(
             activity,
@@ -80,7 +81,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             }
         )
 
-        val fecha = getDateFromString(birthDate)
+        val fecha = birthDate?.let { getDateFromString(it) }
 
         signUpRepository.signUp(email, username, password, fecha, activity)
     }

@@ -89,6 +89,10 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
+    /**
+     * Gets the result of the intent and signs in or signs up.
+     * It also calls the view model to send info to the backend.
+     */
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == GOOGLE_SIGN_IN) {

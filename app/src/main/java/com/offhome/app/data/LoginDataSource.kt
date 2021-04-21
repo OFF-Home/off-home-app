@@ -60,6 +60,9 @@ class LoginDataSource {
         FirebaseAuth.getInstance().signOut()
     }
 
+    /**
+     * It sends through Firebase the reset password email
+     */
     fun recoverPassword(email: String): LiveData<String> {
 
         Firebase.auth.sendPasswordResetEmail(email)

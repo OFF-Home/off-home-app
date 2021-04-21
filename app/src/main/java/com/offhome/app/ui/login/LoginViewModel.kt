@@ -43,6 +43,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
+    /**
+     * It calls the repository to send the email to reset password
+     */
     fun recoverPassword(email: String) {
         recoverResult = loginRepository.recoverPassword(email)
     }

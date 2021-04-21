@@ -21,6 +21,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
 import com.offhome.app.ui.signup.SignUpViewModelFactory
@@ -48,6 +49,7 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnToSignUp: TextView
     private lateinit var btnLoginGoogle: Button
+    private lateinit var btnRecoverPassword: TextView
 
     private val GOOGLE_SIGN_IN = 100
 
@@ -77,6 +79,9 @@ class LoginActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
+        btnRecoverPassword.setOnClickListener {
+            val intent = Intent(this, RecoverPasswordActivity::class.java)
+            startActivity(intent)
         btnLoginGoogle.setOnClickListener {
             loading.visibility = View.VISIBLE
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
@@ -144,6 +149,7 @@ class LoginActivity : AppCompatActivity() {
         btnToSignUp = findViewById(R.id.textViewHere)
         btnLoginGoogle = findViewById(R.id.buttonGoogleLogin)
         loading = findViewById(R.id.loading)
+        btnRecoverPassword = findViewById(R.id.textViewHereRecover)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)

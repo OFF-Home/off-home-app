@@ -1,5 +1,6 @@
 package com.offhome.app.ui.activitieslist
 
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater

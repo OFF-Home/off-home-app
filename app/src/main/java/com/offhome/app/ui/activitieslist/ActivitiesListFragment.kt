@@ -69,4 +69,17 @@ class ActivitiesListFragment : Fragment() {
         })
     }
 
+    //per fer el sort
+            //sort ascending/descending , order by data, seleccionar quina categoria es vol
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.activity_title -> sortActivities(item)
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+    private fun sortActivities(item: MenuItem) {
+        //falta implementar
+    }
+
 }

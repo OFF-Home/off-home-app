@@ -22,12 +22,9 @@ import kotlin.collections.ArrayList
  */
 class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(){
 
-    private var listCategories : List<Category> = ArrayList()
     private var listCategoriesFull : List<Category> = ArrayList()
+    private var tempListCat : List<Category> = ArrayList()
 
-    init{
-        this.listCategoriesFull = ArrayList(listCategories)
-    }
 
     /**
      * Onclick to item. Updated when activitiesList developed
@@ -101,29 +98,25 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
             return super.toString()
         }
     }
-        /*
-        Checks if we have typed a text in the SeachView. If there is no text, it will return all items.
-        */
+
     /**
      * Function that checks if we have typed a text in the SeachView. If there is no text, it will return all items
-     * @param constraint is the input text that will be filteredw
+     * @param constraint is the input text that the user wants to filter
      */
     fun performFiltering(constraint: CharSequence?) {
+        if (tempListCat.isNotEmpty()) categories = tempListCat
+
+        tempListCat = ArrayList<Category>(categories)
+        this.listCategoriesFull = ArrayList<Category>(categories)
+
         val charSearch = constraint.toString()
-        //val tempListCat = categories
-        if (charSearch.isEmpty()) {
-            listCategoriesFull = listCategories
-            categories = listCategories
-        } else {
+        listCategoriesFull = if (charSearch.isEmpty()) tempListCat
+        else {
             val resultList = ArrayList<Category>()
-            for (row in listCategories) {
-                if (row.categoria.toLowerCase(Locale.ROOT)
-                        .contains(charSearch.toLowerCase(Locale.ROOT))
-                ) {
-                    resultList.add(row)
-                }
+            for (row in categories) {
+                if (row.categoria.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
             }
-            listCategoriesFull = resultList
+            resultList
         }
         categories = listCategoriesFull
         notifyDataSetChanged()

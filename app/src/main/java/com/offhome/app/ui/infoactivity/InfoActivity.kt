@@ -85,24 +85,54 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val layout = findViewById<View>(R.id.content)
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
+
+        var joined = false
+
         btnJoin.setOnClickListener {
-            viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
-                this,
-                {
-                    if (it != " ") {
-                        if (it == "You have joined the activity!") {
-                            val snackbar: Snackbar = Snackbar
-                                .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                                .setAction(getString(R.string.go_chat)) {
-                                    Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-                                }
-                            snackbar.show()
-                        } else {
-                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            joined = !joined
+            if (joined) {
+                btnJoin.text = "JOINED"
+                /*
+                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "You have joined the activity!") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.go_chat)) {
+                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                    }
+                                snackbar.show()
+                            } else {
+                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
-                }
-            )
+                )*/
+            }
+            else {
+                btnJoin.text = "JOIN"
+                /*
+                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "You have joined the activity!") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.go_chat)) {
+                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                    }
+                                snackbar.show()
+                            } else {
+                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                )*/
+            }
+
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

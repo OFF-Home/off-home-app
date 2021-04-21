@@ -35,10 +35,12 @@
 
         <activity
             android:name=".ui.infoactivity.InfoActivity"
-            android:label="@string/title_activity_info" />
+            android:label="@string/title_activity_info"
+            android:parentActivityName="com.offhome.app.ui.activitieslist.ActivitiesList"/>
         <activity
             android:name=".ui.activitieslist.ActivitiesList"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".MainActivity"
+            android:launchMode="singleTop"/>
         <activity
             android:name=".ui.login.LoginActivity"
             android:label="@string/title_activity_login" >
@@ -53,7 +55,11 @@
             android:label="@string/title_activity_sign_up" />
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">
-
+                <category android:name="android.intent.category.LAUNCHER" />
+                <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <meta-data android:name="android.app.searchable"
+                android:resource="@xml/search"/>
         </activity>
     </application>
 

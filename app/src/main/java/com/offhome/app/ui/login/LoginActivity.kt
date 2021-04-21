@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -13,9 +14,16 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.ui.signup.SignUpActivity
+import com.offhome.app.ui.signup.SignUpViewModel
+import com.offhome.app.ui.signup.SignUpViewModelFactory
 
 /**
  * Class *LoginActicity*
@@ -41,6 +49,8 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnToSignUp: TextView
     private lateinit var btnLoginGoogle: Button
 
+    private val GOOGLE_SIGN_IN = 100
+
     /**
      * It is executed when the activity is launched for first time or created again following
      * activities lifecycle.
@@ -65,6 +75,59 @@ class LoginActivity : AppCompatActivity() {
         btnToSignUp.setOnClickListener {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
+        }
+
+        btnLoginGoogle.setOnClickListener {
+            loading.visibility = View.VISIBLE
+            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                .requestIdToken(getString(R.string.default_web_client_id))
+                .requestEmail()
+                .build()
+            val googleClient = GoogleSignIn.getClient(this, gso)
+            googleClient.signOut()
+            startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+        }
+    }
+
+    /**
+     * Gets the result of the intent and signs in or signs up.
+     * It also calls the view model to send info to the backend.
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("LOGIN", "signInWithEmail:success")
+                        val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
+                            .get(SignUpViewModel::class.java)
+                        signUpViewModel.signUp(
+                            account.email.toString(),
+                            account.displayName.toString(),
+                            null,
+                            null,
+                            this
+                        )
+                        // updateUiWithUser(LoggedInUserView())
+                    } else {
+                        Log.w("LOGIN", "signInWithEmail:failure", it.exception)
+                        Toast.makeText(
+                            baseContext, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: ApiException) {
+                Log.w("LOGIN", "signInWithGoogle:failure", e.cause)
+                Toast.makeText(
+                    baseContext, "Authentication google failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
         }
     }
 

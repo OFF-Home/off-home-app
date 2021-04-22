@@ -122,12 +122,12 @@ class ProfileRepository {
         return result
     }
 
-    fun isFollowing(currentUser: String, email: String): LiveData<Boolean> {
-        val result = MutableLiveData<Boolean>()
+    fun following(currentUser: String): LiveData<List<String>> {
+        val result = MutableLiveData<List<String>>()
 
-        val call: Call<Boolean> = userService!!.isFollowing(currentUser, email)
-        call.enqueue(object : Callback<Boolean> {
-            override fun onResponse(call: Call<Boolean>, response: Response<Boolean>) {
+        val call: Call<List<String>> = userService!!.following(currentUser)
+        call.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
                 if (response.isSuccessful) {
                     result.value = response.body()
                     Log.d("success response", "got a response indicating success")
@@ -136,7 +136,7 @@ class ProfileRepository {
                 }
             }
 
-            override fun onFailure(call: Call<Boolean>, t: Throwable) {
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
                 Log.d("GET", "Error getting info. communication failure (no response)")
             }
         })

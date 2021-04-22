@@ -40,12 +40,7 @@ class OtherProfileActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java)  //funcionarà?
 
         viewModel.setUserInfo(otherUser)
-
-        if (viewModel.isFollowing() == true) {
-            btnFollowFollowing.text = getString(R.string.btn_following)
-        } else {
-            btnFollowFollowing.text = getString(R.string.btn_follow)
-        }
+        viewModel.isFollowing()
 
         btnFollowFollowing.setOnClickListener {
             if (btnFollowFollowing.text == getString(R.string.btn_follow))
@@ -62,6 +57,16 @@ class OtherProfileActivity : AppCompatActivity() {
                 changeFollowButtonText()
             else
                 Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.listFollowing.observe(this, {
+            btnFollowFollowing.text = getString(R.string.btn_follow)
+            for (item in it) {
+                if (item == otherUser.email) {
+                    viewModel.setFollowing(true)
+                    btnFollowFollowing.text = getString(R.string.btn_following)
+                }
+            }
         })
     }
 

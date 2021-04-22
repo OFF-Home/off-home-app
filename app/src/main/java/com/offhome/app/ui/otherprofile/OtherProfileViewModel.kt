@@ -10,6 +10,7 @@ class OtherProfileViewModel : ViewModel()  {
     /*private var _userInfo = MutableLiveData<UserInfo>()
     var userInfo: LiveData<UserInfo> = _userInfo*/
     private lateinit var userInfo :UserInfo
+    lateinit var listFollowing: MutableLiveData<List<String>>
     lateinit var isFollowing: MutableLiveData<Boolean>
     lateinit var followResult: MutableLiveData<Boolean>
     private var repository = ProfileRepository()
@@ -28,10 +29,10 @@ class OtherProfileViewModel : ViewModel()  {
         return userInfo
     }
 
-    fun isFollowing(): Boolean? {
+    fun isFollowing(): List<String>? {
         val currentUser = "currentUser"
-        isFollowing = repository.isFollowing(currentUser, userInfo.email) as MutableLiveData<Boolean>
-        return isFollowing.value
+        listFollowing = repository.following(currentUser) as MutableLiveData<List<String>>
+        return listFollowing.value
     }
 
     fun follow() {
@@ -46,5 +47,9 @@ class OtherProfileViewModel : ViewModel()  {
         followResult.value = repository.stopFollowing(currentUser, userInfo.email).value == "OK"
         isFollowing.value = false
         userInfo.followers -= 1
+    }
+
+    fun setFollowing(b: Boolean) {
+        isFollowing.value = b
     }
 }

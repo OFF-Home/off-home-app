@@ -85,8 +85,7 @@ class ActivitiesListFragment : Fragment() {
         val id = item.itemId
         if (id == R.id.action_sort) {
             sortActivities()
-        }
-        else if (id == R.id.action_sort_categories){
+        } else if (id == R.id.action_sort_categories) {
             sortActivitiesByCategory()
         }
         return super.onOptionsItemSelected(item)
@@ -94,7 +93,7 @@ class ActivitiesListFragment : Fragment() {
 
     private fun sortActivities() {
         val dialog = AlertDialog.Builder(context)
-        dialog.setTitle("Sort")
+        dialog.setTitle("                    Sort")
             .setItems(arrayOf("Ascending", "Descending", "By date")) { dialogInterface, i ->
                 if (i == 0) {
                     //ascending clicked
@@ -114,18 +113,45 @@ class ActivitiesListFragment : Fragment() {
 
     }
 
-    private fun sortActivitiesByCategory(){
+    private fun sortActivitiesByCategory() {
         val dialog2 = AlertDialog.Builder(context)
-        dialog2.setTitle("Sort by category").setItems(spinnerDialog?.resources?.getStringArray(R.array.select_category)) { dialogInterface, i ->
-            dialogInterface.dismiss()
-        }.show()
+        dialog2.setTitle("Sort by category")
+            .setItems(spinnerDialog?.resources?.getStringArray(R.array.select_category)) { dialogInterface, _ ->
+                dialogInterface.dismiss()
+            }.show()
+    }
+}
 
+
+
+
+    /* fun onClick(w: View?) {
+        val adapter= ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, arrayOf(R.array.select_category))
+        AlertDialog.Builder(requireContext()).setTitle("Sort by category").setAdapter(adapter) { dialog, which ->
+            dialog.dismiss()
+        }.create().show()
+    }*/
+
+       /* val adapter = ArrayAdapter.createFromResource(
+            this,
+            R.array.planets_array,
+            android.R.layout.simple_spinner_item
+        )
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
+        spinner.setPrompt("Select your favorite Planet!")
+
+        spinner.setAdapter(
+            NothingSelectedSpinnerAdapter(
+                adapter,
+                R.layout.contact_spinner_row_nothing_selected,  // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
+                this
+            )
+        )*/
        /* val adapter = ArrayAdapter.createFromResource(this, R.array.select_category, android.R.layout.simple_spinner_item)
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
         spinnerDialog.setAdapter(adapter)
         spinnerDialog.setOnItemSelectedListener()*/
-    }
-}
+
        /* dialog.setItems("select_category", DialogInterface.OnClickListener { dialogInterface, item -> // Do something with the selection
             dialogInterface.dismiss()
             Toast.makeText((ActivitiesListFragment.this,select_aa))

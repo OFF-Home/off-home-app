@@ -27,6 +27,7 @@ class ProfileRepository {
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
     var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
+    var setDescriptionSuccessfully: MutableLiveData<Boolean>? = null
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -84,19 +85,19 @@ class ProfileRepository {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    Log.d("response", "response: is successful")
+                    Log.d("response", "setUsername response: is successful")
 
                     setUsernameSuccessfully!!.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
-                    Log.d("response", "response: unsuccessful")
+                    Log.d("response", "setUsername response: unsuccessful")
                     setUsernameSuccessfully!!.value = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "no response")
+                Log.d("no response", "setUsername no response")
                 t.printStackTrace()
-                Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
+                Log.w("no response", "setUsername no response", t.cause)
                 setUsernameSuccessfully!!.value = false
             }
         })
@@ -104,7 +105,28 @@ class ProfileRepository {
         return setUsernameSuccessfully as MutableLiveData<Boolean>
     }
 
-    fun setDescription(email:String, newDescription:String) {
+    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean>? {
+        //basicament igual que setUsername. si arreglo una, fer copia-pega
+        if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = newDescription)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "setDescription response: is successful")
+                    setDescriptionSuccessfully!!.value = true
+                } else {
+                    Log.d("response", "setDescription response: unsuccessful")
+                    setDescriptionSuccessfully!!.value = false
+                }
+            }
 
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "setDescription no response")
+                t.printStackTrace()
+                Log.w("no response", "setDescription no response", t.cause)
+                setDescriptionSuccessfully!!.value = false
+            }
+        })
+        return setDescriptionSuccessfully as MutableLiveData<Boolean>
     }
 }

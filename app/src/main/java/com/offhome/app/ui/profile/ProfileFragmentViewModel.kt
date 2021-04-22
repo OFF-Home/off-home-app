@@ -44,7 +44,8 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun descriptionChangedByUser(newDescription: Editable) {
-        //_setDescriptionSuccessfully= repository.setDescription("victor@gmai.com", newDescription.toString())
+        val email = "victor@gmai.com" // stub
+        _setDescriptionSuccessfully= repository.setDescription(email, newDescription.toString())!!
     }
 
     //inutil, intentant que salti el observer de setUsernameSuccessfully

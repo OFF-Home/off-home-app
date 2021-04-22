@@ -172,4 +172,6 @@
     <string name="go_chat">Go chat!</string>
     <string name="username_updated_toast">Username updated.</string>
     <string name="username_update_error_toast">Couldn\'t update username. Please try again later.</string>
+    <string name="description_updated_toast">Description updated.</string>
+    <string name="description_update_error_toast">Couldn\'t update description. Please try again later.</string>
 </resources>

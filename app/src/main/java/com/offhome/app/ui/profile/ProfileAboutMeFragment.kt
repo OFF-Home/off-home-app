@@ -12,6 +12,7 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -87,7 +88,19 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     private fun iniEditionResultListeners() {
-        //profileVM.
+        Log.d("iniEditionResultListe", "arribo al AboutMe::iniEditionResultListeners")
+        profileVM.setDescriptionSuccessfully.observe(   //igual que el de ProfileFragment (setUsernameSuccessfully.observe) no salta. quan arregli un, fer copia-pega a l'altre.
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+                if (resultVM) {
+                    Toast.makeText(activity,R.string.description_updated_toast, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity,R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {

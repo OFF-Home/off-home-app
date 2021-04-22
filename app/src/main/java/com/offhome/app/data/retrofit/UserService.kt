@@ -19,6 +19,7 @@ interface UserService {
     /*@GET("/tags/{username}/show")
     fun getTags(@Path("username") username: String): Call< ??? >*/
 
+    //aquests encara no sé què he d'enviar
     @POST("users/{username}/update")
     fun setUsername(@Path("username") email:String, @Body username: String): Call<ResponseBody> //email (aka username, lol) identifica a l'user
 

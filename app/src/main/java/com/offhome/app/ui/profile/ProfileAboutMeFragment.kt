@@ -20,6 +20,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
+import java.util.*
 
 class ProfileAboutMeFragment : Fragment() {
 
@@ -36,8 +37,8 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
-    private lateinit var editTagsButton: ImageView
-    private lateinit var editTagsCancelButton:TextView
+    //private lateinit var editTagsButton: ImageView
+    //private lateinit var editTagsCancelButton:TextView
     private lateinit var addTagButton:ImageView
     private lateinit var constraintLayout2: ConstraintLayout
 
@@ -123,21 +124,22 @@ class ProfileAboutMeFragment : Fragment() {
             //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
             //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Action);
             //val tag2 = Chip(context, null, R.style.deletable_chip) ;
-            val chip3 = layoutInflater.inflate(R.layout.deletable_chip_layout, chipGroupTags, false) as Chip
-            //Log.d("chips", "chip tag1 created")
-            chip3.text = "stub";
-            chipGroupTags.addView(chip3)
-            //tag2.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
-            //chip3.chipStrokeWidth = 5F
 
-            chip3.setOnCloseIconClickListener {
-                Toast.makeText(context,"chip3.setOnCloseIconClickListener",Toast.LENGTH_LONG).show()
-                //nice! aquest listener és el de la "X" de borrar.
-                //profileVM.tagDeletedByUser(chip3.text as String)
-                chipGroupTags.removeView(chip3)
-            }
+            addTagToChipGroup("stub")
 
             ++i
+        }
+    }
+
+    //crea i inicialitza un chip (visual, a la app, res de backend) amb el string passat
+    private fun addTagToChipGroup(tag:String) {
+        val chip = layoutInflater.inflate(R.layout.deletable_chip_layout, chipGroupTags, false) as Chip
+        chip.text = tag
+        chipGroupTags.addView(chip)
+        chip.setOnCloseIconClickListener {
+            profileVM.tagDeletedByUser(chip.text as String)
+            chipGroupTags.removeView(chip)
+            //TODO popup amb "undo"
         }
     }
 
@@ -156,22 +158,9 @@ class ProfileAboutMeFragment : Fragment() {
         }
         iniEditTextDescription()
 
-        iniEditTagsButton()
-        editTagsButton.setImageDrawable(editIconDrawable)
-        editTagsButton.setOnClickListener {
-            changeTagsToEdit()
-        }
-
-
         iniAddTagButton()
         addTagButton.setOnClickListener {
-            //TODO
-        }
-
-        iniEditTagsCancelButton()
-        editTagsCancelButton.setOnClickListener {
-            //TODO
-            //cancelTagEdit()
+            addTagPressed()
         }
     }
 
@@ -202,18 +191,6 @@ class ProfileAboutMeFragment : Fragment() {
         constraintSet1.applyTo(constraintLayout2)
     }
 
-    private fun iniEditTagsButton() {
-        editTagsButton = ImageView(activity)
-        editTagsButton.id = R.id.editTagsButton
-
-        constraintLayout2.addView(editTagsButton)
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.editTagsButton, ConstraintSet.LEFT, R.id.textViewTagsTitle, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editTagsButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
-        constraintSet1.applyTo(constraintLayout2)
-    }
-
     private fun iniAddTagButton() {
         addTagButton = ImageView(activity)
         addTagButton.id = R.id.addTagButton
@@ -225,29 +202,11 @@ class ProfileAboutMeFragment : Fragment() {
 
         addTagButton.setImageDrawable(addIconDrawable)
 
-        addTagButton.visibility = View.GONE
-
         constraintLayout2.addView(addTagButton)
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.addTagButton, ConstraintSet.LEFT, R.id.editTagsButton, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.addTagButton, ConstraintSet.LEFT, R.id.textViewTagsTitle, ConstraintSet.RIGHT, 8)
         constraintSet1.connect(R.id.addTagButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
-        constraintSet1.applyTo(constraintLayout2)
-    }
-
-    private fun iniEditTagsCancelButton() {
-        editTagsCancelButton = TextView(activity)
-        editTagsCancelButton.id = R.id.editTagsCancelButton
-
-        editTagsCancelButton.text = getString(R.string.Cancel)
-
-        editTagsCancelButton.visibility = View.GONE
-
-        constraintLayout2.addView(editTagsCancelButton)
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.editTagsCancelButton, ConstraintSet.LEFT, R.id.addTagButton, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editTagsCancelButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
         constraintSet1.applyTo(constraintLayout2)
     }
 
@@ -298,22 +257,17 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.visibility = View.GONE
     }
 
-    private fun changeTagsToEdit() {
-        editTagsButton.setImageDrawable(saveIconDrawable)
-        editTagsButton.setOnClickListener {     //guardar canvis a tags
-            changeTagsToDisplay()
-        }
-        editTagsCancelButton.visibility = View.VISIBLE
-        addTagButton.visibility = View.VISIBLE
+    private fun addTagPressed() {
+        //TODO dialogue i al final cridar addTag
+
+        addTag("jaja si")
     }
 
-    private fun changeTagsToDisplay() {
-        editTagsButton.setImageDrawable(editIconDrawable)
-        editTagsButton.setOnClickListener {
-            changeTagsToEdit()
-        }
-        editTagsCancelButton.visibility = View.GONE
-        addTagButton.visibility = View.GONE
+    //afegeix tag a la app (chip) i al backend
+    private fun addTag(tag:String) {
+        addTagToChipGroup(tag)
+        val unixTime = (System.currentTimeMillis() % 1000000L).toString()
+        profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD
     }
 
 }

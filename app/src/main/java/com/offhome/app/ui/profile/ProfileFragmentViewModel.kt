@@ -61,4 +61,8 @@ class ProfileFragmentViewModel : ViewModel() {
     fun tagDeletedByUser(tag: String) {
         //TODO
     }
+
+    fun tagAddedByUser(tag:String) {
+        //TODO
+    }
 }

@@ -36,10 +36,14 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
+    private lateinit var editTagsButton: ImageView
+    private lateinit var editTagsCancelButton:TextView
+    private lateinit var addTagButton:ImageView
     private lateinit var constraintLayout2: ConstraintLayout
 
     private lateinit var editIconDrawable:Drawable
     private lateinit var saveIconDrawable:Drawable
+    private lateinit var addIconDrawable:Drawable
     private lateinit var editTextProfileDescription : EditText
 
 
@@ -129,6 +133,8 @@ class ProfileAboutMeFragment : Fragment() {
             chip3.setOnCloseIconClickListener {
                 Toast.makeText(context,"chip3.setOnCloseIconClickListener",Toast.LENGTH_LONG).show()
                 //nice! aquest listener és el de la "X" de borrar.
+                //profileVM.tagDeletedByUser(chip3.text as String)
+                chipGroupTags.removeView(chip3)
             }
 
             ++i
@@ -149,6 +155,24 @@ class ProfileAboutMeFragment : Fragment() {
             changeDescriptionToEdit()
         }
         iniEditTextDescription()
+
+        iniEditTagsButton()
+        editTagsButton.setImageDrawable(editIconDrawable)
+        editTagsButton.setOnClickListener {
+            changeTagsToEdit()
+        }
+
+
+        iniAddTagButton()
+        addTagButton.setOnClickListener {
+            //TODO
+        }
+
+        iniEditTagsCancelButton()
+        editTagsCancelButton.setOnClickListener {
+            //TODO
+            //cancelTagEdit()
+        }
     }
 
     //finds the view, initiates it with its constraints, initiates the 2 drawables
@@ -174,6 +198,56 @@ class ProfileAboutMeFragment : Fragment() {
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
         constraintSet1.connect(R.id.editDescriptionButton, ConstraintSet.LEFT, R.id.textViewProfileDescriptionTitle, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editDescriptionButton, ConstraintSet.TOP, R.id.textViewProfileDescriptionTitle, ConstraintSet.TOP, 8)
+        constraintSet1.applyTo(constraintLayout2)
+    }
+
+    private fun iniEditTagsButton() {
+        editTagsButton = ImageView(activity)
+        editTagsButton.id = R.id.editTagsButton
+
+        constraintLayout2.addView(editTagsButton)
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout2)
+        constraintSet1.connect(R.id.editTagsButton, ConstraintSet.LEFT, R.id.textViewTagsTitle, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editTagsButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
+        constraintSet1.applyTo(constraintLayout2)
+    }
+
+    private fun iniAddTagButton() {
+        addTagButton = ImageView(activity)
+        addTagButton.id = R.id.addTagButton
+
+        val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_add)
+        val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
+        // we scale it
+        addIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
+
+        addTagButton.setImageDrawable(addIconDrawable)
+
+        addTagButton.visibility = View.GONE
+
+        constraintLayout2.addView(addTagButton)
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout2)
+        constraintSet1.connect(R.id.addTagButton, ConstraintSet.LEFT, R.id.editTagsButton, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.addTagButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
+        constraintSet1.applyTo(constraintLayout2)
+    }
+
+    private fun iniEditTagsCancelButton() {
+        editTagsCancelButton = TextView(activity)
+        editTagsCancelButton.id = R.id.editTagsCancelButton
+
+        editTagsCancelButton.text = getString(R.string.Cancel)
+
+        editTagsCancelButton.visibility = View.GONE
+
+        constraintLayout2.addView(editTagsCancelButton)
+        val constraintSet1 = ConstraintSet()
+        constraintSet1.clone(constraintLayout2)
+        constraintSet1.connect(R.id.editTagsCancelButton, ConstraintSet.LEFT, R.id.addTagButton, ConstraintSet.RIGHT, 8)
+        constraintSet1.connect(R.id.editTagsCancelButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
         constraintSet1.applyTo(constraintLayout2)
     }
 
@@ -223,4 +297,23 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription.visibility = View.VISIBLE
         editTextProfileDescription.visibility = View.GONE
     }
+
+    private fun changeTagsToEdit() {
+        editTagsButton.setImageDrawable(saveIconDrawable)
+        editTagsButton.setOnClickListener {     //guardar canvis a tags
+            changeTagsToDisplay()
+        }
+        editTagsCancelButton.visibility = View.VISIBLE
+        addTagButton.visibility = View.VISIBLE
+    }
+
+    private fun changeTagsToDisplay() {
+        editTagsButton.setImageDrawable(editIconDrawable)
+        editTagsButton.setOnClickListener {
+            changeTagsToEdit()
+        }
+        editTagsCancelButton.visibility = View.GONE
+        addTagButton.visibility = View.GONE
+    }
+
 }

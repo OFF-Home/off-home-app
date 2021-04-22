@@ -57,4 +57,8 @@ class ProfileFragmentViewModel : ViewModel() {
 
         _setUsernameSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
     }
+
+    fun tagDeletedByUser(tag: String) {
+        //TODO
+    }
 }

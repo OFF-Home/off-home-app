@@ -39,8 +39,6 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
-    //private lateinit var editTagsButton: ImageView
-    //private lateinit var editTagsCancelButton:TextView
     private lateinit var addTagButton:ImageView
     private lateinit var constraintLayout2: ConstraintLayout
 
@@ -324,14 +322,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.visibility = View.GONE
     }
 
-    /*private fun deleteTagPressed(chip:Chip) {
-
-    }*/
-
     private fun addTagPressed() {
-
-        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogues, view as ViewGroup, false)
+        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogs, view as ViewGroup, false)
         val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
+        textInput.setHint(R.string.tag)
 
         val alertDialogBuilder = AlertDialog.Builder(context)
             .setTitle("Add a tag")

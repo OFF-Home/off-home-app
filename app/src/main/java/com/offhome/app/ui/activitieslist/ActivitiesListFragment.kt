@@ -1,5 +1,6 @@
 package com.offhome.app.ui.activitieslist
 
+import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -72,14 +73,30 @@ class ActivitiesListFragment : Fragment() {
     //per fer el sort
             //sort ascending/descending , order by data, seleccionar quina categoria es vol
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when (item.itemId) {
-            R.id.activity_title -> sortActivities(item)
+      /*  when (item.itemId) {
+            R.id.activity_title -> sortActivities()
+        }*/
+        val id = item.itemId
+        if (id == R.id.action_sort){
+            sortActivities()
         }
         return super.onOptionsItemSelected(item)
     }
 
-    private fun sortActivities(item: MenuItem) {
-        //falta implementar
+    private fun sortActivities() {
+
+        val dialog = AlertDialog.Builder(context)
+        dialog.setTitle("Sort").setItems(arrayOf("Ascending", "Descending", "By date", "By category")){
+                dialogInterface, i ->
+            if (i==0){
+                //ascending clicked
+                dialogInterface.dismiss()
+            }
+            else {
+                dialogInterface.dismiss()
+                //descending clicked
+            }
+        }.show()
     }
 
 }

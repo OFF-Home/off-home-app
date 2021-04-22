@@ -8,6 +8,15 @@ import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonChec
 import com.offhome.app.R
 
 
+/**
+ * Class *Activities*
+ * This class is the one that displays the information about an Activity, using the List and Map Fragments
+ * @author Emma Pereira
+ * @property categoryName references the name of the category of which we want to display the activities
+ * @property buttonScreens references the Material Toggle Group Button that allows us to change between fragments
+ * @property buttonlist references the Button to display the list of activities
+ * @property buttonmap references the Button to display the map with activities
+ */
 class Activities : AppCompatActivity() {
 
     lateinit var categoryName: String
@@ -15,6 +24,10 @@ class Activities : AppCompatActivity() {
     lateinit var buttonlist: Button
     lateinit var buttonmap: Button
 
+    /**
+     * This is executed when the activity is launched for the first time or created again.
+     * @param savedInstanceState is the instance of the saved State of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activities_activity)

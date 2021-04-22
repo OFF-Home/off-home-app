@@ -22,7 +22,15 @@ import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
 
-
+/**
+ * Class that defines the fragment to show the Map with the Activities
+ * @author Emma Pereira
+ * @property mMap references the GoogleMap that appears in the screen with the activities locations
+ * @property latitude references the latitude coordinate of the activity's location the map
+ * @property longitude references the longitude coordinate of the activity's location on the map
+ * @property activitiesList references the list of activities that will be displayed on the map
+ * @property activitiesViewModel references the viewmodel of the activities
+ */
 class MapsFragment : Fragment() {
 
     companion object {
@@ -76,6 +84,12 @@ class MapsFragment : Fragment() {
         }
     }
 
+    /**
+     * Called to initialize the fragment and has the observers, returns the view inflated
+     * @param inflater is the Layout inflater to inflate the view
+     * @param container is the part which contains the view
+     * @param savedInstanceState is the last saved instance of the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -84,6 +98,11 @@ class MapsFragment : Fragment() {
         return inflater.inflate(R.layout.map_activities_fragment, container, false)
     }
 
+    /**
+     * Called once the view is inflated and here is where we display the information and we initizalize other views
+     * @param view is the view initialized by the onCreateView function
+     * @param savedInstanceState is the last saved instance of the view
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val mapFragment = childFragmentManager.findFragmentById(R.id.map) as SupportMapFragment?

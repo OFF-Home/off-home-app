@@ -1,5 +1,6 @@
 package com.offhome.app.ui.activitieslist
 
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -15,12 +16,14 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 
+
 /**
  * Adpter for the recycler view of the activities list
  * @param context is the context of the activity
  * @property activitiesList is the list of activities
  */
 class ActivitiesListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+
 
     /**
      * Onclick to item.

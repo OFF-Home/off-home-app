@@ -1,6 +1,5 @@
 package com.offhome.app.ui.profile
 
-import android.content.res.ColorStateList
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -112,15 +111,20 @@ class ProfileAboutMeFragment : Fragment() {
         val nTags = 10 // stub
         while (i <nTags) {
             // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
+
+            // intents vells
             //val tag1 = Chip(context/*, null, android.style.Widget.MaterialComponents.Chip.Entry*/);
             //val tag1 = Chip(context, null, R.attr.chipStyle);
             //val tag2 = Chip(context, null, R.attr.customChipStyleDeletable);
-            val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
+            //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
             //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Action);
+            //val tag2 = Chip(context, null, R.style.deletable_chip) ;
+            val chip3 = layoutInflater.inflate(R.layout.deletable_chip_layout, chipGroupTags, false) as Chip
             //Log.d("chips", "chip tag1 created")
-            tag1.text = "stub"; chipGroupTags.addView(tag1)
-            tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
-            tag1.chipStrokeWidth = 5F
+            chip3.text = "stub";
+            chipGroupTags.addView(chip3)
+            //tag2.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
+            //chip3.chipStrokeWidth = 5F
             ++i
         }
     }

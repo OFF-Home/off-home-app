@@ -1,4 +1,4 @@
-package com.offhome.app.ui.activities
+package com.offhome.app.ui.categories
 
 import android.app.SearchManager
 import android.content.Context
@@ -10,6 +10,7 @@ import android.widget.SearchView
 import androidx.core.content.ContextCompat.getSystemService
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R

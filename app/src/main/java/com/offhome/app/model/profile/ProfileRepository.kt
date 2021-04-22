@@ -129,4 +129,8 @@ class ProfileRepository {
         })
         return setDescriptionSuccessfully as MutableLiveData<Boolean>
     }
+
+    fun deleteTag(email:String, tag:String){
+
+    }
 }

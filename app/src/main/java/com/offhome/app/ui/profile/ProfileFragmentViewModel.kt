@@ -19,6 +19,7 @@ import com.offhome.app.model.profile.UserInfo
 class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
+    private var loggedUserEmail = "victor@gmai.com" // stub
 
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo
@@ -39,13 +40,11 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun usernameChangedByUser(newUsername: Editable) {
-        val email = "victor@gmai.com" // stub
-        _setUsernameSuccessfully = repository.setUsername(email, newUsername.toString())!!
+        _setUsernameSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
     }
 
     fun descriptionChangedByUser(newDescription: Editable) {
-        val email = "victor@gmai.com" // stub
-        _setDescriptionSuccessfully= repository.setDescription(email, newDescription.toString())!!
+        _setDescriptionSuccessfully= repository.setDescription(loggedUserEmail, newDescription.toString())!!
     }
 
     //inutil, intentant que salti el observer de setUsernameSuccessfully
@@ -58,8 +57,9 @@ class ProfileFragmentViewModel : ViewModel() {
         _setUsernameSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
     }
 
+    //aquests encara no els faig pq total em donarà el mateix error q description i username
     fun tagDeletedByUser(tag: String) {
-        //TODO
+        repository.deleteTag(loggedUserEmail, tag)
     }
 
     fun tagAddedByUser(tag:String) {

@@ -1,5 +1,6 @@
 package com.offhome.app.ui.profile
 
+import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -21,6 +22,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
 import java.util.*
+
 
 class ProfileAboutMeFragment : Fragment() {
 
@@ -98,10 +100,14 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val resultVM = it ?: return@Observer
                 if (resultVM) {
-                    Toast.makeText(activity,R.string.description_updated_toast, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    Toast.makeText(activity,R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    Toast.makeText(
+                        activity,
+                        R.string.description_update_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
             }
         )
@@ -132,21 +138,24 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     //crea i inicialitza un chip (visual, a la app, res de backend) amb el string passat
-    private fun addTagToChipGroup(tag:String) {
+    //inicialitzar inclou posar-li el listener a la "X" de esborrar que crea un dialeg de confirmació.
+    private fun addTagToChipGroup(tag: String) {
         val chip = layoutInflater.inflate(R.layout.deletable_chip_layout, chipGroupTags, false) as Chip
         chip.text = tag
         chipGroupTags.addView(chip)
         chip.setOnCloseIconClickListener {
-            profileVM.tagDeletedByUser(chip.text as String)
-            chipGroupTags.removeView(chip)
-            //TODO popup amb "undo"
-        }
-    }
+            val alertDialogBuilder = AlertDialog.Builder(context)
+                .setMessage("Delete tag $tag?")
+                .setPositiveButton("Delete") { dialog, which ->
+                    profileVM.tagDeletedByUser(chip.text as String)
+                    chipGroupTags.removeView(chip)
+                }
+                .setNegativeButton(
+                    "Cancel"
+                ) { dialog, which -> dialog.cancel() }
 
-    private fun omplirTagGroupPlaceholder() {
-        val tag1 = Chip(context); tag1.text = "tag1"; chipGroupTags.addView(tag1)
-        val tag2 = Chip(context); tag2.text = "tag2"; chipGroupTags.addView(tag2)
-        val tag3 = Chip(context); tag3.text = "tag3"; chipGroupTags.addView(tag3)
+            val alertDialog = alertDialogBuilder.show()
+        }
     }
 
     private fun iniEditElements() {
@@ -174,20 +183,42 @@ class ProfileAboutMeFragment : Fragment() {
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
         // we scale it
-        editIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
+        editIconDrawable = BitmapDrawable(
+            resources,
+            Bitmap.createScaledBitmap(bitmap, 70, 70, true)
+        )
 
         //we prepare the saveIconDrawable, resizing it
         val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
-        saveIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap2, 70, 70, true))
+        saveIconDrawable = BitmapDrawable(
+            resources, Bitmap.createScaledBitmap(
+                bitmap2,
+                70,
+                70,
+                true
+            )
+        )
 
         //add the icon's constraints to the layout
         constraintLayout2.addView(editDescriptionButton)
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.editDescriptionButton, ConstraintSet.LEFT, R.id.textViewProfileDescriptionTitle, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editDescriptionButton, ConstraintSet.TOP, R.id.textViewProfileDescriptionTitle, ConstraintSet.TOP, 8)
+        constraintSet1.connect(
+            R.id.editDescriptionButton,
+            ConstraintSet.LEFT,
+            R.id.textViewProfileDescriptionTitle,
+            ConstraintSet.RIGHT,
+            8
+        )
+        constraintSet1.connect(
+            R.id.editDescriptionButton,
+            ConstraintSet.TOP,
+            R.id.textViewProfileDescriptionTitle,
+            ConstraintSet.TOP,
+            8
+        )
         constraintSet1.applyTo(constraintLayout2)
     }
 
@@ -205,8 +236,20 @@ class ProfileAboutMeFragment : Fragment() {
         constraintLayout2.addView(addTagButton)
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.addTagButton, ConstraintSet.LEFT, R.id.textViewTagsTitle, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.addTagButton, ConstraintSet.TOP, R.id.textViewTagsTitle, ConstraintSet.TOP, 8)
+        constraintSet1.connect(
+            R.id.addTagButton,
+            ConstraintSet.LEFT,
+            R.id.textViewTagsTitle,
+            ConstraintSet.RIGHT,
+            8
+        )
+        constraintSet1.connect(
+            R.id.addTagButton,
+            ConstraintSet.TOP,
+            R.id.textViewTagsTitle,
+            ConstraintSet.TOP,
+            8
+        )
         constraintSet1.applyTo(constraintLayout2)
     }
 
@@ -218,12 +261,36 @@ class ProfileAboutMeFragment : Fragment() {
         //add the EditText's constraints to the layout
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
-        constraintSet1.connect(R.id.editTextProfileDescription, ConstraintSet.LEFT, R.id.aboutMeConstraintLayout, ConstraintSet.LEFT, 16)
-        constraintSet1.connect(R.id.editTextProfileDescription, ConstraintSet.RIGHT, R.id.aboutMeConstraintLayout, ConstraintSet.RIGHT, 16)
-        constraintSet1.connect(R.id.editTextProfileDescription, ConstraintSet.TOP, R.id.textViewProfileDescriptionTitle, ConstraintSet.BOTTOM, 8)
+        constraintSet1.connect(
+            R.id.editTextProfileDescription,
+            ConstraintSet.LEFT,
+            R.id.aboutMeConstraintLayout,
+            ConstraintSet.LEFT,
+            16
+        )
+        constraintSet1.connect(
+            R.id.editTextProfileDescription,
+            ConstraintSet.RIGHT,
+            R.id.aboutMeConstraintLayout,
+            ConstraintSet.RIGHT,
+            16
+        )
+        constraintSet1.connect(
+            R.id.editTextProfileDescription,
+            ConstraintSet.TOP,
+            R.id.textViewProfileDescriptionTitle,
+            ConstraintSet.BOTTOM,
+            8
+        )
 
-        constraintSet1.clear(R.id.textViewProfileDescription,ConstraintSet.TOP)
-        constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8)    //a ver
+        constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
+        constraintSet1.connect(
+            R.id.textViewProfileDescription,
+            ConstraintSet.TOP,
+            R.id.editTextProfileDescription,
+            ConstraintSet.BOTTOM,
+            8
+        )    //a ver
 
         constraintSet1.applyTo(constraintLayout2)
 
@@ -257,6 +324,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.visibility = View.GONE
     }
 
+    /*private fun deleteTagPressed(chip:Chip) {
+
+    }*/
+
     private fun addTagPressed() {
         //TODO dialogue i al final cridar addTag
 
@@ -264,7 +335,7 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     //afegeix tag a la app (chip) i al backend
-    private fun addTag(tag:String) {
+    private fun addTag(tag: String) {
         addTagToChipGroup(tag)
         val unixTime = (System.currentTimeMillis() % 1000000L).toString()
         profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD

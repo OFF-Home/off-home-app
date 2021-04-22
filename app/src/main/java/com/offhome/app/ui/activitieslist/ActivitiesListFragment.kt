@@ -15,6 +15,13 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 
 
+/**
+ * Class that defines the fragment to show the List of Activities
+ * @author Emma Pereira
+ * @property activitiesViewModel references the viewmodel of the activities
+ * @property activitiesListAdapter references the adapter for the RecyclerView of the activities
+ * @property activitiesList references the list of activities that will be displayed on the screen
+ */
 class ActivitiesListFragment : Fragment() {
 
     companion object {
@@ -25,10 +32,14 @@ class ActivitiesListFragment : Fragment() {
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private var activitiesList: List<ActivityFromList> = ArrayList()
-
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
-
-
+  
+    /**
+     * Called to initialize the fragment and has the observers, returns the view inflated
+     * @param inflater is the Layout inflater to inflate the view
+     * @param container is the part which contains the view
+     * @param savedInstanceState is the last saved instance of the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,6 +48,11 @@ class ActivitiesListFragment : Fragment() {
         return inflater.inflate(R.layout.activities_list_fragment, container, false)
     }
 
+    /**
+     * Called once the view is inflated and here is where we display the information and we initizalize other views
+     * @param view is the view initialized by the onCreateView function
+     * @param savedInstanceState is the last saved instance of the view
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 

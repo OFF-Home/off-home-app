@@ -125,6 +125,12 @@ class ProfileAboutMeFragment : Fragment() {
             chipGroupTags.addView(chip3)
             //tag2.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light)) // Color("@color/primary_light")    ;  // R.id.@color/primary_light
             //chip3.chipStrokeWidth = 5F
+
+            chip3.setOnCloseIconClickListener {
+                Toast.makeText(context,"chip3.setOnCloseIconClickListener",Toast.LENGTH_LONG).show()
+                //nice! aquest listener és el de la "X" de borrar.
+            }
+
             ++i
         }
     }

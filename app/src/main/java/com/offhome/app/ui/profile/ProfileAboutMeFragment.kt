@@ -145,7 +145,7 @@ class ProfileAboutMeFragment : Fragment() {
         chipGroupTags.addView(chip)
         chip.setOnCloseIconClickListener {
             val alertDialogBuilder = AlertDialog.Builder(context)
-                .setMessage("Delete tag $tag?")
+                .setMessage("Delete tag \"$tag\"?")
                 .setPositiveButton("Delete") { dialog, which ->
                     profileVM.tagDeletedByUser(chip.text as String)
                     chipGroupTags.removeView(chip)
@@ -329,9 +329,27 @@ class ProfileAboutMeFragment : Fragment() {
     }*/
 
     private fun addTagPressed() {
-        //TODO dialogue i al final cridar addTag
 
-        addTag("jaja si")
+        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogues, view as ViewGroup, false)
+        val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
+
+        val alertDialogBuilder = AlertDialog.Builder(context)
+            .setTitle("Add a tag")
+            .setView(textInputLayout)
+            .setPositiveButton("Add") { dialog, which ->
+                val tag = textInput.text.toString()
+                if (tag.isEmpty()) {
+                    Toast.makeText(context, R.string.tags_cant_be_empty_toast,Toast.LENGTH_LONG).show()
+                    addTagPressed()
+                }
+                else
+                    addTag(tag)
+            }
+            .setNegativeButton(
+                "Cancel"
+            ) { dialog, which -> dialog.cancel() }
+
+        val alertDialog = alertDialogBuilder.show()
     }
 
     //afegeix tag a la app (chip) i al backend

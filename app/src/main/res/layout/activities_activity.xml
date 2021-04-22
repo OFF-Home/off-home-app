@@ -37,6 +37,12 @@
             app:shapeAppearance="@style/Rounded"
             android:backgroundTint="@color/secondary_light"
             android:text="Map" />
+
+        <Spinner
+            android:id="@+id/spinnerCategories"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
     </com.google.android.material.button.MaterialButtonToggleGroup>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

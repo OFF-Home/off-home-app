@@ -8,4 +8,5 @@
     android:layout_height="match_parent"
     app:layoutManager="LinearLayoutManager"
     tools:context=".ui.activitieslist.ActivitiesListFragment"
-    tools:listitem="@layout/fragment_activity" />
+    tools:listitem="@layout/fragment_activity"></androidx.recyclerview.widget.RecyclerView>
+

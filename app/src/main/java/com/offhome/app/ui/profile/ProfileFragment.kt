@@ -1,5 +1,6 @@
 package com.offhome.app.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
@@ -17,6 +18,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
@@ -44,6 +46,8 @@ class ProfileFragment : Fragment() {
     private lateinit var editIconDrawable: Drawable
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     /**
      * Override the onCreateView method
@@ -217,5 +221,39 @@ class ProfileFragment : Fragment() {
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
+    }
+
+
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @param inflater the inflater
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        val inflater: MenuInflater = menuInflater
+        inflater.inflate(R.menu.logout_option, menu)
+    }
+
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    fun onOptionsItemSelected(item: MenuItem, inflater: MenuInflater) {
+        if (item.itemId == R.id.logout) {
+
+            val logout_dialog = AlertDialog.Builder(activity)
+            logout_dialog.setTitle(R.string.dialog_logout_title)
+            logout_dialog.setMessage(R.string.dialog_logout_message)
+            logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
+                firebaseAuth.signOut()
+            }
+            logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            logout_dialog.show()
+
+        }
+        super.onOptionsItemSelected(item)
     }
 }

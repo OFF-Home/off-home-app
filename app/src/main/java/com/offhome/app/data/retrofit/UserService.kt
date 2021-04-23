@@ -17,4 +17,5 @@ interface UserService {
     @Multipart
     @POST("/upload/userimage/{email}")
     fun updloadProfilePhoto(@Part(value = "file\"; filename=\"photo.jpeg\" ") file: RequestBody?): Call<RequestBody?>?
+
 }

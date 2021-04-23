@@ -196,6 +196,7 @@ class ProfileRepository {
 
             }
         })
+    }
       
     /**
      * obtains profile info of a user from a username

@@ -35,7 +35,7 @@ class ProfileMyActivitiesFragment : Fragment() {
         rotateArrowDrawables()
 
         //tot lo del recycler ho he robat descaradament de ActivitiesList
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter()
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context!!)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter

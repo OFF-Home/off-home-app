@@ -9,4 +9,7 @@ interface UserService {
 
     @GET("/users/{username}/show")
     fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
+
+    @GET("/users/{username}")
+    fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>
 }

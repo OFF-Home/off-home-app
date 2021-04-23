@@ -176,4 +176,8 @@
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint">search_hint</string>
+    <string name="dialog_logout_message">Are you sure you want to log out?</string>
+    <string name="dialog_logout_title">Log out</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
 </resources>

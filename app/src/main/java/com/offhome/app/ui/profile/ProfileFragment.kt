@@ -231,7 +231,7 @@ class ProfileFragment : Fragment() {
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         val inflater: MenuInflater = menuInflater
-        inflater.inflate(R.menu.logout_option, menu)
+        inflater.inflate(R.menu.logout, menu)
     }
 
     /**

@@ -15,6 +15,8 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -22,8 +24,10 @@ import com.offhome.app.ui.infoactivity.InfoActivity
  * @param context is the context of the activity
  * @property activitiesList is the list of activities
  */
-class ActivitiesListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
+    private var tempListAct : List<ActivityFromList> = ArrayList()
+    private var listActivitiesFull: List<ActivityFromList> = ArrayList()
 
     /**
      * Onclick to item.
@@ -32,7 +36,7 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context) : Recycler
         val item = v.tag as ActivityFromList
         val intent = Intent(context, InfoActivity::class.java)
         intent.putExtra("activity", GsonBuilder().create().toJson(item))
-        context.startActivity(intent)
+        context?.startActivity(intent)
     }
     private var activitiesList: List<ActivityFromList> = ArrayList()
 
@@ -119,5 +123,24 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context) : Recycler
         override fun toString(): String {
             return super.toString()
         }
+    }
+
+    fun performFiltering(constraint: CharSequence?) {
+        if (tempListAct.isNotEmpty()) activitiesList = tempListAct
+
+        tempListAct = ArrayList(activitiesList)
+        this.listActivitiesFull = ArrayList(activitiesList)
+
+        val charSearch = constraint.toString()
+        listActivitiesFull = if (charSearch.isEmpty()) tempListAct
+        else {
+            val resultList = ArrayList<ActivityFromList>()
+            for (row in activitiesList) {
+                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
+            }
+            resultList
+        }
+        activitiesList = listActivitiesFull
+        notifyDataSetChanged()
     }
 }

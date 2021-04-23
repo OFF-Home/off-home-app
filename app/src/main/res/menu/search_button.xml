@@ -1,9 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!--Search activity-->
     <item android:id="@+id/search"
         android:title="@string/search_title"
-        android:icon="@android:drawable/ic_menu_search"
+        android:icon="@drawable/ic_baseline_search_24"
         app:showAsAction="collapseActionView|ifRoom"
         app:actionViewClass="android.widget.SearchView" />
+
+    <!--Sort activity-->
+    <item android:id="@+id/action_sort"
+        android:title="@string/search_title"
+        android:icon="@drawable/ic_baseline_sort_24"
+        app:showAsAction="always"></item>
+
+    <item android:id="@+id/action_sort_categories"
+        android:title="@string/search_title"
+        android:icon="@drawable/ic_baseline_category_24"
+        app:showAsAction="always"></item>
+
 </menu>

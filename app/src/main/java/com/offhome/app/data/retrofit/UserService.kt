@@ -1,5 +1,6 @@
 package com.offhome.app.data.retrofit
 
+import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -19,6 +20,9 @@ interface UserService {
     /*@GET("/tags/{username}/show")
     fun getTags(@Path("username") username: String): Call< ??? >*/
 
+    @GET("/activitats/{email}")
+    fun getUserActivities(@Path("email") email: String): Call<List<ActivityFromList>>
+
     @POST("tags/{username}/insert")
     fun addTag(@Path("username") email: String, @Body nomTag:String): Call<ResponseBody> //mai dona successful i fent get mai surten.
 
@@ -28,4 +32,6 @@ interface UserService {
 
     @POST("users/{username}/update")
     fun setDescription(@Path("username") email: String, @Body description:String): Call<ResponseBody>
+
+
 }

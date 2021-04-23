@@ -3,6 +3,7 @@ package com.offhome.app.ui.profile
 import android.text.Editable
 import android.util.Log
 import androidx.lifecycle.*
+import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
 
@@ -24,6 +25,13 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo
 
+    /*private var _tags = MutableLiveData<Bundle>()
+    var tags: LiveData<Bundle> = _tags*/
+
+
+    private var _myActivities = MutableLiveData<List<ActivityFromList>>()
+    var myActivities: LiveData<List<ActivityFromList>> = _myActivities
+
     private var _setUsernameSuccessfully = MutableLiveData<Boolean>()
     var setUsernameSuccessfully: LiveData<Boolean> = _setUsernameSuccessfully
 
@@ -37,6 +45,13 @@ class ProfileFragmentViewModel : ViewModel() {
         val username = "victorfer" // stub
 
         profileInfo = repository.getProfileInfo(username)!!
+
+        getMyActivities()
+    }
+
+    private fun getMyActivities() {
+        _myActivities = repository.getUserActivities(loggedUserEmail)!!
+        //falta q nomes vull les futures
     }
 
     fun usernameChangedByUser(newUsername: Editable) {

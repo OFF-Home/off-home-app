@@ -9,6 +9,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.R
 
@@ -19,6 +20,7 @@ class ProfileMyActivitiesFragment : Fragment() {
     }
 
     private lateinit var viewModel: ProfileMyActivitiesViewModel
+    private lateinit var profileVM:ProfileFragmentViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -28,6 +30,14 @@ class ProfileMyActivitiesFragment : Fragment() {
         val view = inflater.inflate(R.layout.profile_my_activities_fragment, container, false)
 
         rotateArrowDrawables()
+
+        val profileFragment: ProfileFragment = parentFragment as ProfileFragment
+        profileVM = profileFragment.getViewModel()
+        profileVM.myActivities.observe(
+            viewLifecycleOwner,
+            Observer {
+                val myActivitiesVM = it ?: return@Observer
+            })
 
         return view
     }

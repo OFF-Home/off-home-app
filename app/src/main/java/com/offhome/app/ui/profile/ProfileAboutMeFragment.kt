@@ -120,6 +120,7 @@ class ProfileAboutMeFragment : Fragment() {
         val nTags:Int = 5 // stub
         while (i <nTags) {
             // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
+                //fer la conversio a VM
 
             // intents vells
             //val tag1 = Chip(context/*, null, android.style.Widget.MaterialComponents.Chip.Entry*/);

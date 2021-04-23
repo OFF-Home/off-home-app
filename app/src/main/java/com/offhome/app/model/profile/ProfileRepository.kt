@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.UserClient
+import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -28,6 +29,7 @@ class ProfileRepository {
     var userInfo: MutableLiveData<UserInfo>? = null
     var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
     var setDescriptionSuccessfully: MutableLiveData<Boolean>? = null
+    var myActivities: MutableLiveData<List<ActivityFromList>>?=null
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -61,6 +63,26 @@ class ProfileRepository {
 
         return userInfo as MutableLiveData<UserInfo>
         // return TopProfileInfo(username = "Maria", starRating = 6) // stub
+    }
+
+    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>>? {
+        if (myActivities == null) myActivities = MutableLiveData<List<ActivityFromList>>()
+
+        val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    myActivities!!.value =response.body()
+                    Log.d("response", "getUserActivities response: is successful")
+                } else {
+                    Log.d("response", "getUserActivities response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting getUserActivities. communication failure (no response)")
+            }
+        })
+        return myActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     // per quan agafem la profilePic de backend

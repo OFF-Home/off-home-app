@@ -32,7 +32,7 @@ class ProfileRepository {
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
     var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
-    var setDescriptionSuccessfully: MutableLiveData<Boolean>? = null
+    var setDescriptionSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
     var activities: MutableLiveData<List<ActivityFromList>>?=null
     var tags: MutableLiveData< List<TagData> >?=null
 
@@ -152,18 +152,18 @@ class ProfileRepository {
         return setUsernameSuccessfully as MutableLiveData<Boolean>
     }
 
-    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean>? {
+    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean> {
         //basicament igual que setUsername. si arreglo una, fer copia-pega
-        if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
+        //if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
         val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("response", "setDescription response: is successful")
-                    setDescriptionSuccessfully!!.value = true
+                    setDescriptionSuccessfully.value = true
                 } else {
                     Log.d("response", "setDescription response: unsuccessful")
-                    setDescriptionSuccessfully!!.value = false
+                    setDescriptionSuccessfully.value = false
                 }
             }
 
@@ -171,10 +171,10 @@ class ProfileRepository {
                 Log.d("no response", "setDescription no response")
                 t.printStackTrace()
                 Log.w("no response", "setDescription no response", t.cause)
-                setDescriptionSuccessfully!!.value = false
+                setDescriptionSuccessfully.value = false
             }
         })
-        return setDescriptionSuccessfully as MutableLiveData<Boolean>
+        return setDescriptionSuccessfully
     }
 
     fun deleteTag(email:String, tag:String){

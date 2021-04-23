@@ -1,8 +1,12 @@
 package com.offhome.app.ui.profile
 
+import android.app.Activity
 import android.text.Editable
 import android.util.Log
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
@@ -65,8 +69,16 @@ class ProfileFragmentViewModel : ViewModel() {
         _setUsernameSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
     }
 
-    fun descriptionChangedByUser(newDescription: Editable) {
-        _setDescriptionSuccessfully= repository.setDescription(loggedUserEmail, newDescription.toString())!!
+    fun descriptionChangedByUser(newDescription: Editable, activity: AppCompatActivity) {
+        /*_setDescriptionSuccessfully=*/ repository.setDescription(loggedUserEmail, newDescription.toString())!!
+        repository.setDescriptionSuccessfully.observe(   //igual que el de ProfileFragment (setUsernameSuccessfully.observe) no salta. quan arregli un, fer copia-pega a l'altre.
+            activity,
+            Observer {
+                val resultVM = it ?: return@Observer
+                Log.d("setDescription", "salta el observer de VM")
+                _setDescriptionSuccessfully.value = resultVM
+            }
+        )
     }
 
     //inutil, intentant que salti el observer de setUsernameSuccessfully

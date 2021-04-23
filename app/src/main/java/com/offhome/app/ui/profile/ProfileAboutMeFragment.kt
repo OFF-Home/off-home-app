@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -297,7 +298,9 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
             textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            profileVM.descriptionChangedByUser(editTextProfileDescription.text ,
+                activity as AppCompatActivity
+            )
             changeDescriptionToDisplay()
         }
         editTextProfileDescription.setText(textViewProfileDescription.text)

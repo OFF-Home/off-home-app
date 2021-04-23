@@ -24,7 +24,7 @@ import kotlin.collections.ArrayList
  * @param context is the context of the activity
  * @property activitiesList is the list of activities
  */
-class ActivitiesListRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private var tempListAct : List<ActivityFromList> = ArrayList()
     private var listActivitiesFull: List<ActivityFromList> = ArrayList()
@@ -36,7 +36,7 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context) : Recycler
         val item = v.tag as ActivityFromList
         val intent = Intent(context, InfoActivity::class.java)
         intent.putExtra("activity", GsonBuilder().create().toJson(item))
-        context.startActivity(intent)
+        context?.startActivity(intent)
     }
     private var activitiesList: List<ActivityFromList> = ArrayList()
 

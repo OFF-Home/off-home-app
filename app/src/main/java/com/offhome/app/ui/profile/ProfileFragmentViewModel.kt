@@ -16,8 +16,20 @@ import com.offhome.app.model.profile.UserInfo
  *
  * @author Ferran
  * @property repository reference to the Repository (Model) object
- * @property _profileInfo private mutable live data of the profile info displayed at the top, obtained from the server
- * @property profileInfo public live data for the topProfileInfo
+ * @property _profileInfo private mutable live data of the profile info, obtained from the server
+ * @property profileInfo public live data for the ProfileInfo
+ * @property _tags private mutable live data of the tags to be obtained from the server
+ * @property tags public live data for the tags
+ * @property _myActivities private mutable live data of the user's activities to be obtained from the server
+ * @property myActivities public live data for the user's activities
+ * @property _usernameSetSuccessfully private mutable live data of whether the username was successfully set
+ * @property usernameSetSuccessfully public live data for usernameSetSuccessfully
+ * @property _descriptionSetSuccessfully private mutable live data of whether the description was successfully set
+ * @property descriptionSetSuccessfully public live data for descriptionSetSuccessfully
+ * @property _tagAddedSuccessfully private mutable live data of whether the tag was successfully added
+ * @property tagAddedSuccessfully public live data for tagAddedSuccessfully
+ * @property _tagDeletedSuccessfully private mutable live data of whether the tag was successfully deleted
+ * @property tagDeletedSuccessfully public live data for tagDeletedSuccessfully
  */
 class ProfileFragmentViewModel : ViewModel() {
 
@@ -29,7 +41,6 @@ class ProfileFragmentViewModel : ViewModel() {
 
     private var _tags = MutableLiveData< List<TagData> >()
     var tags: LiveData<List<TagData>> = _tags
-
 
     private var _myActivities = MutableLiveData<List<ActivityFromList>>()
     var myActivities: LiveData<List<ActivityFromList>> = _myActivities
@@ -46,7 +57,9 @@ class ProfileFragmentViewModel : ViewModel() {
     var tagDeletedSuccessfully : LiveData<Boolean> = _tagDeletedSuccessfully
 
     /**
-     * obtains topProfileInfo from the lower level and places it on the live data
+     * obtains ProfileInfo from the lower level and places it on the live data
+     *
+     * calls the functions that do the same for the user's activities and tags
      */
     fun getProfileInfo() {
         val username = "victorfer" // stub
@@ -57,18 +70,31 @@ class ProfileFragmentViewModel : ViewModel() {
         getTags()
     }
 
+    /**
+     * obtains myActivities from the lower level and places them on the live data
+     */
     private fun getMyActivities() {
         //_myActivities = repository.getUserActivities(loggedUserEmail)!!
         myActivities = repository.getUserActivities(loggedUserEmail)!!      //funciona amb aquest i no amb el _myActivities
-        //TODO nomes vull les futures
     }
 
+    /**
+     * obtains tags from the lower level and places them on the live data
+     */
     private fun getTags() {
         tags = repository.getUserTags(loggedUserEmail)!!
     }
 
+    /**
+     * initiates the edition of the username
+     *
+     * makes the call to the Repository and observes its live data for the result.
+     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     *
+     * @param newUsername string to change the username to
+     * @param activity pointer to the activity, used by the observers
+     */
     fun usernameChangedByUser(newUsername: Editable, activity: AppCompatActivity) {
-        /*_setUsernameSuccessfully = */
         repository.setUsername(loggedUserEmail, newUsername.toString())
         repository.usernameSetSuccessfully.observe(
             activity,
@@ -80,8 +106,16 @@ class ProfileFragmentViewModel : ViewModel() {
         )
     }
 
+    /**
+     * initiates the edition of the description
+     *
+     * makes the call to the Repository and observes its live data for the result.
+     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     *
+     * @param newDescription string to change the description to
+     * @param activity pointer to the activity, used by the observers
+     */
     fun descriptionChangedByUser(newDescription: Editable, activity: AppCompatActivity) {
-        /*_setDescriptionSuccessfully=*/
         repository.setDescription(loggedUserEmail, newDescription.toString())
         repository.descriptionSetSuccessfully.observe(
             activity,
@@ -103,7 +137,16 @@ class ProfileFragmentViewModel : ViewModel() {
         _usernameSetSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
     }
 
-    //aquests encara no els faig pq total em donarà el mateix error q description i username
+
+    /**
+     * initiates the deletion of a tag
+     *
+     * makes the call to the Repository and observes its live data for the result.
+     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     *
+     * @param tag tag to be deleted
+     * @param activity pointer to the activity, used by the observers
+     */
     fun tagDeletedByUser(tag: String, activity: AppCompatActivity) {
         repository.deleteTag(loggedUserEmail, tag)
         repository.tagDeletedSuccessfully.observe(
@@ -116,6 +159,15 @@ class ProfileFragmentViewModel : ViewModel() {
         )
     }
 
+    /**
+     * initiates the addition of a tag
+     *
+     * makes the call to the Repository and observes its live data for the result.
+     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     *
+     * @param tag tag to be added
+     * @param activity pointer to the activity, used by the observers
+     */
     fun tagAddedByUser(tag:String, activity: AppCompatActivity) {
         repository.addTag(loggedUserEmail, tag)
         repository.tagAddedSuccessfully.observe(

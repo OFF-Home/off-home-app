@@ -31,10 +31,16 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * Fragment for the Profile screen. On its ViewPager it can show either of the 3 fragments: MyActivities, AboutMe, Settings.
  * This class is one of the Views in this screen's MVVM's
  *
- * @author Pau and Ferran
+ * @author Ferran, Pau, others
  * @property fragmentViewModel reference to the ViewModel object
  * @property imageViewProfilePic reference to profile pic ImageView
  * @property textViewUsername reference to the username TextView
+ * @property estrelles reference to the user's rating bar
+ * @property editUsernameButton button to edit and save the username
+ * @property constraintLayout1 reference to the layout's constraint layout
+ * @property editIconDrawable drawable of the "edit icon" (a pencil)
+ * @property saveIconDrawable drawable of the "save icon" (a diskette)
+ * @property editTextUsername editText to edit the username
  * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
 class ProfileFragment : Fragment() {
@@ -59,7 +65,7 @@ class ProfileFragment : Fragment() {
      * Initializes the attributes
      * Sets up the ViewPager and its tabs
      *
-     * Makes the call to the VM to obtain the topProfileInfo and observes its live data for the result
+     * Makes the call to the VM to obtain the ProfileInfo and observes its live data for the result
      *
      * @param inflater
      * @param container
@@ -113,6 +119,9 @@ class ProfileFragment : Fragment() {
         return view
     }
 
+    /**
+     * Initializes the listeners that observe the calls to backend made to edit parameters (username)
+     */
     private fun iniEditionResultListeners() {
         Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
@@ -136,10 +145,21 @@ class ProfileFragment : Fragment() {
         )
     }
 
+    /**
+     * ViewModel getter
+     *
+     * @return the profile fragment view model
+     */
     fun getViewModel(): ProfileFragmentViewModel {
         return fragmentViewModel
     }
 
+    /**
+     * Initializes the edition elements:
+     *
+     * Initializes the editUsernameButton. It also sets its drawable and listener
+     * Initializes the editTextUsername
+     */
     private fun iniEditElements() {
         iniEditUsernameButton()
 
@@ -154,6 +174,11 @@ class ProfileFragment : Fragment() {
         // fer iniEditProfilePicButton aquí
     }
 
+    /**
+     * Initializes the editUsernameButton
+     *
+     * creates the object, sets id, initializes both drawables, inserts the View with its constraints i the constraint layout
+     */
     private fun iniEditUsernameButton() {
         editUsernameButton = ImageView(activity)
         editUsernameButton.id = R.id.editUsernameButton
@@ -180,6 +205,12 @@ class ProfileFragment : Fragment() {
         constraintSet1.applyTo(constraintLayout1)
     }
 
+    /**
+     * Initializes the username EditText
+     *
+     * creates the object, sets id, inserts the View with its constraints and size i the constraint layout
+     * initializes its visibility to gone
+     */
     private fun iniEditTextUsername() {
         editTextUsername = EditText(activity)
         editTextUsername.id = R.id.editTextUsername2 // li he dit 2 perquè ja existia un editTextUsername aparentment
@@ -201,6 +232,11 @@ class ProfileFragment : Fragment() {
         editTextUsername.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the username to editing
+     *
+     * meaning it changes the drawable to the "save" one, changes the listener, and changes the Username textView for the EditText in the layout
+     */
     private fun changeUsernameToEdit() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
@@ -223,6 +259,11 @@ class ProfileFragment : Fragment() {
         textViewUsername.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the username to display
+     *
+     * meaning it changes the drawable to the "edit" one, changes the listener, and changes the Username EditText for the textView in the layout
+     */
     private fun changeUsernameToDisplay() {
         editUsernameButton.setImageDrawable(editIconDrawable)
         editUsernameButton.setOnClickListener {

@@ -51,6 +51,9 @@ class OtherProfileActivity : AppCompatActivity() {
         observe()
     }
 
+    /**
+     * It oberve the following list of one user and the response to the call of follow/unfollow
+     */
     private fun observe() {
         viewModel.followResult.observe(this, {
             if (it)
@@ -70,6 +73,9 @@ class OtherProfileActivity : AppCompatActivity() {
         })
     }
 
+    /**
+     * Change the button text from Follow to Following and viceversa
+     */
     private fun changeFollowButtonText() {
         btnFollowFollowing.text = if (btnFollowFollowing.text == getString(R.string.btn_follow)) {
             getString(R.string.btn_following)

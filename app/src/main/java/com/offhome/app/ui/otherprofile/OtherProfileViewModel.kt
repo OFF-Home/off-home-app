@@ -21,21 +21,32 @@ class OtherProfileViewModel : ViewModel()  {
 
      //   userInfo = repository.getProfileInfo(username)!!.value
     }*/
-
+    /**
+     * It sets de info to the user
+     */
     fun setUserInfo(uinfo:UserInfo) {
         userInfo = uinfo
     }
 
+    /**
+     * It gets the info of the user
+     */
     fun getUserInfo(): UserInfo {
         return userInfo
     }
 
+    /**
+     * It calls the repository to get if one user follows the other
+     */
     fun isFollowing(): List<FollowingUser>? {
         val currentUser = "currentUser"
         listFollowing = repository.following(currentUser) as MutableLiveData<List<FollowingUser>>
         return listFollowing.value
     }
 
+    /**
+     * It calls the repository to start following a new user
+     */
     fun follow() {
         val currentUser = "currentUser"
         followResult.value = repository.follow(currentUser, userInfo.email).value == "OK"
@@ -43,6 +54,9 @@ class OtherProfileViewModel : ViewModel()  {
         userInfo.followers += 1
     }
 
+    /**
+     * It calls the repository to stop following a user
+     */
     fun stopFollowing() {
         val currentUser = "currentUser"
         followResult.value = repository.stopFollowing(currentUser, userInfo.email).value == "OK"
@@ -50,6 +64,9 @@ class OtherProfileViewModel : ViewModel()  {
         userInfo.followers -= 1
     }
 
+    /**
+     * It sets if it is following or not
+     */
     fun setFollowing(b: Boolean) {
         isFollowing.value = b
     }

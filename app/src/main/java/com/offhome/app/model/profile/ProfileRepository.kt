@@ -82,6 +82,12 @@ class ProfileRepository {
         //val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
     }
 
+    /**
+     * It calls the backend to start following
+     * @param currentUser is the logged user
+     * @param email is the email of the email the user to follow
+     * @returns the MutableLiveData with the response
+     */
     fun follow(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
@@ -103,6 +109,12 @@ class ProfileRepository {
         return result
     }
 
+    /**
+     * It calls the backend to stop following
+     * @param currentUser is the logged user
+     * @param email is the email of the email the user to unfollow
+     * @returns the MutableLiveData with the response
+     */
     fun stopFollowing(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
@@ -124,6 +136,11 @@ class ProfileRepository {
         return result
     }
 
+    /**
+     * It calls the backend to get follows of a user
+     * @param currentUser is the user we get the info of
+     * @returns the MutableLiveData with the response
+     */
     fun following(currentUser: String): LiveData<List<FollowingUser>> {
         val result = MutableLiveData<List<FollowingUser>>()
 

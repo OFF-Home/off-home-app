@@ -15,7 +15,6 @@ interface UserService {
     @GET("/users/{username}/show")
     fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
 
-
     //in progress
     @GET("/tags/{username}/show")
     fun getTags(@Path("username") username: String): Call<List<TagData>>
@@ -34,5 +33,6 @@ interface UserService {
     @POST("users/{username}/update")
     fun setDescription(@Path("username") email: String, @Body description:String): Call<ResponseBody>
 
-
+    @GET("/users/{username}")
+    fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>
 }

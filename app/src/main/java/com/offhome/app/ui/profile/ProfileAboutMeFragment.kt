@@ -5,7 +5,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -159,7 +158,7 @@ class ProfileAboutMeFragment : Fragment() {
         iniEditDescriptionButton()
         // we set our new scaled drawable "d"
         editDescriptionButton.setImageDrawable(editIconDrawable)
-        editDescriptionButton.setOnClickListener{
+        editDescriptionButton.setOnClickListener {
             changeDescriptionToEdit()
         }
         iniEditTextDescription()
@@ -170,12 +169,12 @@ class ProfileAboutMeFragment : Fragment() {
         }
     }
 
-    //finds the view, initiates it with its constraints, initiates the 2 drawables
+    // finds the view, initiates it with its constraints, initiates the 2 drawables
     private fun iniEditDescriptionButton() {
         editDescriptionButton = ImageView(activity)
         editDescriptionButton.id = R.id.editDescriptionButton // funciona somehow
 
-        //we prepare the editIconDrawable, resizing it
+        // we prepare the editIconDrawable, resizing it
         // to resize the drawable, we create a local drawable here
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
@@ -185,7 +184,7 @@ class ProfileAboutMeFragment : Fragment() {
             Bitmap.createScaledBitmap(bitmap, 70, 70, true)
         )
 
-        //we prepare the saveIconDrawable, resizing it
+        // we prepare the saveIconDrawable, resizing it
         val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
@@ -198,7 +197,7 @@ class ProfileAboutMeFragment : Fragment() {
             )
         )
 
-        //add the icon's constraints to the layout
+        // add the icon's constraints to the layout
         constraintLayout2.addView(editDescriptionButton)
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
@@ -255,7 +254,7 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.id = R.id.editTextProfileDescription
 
         constraintLayout2.addView(editTextProfileDescription)
-        //add the EditText's constraints to the layout
+        // add the EditText's constraints to the layout
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout2)
         constraintSet1.connect(
@@ -281,13 +280,7 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
-        constraintSet1.connect(
-            R.id.textViewProfileDescription,
-            ConstraintSet.TOP,
-            R.id.editTextProfileDescription,
-            ConstraintSet.BOTTOM,
-            8
-        )    //a ver
+        constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8) // a ver
 
         constraintSet1.applyTo(constraintLayout2)
 
@@ -300,7 +293,7 @@ class ProfileAboutMeFragment : Fragment() {
     private fun changeDescriptionToEdit() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
-        editDescriptionButton.setOnClickListener{
+        editDescriptionButton.setOnClickListener {
             textViewProfileDescription.text = editTextProfileDescription.text
             profileVM.descriptionChangedByUser(editTextProfileDescription.text)
             changeDescriptionToDisplay()

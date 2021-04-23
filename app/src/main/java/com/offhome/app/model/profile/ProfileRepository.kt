@@ -4,12 +4,14 @@ import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.Result
 import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import retrofit2.Response.success
 import java.io.IOException
 import java.io.InputStream
 
@@ -194,5 +196,28 @@ class ProfileRepository {
 
             }
         })
+      
+    /**
+     * obtains profile info of a user from a username
+     */
+    fun getProfileInfoByUsername(newText: String): Result<MutableLiveData<UserInfo>> {
+        if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
+        val call: Call<UserInfo> = userService!!.getProfileInfoByUsername(newText)
+        call.enqueue(object : Callback<UserInfo> {
+            override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
+                if (response.isSuccessful) {
+                    userInfo!!.value = response.body()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                Log.d("GET", "Error getting topProfileInfo. communication failure (no response)")
+            }
+        })
+
+        return Result.Success(userInfo!!)
     }
 }

@@ -1,5 +1,6 @@
 package com.offhome.app.data
 
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
@@ -32,7 +33,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
      * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) {
+    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) {
         dataSource.result.observe(
             activity,
             Observer {

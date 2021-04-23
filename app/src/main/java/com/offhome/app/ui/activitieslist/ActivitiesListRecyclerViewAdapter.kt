@@ -54,13 +54,6 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context) : Recycler
                 Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
             }
         }
-
-        /* al clicar a la activitat pasar com a parametre el nom i la hora????????
-        holder.mView.setOnClickListener() {
-            val intent = Intent(this, ActivitiesList::class.java);
-            intent.putExtra("amount", "Running")
-            startActivity(intent)
-        }*/
     }
 
     override fun getItemCount(): Int = activitiesList.size

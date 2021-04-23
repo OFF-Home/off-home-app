@@ -1,15 +1,14 @@
 package com.offhome.app.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -17,8 +16,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -31,6 +34,7 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @property fragmentViewModel reference to the ViewModel object
  * @property imageViewProfilePic reference to profile pic ImageView
  * @property textViewUsername reference to the username TextView
+ * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
@@ -41,9 +45,11 @@ class ProfileFragment : Fragment() {
     private lateinit var editUsernameButton: ImageView
     private lateinit var constraintLayout1: ConstraintLayout
 
-    private lateinit var editIconDrawable:Drawable
-    private lateinit var saveIconDrawable:Drawable
-    private lateinit var editTextUsername : EditText
+    private lateinit var editIconDrawable: Drawable
+    private lateinit var saveIconDrawable: Drawable
+    private lateinit var editTextUsername: EditText
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     /**
      * Override the onCreateView method
@@ -77,11 +83,16 @@ class ProfileFragment : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
+        //cosas logout
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        firebaseAuth = Firebase.auth
+
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
         fragmentViewModel.getProfileInfo()
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
-            Observer { // aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
+            Observer {
                 val profileInfoVM = it ?: return@Observer
 
                 textViewUsername.text = profileInfoVM.username
@@ -91,13 +102,36 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
+        iniEditionResultListeners()
 
         imageViewProfilePic.setOnClickListener {
-            //TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
+            // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
             canviAOtherProfile()
         }
 
         return view
+    }
+
+    private fun iniEditionResultListeners() {
+
+        //inutil, intentant que salti el observer de setUsernameSuccessfully
+        fragmentViewModel.simularResposta()
+
+        fragmentViewModel.setUsernameSuccessfully.observe(  //observer no salta. no sé perquè.
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
+
+                if (resultVM) {
+                    Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
     }
 
     fun getViewModel(): ProfileFragmentViewModel {
@@ -115,21 +149,21 @@ class ProfileFragment : Fragment() {
         }
         iniEditTextUsername()
 
-        //fer iniEditProfilePicButton aquí
+        // fer iniEditProfilePicButton aquí
     }
 
     private fun iniEditUsernameButton() {
         editUsernameButton = ImageView(activity)
         editUsernameButton.id = R.id.editUsernameButton
 
-        //TODO codi repetit de ProfileAboutMeFragment. fer algo?
+        // TODO codi repetit de ProfileAboutMeFragment. fer algo?
 
         // to resize the drawable, we create a local drawable here
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
         // we scale it
         editIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
-        //we prepare the saveIconDrawable, resizing it
+        // we prepare the saveIconDrawable, resizing it
         val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
@@ -146,7 +180,7 @@ class ProfileFragment : Fragment() {
 
     private fun iniEditTextUsername() {
         editTextUsername = EditText(activity)
-        editTextUsername.id= R.id.editTextUsername2 //li he dit 2 perquè ja existia un editTextUsername aparentment
+        editTextUsername.id = R.id.editTextUsername2 // li he dit 2 perquè ja existia un editTextUsername aparentment
 
         constraintLayout1.addView(editTextUsername)
         val constraintSet1 = ConstraintSet()
@@ -154,7 +188,7 @@ class ProfileFragment : Fragment() {
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.LEFT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.LEFT)
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.RIGHT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.RIGHT)
         constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.TOP, R.id.imageViewProfilePic, ConstraintSet.BOTTOM)
-        //falta clear?
+        // falta clear?
         constraintSet1.connect(R.id.textViewUsername, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.BOTTOM)
 
         constraintSet1.applyTo(constraintLayout1)
@@ -204,16 +238,56 @@ class ProfileFragment : Fragment() {
         editTextUsername.visibility = View.GONE
     }
 
-    //aixo es completament per a testejar
+    // aixo es completament per a testejar
     private fun canviAOtherProfile() {
 
-        //stub
-        val userInfo = com.offhome.app.model.profile.UserInfo(email="yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-2012",
+        // stub
+        val userInfo = com.offhome.app.model.profile.UserInfo(
+            email = "yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-2012",
             description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags="a b c d e", language = "esp")
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
+        )
 
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
+    }
+
+
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @param inflater the inflater
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.logout, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout) {
+
+            val logout_dialog = AlertDialog.Builder(activity)
+            logout_dialog.setTitle(R.string.dialog_logout_title)
+            logout_dialog.setMessage(R.string.dialog_logout_message)
+            logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
+                firebaseAuth.signOut()
+                requireActivity().run {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+            }
+            logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            logout_dialog.show()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

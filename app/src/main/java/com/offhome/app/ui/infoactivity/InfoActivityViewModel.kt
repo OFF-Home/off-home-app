@@ -3,7 +3,6 @@ package com.offhome.app.ui.infoactivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
-import com.offhome.app.model.ActivityData
 
 /**
  * View Model for InfoActivity

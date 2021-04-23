@@ -1,9 +1,11 @@
 package com.offhome.app.ui.otherprofile
 
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.*
-import androidx.fragment.app.Fragment
+import android.widget.ImageView
+import android.widget.RatingBar
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
@@ -11,8 +13,8 @@ import com.offhome.app.model.profile.UserInfo
 
 class OtherProfileActivity : AppCompatActivity() {
 
-    private lateinit var viewModel:OtherProfileViewModel
-    private lateinit var otherUser:UserInfo
+    private lateinit var viewModel: OtherProfileViewModel
+    private lateinit var otherUser: UserInfo
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
@@ -23,13 +25,13 @@ class OtherProfileActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_profile)
 
-        //recibir user seleccionado de la otra pantalla. //robat de infoActivity
-        //a la pantalla anterior ja hem d'haver fet l'acces a backend. perque hi necessitavem la fotoPerfil     (des de chats, des de la pagina d'una activity, ...)
+        // recibir user seleccionado de la otra pantalla. //robat de infoActivity
+        // a la pantalla anterior ja hem d'haver fet l'acces a backend. perque hi necessitavem la fotoPerfil     (des de chats, des de la pagina d'una activity, ...)
         val arguments = intent.extras
         val otherUserString = arguments?.getString("user_info")
         otherUser = GsonBuilder().create().fromJson(otherUserString, UserInfo::class.java)
         imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
-        //imageViewProfilePic. //ficar-hi la imatge
+        // imageViewProfilePic. //ficar-hi la imatge
         textViewUsername = findViewById(R.id.otherUsername)
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
@@ -37,7 +39,7 @@ class OtherProfileActivity : AppCompatActivity() {
         btnFollowFollowing = findViewById(R.id.buttonFollow)
         fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
-        viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java)  //funcionarà?
+        viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         viewModel.setUserInfo(otherUser)
         viewModel.isFollowing()

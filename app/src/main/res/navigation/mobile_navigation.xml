@@ -7,15 +7,15 @@
 
     <fragment
         android:id="@+id/navigation_activities"
-        android:name="com.offhome.app.ui.activities.CategoriesFragment"
+        android:name="com.offhome.app.ui.categories.CategoriesFragment"
         android:label="@string/title_activities"
         tools:layout="@layout/fragment_categories" />
 
     <fragment
         android:id="@+id/navigation_explore"
-        android:name="com.offhome.app.ui.activities.CategoriesFragment"
+        android:name="com.offhome.app.ui.explore.ExploreFragment"
         android:label="@string/title_explore"
-        tools:layout="@layout/fragment_categories" />
+        tools:layout="@layout/explore_fragment" />
 
     <fragment
         android:id="@+id/navigation_chats"

@@ -1,13 +1,13 @@
 package com.offhome.app.ui.otherprofile
 
-import androidx.lifecycle.LiveData
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
 
-class OtherProfileViewModel : ViewModel()  {
+class OtherProfileViewModel : ViewModel() {
     /*private var _userInfo = MutableLiveData<UserInfo>()
     var userInfo: LiveData<UserInfo> = _userInfo*/
     private lateinit var userInfo :UserInfo
@@ -21,10 +21,11 @@ class OtherProfileViewModel : ViewModel()  {
 
      //   userInfo = repository.getProfileInfo(username)!!.value
     }*/
+
     /**
      * It sets de info to the user
      */
-    fun setUserInfo(uinfo:UserInfo) {
+    fun setUserInfo(uinfo: UserInfo) {
         userInfo = uinfo
     }
 

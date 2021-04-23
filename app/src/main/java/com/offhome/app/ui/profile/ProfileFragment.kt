@@ -7,10 +7,7 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -19,8 +16,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -80,6 +80,11 @@ class ProfileFragment : Fragment() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
+
+        //cosas logout
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        firebaseAuth = Firebase.auth
 
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
         fragmentViewModel.getProfileInfo()
@@ -230,8 +235,8 @@ class ProfileFragment : Fragment() {
      * @param inflater the inflater
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        val inflater: MenuInflater = menuInflater
         inflater.inflate(R.menu.logout, menu)
+        super.onCreateOptionsMenu(menu, inflater)
     }
 
     /**
@@ -239,7 +244,7 @@ class ProfileFragment : Fragment() {
      * @param item selected
      * @return true if the menu is successfully handled
      */
-    override fun onOptionsItemSelected(item: MenuItem, inflater: MenuInflater) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.logout) {
 
             val logout_dialog = AlertDialog.Builder(activity)
@@ -247,6 +252,10 @@ class ProfileFragment : Fragment() {
             logout_dialog.setMessage(R.string.dialog_logout_message)
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
                 firebaseAuth.signOut()
+                requireActivity().run {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
             }
             logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
                 dialog.dismiss()
@@ -254,6 +263,6 @@ class ProfileFragment : Fragment() {
             logout_dialog.show()
 
         }
-        super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 }

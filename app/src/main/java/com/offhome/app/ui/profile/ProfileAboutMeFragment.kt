@@ -13,6 +13,7 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -100,7 +101,7 @@ class ProfileAboutMeFragment : Fragment() {
 
     private fun iniEditionResultListeners() {
         Log.d("iniEditionResultListe", "arribo al AboutMe::iniEditionResultListeners")
-        profileVM.setDescriptionSuccessfully.observe(   //igual que el de ProfileFragment (setUsernameSuccessfully.observe) no salta. quan arregli un, fer copia-pega a l'altre.
+        profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
@@ -110,6 +111,37 @@ class ProfileAboutMeFragment : Fragment() {
                         .show()
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
+
+        profileVM.tagAddedSuccessfully.observe(
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+                if (resultVM) {
+                    Toast.makeText(activity, "Tag added", Toast.LENGTH_LONG)
+                        .show()
+                } else {
+                    Toast.makeText(activity, "Couldn't add tag", Toast.LENGTH_LONG).show()
+                }
+            }
+        )
+
+        /*profileVM.tagDeletedSuccessfully.observe(
+            viewLifecycleOwner,
+            Observer {
+
+            }
+        )*/
+        profileVM.tagDeletedSuccessfully.observe(
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+                if (resultVM) {
+                    Toast.makeText(activity, "Tag deleted", Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, "Couldn't delete tag", Toast.LENGTH_LONG).show()
                 }
             }
         )
@@ -145,7 +177,7 @@ class ProfileAboutMeFragment : Fragment() {
             val alertDialogBuilder = AlertDialog.Builder(context)
                 .setMessage("Delete tag \"$tag\"?")
                 .setPositiveButton("Delete") { dialog, which ->
-                    profileVM.tagDeletedByUser(chip.text as String)
+                    profileVM.tagDeletedByUser(chip.text as String, activity as AppCompatActivity)
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
@@ -297,7 +329,9 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
             textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            profileVM.descriptionChangedByUser(editTextProfileDescription.text ,
+                activity as AppCompatActivity
+            )
             changeDescriptionToDisplay()
         }
         editTextProfileDescription.setText(textViewProfileDescription.text)
@@ -345,7 +379,6 @@ class ProfileAboutMeFragment : Fragment() {
         addTagToChipGroup(tag)
         val unixTime = (System.currentTimeMillis() % 1000000L).toString()
         //profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD
-        profileVM.tagAddedByUser(tag)
+        profileVM.tagAddedByUser(tag, activity as AppCompatActivity)
     }
-
 }

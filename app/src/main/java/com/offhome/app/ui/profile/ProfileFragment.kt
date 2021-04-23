@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -113,11 +114,12 @@ class ProfileFragment : Fragment() {
     }
 
     private fun iniEditionResultListeners() {
+        Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
         //inutil, intentant que salti el observer de setUsernameSuccessfully
-        fragmentViewModel.simularResposta()
+        //fragmentViewModel.simularResposta()
 
-        fragmentViewModel.setUsernameSuccessfully.observe(  //observer no salta. no sé perquè.
+        fragmentViewModel.usernameSetSuccessfully.observe(  //observer no salta. no sé perquè.
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
@@ -203,7 +205,7 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
             textViewUsername.text = editTextUsername.text
-            fragmentViewModel.usernameChangedByUser(editTextUsername.text)
+            fragmentViewModel.usernameChangedByUser(editTextUsername.text, activity as AppCompatActivity)
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)

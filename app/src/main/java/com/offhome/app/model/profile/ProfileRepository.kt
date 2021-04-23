@@ -7,6 +7,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
+import com.offhome.app.data.profilejson.NomTag
+import com.offhome.app.data.profilejson.UserDescription
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
@@ -31,8 +34,10 @@ class ProfileRepository {
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
-    var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
-    var setDescriptionSuccessfully: MutableLiveData<Boolean>? = null
+    var usernameSetSuccessfully: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var descriptionSetSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
+    var tagAddedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
+    var tagDeletedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
     var activities: MutableLiveData<List<ActivityFromList>>?=null
     var tags: MutableLiveData< List<TagData> >?=null
 
@@ -123,21 +128,17 @@ class ProfileRepository {
         return bitmap
     }
 
-    fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean>? {    //email identifica a l'user
-        //in progress
-        if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
-
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = newUsername)   //o algo tipo updateUser()        //he posat "!!"
-
+    fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean> {
+        //if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("response", "setUsername response: is successful")
-
-                    setUsernameSuccessfully!!.value = true
+                    usernameSetSuccessfully.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "setUsername response: unsuccessful")
-                    setUsernameSuccessfully!!.value = false
+                    usernameSetSuccessfully.value = false
                 }
             }
 
@@ -145,25 +146,24 @@ class ProfileRepository {
                 Log.d("no response", "setUsername no response")
                 t.printStackTrace()
                 Log.w("no response", "setUsername no response", t.cause)
-                setUsernameSuccessfully!!.value = false
+                usernameSetSuccessfully.value = false
             }
         })
 
-        return setUsernameSuccessfully as MutableLiveData<Boolean>
+        return usernameSetSuccessfully
     }
 
-    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean>? {
-        //basicament igual que setUsername. si arreglo una, fer copia-pega
-        if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
+    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean> {
+        //if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
         val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("response", "setDescription response: is successful")
-                    setDescriptionSuccessfully!!.value = true
+                    descriptionSetSuccessfully.value = true
                 } else {
                     Log.d("response", "setDescription response: unsuccessful")
-                    setDescriptionSuccessfully!!.value = false
+                    descriptionSetSuccessfully.value = false
                 }
             }
 
@@ -171,31 +171,48 @@ class ProfileRepository {
                 Log.d("no response", "setDescription no response")
                 t.printStackTrace()
                 Log.w("no response", "setDescription no response", t.cause)
-                setDescriptionSuccessfully!!.value = false
+                descriptionSetSuccessfully.value = false
             }
         })
-        return setDescriptionSuccessfully as MutableLiveData<Boolean>
+        return descriptionSetSuccessfully
     }
 
     fun deleteTag(email:String, tag:String){
+        val call :Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "deleteTag response: is successful")
+                    tagDeletedSuccessfully.value = true
+                } else {
+                    Log.d("response", "deleteTag response: unsuccessful")
+                    tagDeletedSuccessfully.value = false
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "deleteTag no response")
+                tagDeletedSuccessfully.value = false
+            }
+        })
     }
 
     fun addTag(email:String, tag:String) {
-        //TODO falta el livedata de response.
-
-        val call: Call<ResponseBody> = userService!!.addTag(email, tag)
+        val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     Log.d("response", "addTag response: is successful")
+                    tagAddedSuccessfully.value = true
                 } else {
                     Log.d("response", "addTag response: unsuccessful")
+                    tagAddedSuccessfully.value = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "addTag no response")
-
+                tagAddedSuccessfully.value = false
             }
         })
     }

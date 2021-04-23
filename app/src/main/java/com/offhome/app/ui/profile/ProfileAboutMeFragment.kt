@@ -120,10 +120,10 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val resultVM = it ?: return@Observer
                 if (resultVM) {
-                    Toast.makeText(activity, "Tag added", Toast.LENGTH_LONG)
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
-                    Toast.makeText(activity, "Couldn't add tag", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
             }
         )
@@ -139,9 +139,9 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val resultVM = it ?: return@Observer
                 if (resultVM) {
-                    Toast.makeText(activity, "Tag deleted", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, "Couldn't delete tag", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
                 }
             }
         )

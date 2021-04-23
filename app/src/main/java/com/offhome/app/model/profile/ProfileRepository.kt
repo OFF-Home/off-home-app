@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.retrofit.UserClient
 import retrofit2.Call
 import retrofit2.Callback
@@ -122,12 +123,12 @@ class ProfileRepository {
         return result
     }
 
-    fun following(currentUser: String): LiveData<List<String>> {
-        val result = MutableLiveData<List<String>>()
+    fun following(currentUser: String): LiveData<List<FollowingUser>> {
+        val result = MutableLiveData<List<FollowingUser>>()
 
-        val call: Call<List<String>> = userService!!.following(currentUser)
-        call.enqueue(object : Callback<List<String>> {
-            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+        val call: Call<List<FollowingUser>> = userService!!.following(currentUser)
+        call.enqueue(object : Callback<List<FollowingUser>> {
+            override fun onResponse(call: Call<List<FollowingUser>>, response: Response<List<FollowingUser>>) {
                 if (response.isSuccessful) {
                     result.value = response.body()
                     Log.d("success response", "got a response indicating success")
@@ -136,7 +137,7 @@ class ProfileRepository {
                 }
             }
 
-            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+            override fun onFailure(call: Call<List<FollowingUser>>, t: Throwable) {
                 Log.d("GET", "Error getting info. communication failure (no response)")
             }
         })

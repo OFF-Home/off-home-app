@@ -62,7 +62,7 @@ class OtherProfileActivity : AppCompatActivity() {
         viewModel.listFollowing.observe(this, {
             btnFollowFollowing.text = getString(R.string.btn_follow)
             for (item in it) {
-                if (item == otherUser.email) {
+                if (item.usuariSeguidor == "currentUser") {
                     viewModel.setFollowing(true)
                     btnFollowFollowing.text = getString(R.string.btn_following)
                 }

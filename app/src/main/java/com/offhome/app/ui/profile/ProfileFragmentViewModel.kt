@@ -21,7 +21,7 @@ import com.offhome.app.model.profile.UserInfo
 class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
-    private var loggedUserEmail = "victor@gmai.com" // stub
+    private var loggedUserEmail = "victorfer@gmai.com" // stub
 
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo

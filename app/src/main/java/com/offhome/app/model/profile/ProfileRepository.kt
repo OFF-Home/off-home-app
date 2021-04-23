@@ -93,7 +93,7 @@ class ProfileRepository {
     fun getUserTags(email: String): MutableLiveData<List<TagData>>? {       //dona failure. potser el tipus no és el q toca
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
-        val call: Call<List<TagData>> = userService!!.getTags(/*email*/ username = "victor@gmai.com")
+        val call: Call<List<TagData>> = userService!!.getTags(email = email)
         call.enqueue(object : Callback< List<TagData> > {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {
@@ -155,7 +155,7 @@ class ProfileRepository {
     fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean>? {
         //basicament igual que setUsername. si arreglo una, fer copia-pega
         if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
-        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = newDescription)
+        val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

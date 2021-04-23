@@ -1,15 +1,13 @@
 package com.offhome.app.data.retrofit
 
-import com.offhome.app.data.model.FollowingUser
+import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.profile.TagData
+import com.offhome.app.model.profile.UserDescription
 import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.profile.TagData
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.POST
-import retrofit2.http.Path
+import retrofit2.http.*
+import com.offhome.app.data.model.FollowingUser
 
 interface UserService {
 
@@ -25,22 +23,27 @@ interface UserService {
     @POST("/users/:username/unfollow")
     fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
     //in progress
+    //retornava nomes un. canviaran quna puguin a set
     @GET("/tags/{username}/show")
-    fun getTags(@Path("username") username: String): Call<List<TagData>>
+    fun getTags(@Path("username") email: String): Call< List<TagData> >
 
     @GET("/activitats/{email}")
     fun getUserActivities(@Path("email") email: String): Call<List<ActivityFromList>>
 
     //al backend encara no està implementat?
+    //si pero substitueix enlloc de afegir, perque nomes n'hi ha un.
     @POST("tags/{username}/insert")
-    fun addTag(@Path("username") email: String, @Body nomTag:String): Call<ResponseBody> //mai dona successful i fent get mai surten.
+    fun addTag(@Path("username") email: String, @Body nomTag:String): Call<ResponseBody>
 
-    //aquests encara no sé què he d'enviar (falta postman)
+    //estem a la espera
+    @Headers("Content-Type: application/json")
     @POST("users/{username}/update")
-    fun setUsername(@Path("username") email:String, @Body username: String): Call<ResponseBody> //email (aka username, lol) identifica a l'user
+    fun setUsername(@Path("username") email:String, @Body username: String): Call<ResponseBody>
 
+    //Aquest tampoc va (problema fronted)
+    @Headers("Content-Type: application/json")
     @POST("users/{username}/update")
-    fun setDescription(@Path("username") email: String, @Body description:String): Call<ResponseBody>
+    fun setDescription(@Path("username") email: String, @Body description: UserDescription): Call<ResponseBody>
 
     @GET("/users/{username}")
     fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>

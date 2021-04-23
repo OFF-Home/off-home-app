@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">OFF Home</string>
     <string name="title_activities">Activities</string>
     <string name="title_explore">Explore</string>
@@ -178,5 +178,6 @@
     <string name="search_hint">search_hint</string>
     <string name="change_password">Change password</string>
     <string name="Update_password">updatePassword</string>
-    <string name="new_password">New Password</string>
+    <string name="new_password">new password</string>
+    <string name="new_password_repeat">repeat new password</string>
 </resources>

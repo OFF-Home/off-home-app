@@ -3,22 +3,26 @@ package com.offhome.app.model.profile
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.retrofit.UserClient
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import androidx.lifecycle.LiveData
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
 import kotlin.Boolean as Boolean
+
 
 /**
  * Class *ProfileRepository*
@@ -34,6 +38,7 @@ class ProfileRepository {
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
+    val PREF_PHOTOURL = 1
     var usernameSetSuccessfully: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
     var descriptionSetSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
     var tagAddedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
@@ -320,4 +325,32 @@ class ProfileRepository {
         })
         return result
     }
+
+
+
+    fun uploadPhoto(photoPath: String?) {
+        val file = File(photoPath)
+        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
+        val call: Call<RequestBody?>? = userService!!.updloadProfilePhoto(requestBody)
+        /*call?.enqueue(object : Callback<> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful()) {
+                    // SharedPreferencesManager.setSomeStringValue(PREF_PHOTOURL, response.body().getFilename())
+                    //   imageViewProfilePic.setValue(response.body().getFilename())
+                } else {
+                    //     Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                //   Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+            }
+        })*/
+    }
+
+
 }

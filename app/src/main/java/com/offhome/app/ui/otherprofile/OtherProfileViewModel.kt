@@ -10,6 +10,7 @@ import com.offhome.app.model.profile.UserInfo
 class OtherProfileViewModel : ViewModel() {
     /*private var _userInfo = MutableLiveData<UserInfo>()
     var userInfo: LiveData<UserInfo> = _userInfo*/
+
     private lateinit var userInfo :UserInfo
     lateinit var listFollowing: MutableLiveData<List<FollowingUser>>
     lateinit var isFollowing: MutableLiveData<Boolean>
@@ -34,6 +35,11 @@ class OtherProfileViewModel : ViewModel() {
      */
     fun getUserInfo(): UserInfo {
         return userInfo
+    }
+
+
+    fun uploadPhoto(photoPath: String) {
+        repository.uploadPhoto(photoPath);
     }
 
     /**

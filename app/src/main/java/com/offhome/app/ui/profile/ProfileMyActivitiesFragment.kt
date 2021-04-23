@@ -5,13 +5,17 @@ import android.graphics.BitmapFactory
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.model.ActivityFromList
 
 class ProfileMyActivitiesFragment : Fragment() {
 
@@ -21,6 +25,8 @@ class ProfileMyActivitiesFragment : Fragment() {
 
     private lateinit var viewModel: ProfileMyActivitiesViewModel
     private lateinit var profileVM:ProfileFragmentViewModel
+    private var activitiesList: List<ActivityFromList> = ArrayList()
+    private lateinit var myActivitiesRecycler: RecyclerView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,6 +43,11 @@ class ProfileMyActivitiesFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val myActivitiesVM = it ?: return@Observer
+
+                //copiat de ActivitiesList
+                Log.d("MyActivities", "my activities got to the fragment")
+                activitiesList = myActivitiesVM
+                //myActivitiesRecycler.setDa
             })
 
         return view

@@ -21,6 +21,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
+import com.offhome.app.model.profile.TagData
 import java.util.*
 
 
@@ -77,8 +78,14 @@ class ProfileAboutMeFragment : Fragment() {
                 textViewBirthDate.text = profileInfoVM.birthDate
                 textViewFollowerCount.text = profileInfoVM.followers.toString()
                 textViewFollowingCount.text = profileInfoVM.following.toString()
-
-                omplirTagGroup(profileInfoVM.tags)
+            }
+        )
+        profileVM.tags.observe(
+            viewLifecycleOwner,
+            Observer {
+                val tagsVM = it ?: return@Observer
+                omplirTagGroup(tagsVM)
+                Log.d("tags","tags arriben al fragment")
             }
         )
 
@@ -101,11 +108,7 @@ class ProfileAboutMeFragment : Fragment() {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
-                    Toast.makeText(
-                        activity,
-                        R.string.description_update_error_toast,
-                        Toast.LENGTH_LONG
-                    ).show()
+                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
             }
         )
@@ -115,13 +118,15 @@ class ProfileAboutMeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
-    private fun omplirTagGroup(tagString: String) {
+    private fun omplirTagGroup(tagList:List<TagData>) {
+
+        for (tagData in tagList) {
+            addTagToChipGroup(tagData.nomTag)
+        }
+
         var i:Int = 0
         val nTags:Int = 5 // stub
         while (i <nTags) {
-            // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
-                //fer la conversio a VM
-
             // intents vells
             //val tag1 = Chip(context/*, null, android.style.Widget.MaterialComponents.Chip.Entry*/);
             //val tag1 = Chip(context, null, R.attr.chipStyle);

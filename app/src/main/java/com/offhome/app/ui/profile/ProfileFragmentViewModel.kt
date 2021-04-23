@@ -5,6 +5,7 @@ import android.util.Log
 import androidx.lifecycle.*
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
+import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
 
 /**
@@ -25,8 +26,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo
 
-    /*private var _tags = MutableLiveData<Bundle>()
-    var tags: LiveData<Bundle> = _tags*/
+    private var _tags = MutableLiveData< List<TagData> >()
+    var tags: LiveData<List<TagData>> = _tags
 
 
     private var _myActivities = MutableLiveData<List<ActivityFromList>>()
@@ -47,11 +48,17 @@ class ProfileFragmentViewModel : ViewModel() {
         profileInfo = repository.getProfileInfo(username)!!
 
         getMyActivities()
+        getTags()
     }
 
     private fun getMyActivities() {
-        _myActivities = repository.getUserActivities(loggedUserEmail)!!
+        //_myActivities = repository.getUserActivities(loggedUserEmail)!!
+        myActivities = repository.getUserActivities(loggedUserEmail)!!      //funciona amb aquest i no amb el _myActivities
         //falta q nomes vull les futures
+    }
+
+    private fun getTags() {
+        tags = repository.getUserTags(loggedUserEmail)!!
     }
 
     fun usernameChangedByUser(newUsername: Editable) {

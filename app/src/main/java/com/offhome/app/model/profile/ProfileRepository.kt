@@ -29,7 +29,8 @@ class ProfileRepository {
     var userInfo: MutableLiveData<UserInfo>? = null
     var setUsernameSuccessfully: MutableLiveData<Boolean>? = null
     var setDescriptionSuccessfully: MutableLiveData<Boolean>? = null
-    var myActivities: MutableLiveData<List<ActivityFromList>>?=null
+    var activities: MutableLiveData<List<ActivityFromList>>?=null
+    var tags: MutableLiveData< List<TagData> >?=null
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -66,13 +67,13 @@ class ProfileRepository {
     }
 
     fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>>? {
-        if (myActivities == null) myActivities = MutableLiveData<List<ActivityFromList>>()
+        if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
 
         val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    myActivities!!.value =response.body()
+                    activities!!.value =response.body()
                     Log.d("response", "getUserActivities response: is successful")
                 } else {
                     Log.d("response", "getUserActivities response: unsuccessful")
@@ -82,7 +83,27 @@ class ProfileRepository {
                 Log.d("GET", "Error getting getUserActivities. communication failure (no response)")
             }
         })
-        return myActivities as MutableLiveData<List<ActivityFromList>>
+        return activities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {       //dona failure. potser el tipus no és el q toca
+        if (tags == null) tags = MutableLiveData< List<TagData> >()
+
+        val call: Call<List<TagData>> = userService!!.getTags(email)
+        call.enqueue(object : Callback< List<TagData> > {
+            override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
+                if (response.isSuccessful) {
+                    tags!!.value =response.body()
+                    Log.d("response", "getUserTags response: is successful")
+                } else {
+                    Log.d("response", "getUserTags response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call< List<TagData> >, t: Throwable) {
+                Log.d("GET", "Error getting getUserTags. communication failure (no response)")
+            }
+        })
+        return tags as MutableLiveData<List<TagData>>
     }
 
     // per quan agafem la profilePic de backend

@@ -2,14 +2,23 @@ package com.offhome.app.model.profile
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
+import android.preference.PreferenceManager
 import android.util.Log
+import android.widget.ImageView
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.R
 import com.offhome.app.data.retrofit.UserClient
+import okhttp3.MediaType
+import okhttp3.RequestBody
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.File
 import java.io.IOException
 import java.io.InputStream
+
 
 /**
  * Class *ProfileRepository*
@@ -25,6 +34,8 @@ class ProfileRepository {
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
+    val PREF_PHOTOURL = 1
+
 
     /**
      * obtains topProfileInfo from the lower level and returns it   //TODO
@@ -77,4 +88,32 @@ class ProfileRepository {
         // TODO
         // val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
     }
+
+
+
+    fun uploadPhoto(photoPath: String?) {
+        val file = File(photoPath)
+        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
+        val call: Call<RequestBody?>? = userService!!.updloadProfilePhoto(requestBody)
+        /*call?.enqueue(object : Callback<> {
+            override fun onResponse(
+                call: Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful()) {
+                    // SharedPreferencesManager.setSomeStringValue(PREF_PHOTOURL, response.body().getFilename())
+                    //   imageViewProfilePic.setValue(response.body().getFilename())
+                } else {
+                    //     Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                }
+
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                //   Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+            }
+        })*/
+    }
+
+
 }

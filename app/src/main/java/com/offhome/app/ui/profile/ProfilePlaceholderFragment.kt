@@ -23,6 +23,11 @@ class ProfilePlaceholderFragment : Fragment() {
         return inflater.inflate(R.layout.profile_placeholder_fragment, container, false)
     }
 
+    /**
+     * /The layout view has been created and it is already available
+     * @param view The View returned by the method onCreateView(android.view.LayoutInflater, android.view.ViewGroup, android.os.Bundle)
+     * @param savedInstanceState If non-null, this fragment is being re-constructed from a previous saved state as given here. This value may be null
+     */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         val btnChangePwd = view.findViewById<Button>(R.id.changePassword)

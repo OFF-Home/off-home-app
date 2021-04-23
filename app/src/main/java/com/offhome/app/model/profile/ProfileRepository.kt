@@ -7,6 +7,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.retrofit.UserClient
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -84,18 +85,18 @@ class ProfileRepository {
     fun follow(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<String> = userService!!.follow(currentUser, email)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call: Call<ResponseBody> = userService!!.follow(currentUser, email)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    result.value = response.body()?.string()
                     Log.d("success response", "got a response indicating success")
                 } else {
                     Log.d("failure response", "got a response indicating failure")
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("GET", "Error getting info. communication failure (no response)")
             }
         })
@@ -105,18 +106,18 @@ class ProfileRepository {
     fun stopFollowing(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<String> = userService!!.stopFollowing(currentUser, email)
-        call.enqueue(object : Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    result.value = response.body()?.string()
                     Log.d("success response", "got a response indicating success")
                 } else {
                     Log.d("failure response", "got a response indicating failure")
                 }
             }
 
-            override fun onFailure(call: Call<String>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("GET", "Error getting info. communication failure (no response)")
             }
         })

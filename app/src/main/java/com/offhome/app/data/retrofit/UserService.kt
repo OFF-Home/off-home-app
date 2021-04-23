@@ -2,6 +2,7 @@ package com.offhome.app.data.retrofit
 
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.UserInfo
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
 
@@ -14,8 +15,8 @@ interface UserService {
     fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
 
     @POST("/users/:username/follow")
-    fun follow(@Path("username") currentUser: String, @Body email: String): Call<String>
+    fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
 
     @POST("/users/:username/unfollow")
-    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<String>
+    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
 }

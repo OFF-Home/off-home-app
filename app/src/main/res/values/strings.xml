@@ -197,3 +197,4 @@
     <string name="cancel">Cancel</string>
     <string name="error_search_user">Please, type the username you want to search</string>
     <string name="user_not_found">USer not found!</string>
+</resources>

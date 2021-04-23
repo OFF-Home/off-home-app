@@ -33,6 +33,7 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @property fragmentViewModel reference to the ViewModel object
  * @property imageViewProfilePic reference to profile pic ImageView
  * @property textViewUsername reference to the username TextView
+ * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel

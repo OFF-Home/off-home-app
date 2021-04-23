@@ -157,16 +157,15 @@
         android:id="@+id/btn_join"
         android:layout_width="148dp"
         android:layout_height="58dp"
+        android:layout_marginBottom="20dp"
         android:backgroundTint="@color/secondary"
         android:text="@string/join"
         android:textSize="20dp"
         app:cornerRadius="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintVertical_bias="0.976"
-        app:layout_constraintHorizontal_bias="0.498" />
-
+        app:layout_constraintHorizontal_bias="0.497"
+        app:layout_constraintStart_toStartOf="@+id/view" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

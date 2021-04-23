@@ -176,4 +176,6 @@
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint">search_hint</string>
+    <string name="error_search_user">Please, type the username you want to search</string>
+    <string name="user_not_found">USer not found!</string>
 </resources>

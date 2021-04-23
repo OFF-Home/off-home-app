@@ -89,7 +89,7 @@ class ProfileRepository {
     fun getUserTags(email: String): MutableLiveData<List<TagData>>? {       //dona failure. potser el tipus no és el q toca
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
-        val call: Call<List<TagData>> = userService!!.getTags(email)
+        val call: Call<List<TagData>> = userService!!.getTags(/*email*/ username = "victor@gmai.com")
         call.enqueue(object : Callback< List<TagData> > {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {

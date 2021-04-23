@@ -1,21 +1,18 @@
 package com.offhome.app.ui.profile
 
-import android.graphics.Bitmap
-import android.graphics.BitmapFactory
-import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 
 class ProfileMyActivitiesFragment : Fragment() {
 
@@ -23,10 +20,10 @@ class ProfileMyActivitiesFragment : Fragment() {
         fun newInstance() = ProfileMyActivitiesFragment()
     }
 
-    private lateinit var viewModel: ProfileMyActivitiesViewModel
-    private lateinit var profileVM:ProfileFragmentViewModel
+    private lateinit var viewModel: ProfileMyActivitiesViewModel        //TODO té pinta que la classe ProfileMyActivitiesViewModel la borraré i faré servir ProfileFragmentViewModel
+    private lateinit var profileVM:ProfileFragmentViewModel             //fem servir el viewModel de Profil
     private var activitiesList: List<ActivityFromList> = ArrayList()
-    private lateinit var myActivitiesRecycler: RecyclerView
+    private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -37,17 +34,24 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         rotateArrowDrawables()
 
+        //tot lo del recycler ho he robat descaradament de ActivitiesList
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter()
+        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = activitiesListAdapter
+
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
         profileVM = profileFragment.getViewModel()
         profileVM.myActivities.observe(
             viewLifecycleOwner,
             Observer {
                 val myActivitiesVM = it ?: return@Observer
-
                 //copiat de ActivitiesList
                 Log.d("MyActivities", "my activities got to the fragment")
                 activitiesList = myActivitiesVM
-                //myActivitiesRecycler.setDa
+
+                activitiesListAdapter.setData(activitiesList)
+                //com que això ho he copiat nose si se li assigna un listener...
             })
 
         return view
@@ -56,9 +60,9 @@ class ProfileMyActivitiesFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ProfileMyActivitiesViewModel::class.java)
-        // TODO: Use the ViewModel
     }
 
+    //no ho vaig aconseguir
     private fun rotateArrowDrawables() {/*
         //val dr: Drawable = resources.getDrawable(android.R.drawable.abc_vector_test)
         val dr2: Drawable = resources.getDrawable(R.drawable.abc_vector_test)

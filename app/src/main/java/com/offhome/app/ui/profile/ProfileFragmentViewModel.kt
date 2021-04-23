@@ -54,7 +54,7 @@ class ProfileFragmentViewModel : ViewModel() {
     private fun getMyActivities() {
         //_myActivities = repository.getUserActivities(loggedUserEmail)!!
         myActivities = repository.getUserActivities(loggedUserEmail)!!      //funciona amb aquest i no amb el _myActivities
-        //falta q nomes vull les futures
+        //TODO nomes vull les futures
     }
 
     private fun getTags() {

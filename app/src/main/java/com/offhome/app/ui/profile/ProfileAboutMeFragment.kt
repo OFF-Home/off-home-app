@@ -31,7 +31,7 @@ class ProfileAboutMeFragment : Fragment() {
         fun newInstance() = ProfileAboutMeFragment()
     }
 
-    private lateinit var viewModel: ProfileAboutMeViewModel     //té pinta que la classe ProfileAboutMeViewModel la borraré i faré servir ProfileFragmentViewModel
+    private lateinit var viewModel: ProfileAboutMeViewModel     //TODO té pinta que la classe ProfileAboutMeViewModel la borraré i faré servir ProfileFragmentViewModel
     private lateinit var profileVM: ProfileFragmentViewModel    //fem servir el viewModel de Profile
     private lateinit var textViewProfileDescription: TextView
     private lateinit var textViewBirthDate: TextView
@@ -90,7 +90,7 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         // testing
-        //omplirTagGroup("aquest string encara no el llegim")
+        omplirTagGroupStub()
 
         iniEditElements()
         iniEditionResultListeners()
@@ -123,18 +123,12 @@ class ProfileAboutMeFragment : Fragment() {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
+    }
 
+    private fun omplirTagGroupStub() {
         var i:Int = 0
-        val nTags:Int = 5 // stub
+        val nTags:Int = 5
         while (i <nTags) {
-            // intents vells
-            //val tag1 = Chip(context/*, null, android.style.Widget.MaterialComponents.Chip.Entry*/);
-            //val tag1 = Chip(context, null, R.attr.chipStyle);
-            //val tag2 = Chip(context, null, R.attr.customChipStyleDeletable);
-            //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Entry);
-            //val tag1 = Chip(context, null, R.style.Widget_MaterialComponents_Chip_Action);
-            //val tag2 = Chip(context, null, R.style.deletable_chip) ;
-
             addTagToChipGroup("stub")
             ++i
         }

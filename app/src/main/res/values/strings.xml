@@ -177,4 +177,6 @@
     <string name="search_title">search_title</string>
     <string name="search_hint">search_hint</string>
     <string name="change_password">Change password</string>
+    <string name="Update_password">updatePassword</string>
+    <string name="new_password">New Password</string>
 </resources>

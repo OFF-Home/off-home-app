@@ -7,12 +7,21 @@ import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
+import com.offhome.app.data.model.FollowingUser
 
 interface UserService {
 
     @GET("/users/{username}/show")
     fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
 
+    @GET("/users/:username/getFollow")
+    fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
+
+    @POST("/users/:username/follow")
+    fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+
+    @POST("/users/:username/unfollow")
+    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
     //in progress
     //retornava nomes un. canviaran quna puguin a set
     @GET("/tags/{username}/show")

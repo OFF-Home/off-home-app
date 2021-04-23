@@ -1,6 +1,7 @@
 package com.offhome.app.ui.otherprofile
 
 import android.os.Bundle
+import android.widget.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
@@ -17,6 +18,8 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
+    private lateinit var btnFollowFollowing: Button
+    private lateinit var fragment: AboutThemFragment
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,9 +36,54 @@ class OtherProfileActivity : AppCompatActivity() {
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
+        btnFollowFollowing = findViewById(R.id.buttonFollow)
+        fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         viewModel.setUserInfo(otherUser)
+        viewModel.isFollowing()
+
+        btnFollowFollowing.setOnClickListener {
+            if (btnFollowFollowing.text == getString(R.string.btn_follow))
+                viewModel.follow()
+            else viewModel.stopFollowing()
+        }
+
+        observe()
+    }
+
+    /**
+     * It oberve the following list of one user and the response to the call of follow/unfollow
+     */
+    private fun observe() {
+        viewModel.followResult.observe(this, {
+            if (it)
+                changeFollowButtonText()
+            else
+                Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.listFollowing.observe(this, {
+            btnFollowFollowing.text = getString(R.string.btn_follow)
+            for (item in it) {
+                if (item.usuariSeguidor == "currentUser") {
+                    viewModel.setFollowing(true)
+                    btnFollowFollowing.text = getString(R.string.btn_following)
+                }
+            }
+        })
+    }
+
+    /**
+     * Change the button text from Follow to Following and viceversa
+     */
+    private fun changeFollowButtonText() {
+        btnFollowFollowing.text = if (btnFollowFollowing.text == getString(R.string.btn_follow)) {
+            getString(R.string.btn_following)
+        } else {
+            getString(R.string.btn_follow)
+        }
+        fragment.updateFollowes()
     }
 }

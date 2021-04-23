@@ -239,7 +239,7 @@ class ProfileFragment : Fragment() {
      * @param item selected
      * @return true if the menu is successfully handled
      */
-    fun onOptionsItemSelected(item: MenuItem, inflater: MenuInflater) {
+    override fun onOptionsItemSelected(item: MenuItem, inflater: MenuInflater) {
         if (item.itemId == R.id.logout) {
 
             val logout_dialog = AlertDialog.Builder(activity)

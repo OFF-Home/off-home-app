@@ -20,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.GsonBuilder
@@ -60,7 +61,14 @@ class OtherProfileActivity : AppCompatActivity() {
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
-            startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
+                != PackageManager.PERMISSION_GRANTED) {
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                    Uri.parse("package:$packageName")
+                )
+                finish()
+                startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)                }
         }
 
         textViewUsername = findViewById(R.id.otherUsername)
@@ -71,17 +79,6 @@ class OtherProfileActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         viewModel.setUserInfo(otherUser)
-
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
-            val intent = Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.parse("package:$packageName")
-            )
-            finish()
-            startActivity(intent)
-            return
-        }*/
     }
 
     private fun takePictureIntent(){
@@ -92,14 +89,6 @@ class OtherProfileActivity : AppCompatActivity() {
             Toast.makeText(this, "The camara is not available", Toast.LENGTH_LONG).show()
         }
     }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            uploadImageAndSaveUri(imageBitmap)
-        }
-    }*/
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -115,11 +104,13 @@ class OtherProfileActivity : AppCompatActivity() {
                     val photoPath: String = cursor.getString(imageIndex)
                     viewModel.uploadPhoto(photoPath)
                     cursor.close()
+                    Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
                 }
             }
         }
     }
 
+    //no utilitzada ara (fer foto camara)
     private fun uploadImageAndSaveUri(bitmap: Bitmap){
         val baos = ByteArrayOutputStream()
         val storageRef = FirebaseStorage.getInstance()

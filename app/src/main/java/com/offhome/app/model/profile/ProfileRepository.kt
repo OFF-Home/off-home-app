@@ -94,8 +94,8 @@ class ProfileRepository {
     fun uploadPhoto(photoPath: String?) {
         val file = File(photoPath)
         val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
-        val call: Call<RequestBody?>? = userService!!.updloadProfilePhoto(requestBody)
-        /*call?.enqueue(object : Callback<> {
+        val call: Call<ResponseBody> = userService!!.uploadProfilePhoto(requestBody)
+        call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
@@ -112,7 +112,7 @@ class ProfileRepository {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 //   Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
             }
-        })*/
+        })
     }
 
 

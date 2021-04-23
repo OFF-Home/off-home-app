@@ -83,7 +83,7 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         // testing
-        omplirTagGroup("aquest string encara no el llegim")
+        //omplirTagGroup("aquest string encara no el llegim")
 
         iniEditElements()
         iniEditionResultListeners()
@@ -116,8 +116,8 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     private fun omplirTagGroup(tagString: String) {
-        var i = 0
-        val nTags = 10 // stub
+        var i:Int = 0
+        val nTags:Int = 5 // stub
         while (i <nTags) {
             // aixo és una mena de placeholder. aqui acabarem fent una conversió de JSon o algo aixi
 
@@ -130,7 +130,6 @@ class ProfileAboutMeFragment : Fragment() {
             //val tag2 = Chip(context, null, R.style.deletable_chip) ;
 
             addTagToChipGroup("stub")
-
             ++i
         }
     }
@@ -350,7 +349,8 @@ class ProfileAboutMeFragment : Fragment() {
     private fun addTag(tag: String) {
         addTagToChipGroup(tag)
         val unixTime = (System.currentTimeMillis() % 1000000L).toString()
-        profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD
+        //profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD
+        profileVM.tagAddedByUser(tag)
     }
 
 }

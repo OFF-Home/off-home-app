@@ -63,6 +63,6 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun tagAddedByUser(tag:String) {
-        //TODO
+        repository.addTag(loggedUserEmail, tag)
     }
 }

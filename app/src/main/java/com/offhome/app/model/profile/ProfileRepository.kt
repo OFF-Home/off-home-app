@@ -131,6 +131,25 @@ class ProfileRepository {
     }
 
     fun deleteTag(email:String, tag:String){
+    }
 
+    fun addTag(email:String, tag:String) {
+        //TODO falta el livedata de response.
+
+        val call: Call<ResponseBody> = userService!!.addTag(email, tag)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "addTag response: is successful")
+                } else {
+                    Log.d("response", "addTag response: unsuccessful")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "addTag no response")
+
+            }
+        })
     }
 }

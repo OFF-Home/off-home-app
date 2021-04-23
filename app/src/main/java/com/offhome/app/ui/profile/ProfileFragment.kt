@@ -1,15 +1,13 @@
 package com.offhome.app.ui.profile
 
+import android.app.AlertDialog
 import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.RatingBar
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -17,8 +15,12 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -31,6 +33,7 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @property fragmentViewModel reference to the ViewModel object
  * @property imageViewProfilePic reference to profile pic ImageView
  * @property textViewUsername reference to the username TextView
+ * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
@@ -44,6 +47,8 @@ class ProfileFragment : Fragment() {
     private lateinit var editIconDrawable: Drawable
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     /**
      * Override the onCreateView method
@@ -76,6 +81,11 @@ class ProfileFragment : Fragment() {
         viewPager.adapter = sectionsPagerAdapter
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
+
+        //cosas logout
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        firebaseAuth = Firebase.auth
 
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
         fragmentViewModel.getProfileInfo()
@@ -217,5 +227,43 @@ class ProfileFragment : Fragment() {
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
+    }
+
+
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @param inflater the inflater
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.logout, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
+
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout) {
+
+            val logout_dialog = AlertDialog.Builder(activity)
+            logout_dialog.setTitle(R.string.dialog_logout_title)
+            logout_dialog.setMessage(R.string.dialog_logout_message)
+            logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
+                firebaseAuth.signOut()
+                requireActivity().run {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+            }
+            logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            logout_dialog.show()
+
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

@@ -10,6 +10,7 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -42,7 +43,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var viewModel: InfoActivityViewModel
 
     /**
-     * This is executed when the activity is launched for first time or created again.
+     * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -84,24 +85,58 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val layout = findViewById<View>(R.id.content)
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
+
+        var joined = false
+
         btnJoin.setOnClickListener {
-            viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
-                this,
-                {
-                    if (it != " ") {
-                        if (it == "You have joined the activity!") {
-                            val snackbar: Snackbar = Snackbar
-                                .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                                .setAction(getString(R.string.go_chat)) {
-                                    Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-                                }
-                            snackbar.show()
-                        } else {
-                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+            joined = !joined
+            if (joined) {
+                btnJoin.text = "JOINED"
+                val snackbar: Snackbar = Snackbar.make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                snackbar.show()
+                /*
+                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "You have joined the activity!") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.go_chat)) {
+                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                    }
+                                snackbar.show()
+                            } else {
+                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                            }
                         }
                     }
-                }
-            )
+                )*/
+            }
+            else {
+                btnJoin.text = "JOIN"
+                val snackbar: Snackbar = Snackbar.make(layout, "You are no longer a participant :(", Snackbar.LENGTH_LONG)
+                snackbar.show()
+                /*
+                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "You have joined the activity!") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
+                                    .setAction(getString(R.string.go_chat)) {
+                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                    }
+                                snackbar.show()
+                            } else {
+                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    }
+                )*/
+            }
+
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.

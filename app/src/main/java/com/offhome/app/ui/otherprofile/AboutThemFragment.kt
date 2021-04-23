@@ -80,4 +80,8 @@ class AboutThemFragment : Fragment() {
         //    ++i
         // }
     }
+
+    fun updateFollowes() {
+        textViewFollowerCount.text = viewModel.getUserInfo().followers.toString()
+    }
 }

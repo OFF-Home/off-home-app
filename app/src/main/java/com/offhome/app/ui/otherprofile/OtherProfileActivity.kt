@@ -1,24 +1,21 @@
 package com.offhome.app.ui.otherprofile
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
 import android.view.View
+import android.widget.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModelProvider
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
@@ -26,7 +23,6 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.profile.UserInfo
 import java.io.ByteArrayOutputStream
-import java.util.jar.Manifest
 
 
 class OtherProfileActivity : AppCompatActivity() {
@@ -36,6 +32,8 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
+    private lateinit var btnFollowFollowing: Button
+    private lateinit var fragment: AboutThemFragment
 
     val REQUEST_IMAGE_CAPTURE = 1
     private lateinit var imageUri : Uri
@@ -67,10 +65,22 @@ class OtherProfileActivity : AppCompatActivity() {
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
+        btnFollowFollowing = findViewById(R.id.buttonFollow)
+        fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         viewModel.setUserInfo(otherUser)
+        viewModel.isFollowing()
+
+        btnFollowFollowing.setOnClickListener {
+            if (btnFollowFollowing.text == getString(R.string.btn_follow))
+                viewModel.follow()
+            else viewModel.stopFollowing()
+        }
+
+        observe()
+    }
 
       /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
             != PackageManager.PERMISSION_GRANTED) {
@@ -82,15 +92,48 @@ class OtherProfileActivity : AppCompatActivity() {
             startActivity(intent)
             return
         }*/
-    }
 
-    private fun takePictureIntent(){
+    private fun takePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
         } catch (e: ActivityNotFoundException) {
             Toast.makeText(this, "The camara is not available", Toast.LENGTH_LONG).show()
         }
+    }
+
+    /**
+     * It oberve the following list of one user and the response to the call of follow/unfollow
+     */
+    private fun observe() {
+        viewModel.followResult.observe(this, {
+            if (it)
+                changeFollowButtonText()
+            else
+                Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.listFollowing.observe(this, {
+            btnFollowFollowing.text = getString(R.string.btn_follow)
+            for (item in it) {
+                if (item.usuariSeguidor == "currentUser") {
+                    viewModel.setFollowing(true)
+                    btnFollowFollowing.text = getString(R.string.btn_following)
+                }
+            }
+        })
+    }
+
+    /**
+     * Change the button text from Follow to Following and viceversa
+     */
+    private fun changeFollowButtonText() {
+        btnFollowFollowing.text = if (btnFollowFollowing.text == getString(R.string.btn_follow)) {
+            getString(R.string.btn_following)
+        } else {
+            getString(R.string.btn_follow)
+        }
+        fragment.updateFollowes()
     }
 
     /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

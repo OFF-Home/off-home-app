@@ -6,7 +6,7 @@ data class UserInfo(
     val password: String,
     val birthDate: String,
     val description: String,
-    val followers: Int,
+    var followers: Int,
     val following: Int,
     val darkmode: Int, // a backend no els funcionava el boolean
     val notifications: Int,

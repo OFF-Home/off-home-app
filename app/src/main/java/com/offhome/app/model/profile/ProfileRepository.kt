@@ -3,7 +3,9 @@ package com.offhome.app.model.profile
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
 import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.model.ActivityFromList
@@ -11,9 +13,9 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import retrofit2.Response.success
 import java.io.IOException
 import java.io.InputStream
+import kotlin.Boolean as Boolean
 
 /**
  * Class *ProfileRepository*
@@ -220,5 +222,85 @@ class ProfileRepository {
         })
 
         return Result.Success(userInfo!!)
+    }
+
+    /**
+     * It calls the backend to start following
+     * @param currentUser is the logged user
+     * @param email is the email of the email the user to follow
+     * @returns the MutableLiveData with the response
+     */
+    fun follow(currentUser: String, email: String): LiveData<String> {
+        val result = MutableLiveData<String>()
+
+        val call: Call<ResponseBody> = userService!!.follow(currentUser, email)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()?.string()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
+    }
+
+    /**
+     * It calls the backend to stop following
+     * @param currentUser is the logged user
+     * @param email is the email of the email the user to unfollow
+     * @returns the MutableLiveData with the response
+     */
+    fun stopFollowing(currentUser: String, email: String): LiveData<String> {
+        val result = MutableLiveData<String>()
+
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()?.string()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
+    }
+
+    /**
+     * It calls the backend to get follows of a user
+     * @param currentUser is the user we get the info of
+     * @returns the MutableLiveData with the response
+     */
+    fun following(currentUser: String): LiveData<List<FollowingUser>> {
+        val result = MutableLiveData<List<FollowingUser>>()
+
+        val call: Call<List<FollowingUser>> = userService!!.following(currentUser)
+        call.enqueue(object : Callback<List<FollowingUser>> {
+            override fun onResponse(call: Call<List<FollowingUser>>, response: Response<List<FollowingUser>>) {
+                if (response.isSuccessful) {
+                    result.value = response.body()
+                    Log.d("success response", "got a response indicating success")
+                } else {
+                    Log.d("failure response", "got a response indicating failure")
+                }
+            }
+
+            override fun onFailure(call: Call<List<FollowingUser>>, t: Throwable) {
+                Log.d("GET", "Error getting info. communication failure (no response)")
+            }
+        })
+        return result
     }
 }

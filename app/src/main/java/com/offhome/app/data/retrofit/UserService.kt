@@ -1,10 +1,11 @@
 package com.offhome.app.data.retrofit
 
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.profile.TagData
+import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
+import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.profile.TagData
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -15,6 +16,14 @@ interface UserService {
     @GET("/users/{username}/show")
     fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
 
+    @GET("/users/:username/getFollow")
+    fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
+
+    @POST("/users/:username/follow")
+    fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+
+    @POST("/users/:username/unfollow")
+    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
     //in progress
     @GET("/tags/{username}/show")
     fun getTags(@Path("username") username: String): Call<List<TagData>>

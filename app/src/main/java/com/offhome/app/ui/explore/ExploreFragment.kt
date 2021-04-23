@@ -11,14 +11,25 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
+/**
+ * Class that defines the fragment to holds explore and seach users
+ * @property viewModel references the ViewModel class
+ * @author Pau Cuesta Arcos
+ */
 class ExploreFragment : Fragment() {
 
+    /**
+     * It has gets the instance of the fragment
+     */
     companion object {
         fun newInstance() = ExploreFragment()
     }
 
     private lateinit var viewModel: ExploreViewModel
 
+    /**
+     * it is called when creating view
+     */
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -27,6 +38,11 @@ class ExploreFragment : Fragment() {
         return inflater.inflate(R.layout.explore_fragment, container, false)
     }
 
+    /**
+     * It is called when the activity is created
+     * @param savedInstanceState it has the last instance of the view
+     * It observe the profileInfo to start the new activity
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)

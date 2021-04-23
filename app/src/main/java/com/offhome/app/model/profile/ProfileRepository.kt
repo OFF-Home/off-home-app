@@ -80,6 +80,9 @@ class ProfileRepository {
         // val call: Call<ResponseBody> = userService.setUsername(newUsername)   //o algo tipo updateUser()
     }
 
+    /**
+     * obtains profile info of a user from a username
+     */
     fun getProfileInfoByUsername(newText: String): Result<MutableLiveData<UserInfo>> {
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
         val call: Call<UserInfo> = userService!!.getProfileInfoByUsername(newText)

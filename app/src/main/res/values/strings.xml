@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">OFF Home</string>
     <string name="title_activities">Activities</string>
     <string name="title_explore">Explore</string>
@@ -187,6 +187,10 @@
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint">search_hint</string>
+    <string name="change_password">Change password</string>
+    <string name="Update_password">updatePassword</string>
+    <string name="new_password">new password</string>
+    <string name="new_password_repeat">repeat new password</string>
     <string name="dialog_logout_message">Are you sure you want to log out?</string>
     <string name="dialog_logout_title">Log out</string>
     <string name="ok">Ok</string>

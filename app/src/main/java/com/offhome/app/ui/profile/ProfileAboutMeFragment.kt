@@ -104,6 +104,7 @@ class ProfileAboutMeFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
+                Log.d("setDescription", "salta el observer")
                 if (resultVM) {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()

@@ -6,6 +6,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
@@ -91,7 +92,7 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.getProfileInfo()
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
-            Observer { // aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
+            Observer {
                 val profileInfoVM = it ?: return@Observer
 
                 textViewUsername.text = profileInfoVM.username
@@ -101,6 +102,7 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
+        iniEditionResultListeners()
 
         imageViewProfilePic.setOnClickListener {
             // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
@@ -108,6 +110,28 @@ class ProfileFragment : Fragment() {
         }
 
         return view
+    }
+
+    private fun iniEditionResultListeners() {
+
+        //inutil, intentant que salti el observer de setUsernameSuccessfully
+        fragmentViewModel.simularResposta()
+
+        fragmentViewModel.setUsernameSuccessfully.observe(  //observer no salta. no sé perquè.
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
+
+                if (resultVM) {
+                    Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
     }
 
     fun getViewModel(): ProfileFragmentViewModel {

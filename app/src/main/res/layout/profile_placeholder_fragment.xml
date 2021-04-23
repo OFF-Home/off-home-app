@@ -17,73 +17,37 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <ImageView
-                android:id="@+id/imageViewProfilePic"
-                android:layout_width="104dp"
-                android:layout_height="104dp"
-                android:layout_marginTop="16dp"
-                android:src="@drawable/profile_pic_placeholder"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.498"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
             <!-->tools:src="@tools:sample/avatars"<-->
             <!-->android:layout_width="wrap_content"
             android:layout_height="wrap_content"<-->
             <!-->android:src="@drawable/profile_pic_placeholder"<-->
 
             <TextView
-                android:id="@+id/textViewUsername"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="TextView"
+                android:id="@+id/textEmail"
+                android:layout_width="65dp"
+                android:layout_height="26dp"
+                android:text="email:"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.092"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewProfilePic" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.12" />
 
-            <RatingBar
-                android:id="@+id/ratingBarEstrellesUsuari"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="8dp"
-                android:clickable="false"
-                android:contextClickable="false"
-                android:focusable="false"
-                android:focusableInTouchMode="false"
+            <TextView
+                android:id="@+id/textUsername"
+                android:layout_width="69dp"
+                android:layout_height="25dp"
+                android:layout_marginBottom="268dp"
+                android:text="username:"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toTopOf="@+id/fragmentDinsProfile"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.093"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewUsername" />
-
-            <Button
-                android:id="@+id/buttonMyActivities"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/my_activities"
-                app:layout_constraintEnd_toStartOf="@+id/buttonAboutMe"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
-
-            <Button
-                android:id="@+id/buttonAboutMe"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/about_me"
-                app:layout_constraintEnd_toStartOf="@+id/buttonSettings"
-                app:layout_constraintStart_toEndOf="@+id/buttonMyActivities"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
-
-            <Button
-                android:id="@+id/buttonSettings"
-                android:layout_width="0dp"
-                android:layout_height="56dp"
-                android:layout_marginTop="8dp"
-                android:text="@string/settings"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toEndOf="@+id/buttonAboutMe"
-                app:layout_constraintTop_toBottomOf="@+id/ratingBarEstrellesUsuari" />
+                app:layout_constraintTop_toBottomOf="@+id/textEmail"
+                app:layout_constraintVertical_bias="0.0" />
 
             <fragment
                 android:id="@+id/fragmentDinsProfile"
@@ -91,8 +55,22 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/buttonAboutMe" />
+                tools:layout_editor_absoluteY="170dp"
+                tools:ignore="MissingConstraints" />
+
+            <Button
+                android:id="@+id/changePassword"
+                android:layout_width="185dp"
+                android:layout_height="36dp"
+                android:text="@string/change_password"
+                android:textSize="12sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.775" />
 
 
         </androidx.constraintlayout.widget.ConstraintLayout>

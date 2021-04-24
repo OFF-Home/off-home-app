@@ -18,22 +18,45 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
 import com.offhome.app.model.profile.TagData
 import java.util.*
 
-
+/**
+ * Class *ProfileAboutMeFragment*
+ *
+ * Fragment for the "about me" section (page) of the Profile screen.
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @author Ferran
+ * @property profileVM reference to the ViewModel object of the entire Profile.
+ * @property constraintLayout reference to the layout's ConstraintLayout
+ * @property textViewProfileDescription reference to description TextView
+ * @property textViewBirthDate reference to birth date TextView
+ * @property textViewFollowerCount reference to follower count TextView
+ * @property textViewFollowingCount reference to following count TextView
+ * @property chipGroupTags reference to the tags ChipGroup
+ * @property editDescriptionButton button that will be added programatically, to edit/save the user's description
+ * @property addTagButton button that will be added programatically, to add tags / save changes
+ * @property editIconDrawable drawable of the "edit" icon (a pencil)
+ * @property saveIconDrawable drawable of the "save" icon (a diskette)
+ * @property saveIconDrawable drawable of the "add" icon (a plus sign)
+ * @property editTextProfileDescription editText to edit the user's description
+ */
 class ProfileAboutMeFragment : Fragment() {
 
+    /**
+     * ?
+     */
     companion object {
         fun newInstance() = ProfileAboutMeFragment()
     }
 
-    private lateinit var viewModel: ProfileAboutMeViewModel     //TODO té pinta que la classe ProfileAboutMeViewModel la borraré i faré servir ProfileFragmentViewModel
-    private lateinit var profileVM: ProfileFragmentViewModel    //fem servir el viewModel de Profile
+    private lateinit var profileVM: ProfileFragmentViewModel
+
+    private lateinit var constraintLayout: ConstraintLayout
     private lateinit var textViewProfileDescription: TextView
     private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
@@ -42,14 +65,25 @@ class ProfileAboutMeFragment : Fragment() {
 
     private lateinit var editDescriptionButton: ImageView
     private lateinit var addTagButton:ImageView
-    private lateinit var constraintLayout2: ConstraintLayout
-
     private lateinit var editIconDrawable:Drawable
     private lateinit var saveIconDrawable:Drawable
     private lateinit var addIconDrawable:Drawable
     private lateinit var editTextProfileDescription : EditText
 
-
+    /**
+     * Override the onCreateView method
+     *
+     * Does the fragment inflation
+     * Initializes the attributes
+     * Initializes the attributes that reference layout objects
+     *
+     * observes the VM's live data for the result of the call made by the ProfileFragment to obtain the user's info (including tags)
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -57,14 +91,12 @@ class ProfileAboutMeFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
-        viewModel = ViewModelProvider(this).get(ProfileAboutMeViewModel::class.java)
-
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
         textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
-        constraintLayout2 = view.findViewById(R.id.aboutMeConstraintLayout)
+        constraintLayout = view.findViewById(R.id.aboutMeConstraintLayout)
 
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
@@ -99,6 +131,9 @@ class ProfileAboutMeFragment : Fragment() {
         return view
     }
 
+    /**
+     * Initializes the listeners that observe the calls to backend made to edit parameters (description and tags)
+     */
     private fun iniEditionResultListeners() {
         Log.d("iniEditionResultListe", "arribo al AboutMe::iniEditionResultListeners")
         profileVM.descriptionSetSuccessfully.observe(
@@ -120,28 +155,22 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val resultVM = it ?: return@Observer
                 if (resultVM) {
-                    Toast.makeText(activity, "Tag added", Toast.LENGTH_LONG)
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
-                    Toast.makeText(activity, "Couldn't add tag", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
             }
         )
 
-        /*profileVM.tagDeletedSuccessfully.observe(
-            viewLifecycleOwner,
-            Observer {
-
-            }
-        )*/
         profileVM.tagDeletedSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
                 if (resultVM) {
-                    Toast.makeText(activity, "Tag deleted", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, "Couldn't delete tag", Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
                 }
             }
         )
@@ -151,8 +180,12 @@ class ProfileAboutMeFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
+    /**
+     * fills the tags ChipGroup with the tags passed
+     *
+     * @param tagList list of tags
+     */
     private fun omplirTagGroup(tagList:List<TagData>) {
-
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
@@ -167,8 +200,13 @@ class ProfileAboutMeFragment : Fragment() {
         }
     }
 
-    //crea i inicialitza un chip (visual, a la app, res de backend) amb el string passat
-    //inicialitzar inclou posar-li el listener a la "X" de esborrar que crea un dialeg de confirmació.
+    /**
+     * creates and initializes a chip (visually, on the app. Nothing to do with backend) withe the parameter string
+     *
+     * Initializing includes setting the listener to the tag's "X" close button to delete it.
+     *
+     * @param tag tag to initialize
+     */
     private fun addTagToChipGroup(tag: String) {
         val chip = layoutInflater.inflate(R.layout.deletable_chip_layout, chipGroupTags, false) as Chip
         chip.text = tag
@@ -188,6 +226,13 @@ class ProfileAboutMeFragment : Fragment() {
         }
     }
 
+    /**
+     * Initializes the edition elements:
+     *
+     * Initializes the editDescriptionButton. It also sets its drawable and listener
+     * Initializes the editTextUsername
+     * Initializes the addTagButton and sets its listener
+     */
     private fun iniEditElements() {
         iniEditDescriptionButton()
         // we set our new scaled drawable "d"
@@ -203,7 +248,11 @@ class ProfileAboutMeFragment : Fragment() {
         }
     }
 
-    // finds the view, initiates it with its constraints, initiates the 2 drawables
+    /**
+     * Initializes the editDescriptionButton
+     *
+     * creates the object, sets id, initializes both drawables, inserts the View with its constraints in the constraint layout
+     */
     private fun iniEditDescriptionButton() {
         editDescriptionButton = ImageView(activity)
         editDescriptionButton.id = R.id.editDescriptionButton // funciona somehow
@@ -232,9 +281,9 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         // add the icon's constraints to the layout
-        constraintLayout2.addView(editDescriptionButton)
+        constraintLayout.addView(editDescriptionButton)
         val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
+        constraintSet1.clone(constraintLayout)
         constraintSet1.connect(
             R.id.editDescriptionButton,
             ConstraintSet.LEFT,
@@ -249,9 +298,14 @@ class ProfileAboutMeFragment : Fragment() {
             ConstraintSet.TOP,
             8
         )
-        constraintSet1.applyTo(constraintLayout2)
+        constraintSet1.applyTo(constraintLayout)
     }
 
+    /**
+     * Initializes the addTagButton
+     *
+     * creates the object, sets id, initializes the drawable and sets it, inserts the View with its constraints in the constraint layout
+     */
     private fun iniAddTagButton() {
         addTagButton = ImageView(activity)
         addTagButton.id = R.id.addTagButton
@@ -263,9 +317,9 @@ class ProfileAboutMeFragment : Fragment() {
 
         addTagButton.setImageDrawable(addIconDrawable)
 
-        constraintLayout2.addView(addTagButton)
+        constraintLayout.addView(addTagButton)
         val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
+        constraintSet1.clone(constraintLayout)
         constraintSet1.connect(
             R.id.addTagButton,
             ConstraintSet.LEFT,
@@ -280,17 +334,23 @@ class ProfileAboutMeFragment : Fragment() {
             ConstraintSet.TOP,
             8
         )
-        constraintSet1.applyTo(constraintLayout2)
+        constraintSet1.applyTo(constraintLayout)
     }
 
+    /**
+     * Initializes the description EditText
+     *
+     * creates the object, sets id, inserts the View with its constraints and size i the constraint layout
+     * initializes its visibility to gone
+     */
     private fun iniEditTextDescription() {
         editTextProfileDescription = EditText(activity)
         editTextProfileDescription.id = R.id.editTextProfileDescription
 
-        constraintLayout2.addView(editTextProfileDescription)
+        constraintLayout.addView(editTextProfileDescription)
         // add the EditText's constraints to the layout
         val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout2)
+        constraintSet1.clone(constraintLayout)
         constraintSet1.connect(
             R.id.editTextProfileDescription,
             ConstraintSet.LEFT,
@@ -316,7 +376,7 @@ class ProfileAboutMeFragment : Fragment() {
         constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
         constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8) // a ver
 
-        constraintSet1.applyTo(constraintLayout2)
+        constraintSet1.applyTo(constraintLayout)
 
         val editTextlayoutParams: ViewGroup.LayoutParams = editTextProfileDescription.layoutParams
         editTextlayoutParams.width = 0
@@ -324,6 +384,11 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the description to editing
+     *
+     * meaning it changes the drawable to the "save" one, changes the listener, and changes the description textView for the EditText in the layout
+     */
     private fun changeDescriptionToEdit() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
@@ -341,6 +406,11 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the description to display
+     *
+     * meaning it changes the drawable to the "edit" one, changes the listener, and changes the description EditText for the textView in the layout
+     */
     private fun changeDescriptionToDisplay() {
         editDescriptionButton.setImageDrawable(editIconDrawable)
         editDescriptionButton.setOnClickListener {
@@ -350,6 +420,11 @@ class ProfileAboutMeFragment : Fragment() {
         editTextProfileDescription.visibility = View.GONE
     }
 
+    /**
+     * Creates the dialogue to add a new tag.
+     *
+     * It checks whether the introduced text is empty. If it isn't, it adds the tag
+     */
     private fun addTagPressed() {
         val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogs, view as ViewGroup, false)
         val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
@@ -375,10 +450,12 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
     //afegeix tag a la app (chip) i al backend
+    /**
+     * Adds the tag in the app (meaning the chip) and starts the process to add it to the backend database
+     * @param tag tag to add
+     */
     private fun addTag(tag: String) {
         addTagToChipGroup(tag)
-        val unixTime = (System.currentTimeMillis() % 1000000L).toString()
-        //profileVM.tagAddedByUser(unixTime)// stub amb unix time stamp per si faig moltes insercions iguals a BD
         profileVM.tagAddedByUser(tag, activity as AppCompatActivity)
     }
 }

@@ -5,23 +5,29 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.ProfileRepository
+import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
 
+/**
+ * Class *OtherProfileViewModel*
+ *
+ * ViewModel for the entire OtherProfile screen. (includes the activity and the aboutThem framgent)
+ *
+ * @author Pau
+ * @property repository reference to the Repository (Model) object
+ * @property userInfo user's info
+ * @property userTags TODO
+ * @property listFollowing TODO
+ * @property isFollowing
+ * @property followResult
+ */
 class OtherProfileViewModel : ViewModel() {
-    /*private var _userInfo = MutableLiveData<UserInfo>()
-    var userInfo: LiveData<UserInfo> = _userInfo*/
-
     private lateinit var userInfo :UserInfo
+    private lateinit var userTags :List<TagData>
     lateinit var listFollowing: MutableLiveData<List<FollowingUser>>
     lateinit var isFollowing: MutableLiveData<Boolean>
     lateinit var followResult: MutableLiveData<Boolean>
     private var repository = ProfileRepository()
-
-    /*fun getProfileInfo() {
-        val username = "victorfer" // stub
-
-     //   userInfo = repository.getProfileInfo(username)!!.value
-    }*/
 
     /**
      * It sets de info to the user
@@ -29,7 +35,6 @@ class OtherProfileViewModel : ViewModel() {
     fun setUserInfo(uinfo: UserInfo) {
         userInfo = uinfo
     }
-
     /**
      * It gets the info of the user
      */
@@ -37,6 +42,13 @@ class OtherProfileViewModel : ViewModel() {
         return userInfo
     }
 
+    //cal decidir si ajuntarem els tags a userInfo o no.
+    fun setUserTags(tags:List<TagData>) {
+        userTags = tags
+    }
+    fun getUserTags():List<TagData> {
+        return userTags
+    }
 
     fun uploadPhoto(photoPath: String) {
         repository.uploadPhoto(photoPath);

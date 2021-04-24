@@ -197,4 +197,8 @@
     <string name="cancel">Cancel</string>
     <string name="error_search_user">Please, type the username you want to search</string>
     <string name="user_not_found">USer not found!</string>
+    <string name="tag_added_toast">Tag added</string>
+    <string name="couldnt_add_tag_toast">Couldn\'t add tag</string>
+    <string name="tag_deleted_toast">Tag deleted</string>
+    <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
 </resources>

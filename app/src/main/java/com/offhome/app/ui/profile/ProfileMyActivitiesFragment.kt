@@ -14,17 +14,41 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 
+/**
+ * Class *ProfileMyActivitiesFragment*
+ *
+ * Fragment for the "my activities" section (page) of the Profile screen.
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @author Ferran with borrowed code
+ * @property profileVM reference to the ViewModel object of the entire Profile.
+ * @property activitiesList list of activities to be displayed
+ * @property activitiesListAdapter references the adapter for the RecyclerView of the activities
+ */
 class ProfileMyActivitiesFragment : Fragment() {
 
     companion object {
         fun newInstance() = ProfileMyActivitiesFragment()
     }
 
-    private lateinit var viewModel: ProfileMyActivitiesViewModel        //TODO té pinta que la classe ProfileMyActivitiesViewModel la borraré i faré servir ProfileFragmentViewModel
-    private lateinit var profileVM:ProfileFragmentViewModel             //fem servir el viewModel de Profil
+    private lateinit var profileVM:ProfileFragmentViewModel
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
 
+    /**
+     * Override the onCreateView method
+     *
+     * Does the fragment inflation
+     * Initializes the attributes
+     *
+     * observes the VM's live data for the result of the call made by the ProfileFragment to obtain the user's data, which includes their activities.
+     * The activities will be inserted in the recyclerview
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -59,10 +83,12 @@ class ProfileMyActivitiesFragment : Fragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ProfileMyActivitiesViewModel::class.java)
     }
 
     //no ho vaig aconseguir
+    /**
+     * Rotates the "arrow" icon drawables on the two buttons of the layout
+     */
     private fun rotateArrowDrawables() {/*
         //val dr: Drawable = resources.getDrawable(android.R.drawable.abc_vector_test)
         val dr2: Drawable = resources.getDrawable(R.drawable.abc_vector_test)

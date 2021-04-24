@@ -12,7 +12,7 @@ import com.offhome.app.model.profile.UserInfo
 /**
  * Class *ProfileFragmentViewModel*
  *
- * ViewModel for the Profile screen.
+ * ViewModel for the entire Profile screen. (includes "my activities" and "about me")
  *
  * @author Ferran
  * @property repository reference to the Repository (Model) object

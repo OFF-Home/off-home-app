@@ -73,7 +73,7 @@ class ProfileRepository {
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                Log.d("GET", "Error getting topProfileInfo. communication failure (no response)")
+                Log.d("GET", "Error getting ProfileInfo. communication failure (no response)")
             }
         })
 
@@ -84,7 +84,6 @@ class ProfileRepository {
 */
 
         return userInfo as MutableLiveData<UserInfo>
-        // return TopProfileInfo(username = "Maria", starRating = 6) // stub
     }
 
     /**
@@ -160,6 +159,9 @@ class ProfileRepository {
      *
      * does the POST call and observes the result
      * Sets the Repository's usernameSetSuccessfully live data according to that of the Data Source when it is ready
+     * @param email key of the user whose username is to be set
+     * @param newUsername username to set
+     * @return mutable live data which will be updated with the data from the call, if it is successful
      */
     fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean> {
         //if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
@@ -191,6 +193,9 @@ class ProfileRepository {
      *
      * does the POST call and observes the result
      * Sets the Repository's descriptionSetSuccessfully live data according to that of the Data Source when it is ready
+     * @param email key of the user whose description is to be set
+     * @param newDescription description to set
+     * @return mutable live data which will be updated with the data from the call, if it is successful
      */
     fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean> {
         //if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
@@ -221,8 +226,10 @@ class ProfileRepository {
      *
      * does the POST call and observes the result
      * Sets the Repository's tagDeletedSuccessfully live data according to that of the Data Source when it is ready
+     * @param email key of the user
+     * @param tag tag to delete
      */
-    fun deleteTag(email:String, tag:String){
+    fun deleteTag(email:String, tag:String) {
         val call :Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -247,6 +254,8 @@ class ProfileRepository {
      *
      * does the POST call and observes the result
      * Sets the Repository's tagAddedSuccessfully live data according to that of the Data Source when it is ready
+     * @param email key of the user
+     * @param tag tag to add
      */
     fun addTag(email:String, tag:String) {
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))

@@ -38,8 +38,8 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @property estrelles reference to the user's rating bar
  * @property editUsernameButton button to edit and save the username
  * @property constraintLayout1 reference to the layout's constraint layout
- * @property editIconDrawable drawable of the "edit icon" (a pencil)
- * @property saveIconDrawable drawable of the "save icon" (a diskette)
+ * @property editIconDrawable drawable of the "edit" icon (a pencil)
+ * @property saveIconDrawable drawable of the "save" icon (a diskette)
  * @property editTextUsername editText to edit the username
  * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
@@ -63,6 +63,7 @@ class ProfileFragment : Fragment() {
      *
      * Does the fragment inflation
      * Initializes the attributes
+     * Initializes the attributes that reference layout objects
      * Sets up the ViewPager and its tabs
      *
      * Makes the call to the VM to obtain the ProfileInfo and observes its live data for the result
@@ -177,7 +178,7 @@ class ProfileFragment : Fragment() {
     /**
      * Initializes the editUsernameButton
      *
-     * creates the object, sets id, initializes both drawables, inserts the View with its constraints i the constraint layout
+     * creates the object, sets id, initializes both drawables, inserts the View with its constraints in the constraint layout
      */
     private fun iniEditUsernameButton() {
         editUsernameButton = ImageView(activity)

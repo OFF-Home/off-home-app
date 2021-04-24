@@ -48,6 +48,9 @@ class OtherProfileViewModel : ViewModel() {
     }
     fun getUserTags():List<TagData> {
         return userTags
+
+    fun uploadPhoto(photoPath: String) {
+        repository.uploadPhoto(photoPath);
     }
 
     /**

@@ -11,16 +11,41 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.profile.UserInfo
 
+/**
+ * Class *OtherProfileActivity*
+ *
+ * Activity of the OtherProfile screen. Its layout contains a fragment where the AboutThemFragment is set
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @author Pau, Ferran
+ * @property viewModel reference to the ViewModel object
+ * @property imageViewProfilePic reference to profile pic ImageView
+ * @property textViewUsername reference to the username TextView
+ * @property estrelles reference to the user's rating bar
+ * @property btnFollowFollowing reference to the follow/following button
+ * @property fragment reference to the fragment inside this activity which will contain the AboutThemFragment
+ * @property otherUser user's user info
+ */
 class OtherProfileActivity : AppCompatActivity() {
 
     private lateinit var viewModel: OtherProfileViewModel
-    private lateinit var otherUser: UserInfo
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
     private lateinit var btnFollowFollowing: Button
     private lateinit var fragment: AboutThemFragment
+    private lateinit var otherUser: UserInfo
 
+    /**
+     * Override the onCreate method
+     *
+     * initializes the otherUser with the data received from the previous Activity
+     * Initializes the layout elements
+     * Initializes the attributes
+     * Sets the btnFollowFollowing's listener
+     *
+     * @param savedInstanceState is the instance of the saved State of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_profile)
@@ -54,7 +79,7 @@ class OtherProfileActivity : AppCompatActivity() {
     }
 
     /**
-     * It oberve the following list of one user and the response to the call of follow/unfollow
+     * It observes the following list of one user and the response to the call of follow/unfollow
      */
     private fun observe() {
         viewModel.followResult.observe(this, {

@@ -126,6 +126,7 @@ class ProfileAboutMeFragment : Fragment() {
         omplirTagGroupStub()
 
         iniEditElements()
+        profileVM.iniEditionResultListeners(activity as AppCompatActivity)
         iniEditionResultListeners()
 
         return view
@@ -140,7 +141,7 @@ class ProfileAboutMeFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer")
+                Log.d("setDescription", "salta el observer del fragment")
                 if (resultVM) {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()
@@ -215,7 +216,7 @@ class ProfileAboutMeFragment : Fragment() {
             val alertDialogBuilder = AlertDialog.Builder(context)
                 .setMessage("Delete tag \"$tag\"?")
                 .setPositiveButton("Delete") { dialog, which ->
-                    profileVM.tagDeletedByUser(chip.text as String, activity as AppCompatActivity)
+                    profileVM.tagDeletedByUser(chip.text as String)
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
@@ -394,8 +395,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
             textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text ,
-                activity as AppCompatActivity
+            profileVM.descriptionChangedByUser(editTextProfileDescription.text
             )
             changeDescriptionToDisplay()
         }
@@ -456,6 +456,6 @@ class ProfileAboutMeFragment : Fragment() {
      */
     private fun addTag(tag: String) {
         addTagToChipGroup(tag)
-        profileVM.tagAddedByUser(tag, activity as AppCompatActivity)
+        profileVM.tagAddedByUser(tag)
     }
 }

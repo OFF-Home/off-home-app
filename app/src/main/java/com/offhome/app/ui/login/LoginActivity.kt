@@ -129,7 +129,7 @@ class LoginActivity : AppCompatActivity() {
                             this
                         )
                         SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
-                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, "google")
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
                         val welcome = getString(R.string.welcome)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)

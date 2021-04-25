@@ -3,6 +3,8 @@ package com.offhome.app.ui.otherprofile
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
@@ -28,6 +30,7 @@ class OtherProfileViewModel : ViewModel() {
     lateinit var isFollowing: MutableLiveData<Boolean>
     lateinit var followResult: MutableLiveData<Boolean>
     private var repository = ProfileRepository()
+    private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
 
     /**
      * It sets de info to the user
@@ -58,7 +61,6 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to get if one user follows the other
      */
     fun isFollowing(): List<FollowingUser>? {
-        val currentUser = "currentUser"
         listFollowing = repository.following(currentUser) as MutableLiveData<List<FollowingUser>>
         return listFollowing.value
     }
@@ -67,7 +69,6 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to start following a new user
      */
     fun follow() {
-        val currentUser = "currentUser"
         followResult.value = repository.follow(currentUser, userInfo.email).value == "OK"
         isFollowing.value = true
         userInfo.followers += 1
@@ -77,7 +78,6 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to stop following a user
      */
     fun stopFollowing() {
-        val currentUser = "currentUser"
         followResult.value = repository.stopFollowing(currentUser, userInfo.email).value == "OK"
         isFollowing.value = false
         userInfo.followers -= 1

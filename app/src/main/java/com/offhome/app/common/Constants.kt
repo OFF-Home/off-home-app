@@ -5,5 +5,7 @@ data class Constants(
 
     // Preferences
     val PREF_EMAIL: String = "PREF_EMAIL",
-    val PREF_PROVIDER: String = "PREF_PROVIDER"
+    val PREF_PROVIDER: String = "PREF_PROVIDER",
+    val PREF_PROVIDER_PASSWORD: String = "PASSWORD",
+    val PREF_PROVIDER_GOOGLE: String = "GOOGLE"
 )

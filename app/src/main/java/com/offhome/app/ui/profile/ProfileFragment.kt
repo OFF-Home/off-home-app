@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -111,7 +110,7 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
-        iniEditionResultListeners()
+        iniUsernameSetListener() //TODO sobra?
 
         imageViewProfilePic.setOnClickListener {
             // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
@@ -122,9 +121,11 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Initializes the listeners that observe the calls to backend made to edit parameters (username)
+     * Initializes the listener that observes the call to backend made to edit the username
+     *
+     * the listener removes itself after one use
      */
-    private fun iniEditionResultListeners() {
+    private fun iniUsernameSetListener() {
         Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
         //inutil, intentant que salti el observer de setUsernameSuccessfully
@@ -137,12 +138,15 @@ class ProfileFragment : Fragment() {
 
                 Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
 
-                if (resultVM) {
+                Log.d("resultVM.string", resultVM.string())
+                if (resultVM.string() == "User has been updated") {
                     Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
                 }
                 else {
                     Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -243,7 +247,8 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
             textViewUsername.text = editTextUsername.text
-            fragmentViewModel.usernameChangedByUser(editTextUsername.text, activity as AppCompatActivity)
+            fragmentViewModel.usernameChangedByUser(editTextUsername.text)
+            iniUsernameSetListener()
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)

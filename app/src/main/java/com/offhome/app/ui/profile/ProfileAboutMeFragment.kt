@@ -126,7 +126,6 @@ class ProfileAboutMeFragment : Fragment() {
         omplirTagGroupStub()
 
         iniEditElements()
-        profileVM.iniEditionResultListeners(activity as AppCompatActivity)
         iniEditionResultListeners() //TODO sobra?
 
         return view

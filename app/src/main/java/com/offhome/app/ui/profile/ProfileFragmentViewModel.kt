@@ -57,44 +57,6 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully : LiveData<ResponseBody> = _tagDeletedSuccessfully
 
-    fun iniEditionResultListeners(activity: AppCompatActivity) {
-        /*repository.usernameSetSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("setUsername", "salta el observer de VM")
-                _usernameSetSuccessfully.value = resultRepo
-            }
-        )*/
-
-       /* repository.descriptionSetSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("setDescription", "salta el observer de VM")
-                _descriptionSetSuccessfully.value = resultRepo
-            }
-        )*/
-
-        /*repository.tagDeletedSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("deleteTag", "salta el observer de VM")
-                _tagDeletedSuccessfully.value = resultRepo
-            }
-        )*/
-
-        /*repository.tagAddedSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("addTag", "salta el observer de VM")
-                _tagAddedSuccessfully.value = resultRepo
-            }
-        )*/
-    }
-
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
      *

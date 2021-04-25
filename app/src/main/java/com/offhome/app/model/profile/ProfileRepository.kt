@@ -47,7 +47,7 @@ class ProfileRepository {
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
     val PREF_PHOTOURL = 1
-    var usernameSetSuccessfully: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
+    var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
     var descriptionSetSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
     var tagAddedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
     var tagDeletedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
@@ -168,17 +168,19 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean> {
-        //if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
+    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody>? {
+        if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
         val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                usernameSetSuccessfully!!.value = response.body()
                 if (response.isSuccessful) {
+                    //la crida retorna 200 encara que sigui user not found.
                     Log.d("response", "setUsername response: is successful")
-                    usernameSetSuccessfully.value = true
+                    //usernameSetSuccessfully!!.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "setUsername response: unsuccessful")
-                    usernameSetSuccessfully.value = false
+                    //usernameSetSuccessfully!!.value = false
                 }
             }
 
@@ -186,11 +188,11 @@ class ProfileRepository {
                 Log.d("no response", "setUsername no response")
                 t.printStackTrace()
                 Log.w("no response", "setUsername no response", t.cause)
-                usernameSetSuccessfully.value = false
+                usernameSetSuccessfully!!.value = ResponseBody.create(null, "error")
             }
         })
 
-        return usernameSetSuccessfully
+        return usernameSetSuccessfully as MutableLiveData<ResponseBody>
     }
 
     /**

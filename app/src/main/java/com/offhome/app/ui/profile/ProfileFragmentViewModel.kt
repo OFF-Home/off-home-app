@@ -8,6 +8,7 @@ import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
+import okhttp3.ResponseBody
 
 /**
  * Class *ProfileFragmentViewModel*
@@ -45,8 +46,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _myActivities = MutableLiveData<List<ActivityFromList>>()
     var myActivities: LiveData<List<ActivityFromList>> = _myActivities
 
-    private var _usernameSetSuccessfully = MutableLiveData<Boolean>()
-    var usernameSetSuccessfully: LiveData<Boolean> = _usernameSetSuccessfully
+    private var _usernameSetSuccessfully = MutableLiveData<ResponseBody>()
+    var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
 
     private var _descriptionSetSuccessfully = MutableLiveData<Boolean>()
     var descriptionSetSuccessfully : LiveData<Boolean> = _descriptionSetSuccessfully
@@ -57,14 +58,14 @@ class ProfileFragmentViewModel : ViewModel() {
     var tagDeletedSuccessfully : LiveData<Boolean> = _tagDeletedSuccessfully
 
     fun iniEditionResultListeners(activity: AppCompatActivity) {
-        repository.usernameSetSuccessfully.observe(
+        /*repository.usernameSetSuccessfully.observe(
             activity,
             Observer {
                 val resultRepo = it ?: return@Observer
                 Log.d("setUsername", "salta el observer de VM")
                 _usernameSetSuccessfully.value = resultRepo
             }
-        )
+        )*/
 
         repository.descriptionSetSuccessfully.observe(
             activity,
@@ -132,7 +133,8 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param activity pointer to the activity, used by the observers
      */
     fun usernameChangedByUser(newUsername: Editable) {
-        repository.setUsername(loggedUserEmail, newUsername.toString())
+        //repository.setUsername(loggedUserEmail, newUsername.toString())
+        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
     }
 
     /**
@@ -149,14 +151,14 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     //inutil, intentant que salti el observer de setUsernameSuccessfully
-    fun simularResposta() {
+    /*fun simularResposta() {
         Log.d("simular resposta", "SIMULA RESPOSTA")
 
         var setUsernameSuccessfully2 : MutableLiveData<Boolean>? = null
         setUsernameSuccessfully2 = MutableLiveData<Boolean>()
 
         _usernameSetSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
-    }
+    }*/
 
 
     /**

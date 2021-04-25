@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -24,6 +25,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
+import okhttp3.ResponseBody
 
 /**
  * Class *ProfileFragment*
@@ -136,12 +138,15 @@ class ProfileFragment : Fragment() {
 
                 Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
 
-                if (resultVM) {
+                Log.d("resultVM.string", resultVM.string())
+                if (resultVM.string() == "User has been updated") {
                     Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
                 }
                 else {
                     Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -243,6 +248,7 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setOnClickListener {
             textViewUsername.text = editTextUsername.text
             fragmentViewModel.usernameChangedByUser(editTextUsername.text)
+            iniEditionResultListeners()
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)

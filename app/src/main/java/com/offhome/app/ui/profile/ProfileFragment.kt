@@ -21,6 +21,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
@@ -326,6 +327,7 @@ class ProfileFragment : Fragment() {
             logout_dialog.setMessage(R.string.dialog_logout_message)
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
                 firebaseAuth.signOut()
+                SharedPreferenceManager.deleteData()
                 requireActivity().run {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()

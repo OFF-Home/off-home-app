@@ -49,13 +49,13 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _usernameSetSuccessfully = MutableLiveData<ResponseBody>()
     var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
 
-    private var _descriptionSetSuccessfully = MutableLiveData<Boolean>()
-    var descriptionSetSuccessfully : LiveData<Boolean> = _descriptionSetSuccessfully
+    private var _descriptionSetSuccessfully = MutableLiveData<ResponseBody>()
+    var descriptionSetSuccessfully : LiveData<ResponseBody> = _descriptionSetSuccessfully
 
-    private var _tagAddedSuccessfully = MutableLiveData<Boolean>()
-    var tagAddedSuccessfully:LiveData<Boolean> = _tagAddedSuccessfully
-    private var _tagDeletedSuccessfully = MutableLiveData<Boolean>()
-    var tagDeletedSuccessfully : LiveData<Boolean> = _tagDeletedSuccessfully
+    private var _tagAddedSuccessfully = MutableLiveData<ResponseBody>()
+    var tagAddedSuccessfully:LiveData<ResponseBody> = _tagAddedSuccessfully
+    private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
+    var tagDeletedSuccessfully : LiveData<ResponseBody> = _tagDeletedSuccessfully
 
     fun iniEditionResultListeners(activity: AppCompatActivity) {
         /*repository.usernameSetSuccessfully.observe(
@@ -67,32 +67,32 @@ class ProfileFragmentViewModel : ViewModel() {
             }
         )*/
 
-        repository.descriptionSetSuccessfully.observe(
+       /* repository.descriptionSetSuccessfully.observe(
             activity,
             Observer {
                 val resultRepo = it ?: return@Observer
                 Log.d("setDescription", "salta el observer de VM")
                 _descriptionSetSuccessfully.value = resultRepo
             }
-        )
+        )*/
 
-        repository.tagDeletedSuccessfully.observe(
+        /*repository.tagDeletedSuccessfully.observe(
             activity,
             Observer {
                 val resultRepo = it ?: return@Observer
                 Log.d("deleteTag", "salta el observer de VM")
                 _tagDeletedSuccessfully.value = resultRepo
             }
-        )
+        )*/
 
-        repository.tagAddedSuccessfully.observe(
+        /*repository.tagAddedSuccessfully.observe(
             activity,
             Observer {
                 val resultRepo = it ?: return@Observer
                 Log.d("addTag", "salta el observer de VM")
                 _tagAddedSuccessfully.value = resultRepo
             }
-        )
+        )*/
     }
 
     /**
@@ -147,19 +147,8 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param activity pointer to the activity, used by the observers
      */
     fun descriptionChangedByUser(newDescription: Editable) {
-        repository.setDescription(loggedUserEmail, newDescription.toString())
+        descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
     }
-
-    //inutil, intentant que salti el observer de setUsernameSuccessfully
-    /*fun simularResposta() {
-        Log.d("simular resposta", "SIMULA RESPOSTA")
-
-        var setUsernameSuccessfully2 : MutableLiveData<Boolean>? = null
-        setUsernameSuccessfully2 = MutableLiveData<Boolean>()
-
-        _usernameSetSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
-    }*/
-
 
     /**
      * initiates the deletion of a tag
@@ -171,7 +160,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param activity pointer to the activity, used by the observers
      */
     fun tagDeletedByUser(tag: String) {
-        repository.deleteTag(loggedUserEmail, tag)
+        tagDeletedSuccessfully = repository.deleteTag(loggedUserEmail, tag)
     }
 
     /**
@@ -184,6 +173,6 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param activity pointer to the activity, used by the observers
      */
     fun tagAddedByUser(tag:String) {
-        repository.addTag(loggedUserEmail, tag)
+        tagAddedSuccessfully =  repository.addTag(loggedUserEmail, tag)
     }
 }

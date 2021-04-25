@@ -112,7 +112,7 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
-        iniEditionResultListeners()
+        iniEditionResultListeners() //TODO sobra?
 
         imageViewProfilePic.setOnClickListener {
             // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)

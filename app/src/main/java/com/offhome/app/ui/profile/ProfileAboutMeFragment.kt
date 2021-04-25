@@ -127,7 +127,7 @@ class ProfileAboutMeFragment : Fragment() {
 
         iniEditElements()
         profileVM.iniEditionResultListeners(activity as AppCompatActivity)
-        iniEditionResultListeners()
+        iniEditionResultListeners() //TODO sobra?
 
         return view
     }
@@ -137,42 +137,56 @@ class ProfileAboutMeFragment : Fragment() {
      */
     private fun iniEditionResultListeners() {
         Log.d("iniEditionResultListe", "arribo al AboutMe::iniEditionResultListeners")
+        iniDescriptionSetListener()
+        iniTagDeletionListener()
+        iniTagAdditionListener()
+    }
+
+    private fun iniDescriptionSetListener() {
         profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
                 Log.d("setDescription", "salta el observer del fragment")
-                if (resultVM) {
+                if (resultVM.string() == "User has been updated") {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
+    }
 
+    private fun iniTagDeletionListener() {
+        profileVM.tagDeletedSuccessfully.observe(
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+                if (resultVM.string() == "Delete tag al usuario") {
+                    Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
+                }
+                profileVM.tagDeletedSuccessfully.removeObservers(viewLifecycleOwner)
+            }
+        )
+    }
+
+    private fun iniTagAdditionListener() {
         profileVM.tagAddedSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM) {
+                if (resultVM.string() == "Insert tag al usuario") {
                     Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
-            }
-        )
-
-        profileVM.tagDeletedSuccessfully.observe(
-            viewLifecycleOwner,
-            Observer {
-                val resultVM = it ?: return@Observer
-                if (resultVM) {
-                    Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
-                } else {
-                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
-                }
+                profileVM.tagAddedSuccessfully.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -217,6 +231,7 @@ class ProfileAboutMeFragment : Fragment() {
                 .setMessage("Delete tag \"$tag\"?")
                 .setPositiveButton("Delete") { dialog, which ->
                     profileVM.tagDeletedByUser(chip.text as String)
+                    iniTagDeletionListener()
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
@@ -395,8 +410,8 @@ class ProfileAboutMeFragment : Fragment() {
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
             textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text
-            )
+            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            iniDescriptionSetListener()
             changeDescriptionToDisplay()
         }
         editTextProfileDescription.setText(textViewProfileDescription.text)
@@ -457,5 +472,6 @@ class ProfileAboutMeFragment : Fragment() {
     private fun addTag(tag: String) {
         addTagToChipGroup(tag)
         profileVM.tagAddedByUser(tag)
+        iniTagAdditionListener()
     }
 }

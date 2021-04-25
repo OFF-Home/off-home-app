@@ -22,6 +22,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
@@ -62,6 +64,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         setUp()
         startObservers()
         editTextsChanges()
@@ -119,7 +128,18 @@ class LoginActivity : AppCompatActivity() {
                             null,
                             this
                         )
-                        // updateUiWithUser(LoggedInUserView())
+                        SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
+                        val welcome = getString(R.string.welcome)
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(
+                            applicationContext,
+                            "$welcome ${account.email}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(

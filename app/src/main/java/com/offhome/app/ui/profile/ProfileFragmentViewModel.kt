@@ -4,6 +4,8 @@ import android.text.Editable
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
@@ -34,7 +36,7 @@ import com.offhome.app.model.profile.UserInfo
 class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
-    private var loggedUserEmail = "victorfer@gmai.com" // stub
+    private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo

@@ -9,11 +9,9 @@ import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.*
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
@@ -25,7 +23,6 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
-import okhttp3.ResponseBody
 
 /**
  * Class *ProfileFragment*
@@ -112,7 +109,7 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
-        iniEditionResultListeners() //TODO sobra?
+        iniUsernameSetListener() //TODO sobra?
 
         imageViewProfilePic.setOnClickListener {
             // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
@@ -123,9 +120,11 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Initializes the listeners that observe the calls to backend made to edit parameters (username)
+     * Initializes the listener that observes the call to backend made to edit the username
+     *
+     * the listener removes itself after one use
      */
-    private fun iniEditionResultListeners() {
+    private fun iniUsernameSetListener() {
         Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
         //inutil, intentant que salti el observer de setUsernameSuccessfully
@@ -248,7 +247,7 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setOnClickListener {
             textViewUsername.text = editTextUsername.text
             fragmentViewModel.usernameChangedByUser(editTextUsername.text)
-            iniEditionResultListeners()
+            iniUsernameSetListener()
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)

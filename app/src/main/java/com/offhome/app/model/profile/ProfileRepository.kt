@@ -36,10 +36,11 @@ import kotlin.Boolean as Boolean
  * @property userInfo mutable live data of the user info obtained
  * @property activities mutable live data of the activities obtained
  * @property tags mutable live data of the tags obtained
- * @property usernameSetSuccessfully mutable live data of whether the username was successfully set
- * @property descriptionSetSuccessfully mutable live data of whether the description was successfully set
- * @property tagDeletedSuccessfully mutable live data of whether the tag was successfully deleted
- * @property tagAddedSuccessfully mutable live data of whether the tag was successfully added
+ * @property usernameSetSuccessfully mutable live data of the response to the call to set the username
+ * @property descriptionSetSuccessfully mutable live data of the response to the call to set the description
+ * @property tagDeletedSuccessfully mutable live data of the response to the call to delete a tag
+ * @property tagAddedSuccessfully mutable live data of the response to the call to add a tag
+ * @property PREF_PHOTOURL
  */
 class ProfileRepository {
 
@@ -119,7 +120,7 @@ class ProfileRepository {
      * @param email key of the user whose tags are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {       //dona failure. potser el tipus no és el q toca
+    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
         val call: Call<List<TagData>> = userService!!.getTags(email = email)
@@ -158,10 +159,10 @@ class ProfileRepository {
      * Propagates the setUsername process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's usernameSetSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's usernameSetSuccessfully live data with the response of the call
      * @param email key of the user whose username is to be set
      * @param newUsername username to set
-     * @return mutable live data which will be updated with the data from the call, if it is successful
+     * @return mutable live data which will be updated with the result of the call
      */
     fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody>? {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
@@ -195,10 +196,10 @@ class ProfileRepository {
      * Propagates the setDescription process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's descriptionSetSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's descriptionSetSuccessfully live data with the response of the call
      * @param email key of the user whose description is to be set
      * @param newDescription description to set
-     * @return mutable live data which will be updated with the data from the call, if it is successful
+     * @return mutable live data which will be updated with the result of the call
      */
     fun setDescription(email:String, newDescription:String): MutableLiveData<ResponseBody> {
         val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
@@ -226,9 +227,10 @@ class ProfileRepository {
      * Propagates the deleteTag process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's tagDeletedSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's tagDeletedSuccessfully live data with the response of the call
      * @param email key of the user
      * @param tag tag to delete
+     * @return mutable live data which will be updated with the result of the call
      */
     fun deleteTag(email:String, tag:String): MutableLiveData<ResponseBody> {
         val call :Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
@@ -254,9 +256,10 @@ class ProfileRepository {
      * Propagates the addTag process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's tagAddedSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's tagAddedSuccessfully live data with the response of the call
      * @param email key of the user
      * @param tag tag to add
+     * @return mutable live data which will be updated with the result of the call
      */
     fun addTag(email:String, tag:String): MutableLiveData<ResponseBody> {
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))

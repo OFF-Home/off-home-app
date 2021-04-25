@@ -88,11 +88,9 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * initiates the edition of the username
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param newUsername string to change the username to
-     * @param activity pointer to the activity, used by the observers
      */
     fun usernameChangedByUser(newUsername: Editable) {
         //repository.setUsername(loggedUserEmail, newUsername.toString())
@@ -102,11 +100,9 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * initiates the edition of the description
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param newDescription string to change the description to
-     * @param activity pointer to the activity, used by the observers
      */
     fun descriptionChangedByUser(newDescription: Editable) {
         descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
@@ -115,11 +111,9 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * initiates the deletion of a tag
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param tag tag to be deleted
-     * @param activity pointer to the activity, used by the observers
      */
     fun tagDeletedByUser(tag: String) {
         tagDeletedSuccessfully = repository.deleteTag(loggedUserEmail, tag)
@@ -128,11 +122,9 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * initiates the addition of a tag
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param tag tag to be added
-     * @param activity pointer to the activity, used by the observers
      */
     fun tagAddedByUser(tag:String) {
         tagAddedSuccessfully =  repository.addTag(loggedUserEmail, tag)

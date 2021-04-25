@@ -141,6 +141,11 @@ class ProfileAboutMeFragment : Fragment() {
         iniTagAdditionListener()
     }
 
+    /**
+     * Initializes the listener that observes the call to backend made to edit the description
+     *
+     * the listener removes itself after one use
+     */
     private fun iniDescriptionSetListener() {
         profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
@@ -159,6 +164,11 @@ class ProfileAboutMeFragment : Fragment() {
         )
     }
 
+    /**
+     * Initializes the listener that observes the call to backend made to delete a tag
+     *
+     * the listener removes itself after one use
+     */
     private fun iniTagDeletionListener() {
         profileVM.tagDeletedSuccessfully.observe(
             viewLifecycleOwner,
@@ -174,6 +184,11 @@ class ProfileAboutMeFragment : Fragment() {
         )
     }
 
+    /**
+     * Initializes the listener that observes the call to backend made to add a tag
+     *
+     * the listener removes itself after one use
+     */
     private fun iniTagAdditionListener() {
         profileVM.tagAddedSuccessfully.observe(
             viewLifecycleOwner,

@@ -30,7 +30,7 @@ class OtherProfileViewModel : ViewModel() {
     lateinit var isFollowing: MutableLiveData<Boolean>
     lateinit var followResult: MutableLiveData<Boolean>
     private var repository = ProfileRepository()
-    private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+    private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
     /**
      * It sets de info to the user

@@ -23,8 +23,8 @@ class SharedPreferenceManager {
             editor.putBoolean(dataLabel, dataValue)
             editor.apply()
         }
-        fun getStringValue(dataLabel: String): String {
-            return getSharedPreferences().getString(dataLabel, null).toString()
+        fun getStringValue(dataLabel: String): String? {
+            return getSharedPreferences().getString(dataLabel, null)
         }
         fun getBooleanValue(dataLabel: String): Boolean {
             return getSharedPreferences().getBoolean(dataLabel, false)

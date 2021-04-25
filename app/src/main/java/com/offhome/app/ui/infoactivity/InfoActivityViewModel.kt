@@ -20,6 +20,8 @@ class InfoActivityViewModel : ViewModel() {
      * @return the result with a live data string type
      */
     fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
-        return repository.joinActivity(usuariCreador, dataHoraIni, SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL))
+        return repository.joinActivity(usuariCreador, dataHoraIni,
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        )
     }
 }

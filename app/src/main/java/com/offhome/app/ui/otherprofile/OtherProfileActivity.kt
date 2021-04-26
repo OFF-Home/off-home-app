@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModelProvider
+import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.GsonBuilder
@@ -45,17 +46,12 @@ import java.io.ByteArrayOutputStream
 class OtherProfileActivity : AppCompatActivity() {
 
     private lateinit var viewModel: OtherProfileViewModel
+    private lateinit var otherUser: UserInfo
     private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
     private lateinit var btnFollowFollowing: Button
     private lateinit var fragment: AboutThemFragment
-    private lateinit var otherUser: UserInfo
-
-    val REQUEST_IMAGE_CAPTURE = 1
-    private lateinit var imageUri : Uri
-    val PICK_PHOTO_FOR_AVATAR = 1
-    val SELECT_PHOTO_GALLERY = 1
 
     /**
      * Override the onCreate method
@@ -76,24 +72,14 @@ class OtherProfileActivity : AppCompatActivity() {
         val arguments = intent.extras
         val otherUserString = arguments?.getString("user_info")
         otherUser = GsonBuilder().create().fromJson(otherUserString, UserInfo::class.java)
-        imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
-
-        // imageViewProfilePic. //ficar-hi la imatge
-        imageViewProfilePic.setOnClickListener {
-            //takePictureIntent()
-            val selectPhoto = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)
-        }
 
         textViewUsername = findViewById(R.id.otherUsername)
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
         btnFollowFollowing = findViewById(R.id.buttonFollow)
-        fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
+        fragment =
+            supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
@@ -109,25 +95,6 @@ class OtherProfileActivity : AppCompatActivity() {
         observe()
     }
 
-      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
-            != PackageManager.PERMISSION_GRANTED) {
-            val intent = Intent(
-                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.parse("package:$packageName")
-            )
-            finish()
-            startActivity(intent)
-            return
-        }*/
-
-    private fun takePictureIntent() {
-        val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
-        try {
-            startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
-        } catch (e: ActivityNotFoundException) {
-            Toast.makeText(this, "The camara is not available", Toast.LENGTH_LONG).show()
-        }
-    }
 
     /**
      * It observes the following list of one user and the response to the call of follow/unfollow
@@ -137,7 +104,11 @@ class OtherProfileActivity : AppCompatActivity() {
             if (it)
                 changeFollowButtonText()
             else
-                Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.error_follow),
+                    Toast.LENGTH_LONG
+                ).show()
         })
 
         viewModel.listFollowing.observe(this, {
@@ -161,67 +132,6 @@ class OtherProfileActivity : AppCompatActivity() {
             getString(R.string.btn_follow)
         }
         fragment.updateFollowes()
-    }
-
-    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
-            val imageBitmap = data?.extras?.get("data") as Bitmap
-            uploadImageAndSaveUri(imageBitmap)
-        }
-    }*/
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == RESULT_OK) {
-            if (data != null) {
-                val imageSelected = data.data
-                val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    contentResolver.query(imageSelected!!, filepathColumn, null, null, null)
-                if (cursor != null) {
-                    cursor.moveToFirst()
-                    val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
-                    val photoPath: String = cursor.getString(imageIndex)
-                    viewModel.uploadPhoto(photoPath)
-                    cursor.close()
-                }
-            }
-        }
-    }
-
-    private fun uploadImageAndSaveUri(bitmap: Bitmap){
-        val baos = ByteArrayOutputStream()
-        val storageRef = FirebaseStorage.getInstance()
-            .reference
-            .child("pics/${FirebaseAuth.getInstance().currentUser?.uid}")
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, baos)
-        val image = baos.toByteArray()
-
-        val upload = storageRef.putBytes(image)
-        val constraintLayout = findViewById<ConstraintLayout>(R.id.otherProfileConstraintLayout)
-        constraintLayout.visibility = View.VISIBLE
-        upload.addOnCompleteListener{ uploadTask ->
-            if(uploadTask.isSuccessful){
-                constraintLayout.visibility = View.INVISIBLE
-                storageRef.downloadUrl.addOnCompleteListener{ urlTask ->
-                    urlTask.result.let {
-                        if (it != null) {
-                            imageUri = it
-                        }
-                        Toast.makeText(this, "Imatge actualitzada correctament", Toast.LENGTH_LONG).show()
-                        imageViewProfilePic.setImageBitmap(bitmap)
-                    }
-                }
-            }
-            else{
-                uploadTask.exception.let {
-                    if (it != null) {
-                        Toast.makeText(this, it.message!!, Toast.LENGTH_LONG).show()
-                    }
-                }
-            }
-        }
     }
 
 }

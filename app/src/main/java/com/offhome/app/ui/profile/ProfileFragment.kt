@@ -1,26 +1,38 @@
 package com.offhome.app.ui.profile
 
+import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.database.Cursor
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
+import android.net.Uri
+import android.os.Build
 import android.os.Bundle
-import android.util.Log
+import android.provider.MediaStore
+import android.provider.Settings
 import android.view.*
 import android.widget.*
+import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
@@ -48,7 +60,7 @@ class ProfileFragment : Fragment() {
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
     lateinit var estrelles: RatingBar
-    // lateinit var aboutMeFragment :View
+
     private lateinit var editUsernameButton: ImageView
     private lateinit var constraintLayout1: ConstraintLayout
 
@@ -56,7 +68,10 @@ class ProfileFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
 
+    private lateinit var viewAsOtherProfile: Button
+
     private lateinit var firebaseAuth: FirebaseAuth
+
 
     /**
      * Override the onCreateView method
@@ -84,6 +99,7 @@ class ProfileFragment : Fragment() {
         textViewUsername = view.findViewById(R.id.textViewUsername)
         estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
         constraintLayout1 = view.findViewById(R.id.profileConstraintLayoutDinsAppBarLO)
+        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
@@ -112,13 +128,54 @@ class ProfileFragment : Fragment() {
         iniEditElements()
         iniUsernameSetListener() //TODO sobra?
 
-        imageViewProfilePic.setOnClickListener {
-            // TODO aqui no anirà això. ho he posat per a testejar el canvi a OtherProfile, d'una altra HU. (Ferran)
+        viewAsOtherProfile.setOnClickListener{
             canviAOtherProfile()
         }
 
+        imageViewProfilePic.setOnClickListener {
+            //takePictureIntent()
+            val selectPhoto = Intent(
+                Intent.ACTION_PICK,
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+            )
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context?.let { it1 ->
+                    ContextCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE)
+                }
+                != PackageManager.PERMISSION_GRANTED
+            ) {
+                Intent(
+                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + requireContext().packageName)
+                )
+                startActivityForResult(selectPhoto, Constants().SELECT_PHOTO_GALLERY)
+            }
+        }
+
+
         return view
     }
+
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == Constants().PICK_PHOTO_FOR_AVATAR && resultCode == AppCompatActivity.RESULT_OK) {
+            if (data != null) {
+                val imageSelected = data.data
+                val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? = requireContext().contentResolver.query(imageSelected!!, filepathColumn, null, null, null)
+                if (cursor != null) {
+                    cursor.moveToFirst()
+                    val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
+                    val photoPath: String = cursor.getString(imageIndex)
+                    fragmentViewModel.uploadPhoto(photoPath)
+                    //Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
+                    Glide.with(this).load(photoPath).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
+                    cursor.close()
+                }
+            }
+        }
+    }
+
+
 
     /**
      * Initializes the listener that observes the call to backend made to edit the username
@@ -302,7 +359,6 @@ class ProfileFragment : Fragment() {
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
     }
-
 
     /**
      * Function to specify the options menu for an activity

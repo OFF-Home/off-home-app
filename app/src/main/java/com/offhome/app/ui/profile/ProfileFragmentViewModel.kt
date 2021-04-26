@@ -131,4 +131,13 @@ class ProfileFragmentViewModel : ViewModel() {
     fun tagAddedByUser(tag:String) {
         tagAddedSuccessfully =  repository.addTag(loggedUserEmail, tag)
     }
+
+    /**
+     * This function calls the Repository to manage the photo uploading of the user profile
+     * @param photoPath The path of the photo desired
+     */
+    fun uploadPhoto(photoPath: String){
+        val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        repository.uploadPhoto(email, photoPath)
+    }
 }

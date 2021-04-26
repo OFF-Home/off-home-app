@@ -170,6 +170,7 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="view_as_another_user">view as another user</string>
     <string name="btn_follow">Follow</string>
     <string name="btn_following">Following</string>
     <string name="error_follow">Error! Please try it again later</string>

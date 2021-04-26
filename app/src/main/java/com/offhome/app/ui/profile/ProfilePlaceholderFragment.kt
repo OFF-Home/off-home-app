@@ -6,8 +6,11 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
 /**
@@ -33,10 +36,13 @@ class ProfilePlaceholderFragment : Fragment() {
         val btnChangePwd = view.findViewById<Button>(R.id.changePassword)
 
         btnChangePwd.setOnClickListener {
-            requireActivity().run {
-                startActivity(Intent(this, UpdatePasswordActivity::class.java))
-                finish()
-            }
+            if (SharedPreferenceManager.getStringValue(Constants().PREF_PROVIDER) == Constants().PREF_PROVIDER_PASSWORD)
+                requireActivity().run {
+                    startActivity(Intent(this, UpdatePasswordActivity::class.java))
+                    finish()
+                }
+            else
+                Toast.makeText(context, getString(R.string.error_change_password_google), Toast.LENGTH_LONG).show()
         }
     }
 }

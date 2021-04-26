@@ -4,10 +4,13 @@ import android.text.Editable
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
+import okhttp3.ResponseBody
 
 /**
  * Class *ProfileFragmentViewModel*
@@ -34,7 +37,7 @@ import com.offhome.app.model.profile.UserInfo
 class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
-    private var loggedUserEmail = "victorfer@gmai.com" // stub
+    private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
     private var _profileInfo = MutableLiveData<UserInfo>()
     var profileInfo: LiveData<UserInfo> = _profileInfo
@@ -45,16 +48,16 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _myActivities = MutableLiveData<List<ActivityFromList>>()
     var myActivities: LiveData<List<ActivityFromList>> = _myActivities
 
-    private var _usernameSetSuccessfully = MutableLiveData<Boolean>()
-    var usernameSetSuccessfully: LiveData<Boolean> = _usernameSetSuccessfully
+    private var _usernameSetSuccessfully = MutableLiveData<ResponseBody>()
+    var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
 
-    private var _descriptionSetSuccessfully = MutableLiveData<Boolean>()
-    var descriptionSetSuccessfully : LiveData<Boolean> = _descriptionSetSuccessfully
+    private var _descriptionSetSuccessfully = MutableLiveData<ResponseBody>()
+    var descriptionSetSuccessfully : LiveData<ResponseBody> = _descriptionSetSuccessfully
 
-    private var _tagAddedSuccessfully = MutableLiveData<Boolean>()
-    var tagAddedSuccessfully:LiveData<Boolean> = _tagAddedSuccessfully
-    private var _tagDeletedSuccessfully = MutableLiveData<Boolean>()
-    var tagDeletedSuccessfully : LiveData<Boolean> = _tagDeletedSuccessfully
+    private var _tagAddedSuccessfully = MutableLiveData<ResponseBody>()
+    var tagAddedSuccessfully:LiveData<ResponseBody> = _tagAddedSuccessfully
+    private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
+    var tagDeletedSuccessfully : LiveData<ResponseBody> = _tagDeletedSuccessfully
 
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
@@ -74,8 +77,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * obtains myActivities from the lower level and places them on the live data
      */
     private fun getMyActivities() {
-        //_myActivities = repository.getUserActivities(loggedUserEmail)!!
-        myActivities = repository.getUserActivities(loggedUserEmail)!!      //funciona amb aquest i no amb el _myActivities
+        myActivities = repository.getUserActivities("victor@gmai.com"/*loggedUserEmail*/)!!      //funciona amb myActivities i no amb _myActivities
     }
 
     /**
@@ -88,95 +90,45 @@ class ProfileFragmentViewModel : ViewModel() {
     /**
      * initiates the edition of the username
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param newUsername string to change the username to
-     * @param activity pointer to the activity, used by the observers
      */
-    fun usernameChangedByUser(newUsername: Editable, activity: AppCompatActivity) {
-        repository.setUsername(loggedUserEmail, newUsername.toString())
-        repository.usernameSetSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("setUsername", "salta el observer de VM")
-                _usernameSetSuccessfully.value = resultRepo
-            }
-        )
+    fun usernameChangedByUser(newUsername: Editable) {
+        //repository.setUsername(loggedUserEmail, newUsername.toString())
+        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
     }
 
     /**
      * initiates the edition of the description
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param newDescription string to change the description to
-     * @param activity pointer to the activity, used by the observers
      */
-    fun descriptionChangedByUser(newDescription: Editable, activity: AppCompatActivity) {
-        repository.setDescription(loggedUserEmail, newDescription.toString())
-        repository.descriptionSetSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("setDescription", "salta el observer de VM")
-                _descriptionSetSuccessfully.value = resultRepo
-            }
-        )
+    fun descriptionChangedByUser(newDescription: Editable) {
+        descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
     }
-
-    //inutil, intentant que salti el observer de setUsernameSuccessfully
-    fun simularResposta() {
-        Log.d("simular resposta", "SIMULA RESPOSTA")
-
-        var setUsernameSuccessfully2 : MutableLiveData<Boolean>? = null
-        setUsernameSuccessfully2 = MutableLiveData<Boolean>()
-
-        _usernameSetSuccessfully = setUsernameSuccessfully2 as MutableLiveData<Boolean>
-    }
-
 
     /**
      * initiates the deletion of a tag
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param tag tag to be deleted
-     * @param activity pointer to the activity, used by the observers
      */
-    fun tagDeletedByUser(tag: String, activity: AppCompatActivity) {
-        repository.deleteTag(loggedUserEmail, tag)
-        repository.tagDeletedSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("deleteTag", "salta el observer de VM")
-                _tagDeletedSuccessfully.value = resultRepo
-            }
-        )
+    fun tagDeletedByUser(tag: String) {
+        tagDeletedSuccessfully = repository.deleteTag(loggedUserEmail, tag)
     }
 
     /**
      * initiates the addition of a tag
      *
-     * makes the call to the Repository and observes its live data for the result.
-     * Sets the ViewModel's live data according to that of the Repository when it is ready
+     * makes the call to the Repository and places the result on the live data.
      *
      * @param tag tag to be added
-     * @param activity pointer to the activity, used by the observers
      */
-    fun tagAddedByUser(tag:String, activity: AppCompatActivity) {
-        repository.addTag(loggedUserEmail, tag)
-        repository.tagAddedSuccessfully.observe(
-            activity,
-            Observer {
-                val resultRepo = it ?: return@Observer
-                Log.d("addTag", "salta el observer de VM")
-                _tagAddedSuccessfully.value = resultRepo
-            }
-        )
+    fun tagAddedByUser(tag:String) {
+        tagAddedSuccessfully =  repository.addTag(loggedUserEmail, tag)
     }
 }

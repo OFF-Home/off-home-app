@@ -36,10 +36,11 @@ import kotlin.Boolean as Boolean
  * @property userInfo mutable live data of the user info obtained
  * @property activities mutable live data of the activities obtained
  * @property tags mutable live data of the tags obtained
- * @property usernameSetSuccessfully mutable live data of whether the username was successfully set
- * @property descriptionSetSuccessfully mutable live data of whether the description was successfully set
- * @property tagAddedSuccessfully mutable live data of whether the tag was successfully added
- * @property tagDeletedSuccessfully mutable live data of whether the tag was successfully deleted
+ * @property usernameSetSuccessfully mutable live data of the response to the call to set the username
+ * @property descriptionSetSuccessfully mutable live data of the response to the call to set the description
+ * @property tagDeletedSuccessfully mutable live data of the response to the call to delete a tag
+ * @property tagAddedSuccessfully mutable live data of the response to the call to add a tag
+ * @property PREF_PHOTOURL
  */
 class ProfileRepository {
 
@@ -47,10 +48,10 @@ class ProfileRepository {
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
     val PREF_PHOTOURL = 1
-    var usernameSetSuccessfully: MutableLiveData<Boolean> = MutableLiveData<Boolean>()
-    var descriptionSetSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
-    var tagAddedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
-    var tagDeletedSuccessfully: MutableLiveData<Boolean> =  MutableLiveData<Boolean>()
+    var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
+    var descriptionSetSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
+    var tagDeletedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
+    var tagAddedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
     var activities: MutableLiveData<List<ActivityFromList>>?=null
     var tags: MutableLiveData< List<TagData> >?=null
 
@@ -81,12 +82,6 @@ class ProfileRepository {
                 Log.d("GET", "Error getting ProfileInfo. communication failure (no response)")
             }
         })
-
-        // stub:
-       /* userInfo?.value = UserInfo(email="yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-12",
-            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags="a b c d e", language = "esp")
-*/
 
         return userInfo as MutableLiveData<UserInfo>
     }
@@ -125,7 +120,7 @@ class ProfileRepository {
      * @param email key of the user whose tags are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {       //dona failure. potser el tipus no és el q toca
+    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
         val call: Call<List<TagData>> = userService!!.getTags(email = email)
@@ -159,26 +154,29 @@ class ProfileRepository {
         return bitmap
     }
 
+    //podria funcionar sense tot el rollo de nulls, com setDescription
     /**
      * Propagates the setUsername process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's usernameSetSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's usernameSetSuccessfully live data with the response of the call
      * @param email key of the user whose username is to be set
      * @param newUsername username to set
-     * @return mutable live data which will be updated with the data from the call, if it is successful
+     * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email:String, newUsername: String): MutableLiveData<Boolean> {
-        //if (setUsernameSuccessfully == null) setUsernameSuccessfully = MutableLiveData<Boolean>() // linea afegida perque no peti.
+    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody>? {
+        if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
         val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                usernameSetSuccessfully!!.value = response.body()
                 if (response.isSuccessful) {
+                    //la crida retorna 200 encara que sigui user not found.
                     Log.d("response", "setUsername response: is successful")
-                    usernameSetSuccessfully.value = true
+                    //usernameSetSuccessfully!!.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "setUsername response: unsuccessful")
-                    usernameSetSuccessfully.value = false
+                    //usernameSetSuccessfully!!.value = false
                 }
             }
 
@@ -186,33 +184,32 @@ class ProfileRepository {
                 Log.d("no response", "setUsername no response")
                 t.printStackTrace()
                 Log.w("no response", "setUsername no response", t.cause)
-                usernameSetSuccessfully.value = false
+                usernameSetSuccessfully!!.value = ResponseBody.create(null, "no response")
             }
         })
 
-        return usernameSetSuccessfully
+        return usernameSetSuccessfully as MutableLiveData<ResponseBody>
     }
 
+    //funciona sense tot el rollo de nulls
     /**
      * Propagates the setDescription process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's descriptionSetSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's descriptionSetSuccessfully live data with the response of the call
      * @param email key of the user whose description is to be set
      * @param newDescription description to set
-     * @return mutable live data which will be updated with the data from the call, if it is successful
+     * @return mutable live data which will be updated with the result of the call
      */
-    fun setDescription(email:String, newDescription:String): MutableLiveData<Boolean> {
-        //if (setDescriptionSuccessfully == null) setDescriptionSuccessfully = MutableLiveData<Boolean>()
+    fun setDescription(email:String, newDescription:String): MutableLiveData<ResponseBody> {
         val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                descriptionSetSuccessfully.value = response.body()
                 if (response.isSuccessful) {
                     Log.d("response", "setDescription response: is successful")
-                    descriptionSetSuccessfully.value = true
                 } else {
                     Log.d("response", "setDescription response: unsuccessful")
-                    descriptionSetSuccessfully.value = false
                 }
             }
 
@@ -220,7 +217,7 @@ class ProfileRepository {
                 Log.d("no response", "setDescription no response")
                 t.printStackTrace()
                 Log.w("no response", "setDescription no response", t.cause)
-                descriptionSetSuccessfully.value = false
+                descriptionSetSuccessfully.value =  ResponseBody.create(null, "no response")
             }
         })
         return descriptionSetSuccessfully
@@ -230,56 +227,58 @@ class ProfileRepository {
      * Propagates the deleteTag process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's tagDeletedSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's tagDeletedSuccessfully live data with the response of the call
      * @param email key of the user
      * @param tag tag to delete
+     * @return mutable live data which will be updated with the result of the call
      */
-    fun deleteTag(email:String, tag:String) {
+    fun deleteTag(email:String, tag:String): MutableLiveData<ResponseBody> {
         val call :Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                tagDeletedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
                     Log.d("response", "deleteTag response: is successful")
-                    tagDeletedSuccessfully.value = true
                 } else {
                     Log.d("response", "deleteTag response: unsuccessful")
-                    tagDeletedSuccessfully.value = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "deleteTag no response")
-                tagDeletedSuccessfully.value = false
+                tagDeletedSuccessfully.value = ResponseBody.create(null, "no response")
             }
         })
+        return tagDeletedSuccessfully
     }
 
     /**
      * Propagates the addTag process to the lower level
      *
      * does the POST call and observes the result
-     * Sets the Repository's tagAddedSuccessfully live data according to that of the Data Source when it is ready
+     * Sets the Repository's tagAddedSuccessfully live data with the response of the call
      * @param email key of the user
      * @param tag tag to add
+     * @return mutable live data which will be updated with the result of the call
      */
-    fun addTag(email:String, tag:String) {
+    fun addTag(email:String, tag:String): MutableLiveData<ResponseBody> {
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                tagAddedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
                     Log.d("response", "addTag response: is successful")
-                    tagAddedSuccessfully.value = true
                 } else {
                     Log.d("response", "addTag response: unsuccessful")
-                    tagAddedSuccessfully.value = false
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "addTag no response")
-                tagAddedSuccessfully.value = false
+                tagAddedSuccessfully.value = ResponseBody.create(null, "no response")
             }
         })
+        return tagAddedSuccessfully
     }
       
     /**

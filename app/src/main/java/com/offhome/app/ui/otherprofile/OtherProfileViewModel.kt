@@ -57,7 +57,7 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to get if one user follows the other
      */
     fun isFollowing(): List<FollowingUser>? {
-        listFollowing = repository.following(currentUser) as MutableLiveData<List<FollowingUser>>
+        listFollowing = repository.following(userInfo.email) as MutableLiveData<List<FollowingUser>>
         return listFollowing.value
     }
 

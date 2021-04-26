@@ -23,6 +23,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.profile.UserInfo
 import java.io.ByteArrayOutputStream
 
@@ -113,7 +114,7 @@ class OtherProfileActivity : AppCompatActivity() {
         viewModel.listFollowing.observe(this, {
             btnFollowFollowing.text = getString(R.string.btn_follow)
             for (item in it) {
-                if (item.usuariSeguidor == "currentUser") {
+                if (item.usuariSeguidor == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) {
                     viewModel.setFollowing(true)
                     btnFollowFollowing.text = getString(R.string.btn_following)
                 }

@@ -41,7 +41,7 @@ interface UserService {
     @POST("/users/{username}/follow")
     fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
 
-    @POST("/users/{username}/unfollow")
+    @DELETE("/users/{username}/unfollow")
     fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
 
     //in progress

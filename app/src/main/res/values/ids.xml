@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item name="editDescriptionButton" type="id">@+id/editDescriptionButton</item>
+    <item name="editTextProfileDescription" type="id" >@+id/editTextProfileDescription</item>
+    <item name="editTextProfileDescription2" type="id">@+id/editTextProfileDescription2 </item>
+    <item name="editUsernameButton" type="id">@+id/editUsernameButton</item>
+    <item name="editTextUsername2" type="id">@+id/editTextUsername2</item>
+    <item name="editTagsButton" type="id">@+id/editTagsButton</item>                <!-- ja no s'utilitza -->
+    <item name="editTagsCancelButton" type="id"> @+id/editTagsCancelButton </item>  <!-- ja no s'utilitza -->
+    <item name="addTagButton" type="id"> @+id/addTagButton</item>
+</resources>

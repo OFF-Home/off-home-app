@@ -3,7 +3,6 @@ package com.offhome.app.ui.activitieslist
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
-import android.widget.ArrayAdapter
 import android.widget.SearchView
 import android.widget.Spinner
 import androidx.fragment.app.Fragment
@@ -75,7 +74,7 @@ class ActivitiesListFragment : Fragment() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_button, menu)
+        inflater.inflate(R.menu.search_and_sort_buttons, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView

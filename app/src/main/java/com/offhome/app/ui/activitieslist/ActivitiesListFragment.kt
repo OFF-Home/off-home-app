@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Spinner
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -12,6 +13,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 /**
@@ -32,7 +35,7 @@ class ActivitiesListFragment : Fragment() {
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
-  
+
     /**
      * Called to initialize the fragment and has the observers, returns the view inflated
      * @param inflater is the Layout inflater to inflate the view
@@ -91,12 +94,7 @@ class ActivitiesListFragment : Fragment() {
         })
     }
 
-    //per fer el sort
-    //sort ascending/descending , order by data, seleccionar quina categoria es vol
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        /*  when (item.itemId) {
-            R.id.activity_title -> sortActivities()
-        }*/
         val id = item.itemId
         if (id == R.id.action_sort) {
             sortActivities()
@@ -107,68 +105,57 @@ class ActivitiesListFragment : Fragment() {
     }
 
     private fun sortActivities() {
-        val dialog = AlertDialog.Builder(context)
-        dialog.setTitle("                    Sort")
+        val builder = AlertDialog.Builder(context)
+        builder.setTitle("                    Sort")
             .setItems(arrayOf("Ascending", "Descending", "By date")) { dialogInterface, i ->
-                if (i == 0) {
-                    //ascending clicked
-                    dialogInterface.dismiss()
-                    activitiesList.sortedBy { it.titol }
-                } else if (i == 1) {
-                    //descending clicked
-                    dialogInterface.dismiss()
-                    activitiesList.sortedByDescending { it.titol }
-                } else if (i == 2) {
-                    //sorted by date
-                    dialogInterface.dismiss()
-                    activitiesList.sortedBy { it.dataHoraIni }
+                when (i) {
+                    0 -> {
+                        //ascending clicked
+                        dialogInterface.dismiss()
+                        activitiesList.sortedBy { it.titol }
+                    }
+                    1 -> {
+                        //descending clicked
+                        dialogInterface.dismiss()
+                        activitiesList.sortedByDescending { it.titol }
+                    }
+                    2 -> {
+                        //sorted by date
+                        dialogInterface.dismiss()
+                        activitiesList.sortedBy { it.dataHoraIni }
+                    }
                 }
             }.show()
-        //ArrayAdapter<String> adapter = new ArrayAdapter<String>(ActivitiesListFragment.this,android.R.layout.spinnerDialog);
-
     }
 
     private fun sortActivitiesByCategory() {
-        val dialog2 = AlertDialog.Builder(context)
-        dialog2.setTitle("Sort by category")
-            .setItems(spinnerDialog?.resources?.getStringArray(R.array.select_category)) { dialogInterface, _ ->
-                dialogInterface.dismiss()
-            }.show()
+        lateinit var dialog: AlertDialog
+        val builder = AlertDialog.Builder(context)
+        val selectedList = ArrayList<Int>()
+        val categoriesOptions: Array<String> = resources.getStringArray(R.array.select_category)
+        builder.setTitle("Sort by category")
+        val arrayChecked = booleanArrayOf(false, false, false, false, false, false)
+        builder.setMultiChoiceItems(
+            R.array.select_category, null
+        ) { dialog, which, isChecked ->
+            // Update the clicked item checked status
+            arrayChecked[which] = isChecked
+            if (isChecked) {
+                selectedList.add(which)
+            } else if (selectedList.contains((which))) {
+                selectedList.remove(Integer.valueOf(which))
+            }
+        }
+        builder.setPositiveButton("OK") { _, _ ->
+            // Do something when click positive button
+            //for (i in categoriesOptions.indices) {
+             //   val checked = arrayChecked[i]
+              //  if (checked) {}
+            // Display the clicked Ok button
+            Toast.makeText(context, "Filter applied", Toast.LENGTH_SHORT).show()
+        }
+        dialog = builder.create()
+        dialog.show()
     }
+
 }
-
-
-
-
-    /* fun onClick(w: View?) {
-        val adapter= ArrayAdapter<String>(requireContext(), android.R.layout.simple_spinner_dropdown_item, arrayOf(R.array.select_category))
-        AlertDialog.Builder(requireContext()).setTitle("Sort by category").setAdapter(adapter) { dialog, which ->
-            dialog.dismiss()
-        }.create().show()
-    }*/
-
-       /* val adapter = ArrayAdapter.createFromResource(
-            this,
-            R.array.planets_array,
-            android.R.layout.simple_spinner_item
-        )
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinner.setPrompt("Select your favorite Planet!")
-
-        spinner.setAdapter(
-            NothingSelectedSpinnerAdapter(
-                adapter,
-                R.layout.contact_spinner_row_nothing_selected,  // R.layout.contact_spinner_nothing_selected_dropdown, // Optional
-                this
-            )
-        )*/
-       /* val adapter = ArrayAdapter.createFromResource(this, R.array.select_category, android.R.layout.simple_spinner_item)
-        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item)
-        spinnerDialog.setAdapter(adapter)
-        spinnerDialog.setOnItemSelectedListener()*/
-
-       /* dialog.setItems("select_category", DialogInterface.OnClickListener { dialogInterface, item -> // Do something with the selection
-            dialogInterface.dismiss()
-            Toast.makeText((ActivitiesListFragment.this,select_aa))
-            })    }*/
-

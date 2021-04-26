@@ -21,15 +21,14 @@
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
-        <item>Select category</item>5
-        <item>SPORTS</item>
-        <item>BICYCLING</item>
-        <item>CULTURAL</item>
-        <item>DANCING</item>
-        <item>VOLUNTEERING</item>
-        <item>WALKING</item>
-        <item>SELF CARE</item>
-        <item>GARDERING</item>
+        <item>Sports</item>
+        <item>Bicycling</item>
+        <item>Cultural</item>
+        <item>Dancing</item>
+        <item>Volunteering</item>
+        <item>Walking</item>
+        <item>Self care</item>
+        <item>Gardering</item>
     </string-array>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="prompt_email">Email</string>

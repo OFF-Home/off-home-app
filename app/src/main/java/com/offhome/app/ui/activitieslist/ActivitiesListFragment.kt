@@ -112,6 +112,11 @@ class ActivitiesListFragment : Fragment() {
         })
     }
 
+    /**
+     * This function handles the option selected by the user in the fragment's toolbar. The options are: sort the list of activities by some parameters or filter by category
+     * @param item: The options menu in which you place your items
+     * @return true if the menu is to be displayed; false if it will not be shown
+     */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
         if (id == R.id.action_sort) {
@@ -122,6 +127,9 @@ class ActivitiesListFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * This Function handles the dialog where the activities can be sorted. The opcions are: by ascending, by descending and by date
+     */
     private fun sortActivities() {
         val builder = AlertDialog.Builder(context)
         builder.setTitle("                    Sort")
@@ -146,13 +154,16 @@ class ActivitiesListFragment : Fragment() {
             }.show()
     }
 
+    /**
+     * This function handles the dialog that appears to filter the activities by the category or categories selected by the multi choice option
+     */
     private fun sortActivitiesByCategory() {
         lateinit var dialog: AlertDialog
         val builder = AlertDialog.Builder(context)
         val selectedList = ArrayList<Int>()
         val categoriesOptions: Array<String> = resources.getStringArray(R.array.select_category)
         builder.setTitle("Sort by category")
-        val arrayChecked = booleanArrayOf(false, false, false, false, false, false)
+        val arrayChecked = booleanArrayOf(false, false, false, false, false, false, false, false)
         builder.setMultiChoiceItems(
             R.array.select_category, null
         ) { dialog, which, isChecked ->
@@ -165,12 +176,16 @@ class ActivitiesListFragment : Fragment() {
             }
         }
         builder.setPositiveButton("OK") { _, _ ->
-            // Do something when click positive button
-            //for (i in categoriesOptions.indices) {
-             //   val checked = arrayChecked[i]
-              //  if (checked) {}
-            // Display the clicked Ok button
+            val resultlist = ArrayList<ActivityFromList>()
+            for (j in selectedList.indices) {
+                for (s in activitiesList) {
+                    if (s.categoria == (categoriesOptions)[selectedList[j]])
+                    resultlist.add(s)
+                }
+            }
+            //activitiesList = resultlist
             Toast.makeText(context, "Filter applied", Toast.LENGTH_SHORT).show()
+            dialog.dismiss()
         }
         dialog = builder.create()
         dialog.show()

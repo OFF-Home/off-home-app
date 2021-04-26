@@ -105,7 +105,7 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
     }
 
     /**
-     * Function that checks if we have typed a text in the SeachView. If there is no text, it will return all items
+     * Function that filter the category of the activity based on what the user have typed n the SeachView of the toolBar. If there is no text, it will return all items
      * @param constraint is the input text that the user wants to filter
      */
     fun performFiltering(constraint: CharSequence?) {

@@ -1,24 +1,21 @@
 package com.offhome.app.ui.otherprofile
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.content.ActivityNotFoundException
 import android.content.Intent
-import android.content.pm.PackageManager
 import android.database.Cursor
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
-import android.provider.Settings
 import android.view.View
+import android.widget.*
 import android.widget.ImageView
 import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.content.ContextCompat
+import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModelProvider
 import com.bumptech.glide.Glide
 import com.google.firebase.auth.FirebaseAuth
@@ -27,21 +24,52 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.profile.UserInfo
 import java.io.ByteArrayOutputStream
-import java.util.jar.Manifest
 
 
+/**
+ * Class *OtherProfileActivity*
+ *
+ * Activity of the OtherProfile screen. Its layout contains a fragment where the AboutThemFragment is set
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @author Pau, Ferran
+ * @property viewModel reference to the ViewModel object
+ * @property imageViewProfilePic reference to profile pic ImageView
+ * @property textViewUsername reference to the username TextView
+ * @property estrelles reference to the user's rating bar
+ * @property btnFollowFollowing reference to the follow/following button
+ * @property fragment reference to the fragment inside this activity which will contain the AboutThemFragment
+ * @property otherUser user's user info
+ */
 class OtherProfileActivity : AppCompatActivity() {
 
     private lateinit var viewModel: OtherProfileViewModel
+<<<<<<< HEAD
     private lateinit var otherUser: UserInfo
+=======
+    private lateinit var imageViewProfilePic: ImageView
+>>>>>>> develop
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
+    private lateinit var btnFollowFollowing: Button
+    private lateinit var fragment: AboutThemFragment
+    private lateinit var otherUser: UserInfo
 
     val REQUEST_IMAGE_CAPTURE = 1
     private lateinit var imageUri : Uri
     val PICK_PHOTO_FOR_AVATAR = 1
     val SELECT_PHOTO_GALLERY = 1
 
+    /**
+     * Override the onCreate method
+     *
+     * initializes the otherUser with the data received from the previous Activity
+     * Initializes the layout elements
+     * Initializes the attributes
+     * Sets the btnFollowFollowing's listener
+     *
+     * @param savedInstanceState is the instance of the saved State of the activity
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_profile)
@@ -56,13 +84,39 @@ class OtherProfileActivity : AppCompatActivity() {
         textViewUsername.text = otherUser.username
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
+        btnFollowFollowing = findViewById(R.id.buttonFollow)
+        fragment = supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         viewModel.setUserInfo(otherUser)
+<<<<<<< HEAD
+    }
+=======
+        viewModel.isFollowing()
+
+        btnFollowFollowing.setOnClickListener {
+            if (btnFollowFollowing.text == getString(R.string.btn_follow))
+                viewModel.follow()
+            else viewModel.stopFollowing()
+        }
+
+        observe()
     }
 
-    private fun takePictureIntent(){
+      /*  if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            val intent = Intent(
+                Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
+                Uri.parse("package:$packageName")
+            )
+            finish()
+            startActivity(intent)
+            return
+        }*/
+>>>>>>> develop
+
+    private fun takePictureIntent() {
         val takePictureIntent = Intent(MediaStore.ACTION_IMAGE_CAPTURE)
         try {
             startActivityForResult(takePictureIntent, REQUEST_IMAGE_CAPTURE)
@@ -71,8 +125,73 @@ class OtherProfileActivity : AppCompatActivity() {
         }
     }
 
+<<<<<<< HEAD
     //no utilitzada ara (fer foto camara)
     /*private fun uploadImageAndSaveUri(bitmap: Bitmap){
+=======
+    /**
+     * It observes the following list of one user and the response to the call of follow/unfollow
+     */
+    private fun observe() {
+        viewModel.followResult.observe(this, {
+            if (it)
+                changeFollowButtonText()
+            else
+                Toast.makeText(applicationContext, getString(R.string.error_follow), Toast.LENGTH_LONG).show()
+        })
+
+        viewModel.listFollowing.observe(this, {
+            btnFollowFollowing.text = getString(R.string.btn_follow)
+            for (item in it) {
+                if (item.usuariSeguidor == "currentUser") {
+                    viewModel.setFollowing(true)
+                    btnFollowFollowing.text = getString(R.string.btn_following)
+                }
+            }
+        })
+    }
+
+    /**
+     * Change the button text from Follow to Following and viceversa
+     */
+    private fun changeFollowButtonText() {
+        btnFollowFollowing.text = if (btnFollowFollowing.text == getString(R.string.btn_follow)) {
+            getString(R.string.btn_following)
+        } else {
+            getString(R.string.btn_follow)
+        }
+        fragment.updateFollowes()
+    }
+
+    /*override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if(requestCode==REQUEST_IMAGE_CAPTURE && resultCode == Activity.RESULT_OK){
+            val imageBitmap = data?.extras?.get("data") as Bitmap
+            uploadImageAndSaveUri(imageBitmap)
+        }
+    }*/
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == RESULT_OK) {
+            if (data != null) {
+                val imageSelected = data.data
+                val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
+                val cursor: Cursor? =
+                    contentResolver.query(imageSelected!!, filepathColumn, null, null, null)
+                if (cursor != null) {
+                    cursor.moveToFirst()
+                    val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
+                    val photoPath: String = cursor.getString(imageIndex)
+                    viewModel.uploadPhoto(photoPath)
+                    cursor.close()
+                }
+            }
+        }
+    }
+
+    private fun uploadImageAndSaveUri(bitmap: Bitmap){
+>>>>>>> develop
         val baos = ByteArrayOutputStream()
         val storageRef = FirebaseStorage.getInstance()
             .reference

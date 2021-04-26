@@ -98,6 +98,11 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         createTheActivity()
     }
 
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
+
     /**
      * This function let the user pick a date where the activity created will take place
      */

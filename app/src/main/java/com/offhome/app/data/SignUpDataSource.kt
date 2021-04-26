@@ -2,6 +2,7 @@ package com.offhome.app.data
 
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
@@ -53,7 +54,7 @@ class SignUpDataSource {
      * @param password
      * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String, birthDate: Date, activity: SignUpActivity) { // TODO treure activity i toasts quan acabem de debugejar
+    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity i toasts quan acabem de debugejar
 
         try {
             firebaseAuth = Firebase.auth
@@ -69,7 +70,7 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, username, password, birthDate.toString())
+                    val signedUpUser = SignUpUserData(email, username, password ?: "undefined", birthDate.toString())
                     val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
 
                     call.enqueue(object : Callback<ResponseBody> {

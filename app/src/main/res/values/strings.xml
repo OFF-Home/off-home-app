@@ -1,4 +1,4 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">OFF Home</string>
     <string name="title_activities">Activities</string>
     <string name="title_explore">Explore</string>
@@ -21,15 +21,14 @@
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
-        <item>Select category</item>5
-        <item>SPORTS</item>
-        <item>BICYCLING</item>
-        <item>CULTURAL</item>
-        <item>DANCING</item>
-        <item>VOLUNTEERING</item>
-        <item>WALKING</item>
-        <item>SELF CARE</item>
-        <item>GARDERING</item>
+        <item>Sports</item>
+        <item>Bicycling</item>
+        <item>Cultural</item>
+        <item>Dancing</item>
+        <item>Volunteering</item>
+        <item>Walking</item>
+        <item>Self care</item>
+        <item>Gardering</item>
     </string-array>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="prompt_email">Email</string>
@@ -134,6 +133,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
+    <string name="tag" >Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -171,4 +171,35 @@
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
     <string name="view_as_another_user">view as another user</string>
+    <string name="btn_follow">Follow</string>
+    <string name="btn_following">Following</string>
+    <string name="error_follow">Error! Please try it again later</string>
+    <string name="toast_start_following">"You started following "</string>
+    <string name="username_updated_toast">Username updated.</string>
+    <string name="username_update_error_toast">Couldn\'t update username. Please try again later.</string>
+    <string name="description_updated_toast">Description updated.</string>
+    <string name="description_update_error_toast">Couldn\'t update description. Please try again later.</string>
+    <string name="Cancel">Cancel</string>
+    <string name="tags_cant_be_empty_toast">tags can\'t be empty</string>
+    <string name="title_activity_map_with_activities">Map</string>
+    <string name="search_title">search_title</string>
+    <string name="text_view_recover_password">Don\'t remember your password? Recover it </string>
+    <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
+    <string name="btn_recover_password">Recover password</string>
+    <string name="search_hint">search_hint</string>
+    <string name="change_password">Change password</string>
+    <string name="Update_password">updatePassword</string>
+    <string name="new_password">new password</string>
+    <string name="new_password_repeat">repeat new password</string>
+    <string name="dialog_logout_message">Are you sure you want to log out?</string>
+    <string name="dialog_logout_title">Log out</string>
+    <string name="ok">Ok</string>
+    <string name="cancel">Cancel</string>
+    <string name="error_search_user">Please, type the username you want to search</string>
+    <string name="user_not_found">USer not found!</string>
+    <string name="tag_added_toast">Tag added</string>
+    <string name="couldnt_add_tag_toast">Couldn\'t add tag</string>
+    <string name="tag_deleted_toast">Tag deleted</string>
+    <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
+    <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
 </resources>

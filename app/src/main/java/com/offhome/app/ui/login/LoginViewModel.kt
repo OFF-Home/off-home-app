@@ -5,6 +5,8 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.LoginRepository
 import com.offhome.app.data.Result
 
@@ -24,21 +26,32 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
     private val _loginResult = MutableLiveData<LoginResult>()
     val loginResult: LiveData<LoginResult> = _loginResult
 
+    lateinit var recoverResult: LiveData<String>
+
     /**
      * It calls te repository to login and treats the result to set the mutable live data of the result of the login
      */
-    fun login(username: String, password: String) {
+    fun login(email: String, password: String) {
         // can be launched in a separate asynchronous job
-        val result = loginRepository.login(username, password)
+        val result = loginRepository.login(email, password)
 
         if (result is Result.Success) {
             _loginResult.value =
                 LoginResult(success = LoggedInUserView(data = result.data))
+            SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, email)
+            SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_PASSWORD)
         } else {
             if (result is Result.Error) {
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
         }
+    }
+
+    /**
+     * It calls the repository to send the email to reset password
+     */
+    fun recoverPassword(email: String) {
+        recoverResult = loginRepository.recoverPassword(email)
     }
 
     /**

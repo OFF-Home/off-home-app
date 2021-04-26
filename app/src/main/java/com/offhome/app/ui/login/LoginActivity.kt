@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.text.Editable
 import android.text.InputType
 import android.text.TextWatcher
+import android.util.Log
 import android.view.View
 import android.view.inputmethod.EditorInfo
 import android.widget.*
@@ -13,9 +14,20 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
+import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions
+import com.google.android.gms.common.api.ApiException
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.GoogleAuthProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
+import com.offhome.app.ui.signup.SignUpViewModel
+import com.offhome.app.ui.signup.SignUpViewModelFactory
 
 /**
  * Class *LoginActicity*
@@ -40,6 +52,9 @@ class LoginActivity : AppCompatActivity() {
     private lateinit var btnLogin: Button
     private lateinit var btnToSignUp: TextView
     private lateinit var btnLoginGoogle: Button
+    private lateinit var btnRecoverPassword: TextView
+
+    private val GOOGLE_SIGN_IN = 100
 
     /**
      * It is executed when the activity is launched for first time or created again following
@@ -49,6 +64,13 @@ class LoginActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
+            val intent = Intent(this, MainActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
+
         setUp()
         startObservers()
         editTextsChanges()
@@ -66,6 +88,74 @@ class LoginActivity : AppCompatActivity() {
             val intent = Intent(this, SignUpActivity::class.java)
             startActivity(intent)
         }
+
+        btnRecoverPassword.setOnClickListener {
+            val intent = Intent(this, RecoverPasswordActivity::class.java)
+            startActivity(intent)
+            btnLoginGoogle.setOnClickListener {
+                loading.visibility = View.VISIBLE
+                val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+                    .requestIdToken(getString(R.string.default_web_client_id))
+                    .requestEmail()
+                    .build()
+                val googleClient = GoogleSignIn.getClient(this, gso)
+                googleClient.signOut()
+                startActivityForResult(googleClient.signInIntent, GOOGLE_SIGN_IN)
+            }
+        }
+    }
+
+    /**
+     * Gets the result of the intent and signs in or signs up.
+     * It also calls the view model to send info to the backend.
+     */
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode == GOOGLE_SIGN_IN) {
+            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
+            try {
+                val account = task.getResult(ApiException::class.java)!!
+                val credential = GoogleAuthProvider.getCredential(account.idToken, null)
+                FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
+                    if (it.isSuccessful) {
+                        Log.d("LOGIN", "signInWithEmail:success")
+                        val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
+                            .get(SignUpViewModel::class.java)
+                        signUpViewModel.signUp(
+                            account.email.toString(),
+                            account.displayName.toString(),
+                            null,
+                            null,
+                            this
+                        )
+                        SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
+                        val welcome = getString(R.string.welcome)
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        Toast.makeText(
+                            applicationContext,
+                            "$welcome ${account.email}",
+                            Toast.LENGTH_LONG
+                        ).show()
+                        finish()
+
+                    } else {
+                        Log.w("LOGIN", "signInWithEmail:failure", it.exception)
+                        Toast.makeText(
+                            baseContext, "Authentication failed.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+            } catch (e: ApiException) {
+                Log.w("LOGIN", "signInWithGoogle:failure", e.cause)
+                Toast.makeText(
+                    baseContext, "Authentication google failed.",
+                    Toast.LENGTH_SHORT
+                ).show()
+            }
+        }
     }
 
     /**
@@ -81,6 +171,7 @@ class LoginActivity : AppCompatActivity() {
         btnToSignUp = findViewById(R.id.textViewHere)
         btnLoginGoogle = findViewById(R.id.buttonGoogleLogin)
         loading = findViewById(R.id.loading)
+        btnRecoverPassword = findViewById(R.id.textViewHereRecover)
 
         loginViewModel = ViewModelProvider(this, LoginViewModelFactory())
             .get(LoginViewModel::class.java)

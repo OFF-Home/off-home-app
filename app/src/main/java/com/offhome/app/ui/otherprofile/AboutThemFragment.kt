@@ -1,5 +1,6 @@
 package com.offhome.app.ui.otherprofile
 
+import android.app.AlertDialog
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -7,21 +8,37 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
+import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
 
+/**
+ * Fragment for the "about them" part of the OtherProfile screen
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @property viewModel reference to the ViewModel object of the entire OtherProfile.
+ * @property textViewProfileDescription reference to description TextView
+ * @property textViewBirthDate reference to birth date TextView
+ * @property textViewFollowerCount reference to follower count TextView
+ * @property textViewFollowingCount reference to following count TextView
+ * @property chipGroupTags reference to the tags ChipGroup
+ *
+ */
 class AboutThemFragment : Fragment() {
 
+    /**
+     * ?
+     */
     companion object {
         fun newInstance() = AboutThemFragment()
     }
 
-    // private lateinit var viewModel: AboutThemViewModel
     private lateinit var viewModel: OtherProfileViewModel
 
     private lateinit var textViewProfileDescription: TextView
@@ -30,6 +47,18 @@ class AboutThemFragment : Fragment() {
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
 
+    /**
+     * Override the onCreateView method
+     *
+     * Does the fragment inflation
+     * Initializes the attributes
+     * Initializes the attributes that reference layout objects
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -37,15 +66,6 @@ class AboutThemFragment : Fragment() {
     ): View? {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
-        // treure els log
-        Log.d("inflate", "inflated successfully")
-        if (parentFragment == null)
-            Log.d("nullParent", "parentfragment is null")
-        else
-            Log.d("parent ok", "parentfragment is NOT null")
-
-        // viewModel = ViewModelProvider(this).get(AboutThemViewModel::class.java)       //intents vells d'agafar el viewModel de la activity "parent"
-        // viewModel = ViewModelProvider(parentFragment as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)        //cast?
         viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
@@ -57,6 +77,12 @@ class AboutThemFragment : Fragment() {
         return view
     }
 
+    /**
+     * Override the onActivityCreated method
+     *
+     * gets the User Info and tags from the VM
+     * @param savedInstanceState
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
@@ -66,18 +92,44 @@ class AboutThemFragment : Fragment() {
         textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
-        omplirTagGroup(uinfo.tags)
+        omplirTagGroup(uinfo.tags)  //TODO canviar per el de List <TagData>
     }
 
+    //old
     private fun omplirTagGroup(tagString: String) {
-        // decodificar el Json
-
-        // while (i < nTags) {
-
         val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
         tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         tag1.chipStrokeWidth = 5F
-        //    ++i
-        // }
+    }
+
+    /**
+     * fills the tags ChipGroup with the tags passed
+     *
+     * @param tagList list of tags
+     */
+    private fun omplirTagGroup(tagList:List<TagData>) {
+        for (tagData in tagList) {
+            addTagToChipGroup(tagData.nomTag)
+        }
+    }
+
+    /**
+     * creates and initializes a chip (visually, on the app. Nothing to do with backend) withe the parameter string
+     *
+     * @param tag tag to initialize
+     */
+    private fun addTagToChipGroup(tag: String) {
+        val chip = Chip(context);
+        chip.text = tag
+        chip.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
+        chip.chipStrokeWidth = 5F
+        chipGroupTags.addView(chip)
+    }
+
+    /**
+     * updates the follower count text view according to the data in the VM
+     */
+    fun updateFollowes() {
+        textViewFollowerCount.text = viewModel.getUserInfo().followers.toString()
     }
 }

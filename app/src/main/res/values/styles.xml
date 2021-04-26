@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="deletable_chip" parent="@style/Widget.MaterialComponents.Chip.Entry">
+        <item name="backgroundColor">@color/divider</item>
+        <item name="android:textColor"> @color/black</item>
+        <item name ="android:textStyle"> italic </item>
+        <item name="chipStrokeColor">@color/primary_light</item>
+        <item name="chipStrokeWidth">1dp</item>
+        <item name="android:checkable">false</item>
+
+    </style>
+    <style name="Rounded" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+</resources>

@@ -1,6 +1,7 @@
 package com.offhome.app.ui.profile
 
 import android.Manifest
+import android.app.AlertDialog
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.database.Cursor
@@ -15,6 +16,7 @@ import android.provider.Settings
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -23,9 +25,15 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.tabs.TabLayout
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -34,10 +42,17 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * Fragment for the Profile screen. On its ViewPager it can show either of the 3 fragments: MyActivities, AboutMe, Settings.
  * This class is one of the Views in this screen's MVVM's
  *
- * @author Pau and Ferran
+ * @author Ferran, Pau, others
  * @property fragmentViewModel reference to the ViewModel object
  * @property imageViewProfilePic reference to profile pic ImageView
  * @property textViewUsername reference to the username TextView
+ * @property estrelles reference to the user's rating bar
+ * @property editUsernameButton button to edit and save the username
+ * @property constraintLayout1 reference to the layout's constraint layout
+ * @property editIconDrawable drawable of the "edit" icon (a pencil)
+ * @property saveIconDrawable drawable of the "save" icon (a diskette)
+ * @property editTextUsername editText to edit the username
+ * @property firebaseAuth is the gateway to the Firebase authentication API.
  */
 class ProfileFragment : Fragment() {
     private lateinit var fragmentViewModel: ProfileFragmentViewModel
@@ -59,14 +74,18 @@ class ProfileFragment : Fragment() {
     val PICK_PHOTO_FOR_AVATAR = 1
     val SELECT_PHOTO_GALLERY = 1
 
+    private lateinit var firebaseAuth: FirebaseAuth
+
+
     /**
      * Override the onCreateView method
      *
      * Does the fragment inflation
      * Initializes the attributes
+     * Initializes the attributes that reference layout objects
      * Sets up the ViewPager and its tabs
      *
-     * Makes the call to the VM to obtain the topProfileInfo and observes its live data for the result
+     * Makes the call to the VM to obtain the ProfileInfo and observes its live data for the result
      *
      * @param inflater
      * @param container
@@ -92,11 +111,16 @@ class ProfileFragment : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
+        //cosas logout
+        super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
+        firebaseAuth = Firebase.auth
+
         fragmentViewModel = ViewModelProvider(this).get(ProfileFragmentViewModel::class.java)
         fragmentViewModel.getProfileInfo()
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
-            Observer { // aquest observer no arriba a executar-se però el de AboutMeFragment sí. NO ENTENC PERQUÈ
+            Observer {
                 val profileInfoVM = it ?: return@Observer
 
                 textViewUsername.text = profileInfoVM.username
@@ -106,6 +130,7 @@ class ProfileFragment : Fragment() {
         )
 
         iniEditElements()
+        iniUsernameSetListener() //TODO sobra?
 
         viewAsOtherProfile.setOnClickListener{
             canviAOtherProfile()
@@ -118,16 +143,12 @@ class ProfileFragment : Fragment() {
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context?.let { it1 ->
-                    ContextCompat.checkSelfPermission(
-                        it1,
-                        Manifest.permission.READ_EXTERNAL_STORAGE
-                    )
+                    ContextCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE)
                 }
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 Intent(
                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + requireContext().packageName)
-                    //Uri.parse("package:$packageName")
                 )
                 startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)
             }
@@ -136,6 +157,7 @@ class ProfileFragment : Fragment() {
 
         return view
     }
+
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -149,18 +171,62 @@ class ProfileFragment : Fragment() {
                     val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
                     val photoPath: String = cursor.getString(imageIndex)
                     fragmentViewModel.uploadPhoto(photoPath)
+                    //Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
+                    Glide.with(this).load(photoPath).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
                     cursor.close()
-                    Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
                 }
             }
         }
     }
 
 
+
+    /**
+     * Initializes the listener that observes the call to backend made to edit the username
+     *
+     * the listener removes itself after one use
+     */
+    private fun iniUsernameSetListener() {
+        Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
+
+        //inutil, intentant que salti el observer de setUsernameSuccessfully
+        //fragmentViewModel.simularResposta()
+
+        fragmentViewModel.usernameSetSuccessfully.observe(  //observer no salta. no sé perquè.
+            viewLifecycleOwner,
+            Observer {
+                val resultVM = it ?: return@Observer
+
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
+
+                Log.d("resultVM.string", resultVM.string())
+                if (resultVM.string() == "User has been updated") {
+                    Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                }
+                else {
+                    Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+            }
+        )
+    }
+
+    /**
+     * ViewModel getter
+     *
+     * @return the profile fragment view model
+     */
     fun getViewModel(): ProfileFragmentViewModel {
         return fragmentViewModel
     }
 
+    /**
+     * Initializes the edition elements:
+     *
+     * Initializes the editUsernameButton. It also sets its drawable and listener
+     * Initializes the editTextUsername
+     */
     private fun iniEditElements() {
         iniEditUsernameButton()
 
@@ -175,6 +241,11 @@ class ProfileFragment : Fragment() {
         // fer iniEditProfilePicButton aquí
     }
 
+    /**
+     * Initializes the editUsernameButton
+     *
+     * creates the object, sets id, initializes both drawables, inserts the View with its constraints in the constraint layout
+     */
     private fun iniEditUsernameButton() {
         editUsernameButton = ImageView(activity)
         editUsernameButton.id = R.id.editUsernameButton
@@ -201,6 +272,12 @@ class ProfileFragment : Fragment() {
         constraintSet1.applyTo(constraintLayout1)
     }
 
+    /**
+     * Initializes the username EditText
+     *
+     * creates the object, sets id, inserts the View with its constraints and size i the constraint layout
+     * initializes its visibility to gone
+     */
     private fun iniEditTextUsername() {
         editTextUsername = EditText(activity)
         editTextUsername.id = R.id.editTextUsername2 // li he dit 2 perquè ja existia un editTextUsername aparentment
@@ -222,11 +299,17 @@ class ProfileFragment : Fragment() {
         editTextUsername.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the username to editing
+     *
+     * meaning it changes the drawable to the "save" one, changes the listener, and changes the Username textView for the EditText in the layout
+     */
     private fun changeUsernameToEdit() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
             textViewUsername.text = editTextUsername.text
             fragmentViewModel.usernameChangedByUser(editTextUsername.text)
+            iniUsernameSetListener()
             changeUsernameToDisplay()
         }
         editTextUsername.setText(textViewUsername.text)
@@ -244,6 +327,11 @@ class ProfileFragment : Fragment() {
         textViewUsername.visibility = View.GONE
     }
 
+    /**
+     * Changes the "state" of the username to display
+     *
+     * meaning it changes the drawable to the "edit" one, changes the listener, and changes the Username EditText for the textView in the layout
+     */
     private fun changeUsernameToDisplay() {
         editUsernameButton.setImageDrawable(editIconDrawable)
         editUsernameButton.setOnClickListener {
@@ -276,5 +364,41 @@ class ProfileFragment : Fragment() {
         startActivity(intentCanviAOtherProfile)
     }
 
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @param inflater the inflater
+     */
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.logout, menu)
+        super.onCreateOptionsMenu(menu, inflater)
+    }
 
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout) {
+
+            val logout_dialog = AlertDialog.Builder(activity)
+            logout_dialog.setTitle(R.string.dialog_logout_title)
+            logout_dialog.setMessage(R.string.dialog_logout_message)
+            logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
+                firebaseAuth.signOut()
+                SharedPreferenceManager.deleteData()
+                requireActivity().run {
+                    startActivity(Intent(this, LoginActivity::class.java))
+                    finish()
+                }
+            }
+            logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            logout_dialog.show()
+
+        }
+        return super.onOptionsItemSelected(item)
+    }
 }

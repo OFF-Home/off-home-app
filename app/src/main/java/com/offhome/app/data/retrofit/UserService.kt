@@ -33,7 +33,7 @@ interface UserService {
     //we have two parameters on is name and other one is description
     @Multipart
     @POST("/upload/userimage/{email}")
-    fun uploadProfilePhoto(@Part(value = "file\"; filename=\"photo.jpeg\" ") file: RequestBody) : Call<ResponseBody>
+    fun uploadProfilePhoto(@Path("email") currentUser: String, @Part(value = "file\"; filename=\"photo.jpeg\" ") file: RequestBody) : Call<ResponseBody>
 
     @GET("/users/{username}/getFollow")
     fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>

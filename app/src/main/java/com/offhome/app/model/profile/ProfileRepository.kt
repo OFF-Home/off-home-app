@@ -8,6 +8,8 @@ import com.offhome.app.data.retrofit.UserClient
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import androidx.lifecycle.LiveData
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
 import com.offhome.app.data.profilejson.NomTag
@@ -47,7 +49,6 @@ class ProfileRepository {
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
-    val PREF_PHOTOURL = 1
     var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
@@ -387,17 +388,19 @@ class ProfileRepository {
 
 
 
-    fun uploadPhoto(photoPath: String?) {
+    fun uploadPhoto(email: String, photoPath: String?) {
         val file = File(photoPath)
         val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
-        val call: Call<ResponseBody> = userService!!.uploadProfilePhoto(requestBody)
+        val call: Call<ResponseBody> = userService!!.uploadProfilePhoto(email, requestBody)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
                 if (response.isSuccessful()) {
-                    // SharedPreferencesManager.setSomeStringValue(PREF_PHOTOURL, response.body().getFilename())
+                    if (photoPath != null) {
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PHOTO, photoPath)
+                    }
                     //   imageViewProfilePic.setValue(response.body().getFilename())
                 } else {
                     //     Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()

@@ -32,6 +32,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
@@ -59,7 +60,7 @@ class ProfileFragment : Fragment() {
     lateinit var imageViewProfilePic: ImageView
     lateinit var textViewUsername: TextView
     lateinit var estrelles: RatingBar
-    // lateinit var aboutMeFragment :View
+
     private lateinit var editUsernameButton: ImageView
     private lateinit var constraintLayout1: ConstraintLayout
 
@@ -68,11 +69,6 @@ class ProfileFragment : Fragment() {
     private lateinit var editTextUsername: EditText
 
     private lateinit var viewAsOtherProfile: Button
-
-    val REQUEST_IMAGE_CAPTURE = 1
-    private lateinit var imageUri : Uri
-    val PICK_PHOTO_FOR_AVATAR = 1
-    val SELECT_PHOTO_GALLERY = 1
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -150,7 +146,7 @@ class ProfileFragment : Fragment() {
                 Intent(
                     Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + requireContext().packageName)
                 )
-                startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)
+                startActivityForResult(selectPhoto, Constants().SELECT_PHOTO_GALLERY)
             }
         }
 
@@ -161,7 +157,7 @@ class ProfileFragment : Fragment() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == AppCompatActivity.RESULT_OK) {
+        if (requestCode == Constants().PICK_PHOTO_FOR_AVATAR && resultCode == AppCompatActivity.RESULT_OK) {
             if (data != null) {
                 val imageSelected = data.data
                 val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)

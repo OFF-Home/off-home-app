@@ -133,6 +133,7 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun uploadPhoto(photoPath: String){
-        repository.uploadPhoto(photoPath);
+        val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        repository.uploadPhoto(email, photoPath)
     }
 }

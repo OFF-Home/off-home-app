@@ -28,7 +28,7 @@ class OtherProfileViewModel : ViewModel() {
     private lateinit var userTags :List<TagData>
     lateinit var listFollowing: MutableLiveData<List<FollowingUser>>
     lateinit var isFollowing: MutableLiveData<Boolean>
-    lateinit var followResult: MutableLiveData<Boolean>
+    var followResult: MutableLiveData<Boolean> = MutableLiveData()
     private var repository = ProfileRepository()
     private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
@@ -51,10 +51,6 @@ class OtherProfileViewModel : ViewModel() {
     }
     fun getUserTags():List<TagData> {
         return userTags
-    }
-
-    fun uploadPhoto(photoPath: String) {
-        repository.uploadPhoto(photoPath);
     }
 
     /**

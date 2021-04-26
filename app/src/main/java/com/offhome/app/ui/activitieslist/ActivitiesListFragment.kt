@@ -76,17 +76,35 @@ class ActivitiesListFragment : Fragment() {
         )
     }
 
+    /**
+     * Function that creates the options menu and it is called when the user opens the menu for the first time to search or filter the activities from the list
+     * @param menu is the menu provided in the callback
+     * @param inflater it inflates the menu and adds items
+     */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_and_sort_buttons, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
+        /**
+         * Callbacks for changes to the query text
+         */
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            /**
+             * Called when the user submits the query
+             * @param query the query text that is to be submitted
+             * @return true if the query has been handled by the listener, false to let the SearchView perform the default action.
+             * */
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
+            /**
+             * Called when the query text is changed by the user
+             * @param query the new content of the query text field
+             * @return false if the SearchView should perform the default action of showing any suggestions if available, true if the action was handled by the listener.
+             */
             override fun onQueryTextChange(newText: String?): Boolean {
                 activitiesListAdapter.performFiltering(newText)
                 return false

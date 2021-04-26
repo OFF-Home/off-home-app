@@ -24,4 +24,16 @@ class InfoActivityViewModel : ViewModel() {
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         )
     }
+
+    /**
+     * This function calls the [ActivitiesRepository] in order to join to an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data string type
+     */
+    fun deleteUsuari(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
+        return repository.deleteUsuari(usuariCreador, dataHoraIni,
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        )
+    }
 }

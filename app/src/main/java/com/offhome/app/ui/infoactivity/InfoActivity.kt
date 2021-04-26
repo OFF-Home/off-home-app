@@ -92,10 +92,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             joined = !joined
             if (joined) {
                 btnJoin.text = "JOINED"
-                val snackbar: Snackbar = Snackbar.make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                snackbar.show()
-                /*
-                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                //val snackbar: Snackbar = Snackbar.make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                //snackbar.show()
+                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
                         if (it != " ") {
@@ -111,18 +110,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
                         }
                     }
-                )*/
+                )
             }
             else {
                 btnJoin.text = "JOIN"
-                val snackbar: Snackbar = Snackbar.make(layout, "You are no longer a participant :(", Snackbar.LENGTH_LONG)
-                snackbar.show()
-                /*
-                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, "Pau").observe(
+                //val snackbar: Snackbar = Snackbar.make(layout, "You are no longer a participant :(", Snackbar.LENGTH_LONG)
+                //snackbar.show()
+
+                viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
                         if (it != " ") {
-                            if (it == "You have joined the activity!") {
+                            if (it == "You have left the activity :(") {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
@@ -134,7 +133,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             }
                         }
                     }
-                )*/
+                )
             }
 
         }

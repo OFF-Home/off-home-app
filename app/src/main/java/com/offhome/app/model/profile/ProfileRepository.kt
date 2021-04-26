@@ -23,8 +23,6 @@ import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import kotlin.Boolean as Boolean
-
 
 /**
  * Class *ProfileRepository*
@@ -42,8 +40,8 @@ import kotlin.Boolean as Boolean
  * @property descriptionSetSuccessfully mutable live data of the response to the call to set the description
  * @property tagDeletedSuccessfully mutable live data of the response to the call to delete a tag
  * @property tagAddedSuccessfully mutable live data of the response to the call to add a tag
- * @property PREF_PHOTOURL
  */
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ProfileRepository {
 
     private val userClient = UserClient()
@@ -63,7 +61,7 @@ class ProfileRepository {
      * @param username username of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(username: String): MutableLiveData<UserInfo>? {
+    fun getProfileInfo(username: String): MutableLiveData<UserInfo> {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
@@ -94,7 +92,7 @@ class ProfileRepository {
      * @param email key of the user whose activities are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>>? {
+    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
 
         val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
@@ -121,7 +119,7 @@ class ProfileRepository {
      * @param email key of the user whose tags are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {
+    fun getUserTags(email: String): MutableLiveData<List<TagData>> {
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
         val call: Call<List<TagData>> = userService!!.getTags(email = email)
@@ -165,7 +163,7 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody>? {
+    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody> {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
         val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
         call.enqueue(object : Callback<ResponseBody> {
@@ -386,8 +384,11 @@ class ProfileRepository {
         return result
     }
 
-
-
+    /**
+     * This function handles the action of uploading a photo from the device of the user
+     * @param email The email of the user in order to be able to edit his profile
+     * @param photoPath The path of the photo desired
+     */
     fun uploadPhoto(email: String, photoPath: String?) {
         val file = File(photoPath)
         val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
@@ -397,19 +398,16 @@ class ProfileRepository {
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful()) {
+                if (response.isSuccessful) {
                     if (photoPath != null) {
                         SharedPreferenceManager.setStringValue(Constants().PREF_PHOTO, photoPath)
                     }
-                    //   imageViewProfilePic.setValue(response.body().getFilename())
                 } else {
-                    //     Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                    Log.d("GET", "Error uploading the image")
                 }
-
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                //   Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                Log.d("GET", "Error uploading the image")
             }
         })
     }

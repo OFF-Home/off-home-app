@@ -34,7 +34,6 @@ class OtherProfileActivity : AppCompatActivity() {
 
     private lateinit var viewModel: OtherProfileViewModel
     private lateinit var otherUser: UserInfo
-    private lateinit var imageViewProfilePic: ImageView
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
 
@@ -52,24 +51,6 @@ class OtherProfileActivity : AppCompatActivity() {
         val arguments = intent.extras
         val otherUserString = arguments?.getString("user_info")
         otherUser = GsonBuilder().create().fromJson(otherUserString, UserInfo::class.java)
-        imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
-
-        // imageViewProfilePic. //ficar-hi la imatge
-        imageViewProfilePic.setOnClickListener {
-            //takePictureIntent()
-            val selectPhoto = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && ContextCompat.checkSelfPermission(this, READ_EXTERNAL_STORAGE)
-                != PackageManager.PERMISSION_GRANTED) {
-                Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                    Uri.parse("package:$packageName")
-                )
-                finish()
-                startActivityForResult(selectPhoto, SELECT_PHOTO_GALLERY)                }
-        }
 
         textViewUsername = findViewById(R.id.otherUsername)
         textViewUsername.text = otherUser.username
@@ -90,28 +71,8 @@ class OtherProfileActivity : AppCompatActivity() {
         }
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (requestCode == PICK_PHOTO_FOR_AVATAR && resultCode == RESULT_OK) {
-            if (data != null) {
-                val imageSelected = data.data
-                val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? =
-                    contentResolver.query(imageSelected!!, filepathColumn, null, null, null)
-                if (cursor != null) {
-                    cursor.moveToFirst()
-                    val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
-                    val photoPath: String = cursor.getString(imageIndex)
-                    viewModel.uploadPhoto(photoPath)
-                    cursor.close()
-                    Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
-                }
-            }
-        }
-    }
-
     //no utilitzada ara (fer foto camara)
-    private fun uploadImageAndSaveUri(bitmap: Bitmap){
+    /*private fun uploadImageAndSaveUri(bitmap: Bitmap){
         val baos = ByteArrayOutputStream()
         val storageRef = FirebaseStorage.getInstance()
             .reference
@@ -143,6 +104,6 @@ class OtherProfileActivity : AppCompatActivity() {
                 }
             }
         }
-    }
+    }*/
 
 }

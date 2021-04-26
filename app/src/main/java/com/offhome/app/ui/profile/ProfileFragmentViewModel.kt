@@ -38,4 +38,8 @@ class ProfileFragmentViewModel : ViewModel() {
     fun usernameChangedByUser(text: Editable) {
         repository.setUsername(text.toString())
     }
+
+    fun uploadPhoto(photoPath: String){
+        repository.uploadPhoto(photoPath);
+    }
 }

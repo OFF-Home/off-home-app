@@ -170,4 +170,5 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="view_as_another_user">view as another user</string>
 </resources>

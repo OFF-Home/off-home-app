@@ -23,8 +23,4 @@ class OtherProfileViewModel : ViewModel() {
         return userInfo
     }
 
-
-    fun uploadPhoto(photoPath: String){
-        repository.uploadPhoto(photoPath);
-    }
 }

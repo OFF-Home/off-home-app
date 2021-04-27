@@ -15,6 +15,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import java.util.*
 
 /**
@@ -248,7 +249,7 @@ class SignUpActivity : AppCompatActivity() {
      */
     private fun canviALogInActivity() {
         // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
-        val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
+        val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 
         // aqui s'hauria de fer un finish() i potser un setResult(), crec

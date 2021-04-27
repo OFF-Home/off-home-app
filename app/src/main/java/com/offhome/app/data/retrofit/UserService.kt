@@ -1,5 +1,6 @@
 package com.offhome.app.data.retrofit
 
+import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.data.profilejson.UserDescription
@@ -39,10 +40,10 @@ interface UserService {
     fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
 
     @POST("/users/{username}/follow")
-    fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+    fun follow(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
-    @DELETE("/users/{username}/unfollow")
-    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+    @HTTP(method = "DELETE", path = "/users/{username}/unfollow", hasBody = true)
+    fun stopFollowing(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
     //in progress
     //retornava nomes un. canviaran quna puguin a set

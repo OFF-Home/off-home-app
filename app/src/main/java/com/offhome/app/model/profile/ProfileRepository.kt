@@ -12,6 +12,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
@@ -313,7 +314,7 @@ class ProfileRepository {
     fun follow(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<ResponseBody> = userService!!.follow(currentUser, email)
+        val call: Call<ResponseBody> = userService!!.follow(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -340,7 +341,7 @@ class ProfileRepository {
     fun stopFollowing(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

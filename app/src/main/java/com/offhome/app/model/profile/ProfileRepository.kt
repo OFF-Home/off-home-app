@@ -166,7 +166,7 @@ class ProfileRepository {
      */
     fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody> {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 usernameSetSuccessfully!!.value = response.body()
@@ -202,7 +202,7 @@ class ProfileRepository {
      * @return mutable live data which will be updated with the result of the call
      */
     fun setDescription(email:String, newDescription:String): MutableLiveData<ResponseBody> {
-        val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 descriptionSetSuccessfully.value = response.body()

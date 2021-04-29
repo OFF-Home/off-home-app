@@ -123,7 +123,7 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         // testing
-        omplirTagGroupStub()
+        //omplirTagGroupStub()
 
         iniEditElements()
         iniEditionResultListeners() //TODO sobra?

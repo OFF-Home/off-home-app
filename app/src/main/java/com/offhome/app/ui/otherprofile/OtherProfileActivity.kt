@@ -101,7 +101,7 @@ class OtherProfileActivity : AppCompatActivity() {
      */
     private fun observe() {
         viewModel.followResult.observe(this, {
-            if (it)
+            if (it != "OK")
                 changeFollowButtonText()
             else
                 Toast.makeText(

@@ -1,5 +1,6 @@
 package com.offhome.app.data.retrofit
 
+import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.data.profilejson.UserDescription
@@ -26,8 +27,8 @@ interface UserService {
      * @param username user's email. Will be passed through the path, as it is the identifier of the user  //todo serà cert quan arreglem la PK de backend
      * @return returns the call to be executed. the response in it will contain the user info
      */
-    @GET("/users/{username}/show")
-    fun getProfileInfo(@Path("username") username: String): Call<UserInfo>
+    @GET("/users/{email}/show")
+    fun getProfileInfo(@Path("email") email: String): Call<UserInfo>
 
     //this is our multipart request
     //we have two parameters on is name and other one is description
@@ -39,10 +40,10 @@ interface UserService {
     fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
 
     @POST("/users/{username}/follow")
-    fun follow(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+    fun follow(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
-    @DELETE("/users/{username}/unfollow")
-    fun stopFollowing(@Path("username") currentUser: String, @Body email: String): Call<ResponseBody>
+    @HTTP(method = "DELETE", path = "/users/{username}/unfollow", hasBody = true)
+    fun stopFollowing(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
     //in progress
     //retornava nomes un. canviaran quna puguin a set
@@ -52,8 +53,8 @@ interface UserService {
      * @param email user's email. Will be passed through the path, as it is the identifier of the user
      * @return returns the call to be executed. the response in it will contain the list of tags
      */
-    @GET("/tags/{username}/show")
-    fun getTags(@Path("username") email: String): Call< List<TagData> >
+    @GET("/tags/{email}/show")
+    fun getTags(@Path("email") email: String): Call< List<TagData> >
 
     /**
      * gets the activities where a certain user is joined from the back-end database
@@ -73,8 +74,8 @@ interface UserService {
      * @param nomTag tag to be added
      * @return returns the call to be executed.
      */
-    @POST("tags/{username}/insert")
-    fun addTag(@Path("username") email: String, @Body nomTag: NomTag): Call<ResponseBody>
+    @POST("tags/{email}/insert")
+    fun addTag(@Path("email") email: String, @Body nomTag: NomTag): Call<ResponseBody>
 
     /**
      * deletes a tag from a user in the back-end database
@@ -84,8 +85,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @POST("/tags/{username}/delete")
-    fun deleteTag(@Path("username") email: String, @Body nomTag: NomTag): Call<ResponseBody>
+    @POST("/tags/{email}/delete")
+    fun deleteTag(@Path("email") email: String, @Body nomTag: NomTag): Call<ResponseBody>
 
     /**
      * sets a user's username in the back-end database

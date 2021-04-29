@@ -157,7 +157,7 @@
     <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
     <string name="invalid_birth_date"> Not a valid birth date </string>
     <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
-    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
+    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that the username is  or that the email is invalid </string>
     <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
     <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
     <string name="title_activity_login">LoginActivity</string>

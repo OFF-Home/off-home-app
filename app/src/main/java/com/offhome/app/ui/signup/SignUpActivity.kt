@@ -117,6 +117,8 @@ class SignUpActivity : AppCompatActivity() {
 
                 // Complete and destroy login activity once successful
                 // finish()  //treure oi?
+
+                signUpViewModel.signUpResult.removeObservers(this@SignUpActivity)
             }
         )
 

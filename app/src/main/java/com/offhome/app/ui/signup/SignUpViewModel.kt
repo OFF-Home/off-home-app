@@ -78,6 +78,8 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                     _signUpResult.value = SignUpResult(success = resultRepo.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
+
+                signUpRepository.result.removeObservers(activity)
             }
         )
 

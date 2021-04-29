@@ -47,6 +47,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                     _result.value = ResultSignUp(success = resultDS.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
+                dataSource.result.removeObservers(activity)
             }
         )
         dataSource.signUp(email, username, password, birthDate, activity)

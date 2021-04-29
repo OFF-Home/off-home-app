@@ -8,8 +8,11 @@ import com.offhome.app.data.retrofit.UserClient
 import okhttp3.MediaType
 import okhttp3.RequestBody
 import androidx.lifecycle.LiveData
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
@@ -21,8 +24,6 @@ import retrofit2.Response
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
-import kotlin.Boolean as Boolean
-
 
 /**
  * Class *ProfileRepository*
@@ -40,14 +41,13 @@ import kotlin.Boolean as Boolean
  * @property descriptionSetSuccessfully mutable live data of the response to the call to set the description
  * @property tagDeletedSuccessfully mutable live data of the response to the call to delete a tag
  * @property tagAddedSuccessfully mutable live data of the response to the call to add a tag
- * @property PREF_PHOTOURL
  */
+@Suppress("NULLABILITY_MISMATCH_BASED_ON_JAVA_ANNOTATIONS")
 class ProfileRepository {
 
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
-    val PREF_PHOTOURL = 1
     var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
@@ -62,7 +62,7 @@ class ProfileRepository {
      * @param username username of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(username: String): MutableLiveData<UserInfo>? {
+    fun getProfileInfo(username: String): MutableLiveData<UserInfo> {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
@@ -93,7 +93,7 @@ class ProfileRepository {
      * @param email key of the user whose activities are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>>? {
+    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
 
         val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
@@ -120,7 +120,7 @@ class ProfileRepository {
      * @param email key of the user whose tags are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserTags(email: String): MutableLiveData<List<TagData>>? {
+    fun getUserTags(email: String): MutableLiveData<List<TagData>> {
         if (tags == null) tags = MutableLiveData< List<TagData> >()
 
         val call: Call<List<TagData>> = userService!!.getTags(email = email)
@@ -164,7 +164,7 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody>? {
+    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody> {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
         val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
         call.enqueue(object : Callback<ResponseBody> {
@@ -314,7 +314,7 @@ class ProfileRepository {
     fun follow(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<ResponseBody> = userService!!.follow(currentUser, email)
+        val call: Call<ResponseBody> = userService!!.follow(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -341,7 +341,7 @@ class ProfileRepository {
     fun stopFollowing(currentUser: String, email: String): LiveData<String> {
         val result = MutableLiveData<String>()
 
-        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -385,30 +385,32 @@ class ProfileRepository {
         return result
     }
 
-
-
-    fun uploadPhoto(photoPath: String?) {
+    /**
+     * This function handles the action of uploading a photo from the device of the user
+     * @param email The email of the user in order to be able to edit his profile
+     * @param photoPath The path of the photo desired
+     */
+    fun uploadPhoto(email: String, photoPath: String?) {
         val file = File(photoPath)
         val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
-        val call: Call<RequestBody?>? = userService!!.updloadProfilePhoto(requestBody)
-        /*call?.enqueue(object : Callback<> {
+        val call: Call<ResponseBody> = userService!!.uploadProfilePhoto(email, requestBody)
+        call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
-                if (response.isSuccessful()) {
-                    // SharedPreferencesManager.setSomeStringValue(PREF_PHOTOURL, response.body().getFilename())
-                    //   imageViewProfilePic.setValue(response.body().getFilename())
+                if (response.isSuccessful) {
+                    if (photoPath != null) {
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PHOTO, photoPath)
+                    }
                 } else {
-                    //     Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                    Log.d("GET", "Error uploading the image")
                 }
-
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                //   Toast.makeText(this, "an error has occurred", Toast.LENGTH_SHORT).show()
+                Log.d("GET", "Error uploading the image")
             }
-        })*/
+        })
     }
 
 

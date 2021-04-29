@@ -26,9 +26,9 @@ import com.offhome.app.model.profile.UserInfo
 class OtherProfileViewModel : ViewModel() {
     private lateinit var userInfo :UserInfo
     private lateinit var userTags :List<TagData>
-    lateinit var listFollowing: MutableLiveData<List<FollowingUser>>
-    lateinit var isFollowing: MutableLiveData<Boolean>
-    lateinit var followResult: MutableLiveData<Boolean>
+    var listFollowing: MutableLiveData<List<FollowingUser>> = MutableLiveData()
+    var isFollowing: MutableLiveData<Boolean> = MutableLiveData(false)
+    var followResult: MutableLiveData<String> = MutableLiveData()
     private var repository = ProfileRepository()
     private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
@@ -53,15 +53,11 @@ class OtherProfileViewModel : ViewModel() {
         return userTags
     }
 
-    fun uploadPhoto(photoPath: String) {
-        repository.uploadPhoto(photoPath);
-    }
-
     /**
      * It calls the repository to get if one user follows the other
      */
     fun isFollowing(): List<FollowingUser>? {
-        listFollowing = repository.following(currentUser) as MutableLiveData<List<FollowingUser>>
+        listFollowing = repository.following(userInfo.email) as MutableLiveData<List<FollowingUser>>
         return listFollowing.value
     }
 
@@ -69,7 +65,7 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to start following a new user
      */
     fun follow() {
-        followResult.value = repository.follow(currentUser, userInfo.email).value == "OK"
+        followResult.value = repository.follow(currentUser, userInfo.email).value
         isFollowing.value = true
         userInfo.followers += 1
     }
@@ -78,7 +74,7 @@ class OtherProfileViewModel : ViewModel() {
      * It calls the repository to stop following a user
      */
     fun stopFollowing() {
-        followResult.value = repository.stopFollowing(currentUser, userInfo.email).value == "OK"
+        followResult.value = repository.stopFollowing(currentUser, userInfo.email).value
         isFollowing.value = false
         userInfo.followers -= 1
     }

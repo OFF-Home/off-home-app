@@ -1,8 +1,11 @@
 package com.offhome.app.ui.infoactivity
 
+import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.View
 import android.widget.Button
 import android.widget.ImageView
@@ -186,4 +189,32 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap.addMarker(MarkerOptions().position(place).title(activity.titol))
         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(place, 16.0f))
     }
+
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @return true
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.share_menu,menu)
+        return true
+    }
+
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.share_btn){
+            val intent= Intent()
+            intent.action=Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT,"Hey! Check out this great activity:")
+            intent.type="text/plain"
+            startActivity(Intent.createChooser(intent,"Share To:"))
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
+
 }

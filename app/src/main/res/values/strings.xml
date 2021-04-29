@@ -21,15 +21,14 @@
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
-        <item>Select category</item>5
-        <item>SPORTS</item>
-        <item>BICYCLING</item>
-        <item>CULTURAL</item>
-        <item>DANCING</item>
-        <item>VOLUNTEERING</item>
-        <item>WALKING</item>
-        <item>SELF CARE</item>
-        <item>GARDERING</item>
+        <item>Sports</item>
+        <item>Bicycling</item>
+        <item>Cultural</item>
+        <item>Dancing</item>
+        <item>Volunteering</item>
+        <item>Walking</item>
+        <item>Self care</item>
+        <item>Gardering</item>
     </string-array>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="prompt_email">Email</string>
@@ -171,6 +170,7 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
+    <string name="view_as_another_user">view as another user</string>
     <string name="btn_follow">Follow</string>
     <string name="btn_following">Following</string>
     <string name="error_follow">Error! Please try it again later</string>
@@ -202,4 +202,5 @@
     <string name="tag_deleted_toast">Tag deleted</string>
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
+    <string name="btn_share">btn_share</string>
 </resources>

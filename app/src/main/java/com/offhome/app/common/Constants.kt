@@ -7,5 +7,9 @@ data class Constants(
     val PREF_EMAIL: String = "PREF_EMAIL",
     val PREF_PROVIDER: String = "PREF_PROVIDER",
     val PREF_PROVIDER_PASSWORD: String = "PASSWORD",
-    val PREF_PROVIDER_GOOGLE: String = "GOOGLE"
+    val PREF_PROVIDER_GOOGLE: String = "GOOGLE",
+    val PREF_PHOTO: String = "URL_PHOTO",
+    val PICK_PHOTO_FOR_AVATAR: Int = 1,
+    val SELECT_PHOTO_GALLERY: Int = 1,
+    val REQUEST_IMAGE_CAPTURE: Int = 1
 )

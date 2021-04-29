@@ -59,15 +59,15 @@ class ProfileRepository {
      * obtains ProfileInfo from the lower level
      *
      * does the GET call and observes the result
-     * @param username username of the user whose data is to be obtained
+     * @param email email of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(username: String): MutableLiveData<UserInfo> {
+    fun getProfileInfo(email: String): MutableLiveData<UserInfo> {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
         // accés a Backend
-        val call: Call<UserInfo> = userService!!.getProfileInfo(username)
+        val call: Call<UserInfo> = userService!!.getProfileInfo(email)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {

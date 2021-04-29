@@ -21,12 +21,12 @@ interface ActivitiesService {
     /**
      * This call is for joining an activity
      */
-    @POST("/insertusuari")
+    @POST("/activitats/insertusuari")
     fun joinActivity(@Body join: JoInActivity): Call<ResponseBody>
 
     /**
      * This call is to leave an activity
      */
-    @POST("/deleteUsuari")
+    @POST("/activitats/deleteUsuari")
     fun deleteUsuari(@Body join: JoInActivity): Call<ResponseBody>
 }

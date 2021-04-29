@@ -95,8 +95,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             joined = !joined
             if (joined) {
                 btnJoin.text = "JOINED"
-                //val snackbar: Snackbar = Snackbar.make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                //snackbar.show()
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -117,8 +115,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             else {
                 btnJoin.text = "JOIN"
-                //val snackbar: Snackbar = Snackbar.make(layout, "You are no longer a participant :(", Snackbar.LENGTH_LONG)
-                //snackbar.show()
 
                 viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,

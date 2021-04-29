@@ -59,15 +59,15 @@ class ProfileRepository {
      * obtains ProfileInfo from the lower level
      *
      * does the GET call and observes the result
-     * @param username username of the user whose data is to be obtained
+     * @param email email of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(username: String): MutableLiveData<UserInfo> {
+    fun getProfileInfo(email: String): MutableLiveData<UserInfo> {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
         // accés a Backend
-        val call: Call<UserInfo> = userService!!.getProfileInfo(username)
+        val call: Call<UserInfo> = userService!!.getProfileInfo(email)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
@@ -166,7 +166,7 @@ class ProfileRepository {
      */
     fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody> {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 usernameSetSuccessfully!!.value = response.body()
@@ -202,7 +202,7 @@ class ProfileRepository {
      * @return mutable live data which will be updated with the result of the call
      */
     fun setDescription(email:String, newDescription:String): MutableLiveData<ResponseBody> {
-        val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 descriptionSetSuccessfully.value = response.body()

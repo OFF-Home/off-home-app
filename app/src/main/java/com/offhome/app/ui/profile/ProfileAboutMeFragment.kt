@@ -5,6 +5,7 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -412,6 +413,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextlayoutParams.width = 0
 
         editTextProfileDescription.visibility = View.GONE
+
+        //set the max chars
+        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(280))
+        editTextProfileDescription.filters = filterArray
     }
 
     /**
@@ -423,8 +428,9 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
-            textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            val newDescription = editTextProfileDescription.text
+            textViewProfileDescription.text = newDescription
+            profileVM.descriptionChangedByUser(newDescription)
             iniDescriptionSetListener()
             changeDescriptionToDisplay()
         }

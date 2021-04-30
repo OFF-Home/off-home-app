@@ -96,7 +96,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param password password field string
      * @param birthDate birth date field string
      */
-    fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
+    fun signupDataChanged(email: String, username: String, password: String, birthDate: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {

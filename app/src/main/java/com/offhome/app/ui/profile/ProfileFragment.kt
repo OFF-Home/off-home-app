@@ -13,6 +13,7 @@ import android.os.Build
 import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
+import android.text.InputFilter
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
@@ -293,6 +294,10 @@ class ProfileFragment : Fragment() {
         editTextlayoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
 
         editTextUsername.visibility = View.GONE
+
+        //set the max chars
+        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(50))
+        editTextUsername.filters = filterArray
     }
 
     /**
@@ -303,10 +308,16 @@ class ProfileFragment : Fragment() {
     private fun changeUsernameToEdit() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
-            textViewUsername.text = editTextUsername.text
-            fragmentViewModel.usernameChangedByUser(editTextUsername.text)
-            iniUsernameSetListener()
-            changeUsernameToDisplay()
+            val newUsername = editTextUsername.text
+            if(!newUsername.isEmpty()) {
+                textViewUsername.text = newUsername
+                fragmentViewModel.usernameChangedByUser(newUsername)
+                iniUsernameSetListener()
+                changeUsernameToDisplay()
+            }
+            else {
+                Toast.makeText(activity,R.string.invalid_username, Toast.LENGTH_LONG).show()
+            }
         }
         editTextUsername.setText(textViewUsername.text)
         editTextUsername.setHint(R.string.hint_username)

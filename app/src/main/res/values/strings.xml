@@ -133,7 +133,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
-    <string name="tag" >Tag</string>
+    <string name="tag">Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -204,6 +204,8 @@
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="share_activity_title">Share this activity (invite a friend)</string>
     <string name="share_activity_message"> Hey! Check out this great activity:</string>
-    <string name="share_in_app_title">Invite in-app</string>
+    <string name="share_in_app_title">Invite via DM</string>
     <string name="share_outside_app_title">Invite through external app</string>
+    <string name="title_activity_invite">ScrollingActivity</string>
+    <string name="action_settings">Settings</string>
 </resources>

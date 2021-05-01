@@ -5,7 +5,6 @@ import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.View
 import android.widget.*
@@ -22,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
 /**
@@ -209,7 +209,21 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         else if (item.itemId == R.id.share_in_app_btn) {
             Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
+            changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeToInviteActivity() {
+        /*val intentCanviAChat = Intent(this, InviteActivity::class.java)
+        //intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
+        startActivity(intentCanviAChat)*/
+
+    }
+
+    private fun changeToChat() {
+        /*val intentCanviAChat = Intent(this, /**/::class.java)
+        intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
+        startActivity(intentCanviAChat)*/
     }
 }

@@ -202,5 +202,8 @@
     <string name="tag_deleted_toast">Tag deleted</string>
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
-    <string name="btn_share">btn_share</string>
+    <string name="share_activity_title">Share this activity (invite a friend)</string>
+    <string name="share_activity_message"> Hey! Check out this great activity:</string>
+    <string name="share_in_app_title">Invite in-app</string>
+    <string name="share_outside_app_title">Invite through external app</string>
 </resources>

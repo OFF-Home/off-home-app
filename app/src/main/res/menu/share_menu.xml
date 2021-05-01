@@ -8,6 +8,19 @@
     <item
         android:id="@+id/share_btn"
         android:icon="@android:drawable/ic_menu_share"
-        android:title="@string/btn_share"
-        app:showAsAction="always" />
+        android:title="@string/share_activity_title"
+        app:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/share_in_app_btn"
+                android:icon="@android:drawable/ic_menu_send"
+                android:title="@string/share_in_app_title"
+                app:showAsAction="never" />
+            <item
+                android:id="@+id/share_outside_app_btn"
+                android:icon="@android:drawable/ic_menu_share"
+                android:title="@string/share_outside_app_title"
+                />
+        </menu>
+    </item>
 </menu>

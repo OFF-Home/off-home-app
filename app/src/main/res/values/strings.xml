@@ -206,6 +206,6 @@
     <string name="share_activity_message"> Hey! Check out this great activity:</string>
     <string name="share_in_app_title">Invite via DM</string>
     <string name="share_outside_app_title">Invite through external app</string>
-    <string name="title_activity_invite">ScrollingActivity</string>
+    <string name="title_activity_invite">Invite to activity:</string>
     <string name="action_settings">Settings</string>
 </resources>

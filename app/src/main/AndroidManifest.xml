@@ -28,7 +28,9 @@
         <activity
             android:name=".ui.inviteChoosePerson.InviteActivity"
             android:label="@string/title_activity_invite"
-            android:theme="@style/Theme.OFFHome.NoActionBar"></activity>
+            android:theme="@style/Theme.OFFHome.NoActionBar">
+
+        </activity>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
@@ -62,7 +64,7 @@
         </activity>
         <activity
             android:name=".ui.updatePassword.UpdatePasswordActivity"
-            android:label="Update password"></activity>
+            android:label="Update password" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">

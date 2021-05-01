@@ -21,6 +21,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
@@ -208,16 +209,16 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             startActivity(Intent.createChooser(intent, "Share To:"))
         }
         else if (item.itemId == R.id.share_in_app_btn) {
-            Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
+            //Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
             changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
     }
 
     private fun changeToInviteActivity() {
-        /*val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        //intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
-        startActivity(intentCanviAChat)*/
+        val intentCanviAChat = Intent(this, InviteActivity::class.java)
+        //intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))  //afegir la info a enviar
+        startActivity(intentCanviAChat)
 
     }
 

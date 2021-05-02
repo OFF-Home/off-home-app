@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.offhome.app">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -11,7 +12,8 @@
     <uses-feature android:name="android.hardware.camera"
         android:required="true" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
 
     <application
@@ -22,7 +24,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome"
-        android:allowBackup="true">
+        android:allowBackup="true"
+        tools:targetApi="n"
+        android:fullBackupContent="@xml/backup_descriptor">
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
@@ -72,6 +76,13 @@
             <meta-data android:name="android.app.searchable"
                 android:resource="@xml/search"/>
         </activity>
-    </application>
+        <service
+            android:name=".MyFirebaseMessagingService"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
+    </application>
 </manifest>

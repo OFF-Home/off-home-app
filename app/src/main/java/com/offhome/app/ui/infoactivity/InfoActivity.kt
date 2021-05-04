@@ -22,7 +22,6 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
 /**
@@ -191,7 +190,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_menu,menu)
+        menuInflater.inflate(R.menu.share_invite_menu,menu)
         return true
     }
 

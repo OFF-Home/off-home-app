@@ -2,6 +2,7 @@ package com.offhome.app.ui.inviteChoosePerson
 
 import android.os.Bundle
 import android.text.InputFilter
+import android.view.Menu
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
@@ -74,4 +75,10 @@ class InviteActivity : AppCompatActivity() {
                 .setAction("Action", null).show()
         }
     }
+
+
+    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.,menu)
+        return true
+    }*/
 }

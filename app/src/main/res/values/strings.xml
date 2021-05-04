@@ -133,7 +133,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
-    <string name="tag" >Tag</string>
+    <string name="tag">Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -203,4 +203,5 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share">btn_share</string>
+    <string name="new_message">Message</string>
 </resources>

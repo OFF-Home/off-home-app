@@ -28,7 +28,8 @@
         <activity
             android:name=".ui.inviteChoosePerson.InviteActivity"
             android:label="@string/title_activity_invite"
-            android:theme="@style/Theme.OFFHome.NoActionBar">
+            android:parentActivityName =".ui.infoactivity.InfoActivity"
+            >
 
         </activity>
         <activity

@@ -217,9 +217,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        //intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))  //afegir la info a enviar
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity))  //todo enviar el num de persones que hi ha apuntades
         startActivity(intentCanviAChat)
-
     }
 
     private fun changeToChat() {

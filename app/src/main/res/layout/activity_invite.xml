@@ -6,19 +6,13 @@
     android:layout_height="match_parent"
     tools:context=".ui.inviteChoosePerson.InviteActivity">
 
-    <com.google.android.material.appbar.AppBarLayout
+    <TextView
+        android:id="@+id/text_max_recipients"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:theme="@style/Theme.OFFHome.AppBarOverlay">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            android:background="?attr/colorPrimary"
-            app:popupTheme="@style/Theme.OFFHome.PopupOverlay" />
-
-    </com.google.android.material.appbar.AppBarLayout>
+        android:text="Select up to _ people"
+        android:background="@color/primary_light"
+        />
 
     <include layout="@layout/content_invite_scrolling" />
 

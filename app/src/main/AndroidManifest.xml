@@ -25,7 +25,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
-        <activity android:name=".ui.singleChat.SingleChatActivity"
+        <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"

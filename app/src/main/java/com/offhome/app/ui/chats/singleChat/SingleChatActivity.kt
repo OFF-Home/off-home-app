@@ -1,4 +1,4 @@
-package com.offhome.app.ui.singleChat
+package com.offhome.app.ui.chats.singleChat
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle

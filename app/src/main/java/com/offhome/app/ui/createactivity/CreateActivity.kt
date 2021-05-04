@@ -19,7 +19,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.model.ActivityData
-import com.offhome.app.ui.groupChat.ChatMessage
+import com.offhome.app.ui.chats.groupChat.ChatMessage
 import java.text.DateFormat
 import java.util.*
 

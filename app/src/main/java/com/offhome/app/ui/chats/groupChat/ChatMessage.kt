@@ -1,4 +1,4 @@
-package com.offhome.app.ui.groupChat
+package com.offhome.app.ui.chats.groupChat
 
 import android.os.Bundle
 import android.widget.*
@@ -21,7 +21,7 @@ class ChatMessage: AppCompatActivity() {
         //aquí guardem el botó d'enviar i el edittext del missatge (de la LinearLayout de activity_group_chat)
         /*sendBtn = findViewById(R.id.send_btn)
         send_btn.setOnClickListener {
-            writeMess = findViewById(R.id.writeMessage)
+            writeMess = findViewById(R.id.new_message)
         }*/
     }
 

@@ -1,4 +1,4 @@
-package com.offhome.app.ui.groupChat
+package com.offhome.app.ui.chats.groupChat
 
 import android.content.Intent
 import android.os.Bundle

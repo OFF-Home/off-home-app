@@ -199,7 +199,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewValoracio" />
 
             <TextView
-                android:id="@+id/textViewidk"
+                android:id="@+id/textViewAddYourComment"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
@@ -212,6 +212,24 @@
                 app:layout_constraintStart_toStartOf="@id/box"
                 app:layout_constraintTop_toBottomOf="@id/ratingStars" />
 
+            <EditText
+                android:id="@+id/yourcomment"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="1dp"
+                android:autofillHints=""
+                android:hint="@string/insert_text"
+                android:inputType="textWebEditText"
+                android:maxLength="500"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.479"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewAddYourComment"
+                app:layout_constraintBottom_toTopOf="@id/textViewComments"
+                app:layout_constraintVertical_bias="0.242" />
+
             <TextView
                 android:id="@+id/textViewComments"
                 android:layout_width="wrap_content"
@@ -223,7 +241,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/textViewidk" />
+                app:layout_constraintTop_toBottomOf="@id/yourcomment" />
 
 
             <Button

@@ -133,7 +133,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
-    <string name="tag" >Tag</string>
+    <string name="tag">Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -193,7 +193,7 @@
     <string name="new_password_repeat">repeat new password</string>
     <string name="dialog_logout_message">Are you sure you want to log out?</string>
     <string name="dialog_logout_title">Log out</string>
-    <string name="ok">OK</string>
+    <string name="ok">Ok</string>
     <string name="cancel">Cancel</string>
     <string name="error_search_user">Please, type the username you want to search</string>
     <string name="user_not_found">USer not found!</string>

@@ -156,6 +156,19 @@
                 app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
+            <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
+                xmlns:app="http://schemas.android.com/apk/res-auto"
+                xmlns:tools="http://schemas.android.com/tools"
+                android:id="@+id/listParticipants"
+                android:name="com.offhome.app.ui.infoactivity.InfoActivity"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                app:layoutManager="LinearLayoutManager"
+                tools:context=".ui.infoactivity.InfoActivity"
+                tools:listitem="@layout/fragment_participant"
+                app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
+                app:layout_constraintBottom_toTopOf="@id/textViewValoracio"/>
+
             <TextView
                 android:id="@+id/textViewValoracio"
                 android:layout_width="wrap_content"
@@ -167,7 +180,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/imageViewParticipants" />
+                app:layout_constraintTop_toBottomOf="@id/listParticipants" />
 
 
             <RatingBar
@@ -186,6 +199,20 @@
                 app:layout_constraintTop_toBottomOf="@+id/textViewValoracio" />
 
             <TextView
+                android:id="@+id/textViewidk"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/addcomment"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/btn_join"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@id/ratingStars" />
+
+            <TextView
                 android:id="@+id/textViewComments"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -196,21 +223,8 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/ratingStars" />
+                app:layout_constraintTop_toBottomOf="@id/textViewidk" />
 
-            <TextView
-                android:id="@+id/textViewidk"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:padding="6dp"
-                android:text="The O.C. és una sèrie de televisió dels Estats Units emesa originàriament per la cadena FOX i creada per Josh Schwartz. La sèrie narra la història d'uns joves i les seves famílies que viuen en el ric comtat d'Orange County, a Califòrnia.OC són les sigles del Comtat d'Orange de Califòrnia, Orange County, lloc on està ambientada la sèrie."
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/btn_join"
-                app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/textViewComments" />
 
             <Button
                 android:id="@+id/btn_join"
@@ -224,7 +238,7 @@
                 app:layout_constraintEnd_toEndOf="@id/box"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="@+id/box"
-                app:layout_constraintTop_toBottomOf="@+id/textViewidk" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewComments" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

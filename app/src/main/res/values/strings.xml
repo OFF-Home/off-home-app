@@ -133,7 +133,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
-    <string name="tag" >Tag</string>
+    <string name="tag">Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -205,5 +205,5 @@
     <string name="btn_share">btn_share</string>
     <string name="valoracions">Ratings</string>
     <string name="comments">Reviews</string>
-
+    <string name="addcomment">Add your review </string>
 </resources>

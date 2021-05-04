@@ -14,6 +14,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
@@ -24,6 +26,8 @@ import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.activitieslist.Activities
+import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import java.util.*
 
 /**
@@ -44,6 +48,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private lateinit var viewModel: InfoActivityViewModel
+    private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -62,6 +67,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
+        /*
+        participantsAdapter = ParticipantsRecyclerViewAdapter(context as Participants)
+
+        val layout = view.findViewById<RecyclerView>(R.id.listParticipants)
+        layout.layoutManager = LinearLayoutManager(context)
+        layout.adapter = participantsAdapter*/
+
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni

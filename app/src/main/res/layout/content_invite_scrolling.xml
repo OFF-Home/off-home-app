@@ -8,20 +8,16 @@
     tools:context=".ui.inviteChoosePerson.InviteActivity"
     tools:showIn="@layout/activity_invite">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+    <!-- you can put the recycler inside a constraintLayout or whatever, if you want to add more things here -->
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/RecyclerViewInvite"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
             tools:listitem="@layout/fragment_recipient">
 
         </androidx.recyclerview.widget.RecyclerView>
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.core.widget.NestedScrollView>

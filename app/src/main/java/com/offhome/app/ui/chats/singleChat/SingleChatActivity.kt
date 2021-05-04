@@ -11,7 +11,7 @@ class SingleChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val arguments = intent.extras
-        val chatId = arguments?.getString("id")
+        val userUid = arguments?.getString("uid")
         val userName = arguments?.getString("username")
         title = userName
     }

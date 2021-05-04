@@ -14,18 +14,14 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModelProvider
-import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.profile.UserInfo
-import java.io.ByteArrayOutputStream
+import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 
 /**
@@ -51,6 +47,7 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
     private lateinit var btnFollowFollowing: Button
+    private lateinit var btnChat: FloatingActionButton
     private lateinit var fragment: AboutThemFragment
 
     /**
@@ -91,6 +88,13 @@ class OtherProfileActivity : AppCompatActivity() {
             if (btnFollowFollowing.text == getString(R.string.btn_follow))
                 viewModel.follow()
             else viewModel.stopFollowing()
+        }
+
+        btnChat = findViewById(R.id.floatingActionButton)
+
+        btnChat.setOnClickListener {
+            val intent = Intent(this, SingleChatActivity::class.java)
+            intent.putExtra("uid", "d")
         }
 
         observe()

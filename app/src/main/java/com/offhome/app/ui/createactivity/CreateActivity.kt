@@ -9,15 +9,21 @@ import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.model.ActivityData
+import com.offhome.app.ui.groupChat.ChatMessage
+import java.text.DateFormat
 import java.util.*
+
+
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
  * @author Maria Nievas Viñals
@@ -150,19 +156,65 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
-                val activitydata = ActivityData("Balmes2", 11, "13h", "Walking", 7, "Running in La Barce", "so much fun!!!", " 13/5/2021")
+                val activitydata = ActivityData(
+                    "Balmes2",
+                    11,
+                    "13h",
+                    "Walking",
+                    7,
+                    "Running in La Barce",
+                    "so much fun!!!",
+                    " 13/5/2021"
+                )
 
                 viewModel.addActivity(activitydata).observe(
                     this,
                     {
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                            if (it == "Activity created") startActivity(Intent(this, MainActivity::class.java))
+                            if (it == "Activity created") {
+                                displayChatGroup(activitydata.titol)
+                                startActivity(Intent(this, MainActivity::class.java))
+                            }
                         }
                     }
                 )
             }
         }
+    }
+
+    private fun displayChatGroup(titolAct: String){
+        Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
+      /*  val SpannableString = SpannableString("Go to chat group")
+        val clickableSpan = object: ClickableSpan(){
+            override fun onClick(widget: View) {
+             //   startActivity(Intent(this, GroupChatActivity::class.java))
+            }
+        }
+        val listOfMessages = findViewById<View>(R.id.messages_view) as ListView
+
+        //això està fet amb firebase (s'ha de canviar)
+        adapter = object : FirebaseListAdapter<ChatMessage?>(
+            this, ChatMessage::class.java,
+            R.layout.message, FirebaseDatabase.getInstance().reference
+        ) {
+            protected fun populateView(v: View, model: ChatMessage, position: Int) {
+                // Get references to the views of message.xml
+                val messageText = v.findViewById<View>(R.id.message_text) as TextView
+                val messageUser = v.findViewById<View>(R.id.message_user) as TextView
+                val messageTime = v.findViewById<View>(R.id.message_time) as TextView
+
+                // Set their text
+                messageText.text = model.messageText
+                messageUser.text = model.messageUser
+
+                // Format the date before showing it
+                messageTime.setText(
+                    DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.messageTime)
+                )
+            }
+        }
+        listOfMessages.adapter = adapter */
     }
 
     /**

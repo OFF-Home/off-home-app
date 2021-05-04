@@ -193,7 +193,7 @@
     <string name="new_password_repeat">repeat new password</string>
     <string name="dialog_logout_message">Are you sure you want to log out?</string>
     <string name="dialog_logout_title">Log out</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error_search_user">Please, type the username you want to search</string>
     <string name="user_not_found">USer not found!</string>
@@ -203,4 +203,5 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share">btn_share</string>
+    <string name="write_a_message">Write a message</string>
 </resources>

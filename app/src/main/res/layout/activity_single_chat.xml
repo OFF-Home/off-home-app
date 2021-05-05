@@ -7,6 +7,7 @@
     tools:context=".ui.chats.singleChat.SingleChatActivity">
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recyclerViewMessages"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginBottom="8dp"
@@ -41,7 +42,7 @@
             android:selectAllOnFocus="true" />
 
         <ImageButton
-            android:id="@+id/imageButton"
+            android:id="@+id/imageButtonSendMessage"
             android:layout_width="50dp"
             android:layout_height="50dp"
             android:padding="10dp"

@@ -1,13 +1,9 @@
 package com.offhome.app.ui.otherprofile
 
-import android.content.ActivityNotFoundException
+
+
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
-import android.view.View
 import android.widget.*
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -22,7 +18,6 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
-
 
 /**
  * Class *OtherProfileActivity*
@@ -100,31 +95,36 @@ class OtherProfileActivity : AppCompatActivity() {
         observe()
     }
 
-
     /**
      * It observes the following list of one user and the response to the call of follow/unfollow
      */
     private fun observe() {
-        viewModel.followResult.observe(this, {
-            if (it != "OK")
-                changeFollowButtonText()
-            else
-                Toast.makeText(
-                    applicationContext,
-                    getString(R.string.error_follow),
-                    Toast.LENGTH_LONG
-                ).show()
-        })
+        viewModel.followResult.observe(
+            this,
+            {
+                if (it != "OK")
+                    changeFollowButtonText()
+                else
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.error_follow),
+                        Toast.LENGTH_LONG
+                    ).show()
+            }
+        )
 
-        viewModel.listFollowing.observe(this, {
-            btnFollowFollowing.text = getString(R.string.btn_follow)
-            for (item in it) {
-                if (item.usuariSeguidor == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) {
-                    viewModel.setFollowing(true)
-                    btnFollowFollowing.text = getString(R.string.btn_following)
+        viewModel.listFollowing.observe(
+            this,
+            {
+                btnFollowFollowing.text = getString(R.string.btn_follow)
+                for (item in it) {
+                    if (item.usuariSeguidor == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) {
+                        viewModel.setFollowing(true)
+                        btnFollowFollowing.text = getString(R.string.btn_following)
+                    }
                 }
             }
-        })
+        )
     }
 
     /**
@@ -138,5 +138,4 @@ class OtherProfileActivity : AppCompatActivity() {
         }
         fragment.updateFollowes()
     }
-
 }

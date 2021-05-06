@@ -1,9 +1,9 @@
 package com.offhome.app.data
 
+
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.common.Constants
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
@@ -51,7 +51,8 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = activitiesService?.createActivityByUser(emailCreator = "victorfer@gmai.com",
+        val call = activitiesService?.createActivityByUser(
+            emailCreator = "victorfer@gmai.com",
             activitydata = newActivity
         )
         call!!.enqueue(object : Callback<ResponseBody> {

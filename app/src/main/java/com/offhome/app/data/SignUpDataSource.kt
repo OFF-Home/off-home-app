@@ -1,5 +1,7 @@
 package com.offhome.app.data
 
+
+
 import android.util.Log
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
@@ -10,14 +12,13 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
-import com.offhome.app.ui.signup.SignUpActivity
+import java.util.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import java.util.*
 
 /**
  * Class *SignUpDataSource*

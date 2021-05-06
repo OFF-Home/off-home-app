@@ -1,5 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
+
+
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -112,8 +114,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 )
-            }
-            else {
+            } else {
                 btnJoin.text = "JOIN"
 
                 viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
@@ -134,7 +135,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 )
             }
-
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -192,7 +192,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_menu,menu)
+        menuInflater.inflate(R.menu.share_menu, menu)
         return true
     }
 
@@ -202,15 +202,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true if the menu is successfully handled
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.share_btn){
-            val intent= Intent()
-            intent.action=Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT,"Hey! Check out this great activity:")
-            intent.type="text/plain"
-            startActivity(Intent.createChooser(intent,"Share To:"))
+        if (item.itemId == R.id.share_btn) {
+            val intent = Intent()
+            intent.action = Intent.ACTION_SEND
+            intent.putExtra(Intent.EXTRA_TEXT, "Hey! Check out this great activity:")
+            intent.type = "text/plain"
+            startActivity(Intent.createChooser(intent, "Share To:"))
         }
         return super.onOptionsItemSelected(item)
     }
-
-
 }

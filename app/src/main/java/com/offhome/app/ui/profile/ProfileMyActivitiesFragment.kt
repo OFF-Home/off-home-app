@@ -1,5 +1,7 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -7,7 +9,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
@@ -31,7 +32,7 @@ class ProfileMyActivitiesFragment : Fragment() {
         fun newInstance() = ProfileMyActivitiesFragment()
     }
 
-    private lateinit var profileVM:ProfileFragmentViewModel
+    private lateinit var profileVM: ProfileFragmentViewModel
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
 
@@ -58,7 +59,7 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         rotateArrowDrawables()
 
-        //tot lo del recycler ho he robat descaradament de ActivitiesList
+        // tot lo del recycler ho he robat descaradament de ActivitiesList
         activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
         recyclerView.layoutManager = LinearLayoutManager(context)
@@ -70,13 +71,14 @@ class ProfileMyActivitiesFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val myActivitiesVM = it ?: return@Observer
-                //copiat de ActivitiesList
+                // copiat de ActivitiesList
                 Log.d("MyActivities", "my activities got to the fragment")
                 activitiesList = myActivitiesVM
 
                 activitiesListAdapter.setData(activitiesList)
-                //com que això ho he copiat nose si se li assigna un listener...
-            })
+                // com que això ho he copiat nose si se li assigna un listener...
+            }
+        )
 
         return view
     }
@@ -85,11 +87,11 @@ class ProfileMyActivitiesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 
-    //no ho vaig aconseguir
+    // no ho vaig aconseguir
     /**
      * Rotates the "arrow" icon drawables on the two buttons of the layout
      */
-    private fun rotateArrowDrawables() {/*
+    private fun rotateArrowDrawables() { /*
         //val dr: Drawable = resources.getDrawable(android.R.drawable.abc_vector_test)
         val dr2: Drawable = resources.getDrawable(R.drawable.abc_vector_test)
 

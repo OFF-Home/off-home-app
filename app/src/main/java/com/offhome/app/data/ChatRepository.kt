@@ -1,14 +1,16 @@
 package com.offhome.app.data
 
+
+
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.Message
+import java.io.IOException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.IOException
 
 class ChatRepository {
 
@@ -37,6 +39,5 @@ class ChatRepository {
     }
 
     fun sendMessage(text: String) {
-
     }
 }

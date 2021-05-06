@@ -47,7 +47,7 @@ class MyChatRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     override fun getItemCount(): Int = listMessages.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (listMessages.get(position).user == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)) 0
+        return if (listMessages.get(position).user == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "101") 0
         else 1
     }
 

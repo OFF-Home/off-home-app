@@ -29,7 +29,7 @@ class SingleChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val arguments = intent.extras
-        val userUid = arguments?.getString("uid")
+        val userUid = "102"//arguments?.getString("uid")
         val userName = arguments?.getString("username")
         title = userName
 
@@ -49,7 +49,7 @@ class SingleChatActivity : AppCompatActivity() {
         })
 
         userUid?.let {
-            viewModel.getMessages(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!,
+            viewModel.getMessages(/*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
                 it
             )
         } ?: run {

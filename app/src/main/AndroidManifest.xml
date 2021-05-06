@@ -26,7 +26,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
         <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
-            android:parentActivityName=".MainActivity"/>
+            android:parentActivityName=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
@@ -52,11 +58,6 @@
             android:launchMode="singleTop"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.updatePassword.UpdatePasswordActivity"

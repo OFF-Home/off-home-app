@@ -1,12 +1,39 @@
 package com.offhome.app.data
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.model.ChatIndividualIdentification
+import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.Message
-import java.util.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
+import java.io.IOException
 
 class ChatRepository {
-    fun getMessages(uid1: String, uid2: String): MutableLiveData<List<Message>> {
-        return MutableLiveData(arrayListOf((Message("gter", "Hello", Date(10)))))
+
+    private val chatsClient = ChatClient()
+    private var chatsService = chatsClient.getChatsService()
+
+    fun getMessages(uid1: String, uid2: String): Result<LiveData<List<Message>>> {
+        lateinit var result: Result<LiveData<List<Message>>>
+        val call: Call<List<Message>> = chatsService!!.getAllMessages(
+            ChatIndividualIdentification(uid1, uid2)
+        )
+        call.enqueue(object : Callback<List<Message>> {
+            override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+                if (response.isSuccessful) {
+                    result = Result.Success(MutableLiveData(response.body()))
+                } else {
+                    result = Result.Error(IOException("Error connecting"))
+                }
+            }
+
+            override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+                result = Result.Error(IOException("Error connecting", t))
+            }
+        })
+        return result
     }
 
     fun sendMessage(text: String) {

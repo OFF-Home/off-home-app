@@ -15,7 +15,7 @@ import com.offhome.app.model.ActivityFromList
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private lateinit var participants: LiveData<List<UserInfo>>
+    private lateinit var participants: MutableLiveData<List<String>>
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -44,8 +44,8 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the participants from the repository
      */
-    fun getParticipants(categoryName: String): LiveData<List<UserInfo>> {
-        //participants = repository.getAll(categoryName)
+    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
+        participants = repository.getNamesParticipants(usuariCreador, dataHoraIni)
         return participants
     }
 }

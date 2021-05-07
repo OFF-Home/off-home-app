@@ -156,15 +156,10 @@
                 app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
                 app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
 
-            <androidx.recyclerview.widget.RecyclerView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:app="http://schemas.android.com/apk/res-auto"
-                xmlns:tools="http://schemas.android.com/tools"
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listParticipants"
-                android:name="com.offhome.app.ui.infoactivity.InfoActivity"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                app:layoutManager="LinearLayoutManager"
-                tools:context=".ui.infoactivity.InfoActivity"
                 tools:listitem="@layout/fragment_participant"
                 app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
                 app:layout_constraintBottom_toTopOf="@id/textViewValoracio"/>

@@ -49,6 +49,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var longitude: Double = 0.0
     private lateinit var viewModel: InfoActivityViewModel
     private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
+    private lateinit var layoutParticipants: RecyclerView
+    private var participantsList: List<String> = ArrayList()
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -67,13 +69,22 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
-        /*
-        participantsAdapter = ParticipantsRecyclerViewAdapter(context as Participants)
 
-        val layout = view.findViewById<RecyclerView>(R.id.listParticipants)
-        layout.layoutManager = LinearLayoutManager(context)
-        layout.adapter = participantsAdapter*/
+        participantsAdapter = ParticipantsRecyclerViewAdapter()
+        layoutParticipants = findViewById(R.id.listParticipants)
+        with(layoutParticipants) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = participantsAdapter
+        }
 
+
+        viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+             {
+                participantsList = it
+                participantsAdapter.setData(participantsList)
+            }
+        )
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni

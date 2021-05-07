@@ -29,4 +29,10 @@ interface ActivitiesService {
      */
     @POST("/activitats/deleteUsuari")
     fun deleteUsuari(@Body join: JoInActivity): Call<ResponseBody>
+
+    /**
+     * This call is to get all the participants of an activity
+     */
+    @HTTP(method = "GET", path = "activitats/participants/{usuariCreador}", hasBody = true)
+    fun getAllParticipants(@Path("usuariCreador") usuariCreador: String, @Body dataHoraIni: String): Call<List<String>>
 }

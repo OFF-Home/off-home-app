@@ -16,12 +16,11 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Adpter for the recycler view of the activities list
- * @param context is the context of the activity
  * @property participantsList is the list of activities
  */
-class ParticipantsRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ParticipantsRecyclerViewAdapter.ViewHolder>() {
+class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyclerViewAdapter.ViewHolder>() {
 
-    //repasar esto
+    /*repasar esto
     /**
      * Onclick to item.
      */
@@ -30,9 +29,9 @@ class ParticipantsRecyclerViewAdapter(private val context: Context?) : RecyclerV
         val intent = Intent(context, OtherProfileActivity::class.java)
         intent.putExtra("user_info", GsonBuilder().create().toJson(item))
         context?.startActivity(intent)
-    }
+    }*/
 
-    private var participantsList: List<UserInfo> = ArrayList()
+    private var participantsList: List<String> = ArrayList()
 
     /**
      * it inflates the view of each participant and seves the ViewHolder of the view
@@ -53,7 +52,7 @@ class ParticipantsRecyclerViewAdapter(private val context: Context?) : RecyclerV
      */
     override fun onBindViewHolder(holder: ParticipantsRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = participantsList[position]
-        holder.textViewUsername.text = item.username
+        holder.textViewUsername.text = item
         //aqui hay que pedir profile pic realmente
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
     }
@@ -69,7 +68,7 @@ class ParticipantsRecyclerViewAdapter(private val context: Context?) : RecyclerV
      * sets the new data and notifies to the adapter to refresh if necessary
      * @param participantsList is the new list of activites to set
      */
-    fun setData(participantsList: List<UserInfo>?) {
+    fun setData(participantsList: List<String>?) {
         this.participantsList = participantsList!!
         notifyDataSetChanged()
     }
@@ -77,13 +76,8 @@ class ParticipantsRecyclerViewAdapter(private val context: Context?) : RecyclerV
     /**
      * ViewHolder class to save the refereces to the views of each view
      * @param mView is the general view
-     * @property textViewName is the textView where we will render the activity name
-     * @property textViewDataTime is the textView where we will render the data and time of the activity
-     * @property textViewCapacity is the textView where we will render the capacity of the activity
-     * @property dataTimeImage is the image to show next to the data and time
-     * @property capacityImage is the image to show next to the capacity
-     * @property iconLikeImage is the image to show on the activity to like it
-     * @property background is the cardview's background where all the information is displayed
+     * @property textViewUsername is the textView where we will render the user's name
+     * @property profilepic is the image to show on of the user
      */
      class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewUsername: TextView = mView.findViewById(R.id.participant_username)

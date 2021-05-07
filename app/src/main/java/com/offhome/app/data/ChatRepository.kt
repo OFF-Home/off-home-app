@@ -8,6 +8,7 @@ import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.Message
+import okhttp3.ResponseBody
 import java.io.IOException
 import retrofit2.Call
 import retrofit2.Callback
@@ -61,5 +62,28 @@ class ChatRepository {
     }
 
     fun sendMessage(text: String) {
+    }
+
+
+    fun sendGroupMessage(usid_creator: String, data_hora_ini: String, usid_enviador: String, text: String){
+    /*    val call = chatsService?.sendGroupMissage(
+            ???
+        )
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(
+                call: retrofit2.Call<ResponseBody>,
+                response: Response<ResponseBody>
+            ) {
+                if (response.isSuccessful) {
+                    mutableLiveData?.value = "Message send!"
+                } else mutableLiveData?.value =
+                    "It has been an error and the message cannot be send"
+            }
+            override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
+                mutableLiveData?.value =
+                    "It has been an error and the message cannot be send"
+            }
+        })
+        return mutableLiveData as MutableLiveData<String>*/
     }
 }

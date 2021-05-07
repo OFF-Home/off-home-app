@@ -53,13 +53,10 @@ class GroupChatActivity: AppCompatActivity() {
         }
 
         btnSendMessage.setOnClickListener {
-            if (editTextNewMessage.text.isEmpty())
-                Toast.makeText(
-                    this, getString(R.string.error_empty_message),
-                    Toast.LENGTH_LONG
-                ).show()
-            else viewModel.sendMessage(editTextNewMessage.text.toString())
+            if (!editTextNewMessage.text.isEmpty()) {
+                viewModel.sendMessage("101", "26-5-2000 18:00", "101", "practico couchsurfing")
+            }
+            }
         }
-    }
 
 }

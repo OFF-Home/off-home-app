@@ -203,6 +203,7 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share">btn_share</string>
-    <string name="new_message">new_message</string>
-    <string name="write_a_new_message">Write a new message</string>
+    <string name="new_message">Message</string>
+    <string name="error">Something went wrong!</string>
+    <string name="error_empty_message">Please, write your message before sending</string>
 </resources>

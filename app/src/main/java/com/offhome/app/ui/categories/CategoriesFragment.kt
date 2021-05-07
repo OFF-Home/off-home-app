@@ -1,5 +1,7 @@
 package com.offhome.app.ui.categories
 
+
+
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -73,11 +75,11 @@ class CategoriesFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        //categoryAdapter.setData(categories)
+        // categoryAdapter.setData(categories)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -93,4 +95,3 @@ class CategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 }
-

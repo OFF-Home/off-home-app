@@ -1,5 +1,7 @@
 package com.offhome.app.ui.login
 
+
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -140,7 +142,6 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                         finish()
-
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(

@@ -1,5 +1,7 @@
 package com.offhome.app.ui.chats
 
+
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -8,14 +10,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
-import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.Message
 
-class MyChatRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-    private var listMessages : List<Message> = ArrayList()
+    private var listMessages: List<Message> = ArrayList()
 
     inner class ViewHolderMessage(private val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
@@ -47,7 +47,7 @@ class MyChatRecyclerViewAdapter: RecyclerView.Adapter<RecyclerView.ViewHolder>()
     override fun getItemCount(): Int = listMessages.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (listMessages.get(position).user == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)) 0
+        return if (listMessages.get(position).user == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "101") 0
         else 1
     }
 

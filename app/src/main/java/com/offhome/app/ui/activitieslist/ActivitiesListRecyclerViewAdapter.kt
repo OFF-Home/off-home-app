@@ -1,6 +1,7 @@
 package com.offhome.app.ui.activitieslist
 
 
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
@@ -18,7 +19,6 @@ import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
 import kotlin.collections.ArrayList
 
-
 /**
  * Adpter for the recycler view of the activities list
  * @param context is the context of the activity
@@ -26,7 +26,7 @@ import kotlin.collections.ArrayList
  */
 class ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
-    private var tempListAct : List<ActivityFromList> = ArrayList()
+    private var tempListAct: List<ActivityFromList> = ArrayList()
     private var listActivitiesFull: List<ActivityFromList> = ArrayList()
 
     /**

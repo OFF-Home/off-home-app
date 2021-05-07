@@ -1,19 +1,18 @@
 package com.offhome.app.ui.categories
 
+
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.model.Category
-
 import com.offhome.app.ui.activitieslist.Activities
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,11 +22,10 @@ import kotlin.collections.ArrayList
  * @param context is the context of the activity
  * @property categories is the list of categories
  */
-class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(){
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
 
-    private var listCategoriesFull : List<Category> = ArrayList()
-    private var tempListCat : List<Category> = ArrayList()
-
+    private var listCategoriesFull: List<Category> = ArrayList()
+    private var tempListCat: List<Category> = ArrayList()
 
     /**
      * Onclick to item. Updated when activitiesList developed

@@ -2,19 +2,20 @@ package com.offhome.app.data.retrofit
 
 
 
+import com.offhome.app.common.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
 /**
- * Categories Client Class
- * It has the base configuration of retrofit for getting the categories
+ * Chat Client Class
+ * It has the base configuration of retrofit for the chats
  * @property instance has the instance of this client
- * @property categoriesService is the instance of the service that connects with backend
+ * @property chatsService is the instance of the service that connects with backend
  * @property retrofit is the instance of retrofit library to reach backend
  */
-class CategoriesClient {
-    private lateinit var instance: CategoriesClient
-    private var categoriesService: CategoriesService? = null
+class ChatClient {
+    private lateinit var instance: ChatClient
+    private var chatsService: ChatsService? = null
     private var retrofit: Retrofit? = null
 
     /**
@@ -22,23 +23,23 @@ class CategoriesClient {
      */
     init {
         retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+            .baseUrl(Constants().BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
-        categoriesService = retrofit!!.create(CategoriesService::class.java)
+        chatsService = retrofit!!.create(ChatsService::class.java)
     }
 
     /**
      * Returns the instance of the client
      */
-    fun getInstance(): CategoriesClient {
+    fun getInstance(): ChatClient {
         return instance
     }
 
     /**
      * Returns the instance of the service
      */
-    fun getCategoriesService(): CategoriesService? {
-        return categoriesService
+    fun getChatsService(): ChatsService? {
+        return chatsService
     }
 }

@@ -15,7 +15,7 @@ import com.offhome.app.model.ActivityFromList
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private lateinit var participants: MutableLiveData<List<String>>
+    var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity

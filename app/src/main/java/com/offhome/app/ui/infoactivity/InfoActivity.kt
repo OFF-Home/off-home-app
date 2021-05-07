@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.widget.Button
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -81,8 +78,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
              {
-                participantsList = it
-                participantsAdapter.setData(participantsList)
+                participantsAdapter.setData(it)
             }
         )
 
@@ -97,6 +93,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
+
+        val estrelles = findViewById<RatingBar>(R.id.ratingStars)
+        estrelles.numStars = activity.valoracio
 
         val layout = findViewById<View>(R.id.content)
 

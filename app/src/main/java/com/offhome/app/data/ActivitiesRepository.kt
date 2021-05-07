@@ -23,6 +23,7 @@ import retrofit2.Response
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<String>>? = null
+    private var comments: MutableLiveData<List<String>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()

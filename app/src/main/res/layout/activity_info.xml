@@ -238,6 +238,14 @@
                 app:layout_constraintStart_toStartOf="@id/box"
                 app:layout_constraintTop_toBottomOf="@id/yourcomment" />
 
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listComments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/fragment_comments"
+                app:layout_constraintTop_toBottomOf="@id/textViewComments"
+                app:layout_constraintBottom_toTopOf="@id/btn_join"/>
+
 
             <Button
                 android:id="@+id/btn_join"
@@ -251,7 +259,7 @@
                 app:layout_constraintEnd_toEndOf="@id/box"
                 app:layout_constraintHorizontal_bias="0.497"
                 app:layout_constraintStart_toStartOf="@+id/box"
-                app:layout_constraintTop_toBottomOf="@+id/textViewComments" />
+                app:layout_constraintTop_toBottomOf="@+id/listComments" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

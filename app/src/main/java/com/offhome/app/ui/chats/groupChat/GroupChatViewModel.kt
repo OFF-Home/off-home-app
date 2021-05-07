@@ -15,8 +15,8 @@ class GroupChatViewModel {
     /**
      * It calls the repository to get the messages of a chat
      */
-    fun getMessages(uid1: String, uid2: String) {
-        val result = repository.getMessages(uid1, uid2)
+    fun getMessages(uid_creator: String, data_hora_ini: String) {
+        val result = repository.getMessages(uid_creator, data_hora_ini)
         if (result is Result.Success) {
             listMessages = result.data as MutableLiveData<List<Message>>
         } else {

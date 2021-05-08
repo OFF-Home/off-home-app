@@ -7,165 +7,262 @@
     tools:context=".ui.infoactivity.InfoActivity"
     android:id="@+id/content">
 
-    <fragment
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="412dp"
-        android:layout_height="240dp"
-        android:layout_marginBottom="12dp"
-        app:layout_constraintBottom_toTopOf="@+id/view"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
-
-    <ImageView
-        android:id="@+id/imageViewIconLike"
-        android:layout_width="46dp"
-        android:layout_height="46dp"
-        android:contentDescription="Icon"
-        android:padding="5dp"
-        app:layout_constraintEnd_toEndOf="@+id/map"
-        app:layout_constraintTop_toTopOf="@+id/map"
-        app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-        tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
-    <View
-        android:id="@+id/view"
-        android:layout_width="323dp"
-        android:layout_height="438dp"
-        android:padding="5dp"
+    <ScrollView
+        android:id="@+id/scroller"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/map" />
+        app:layout_constraintTop_toTopOf="parent">
 
-    <ImageView
-        android:id="@+id/imageViewDataTime"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="6dp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toTopOf="@+id/view"
-        app:srcCompat="@drawable/ic_baseline_access_time_filled_24" />
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/box"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textViewDataTimeActivity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:padding="6dp"
-        android:text="DataTime"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
-        app:layout_constraintTop_toTopOf="@+id/view" />
+            <fragment
+                android:id="@+id/map"
+                android:name="com.google.android.gms.maps.SupportMapFragment"
+                android:layout_width="412dp"
+                android:layout_height="240dp"
+                android:layout_marginBottom="12dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
-        android:id="@+id/imageViewCapacity"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="6dp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
-        app:srcCompat="@drawable/ic_baseline_people_alt_24" />
+            <ImageView
+                android:id="@+id/imageViewIconLike"
+                android:layout_width="46dp"
+                android:layout_height="46dp"
+                android:contentDescription="Icon"
+                android:padding="5dp"
+                app:layout_constraintEnd_toEndOf="@+id/map"
+                app:layout_constraintTop_toTopOf="@+id/map"
+                app:srcCompat="@drawable/ic_baseline_favorite_border_24"
+                tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
 
-    <TextView
-        android:id="@+id/textViewCapacity"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:padding="6dp"
-        android:text="Places available"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
 
-    <ImageView
-        android:id="@+id/imageViewCreator"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="6dp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCapacity"
-        app:srcCompat="@drawable/ic_baseline_face_24" />
+            <ImageView
+                android:id="@+id/imageViewDataTime"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@id/map"
+                app:srcCompat="@drawable/ic_baseline_access_time_filled_24" />
 
-    <TextView
-        android:id="@+id/textViewCreator"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:textStyle="bold"
-        android:padding="6dp"
-        android:text="Created by "
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewCreator"
-        app:layout_constraintTop_toBottomOf="@+id/textViewCapacity" />
+            <TextView
+                android:id="@+id/textViewDataTimeActivity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="DataTime"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
+                app:layout_constraintTop_toBottomOf="@id/map" />
 
-    <TextView
-        android:id="@+id/textViewAbout"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:padding="6dp"
-        android:text="@string/about_the_activity"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/imageViewCreator" />
+            <ImageView
+                android:id="@+id/imageViewCapacity"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
+                app:srcCompat="@drawable/ic_baseline_people_alt_24" />
 
-    <TextView
-        android:id="@+id/textViewDescription"
-        android:layout_width="323dp"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:padding="6dp"
-        android:text="This is the best activity ever it is so much fun come join us you will love it."
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textViewAbout" />
+            <TextView
+                android:id="@+id/textViewCapacity"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="Places available"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
 
-    <ImageView
-        android:id="@+id/imageViewParticipants"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:padding="6dp"
-        app:layout_constraintStart_toStartOf="@+id/view"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
-        app:srcCompat="@drawable/ic_baseline_people_24" />
+            <ImageView
+                android:id="@+id/imageViewCreator"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewCapacity"
+                app:srcCompat="@drawable/ic_baseline_face_24" />
 
-    <TextView
-        android:id="@+id/textViewParticipants"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fontFamily="sans-serif"
-        android:padding="6dp"
-        android:text="@string/participants"
-        android:textStyle="bold"
-        android:textColor="@color/black"
-        android:textSize="18sp"
-        app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
-        app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+            <TextView
+                android:id="@+id/textViewCreator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="Created by "
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageViewCreator"
+                app:layout_constraintTop_toBottomOf="@+id/textViewCapacity" />
 
-    <Button
-        android:id="@+id/btn_join"
-        android:layout_width="148dp"
-        android:layout_height="58dp"
-        android:layout_marginBottom="20dp"
-        android:backgroundTint="@color/secondary"
-        android:text="@string/join"
-        android:textSize="20dp"
-        app:cornerRadius="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="@+id/view"
-        app:layout_constraintHorizontal_bias="0.497"
-        app:layout_constraintStart_toStartOf="@+id/view" />
+            <TextView
+                android:id="@+id/textViewAbout"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/about_the_activity"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@+id/imageViewCreator" />
+
+            <TextView
+                android:id="@+id/textViewDescription"
+                android:layout_width="323dp"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="This is the description of the activity."
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@+id/textViewAbout" />
+
+            <ImageView
+                android:id="@+id/imageViewParticipants"
+                android:layout_width="36dp"
+                android:layout_height="36dp"
+                android:padding="6dp"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescription"
+                app:srcCompat="@drawable/ic_baseline_people_24" />
+
+            <TextView
+                android:id="@+id/textViewParticipants"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/participants"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/imageViewParticipants"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDescription" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listParticipants"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/fragment_participant"
+                app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
+                app:layout_constraintBottom_toTopOf="@id/textViewValoracio"/>
+
+            <TextView
+                android:id="@+id/textViewValoracio"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/valoracions"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@id/listParticipants" />
+
+
+            <RatingBar
+                android:id="@+id/ratingStars"
+                style="?android:attr/ratingBarStyleIndicator"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:isIndicator="false"
+                android:layout_gravity="center"
+                android:layout_marginTop="5dp"
+                android:layout_marginBottom="5dp"
+                android:max="5"
+                android:numStars="5"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textViewValoracio" />
+
+            <TextView
+                android:id="@+id/textViewAddYourComment"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/addcomment"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@id/btn_join"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@id/ratingStars" />
+
+            <EditText
+                android:id="@+id/yourcomment"
+                android:layout_width="350dp"
+                android:layout_height="60dp"
+                android:layout_marginStart="12dp"
+                android:layout_marginEnd="1dp"
+                android:autofillHints=""
+                android:hint="@string/insert_text"
+                android:inputType="textWebEditText"
+                android:maxLength="500"
+                android:padding="10dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.479"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/textViewAddYourComment"
+                app:layout_constraintBottom_toTopOf="@id/textViewComments"
+                app:layout_constraintVertical_bias="0.242" />
+
+            <TextView
+                android:id="@+id/textViewComments"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="@string/comments"
+                android:textColor="@color/black"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="@id/box"
+                app:layout_constraintTop_toBottomOf="@id/yourcomment" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listComments"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                tools:listitem="@layout/fragment_comments"
+                app:layout_constraintTop_toBottomOf="@id/textViewComments"
+                app:layout_constraintBottom_toTopOf="@id/btn_join"/>
+
+
+            <Button
+                android:id="@+id/btn_join"
+                android:layout_width="148dp"
+                android:layout_height="58dp"
+                android:backgroundTint="@color/secondary"
+                android:text="@string/join"
+                android:textSize="20dp"
+                app:cornerRadius="18dp"
+                app:layout_constraintBottom_toBottomOf="@id/box"
+                app:layout_constraintEnd_toEndOf="@id/box"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="@+id/box"
+                app:layout_constraintTop_toBottomOf="@+id/listComments" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </ScrollView>
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/joinGroupChat"

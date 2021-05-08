@@ -25,7 +25,7 @@ class GroupChatViewModel: ViewModel() {
         }
     }
 
-    fun sendMessage(usid_creator: String, data_hora_ini: String, usid_enviador: String, text: String) {
-        repository.sendGroupMessage(usid_creator, data_hora_ini, usid_enviador, text)
+    fun sendMessage(uid_creator: String, data_hora_ini: String, uid_enviador: String, text: String) {
+        repository.sendGroupMessage(uid_creator, data_hora_ini, uid_enviador, text)
     }
 }

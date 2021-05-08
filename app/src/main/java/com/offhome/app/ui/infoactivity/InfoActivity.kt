@@ -169,7 +169,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         groupChat = findViewById(R.id.joinGroupChat)
 
         groupChat.setOnClickListener{ activity.titol
-            //only if the user is joined in the activity
+            //go to GroupChatActivity only if the user has joined the activity
             startActivity(Intent(this, GroupChatActivity::class.java))
             finish()
         }

@@ -7,7 +7,9 @@ import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.retrofit.ChatClient
+import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
+import okhttp3.ResponseBody
 import java.io.IOException
 import retrofit2.Call
 import retrofit2.Callback
@@ -17,6 +19,7 @@ class ChatRepository {
 
     private val chatsClient = ChatClient()
     private var chatsService = chatsClient.getChatsService()
+    private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
 
     fun getMessages(uid1: String, uid2: String): MutableLiveData<Result<List<Message>>> {
         val result = MutableLiveData<Result<List<Message>>>()
@@ -64,25 +67,20 @@ class ChatRepository {
     }
 
 
-    fun sendGroupMessage(usid_creator: String, data_hora_ini: String, usid_enviador: String, text: String){
-    /*    val call = chatsService?.sendGroupMissage(
-            ???
-        )
+    fun sendGroupMessage(message: GroupMessage): MutableLiveData<String> {
+        val call = chatsService?.sendGroupMissage(message)
         call!!.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(
-                call: retrofit2.Call<ResponseBody>,
-                response: Response<ResponseBody>
-            ) {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    mutableLiveData?.value = "Message send!"
-                } else mutableLiveData?.value =
+                    responseSendMessage?.value = "Message send!"
+                } else responseSendMessage?.value =
                     "It has been an error and the message cannot be send"
             }
-            override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
-                mutableLiveData?.value =
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseSendMessage?.value =
                     "It has been an error and the message cannot be send"
             }
         })
-        return mutableLiveData as MutableLiveData<String>*/
+        return responseSendMessage as MutableLiveData<String>
     }
 }

@@ -4,6 +4,7 @@ package com.offhome.app.data.retrofit
 
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.ChatIndividualIdentification
+import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -24,9 +25,7 @@ interface ChatsService {
     fun getAllMessagesGroup(@Body chat: ChatGroupIdentification?): Call<List<Message>>
 
 
-/*
+
     @HTTP(method = "POST", path = "xats/missatgesGrup", hasBody = true)
-    fun sendGroupMissage(@Body chat: Message?): Call<ResponseBody>
-    com poso el body? al model Message s'hi hauria d'afegir atributs
-    */
+    fun sendGroupMissage(@Body chat: GroupMessage?): Call<ResponseBody>
 }

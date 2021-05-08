@@ -8,6 +8,7 @@ import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
+import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 
 class GroupChatViewModel: ViewModel() {
@@ -29,7 +30,7 @@ class GroupChatViewModel: ViewModel() {
         )
     }
 
-    fun sendMessage(uid_creator: String, data_hora_ini: String, uid_enviador: String, text: String) {
-        repository.sendGroupMessage(uid_creator, data_hora_ini, uid_enviador, text)
+    fun sendMessage(message: GroupMessage) {
+        repository.sendGroupMessage(message)
     }
 }

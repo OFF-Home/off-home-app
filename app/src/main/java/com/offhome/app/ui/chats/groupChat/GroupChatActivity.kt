@@ -10,6 +10,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
 
 class GroupChatActivity: AppCompatActivity() {
@@ -54,7 +55,10 @@ class GroupChatActivity: AppCompatActivity() {
 
         btnSendMessage.setOnClickListener {
             if (!editTextNewMessage.text.isEmpty()) {
-                viewModel.sendMessage(it.toString(), date_ini, it.toString(), "practico couchsurfing")
+                val mess = GroupMessage(
+                    user_id,date_ini,user_id,"practico couchsurfing"
+                )
+                viewModel.sendMessage(mess)
             }
         }
     }

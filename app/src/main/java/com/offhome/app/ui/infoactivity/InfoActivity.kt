@@ -19,12 +19,14 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.Activities
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import java.util.*
 
 /**
@@ -48,6 +50,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
     private lateinit var layoutParticipants: RecyclerView
     private var participantsList: List<String> = ArrayList()
+
+    private lateinit var groupChat : FloatingActionButton
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -167,6 +171,17 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
+        }
+        displayChatGroup()
+    }
+
+    private fun displayChatGroup(){
+        groupChat = findViewById(R.id.joinGroupChat)
+
+        groupChat.setOnClickListener{ activity.titol
+            //go to GroupChatActivity only if the user has joined the activity
+            startActivity(Intent(this, GroupChatActivity::class.java))
+            finish()
         }
     }
 

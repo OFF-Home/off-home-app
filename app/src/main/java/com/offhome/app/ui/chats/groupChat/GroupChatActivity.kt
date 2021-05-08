@@ -34,28 +34,28 @@ class GroupChatActivity: AppCompatActivity() {
         editTextNewMessage = findViewById(R.id.new_message)
         btnSendMessage = findViewById(R.id.sendButton)
 
-   //     messagesAdapter = MyChatRecyclerViewAdapter()
-    //    with(messagesList) {
-     //       layoutManager = LinearLayoutManager(context)
-      //      adapter = messagesAdapter
-       // }
-
-      //  viewModel = ViewModelProvider(this).get(GroupChatViewModel::class.java)
-
-      //  viewModel.listMessages.observe(
-        //    this,
-        //    {
-        //        messagesAdapter.setData(it)
-        //    }
-      //  )
-        user_id.let {
-     //       viewModel.getMessages(it,date_ini)
+        messagesAdapter = MyChatRecyclerViewAdapter()
+        with(messagesList) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = messagesAdapter
         }
 
-      //  btnSendMessage.setOnClickListener {
-        //    if (!editTextNewMessage.text.isEmpty()) {
-        //        viewModel.sendMessage(it.toString(), date_ini, it.toString(), "practico couchsurfing")
-         //   }
-       // }
+        viewModel = ViewModelProvider(this).get(GroupChatViewModel::class.java)
+
+        viewModel.listMessages.observe(
+            this,
+            {
+                messagesAdapter.setData(it)
+            }
+        )
+        user_id.let {
+            viewModel.getMessages(it,date_ini)
+        }
+
+        btnSendMessage.setOnClickListener {
+            if (!editTextNewMessage.text.isEmpty()) {
+                viewModel.sendMessage(it.toString(), date_ini, it.toString(), "practico couchsurfing")
+            }
+        }
     }
 }

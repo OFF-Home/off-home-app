@@ -3,7 +3,9 @@ package com.offhome.app.ui.chats.singleChat
 
 
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
 import com.offhome.app.common.MyApp
@@ -18,13 +20,16 @@ class SingleChatViewModel : ViewModel() {
     /**
      * It calls the repository to get the messages of a chat
      */
-    fun getMessages(uid1: String, uid2: String) {
-        val result = repository.getMessages(uid1, uid2)
-        if (result is Result.Success) {
-            listMessages = result.data as MutableLiveData<List<Message>>
-        } else {
-            Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error), Toast.LENGTH_SHORT).show()
-        }
+    fun getMessages(uid1: String, uid2: String, activity: AppCompatActivity) {
+        (repository.getMessages(uid1, uid2)).observe(
+            activity, {
+                if (it is Result.Success) {
+                    listMessages.value = it.data
+                } else {
+                    Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error), Toast.LENGTH_SHORT).show()
+                }
+            }
+        )
     }
 
     fun sendMessage(text: String) {

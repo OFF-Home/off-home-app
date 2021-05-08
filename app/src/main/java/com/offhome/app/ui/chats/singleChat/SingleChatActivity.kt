@@ -54,7 +54,7 @@ class SingleChatActivity : AppCompatActivity() {
         userUid?.let {
             viewModel.getMessages(
                 /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
-                it
+                it, this
             )
         } ?: run {
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()

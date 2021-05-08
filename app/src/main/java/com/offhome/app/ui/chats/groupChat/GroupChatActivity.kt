@@ -49,7 +49,7 @@ class GroupChatActivity: AppCompatActivity() {
             }
         )
         user_id.let {
-            viewModel.getMessages(it,date_ini)
+            viewModel.getMessages(it,date_ini, this)
         }
 
         btnSendMessage.setOnClickListener {

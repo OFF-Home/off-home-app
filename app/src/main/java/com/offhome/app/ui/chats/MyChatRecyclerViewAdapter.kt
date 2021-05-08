@@ -34,6 +34,12 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                     .inflate(R.layout.chat_message_other, parent, false)
                 ViewHolderMessage(view)
             }
+            //altra view per missatges de xat grupal (amb nom de l'usuari tmb)
+        /*    else -> {
+                val view = LayoutInflater.from(parent.context)
+                    .inflate(R.layout.chat_message_other, parent, false)
+                ViewHolderMessage(view)
+            }*/
         }
     }
 

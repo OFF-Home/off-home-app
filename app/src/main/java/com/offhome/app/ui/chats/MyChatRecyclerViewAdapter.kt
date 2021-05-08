@@ -22,6 +22,12 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
     }
 
+    inner class ViewHolderGroupMessage(private val mView: View) : RecyclerView.ViewHolder(mView) {
+        val nameViewPerson: TextView = mView.findViewById(R.id.userName)
+        val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
+        val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             0 -> {
@@ -29,17 +35,16 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                     .inflate(R.layout.chat_message_i, parent, false)
                 ViewHolderMessage(view)
             }
-            else -> {
+            1 -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.chat_message_other, parent, false)
                 ViewHolderMessage(view)
             }
-            //altra view per missatges de xat grupal (amb nom de l'usuari tmb)
-        /*    else -> {
+            else -> {
                 val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.chat_message_other, parent, false)
-                ViewHolderMessage(view)
-            }*/
+                    .inflate(R.layout.groupchat_message_other, parent, false)
+                ViewHolderGroupMessage(view)
+            }
         }
     }
 
@@ -55,6 +60,7 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     override fun getItemViewType(position: Int): Int {
         return if (listMessages.get(position).user == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "101") 0
         else 1
+        //aquí sha de canviar i posar opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages??)
     }
 
     /**

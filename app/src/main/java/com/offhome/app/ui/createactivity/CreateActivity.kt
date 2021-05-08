@@ -10,6 +10,8 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ClickableSpan
 import android.util.Log
 import android.view.View
 import android.widget.*
@@ -20,10 +22,10 @@ import androidx.lifecycle.ViewModelProviders
 import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityData
 import com.offhome.app.ui.chats.groupChat.ChatMessage
 import java.text.DateFormat
 import java.util.*
+import com.offhome.app.model.ActivityData as ActivityData
 
 
 /**
@@ -89,10 +91,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         setContentView(R.layout.activity_create)
 
         viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
-
-        val activityObserver = Observer<List<com.offhome.app.model.ActivityFromList>> {
-            Log.d("Activity", it.toString())
-        }
 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -187,36 +185,13 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
     private fun displayChatGroup(titolAct: String){
         Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
-      /*  val SpannableString = SpannableString("Go to chat group")
+       // createGroupChat() ???
+        val SpannableString = SpannableString("Go to chat group")
         val clickableSpan = object: ClickableSpan(){
             override fun onClick(widget: View) {
              //   startActivity(Intent(this, GroupChatActivity::class.java))
             }
         }
-        val listOfMessages = findViewById<View>(R.id.messages_view) as ListView
-
-        //això està fet amb firebase (s'ha de canviar)
-        adapter = object : FirebaseListAdapter<ChatMessage?>(
-            this, ChatMessage::class.java,
-            R.layout.message, FirebaseDatabase.getInstance().reference
-        ) {
-            protected fun populateView(v: View, model: ChatMessage, position: Int) {
-                // Get references to the views of message.xml
-                val messageText = v.findViewById<View>(R.id.message_text) as TextView
-                val messageUser = v.findViewById<View>(R.id.message_user) as TextView
-                val messageTime = v.findViewById<View>(R.id.message_time) as TextView
-
-                // Set their text
-                messageText.text = model.messageText
-                messageUser.text = model.messageUser
-
-                // Format the date before showing it
-                messageTime.setText(
-                    DateFormat.format("dd-MM-yyyy (HH:mm:ss)", model.messageTime)
-                )
-            }
-        }
-        listOfMessages.adapter = adapter */
     }
 
     /**

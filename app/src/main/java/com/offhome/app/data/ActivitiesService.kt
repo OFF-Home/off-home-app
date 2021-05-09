@@ -29,4 +29,11 @@ interface ActivitiesService {
      */
     @POST("/activitats/deleteUsuari")
     fun deleteUsuari(@Body join: JoInActivity): Call<ResponseBody>
+
+
+    /**
+     * This call is to get suggested activities
+     */
+    @GET("/activitats/lolazo") //TODO: posar la ruta correcte
+    fun getSuggestedActivities(@Path("email") loggedUserEmail: String): Call<List<ActivityFromList>>
 }

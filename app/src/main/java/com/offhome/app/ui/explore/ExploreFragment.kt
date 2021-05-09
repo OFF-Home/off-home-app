@@ -3,12 +3,18 @@ package com.offhome.app.ui.explore
 import android.content.Intent
 import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -17,7 +23,10 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @author Pau Cuesta Arcos
  */
 class ExploreFragment : Fragment() {
-
+    private lateinit var viewModel: ExploreViewModel
+    private lateinit var recyclerView:  RecyclerView
+    private var activitiesList: List<ActivityFromList> = ArrayList()
+    private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     /**
      * It has gets the instance of the fragment
      */
@@ -25,7 +34,7 @@ class ExploreFragment : Fragment() {
         fun newInstance() = ExploreFragment()
     }
 
-    private lateinit var viewModel: ExploreViewModel
+
 
     /**
      * it is called when creating view
@@ -35,7 +44,20 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.explore_fragment, container, false)
+        val view = inflater.inflate(R.layout.explore_fragment, container, false)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = activitiesListAdapter
+        viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
+        viewModel.getSuggestedActivities()
+        viewModel.suggestedActivities.observe(
+            viewLifecycleOwner,
+            Observer {
+                activitiesList = it
+                activitiesListAdapter.setData(activitiesList)
+            })
+        return view
     }
 
     /**
@@ -45,7 +67,6 @@ class ExploreFragment : Fragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
         viewModel.profileInfo.observe(viewLifecycleOwner, {
             if (it != null) {
                 val intent = Intent(activity, OtherProfileActivity::class.java)

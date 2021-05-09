@@ -1,6 +1,7 @@
 package com.offhome.app.data
 
 import android.util.Log
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -26,6 +27,7 @@ class ActivitiesRepository {
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private var suggestedactivities: MutableLiveData<List<ActivityFromList>> = MutableLiveData<List<ActivityFromList>>()
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -122,5 +124,24 @@ class ActivitiesRepository {
             }
         })
         return responseJoin as MutableLiveData<String>
+    }
+
+    fun getSuggestedActivities(loggedUserEmail: String): LiveData<List<ActivityFromList>> {
+        val call: Call<List<ActivityFromList>> = activitiesService?.getSuggestedActivities(loggedUserEmail)!!
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    suggestedactivities.value =response.body()
+                    Log.d("response", "getSuggestedActivities response: is successful")
+                } else {
+                    Log.d("response", "getSuggestedActivities response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
+            }
+        })
+        return activities as MutableLiveData<List<ActivityFromList>>
+
     }
 }

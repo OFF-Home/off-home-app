@@ -137,7 +137,7 @@
         android:id="@+id/date_pick_text2"
         android:layout_width="135dp"
         android:layout_height="47dp"
-        android:layout_below="@+id/btn_pickdate1"
+        android:layout_below="@+id/btn_pickdate2"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
@@ -155,7 +155,7 @@
         android:backgroundTint="@color/divider"
         android:text="@string/choose_date"
         android:textSize="10sp"
-        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
+        app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.327"
         app:layout_constraintStart_toStartOf="parent"
@@ -170,7 +170,7 @@
         android:backgroundTint="@color/divider"
         android:textSize="10sp"
         android:text="@string/choose_dateFi"
-        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
+        app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.133"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
@@ -198,7 +198,7 @@
         android:layout_height="39dp"
         android:layout_marginBottom="24dp"
         android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
+        app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.244"
         app:layout_constraintStart_toStartOf="parent"
@@ -242,7 +242,7 @@
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_add_location_alt_24"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/locationpck2"
+        app:layout_constraintEnd_toStartOf="@+id/street"
         app:layout_constraintHorizontal_bias="0.279"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -250,12 +250,12 @@
         tools:ignore="ContentDescription" />
 
     <EditText
-        android:id="@+id/locationpck2"
+        android:id="@+id/street"
         android:layout_width="191dp"
         android:layout_height="49dp"
         android:autoLink="map"
         android:autofillHints=""
-        android:hint="@string/set_location"
+        android:hint="@string/set_address1"
         android:inputType="textPostalAddress"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
@@ -265,6 +265,23 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.624" />
+
+    <EditText
+        android:id="@+id/streetNum"
+        android:layout_width="60dp"
+        android:layout_height="50dp"
+        android:layout_marginEnd="32dp"
+        android:autoLink="map"
+        android:autofillHints=""
+        android:hint="@string/set_address2"
+        android:inputType="textPostalAddress"
+        android:textColor="@color/black"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/street"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.625" />
 
     <Button
         android:id="@+id/btn_invite_friends"

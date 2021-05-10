@@ -27,16 +27,14 @@
         android:theme="@style/Theme.OFFHome">
         <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
-        <activity android:name=".ui.otherprofile.OtherProfileActivity" />
+        <activity android:name=".ui.otherprofile.OtherProfileActivity"/>
+        <activity
+            android:name=".ui.chats.groupChat.GroupChatActivity"
+            android:parentActivityName=".ui.infoactivity.InfoActivity"/>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
              (See the file "res/values/google_maps_api.xml").
@@ -69,6 +67,11 @@
                 <category android:name="android.intent.category.LAUNCHER" />
 
                 <action android:name="android.intent.action.SEARCH" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
 
             <meta-data

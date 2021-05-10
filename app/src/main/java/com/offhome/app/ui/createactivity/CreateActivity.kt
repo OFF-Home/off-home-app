@@ -10,16 +10,24 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
+import android.text.SpannableString
+import android.text.style.ClickableSpan
 import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityData
+import com.offhome.app.ui.chats.groupChat.ChatMessage
+import java.text.DateFormat
 import java.util.*
+import com.offhome.app.model.ActivityData as ActivityData
+
+
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
  * @author Maria Nievas Viñals
@@ -83,10 +91,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         setContentView(R.layout.activity_create)
 
         viewModel = ViewModelProviders.of(this).get(CreateActivityViewModel::class.java)
-
-        val activityObserver = Observer<List<com.offhome.app.model.ActivityFromList>> {
-            Log.d("Activity", it.toString())
-        }
 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -152,17 +156,40 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
-                val activitydata = ActivityData("Balmes2", 11, "13h", "Walking", 7, "Running in La Barce", "so much fun!!!", " 13/5/2021")
+                val activitydata = ActivityData(
+                    "Balmes2",
+                    11,
+                    "13h",
+                    "Walking",
+                    7,
+                    "Running in La Barce",
+                    "so much fun!!!",
+                    " 13/5/2021"
+                )
 
                 viewModel.addActivity(activitydata).observe(
                     this,
                     {
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                            if (it == "Activity created") startActivity(Intent(this, MainActivity::class.java))
+                            if (it == "Activity created") {
+                                displayChatGroup(activitydata.titol)
+                                startActivity(Intent(this, MainActivity::class.java))
+                            }
                         }
                     }
                 )
+            }
+        }
+    }
+
+    private fun displayChatGroup(titolAct: String){
+        Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
+       // createGroupChat() ???
+        val SpannableString = SpannableString("Go to chat group")
+        val clickableSpan = object: ClickableSpan(){
+            override fun onClick(widget: View) {
+             //   startActivity(Intent(this, GroupChatActivity::class.java))
             }
         }
     }

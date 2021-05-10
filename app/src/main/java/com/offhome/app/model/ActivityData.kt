@@ -9,7 +9,7 @@ data class ActivityData(
     val carrerNum: Int,
     val dataHoraIni: String,
     val categoria: String,
-    val maxParticipants: Int,
+    val maxParticipants: String,
     val titol: String,
     val descripcio: String,
     val dataHoraFi: String,

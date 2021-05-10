@@ -1,4 +1,4 @@
-package com.offhome.app.data
+package com.offhome.app.data.retrofit
 
 
 

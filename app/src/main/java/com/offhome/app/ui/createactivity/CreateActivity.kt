@@ -12,18 +12,13 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.ui.chats.groupChat.ChatMessage
-import java.text.DateFormat
 import java.util.*
 import com.offhome.app.model.ActivityData as ActivityData
 
@@ -60,12 +55,17 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
     private lateinit var pick_availability: NumberPicker
     private lateinit var datePicker: TextView
+    private lateinit var dateFinishPicker: TextView
     private lateinit var btn_invitefriends: Button
     private lateinit var act_title: EditText
     private lateinit var btn_CREATED: Button
     private lateinit var description: EditText
-    private lateinit var finalDate: TextView
+    private lateinit var startDate: TextView
+    private lateinit var endDate: TextView
     private lateinit var location: EditText
+
+    private lateinit var dataHoraIni: String
+    private lateinit var maxParticipants: String
 
     /**
      * This function represents the current time using current locale and timezone
@@ -119,6 +119,12 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
             DatePickerDialog(this, this, this.year, this.month, this.day).show()
         }
+        dateFinishPicker = findViewById(R.id.btn_pickdate1)
+        dateFinishPicker.setOnClickListener {
+            getDateTimeCalendar()
+
+            DatePickerDialog(this, this, this.year, this.month, this.day).show()
+        }
     }
 
     /**
@@ -128,6 +134,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         pick_availability = findViewById(R.id.pick_availability)
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
+
     }
 
     /**
@@ -156,14 +163,19 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
+                pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
+                    maxParticipants = if (oldVal != newVal) "$newVal"
+                    else "$oldVal"
+                }
+
                 val activitydata = ActivityData(
                     "Balmes2",
                     11,
-                    "13h",
+                    dataHoraIni,
                     "Walking",
-                    7,
-                    "Running in La Barce",
-                    "so much fun!!!",
+                    maxParticipants,
+                    act_title.text.toString(),
+                    description.text.toString(),
                     " 13/5/2021"
                 )
 
@@ -202,22 +214,27 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     private fun validate(): Boolean {
         act_title = findViewById(R.id.activity_title)
         description = findViewById(R.id.about_the_activity)
-        finalDate = findViewById(R.id.date_pick_text)
+        startDate = findViewById(R.id.date_pick_text1)
+        endDate = findViewById(R.id.date_pick_text2)
         location = findViewById(R.id.locationpck2)
 
         if (act_title.text.toString().isEmpty()) {
             act_title.error = "Name should not be blank"
             return false
         }
-        if (description.text.toString().isEmpty()) {
+        else if (description.text.toString().isEmpty()) {
             description.error = "Name should not be blank"
             return false
         }
-        if (finalDate.text.toString() == "") {
-            finalDate.error = "Date should not be blank"
+        else if (startDate.text.toString() == "") {
+            startDate.error = "Start date should not be blank"
             return false
         }
-        if (location.text.toString().isEmpty()) {
+        else if (endDate.text.toString() == "") {
+            endDate.error = "End date should not be blank"
+            return false
+        }
+        else if (location.text.toString().isEmpty()) {
             location.error = "Location should not be blank"
             return false
         }
@@ -233,7 +250,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         savedYear = year
 
         getDateTimeCalendar()
-        TimePickerDialog(this, this, hour, minute, true).show()
+        TimePickerDialog(this, this, this.hour, this.minute, true).show()
     }
 
     @SuppressLint("SetTextI18n")
@@ -244,7 +261,11 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         savedHour = hourOfDay
         savedMinute = minute
-        finalDate = findViewById(R.id.date_pick_text)
-        finalDate.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
+        startDate = findViewById(R.id.date_pick_text1)
+        startDate.text = "$savedDay-$savedMonth-$savedYear\n Time: $savedHour:$savedMinute"
+        endDate = findViewById(R.id.date_pick_text2)
+        endDate.text = "$savedDay-$savedMonth-$savedYear\n Time: $savedHour:$savedMinute"
+
+        dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
     }
 }

@@ -14,7 +14,7 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-class ChatRepository (private val chatsClient: ChatClient) {
+class ChatRepository(private val chatsClient: ChatClient) {
     private var chatsService = chatsClient.getChatsService()
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
 

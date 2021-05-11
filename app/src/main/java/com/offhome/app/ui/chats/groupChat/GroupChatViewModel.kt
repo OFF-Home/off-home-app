@@ -10,11 +10,12 @@ import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
+import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 
 class GroupChatViewModel : ViewModel() {
-    private var repository = ChatRepository()
+    private var repository = ChatRepository(ChatClient())
     var listMessages: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
 
     /**

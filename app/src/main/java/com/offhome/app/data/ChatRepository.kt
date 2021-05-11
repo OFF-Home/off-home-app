@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.ChatIndividualIdentification
+import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
@@ -24,7 +25,7 @@ class ChatRepository {
     fun getMessages(uid1: String, uid2: String): MutableLiveData<Result<List<Message>>> {
         val result = MutableLiveData<Result<List<Message>>>()
         val call: Call<List<Message>> = chatsService!!.getAllMessages(
-            ChatIndividualIdentification(uid1, uid2)
+            uid1, uid2
         )
         call.enqueue(object : Callback<List<Message>> {
             override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
@@ -36,7 +37,7 @@ class ChatRepository {
             }
 
             override fun onFailure(call: Call<List<Message>>, t: Throwable) {
-                result.value = Result.Error(IOException("Error connecting", t))
+                result.value = Result.Error(IOException("Error connecting to server", t))
             }
         })
         return result
@@ -63,7 +64,23 @@ class ChatRepository {
         return result
     }
 
-    fun sendMessage(text: String) {
+    fun sendMessage(uid1: String, uid2: String, text: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+        val call = chatsService?.sendMessage(SendMessage(uid1, uid2, uid1, text))
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    result.value = Result.Success(response.body().toString())
+                } else {
+                    result.value = Result.Error(IOException("Error connecting"))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                result.value = Result.Error(IOException("Error connecting", t))
+            }
+        })
+        return result
     }
 
 

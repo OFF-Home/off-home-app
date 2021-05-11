@@ -16,6 +16,7 @@ import com.offhome.app.model.Message
 class SingleChatViewModel : ViewModel() {
     private var repository = ChatRepository()
     var listMessages: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
+    var sendMessageResult = MutableLiveData<Result<String>>()
 
     /**
      * It calls the repository to get the messages of a chat
@@ -32,7 +33,7 @@ class SingleChatViewModel : ViewModel() {
         )
     }
 
-    fun sendMessage(text: String) {
-        repository.sendMessage(text)
+    fun sendMessage(uid1: String, uid2: String, text: String) {
+        sendMessageResult = repository.sendMessage(uid1, uid2, text)
     }
 }

@@ -12,7 +12,7 @@
     <!--  Text View to show the text "Title of the activity"  -->
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="350dp"
+        android:layout_width="338dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/title_of_the_activity"
@@ -29,8 +29,8 @@
     <!--  Edit Text for input the title of the activity  -->
     <EditText
         android:id="@+id/activity_title"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:layout_width="337dp"
+        android:layout_height="56dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="1dp"
         android:autofillHints=""
@@ -46,9 +46,12 @@
         app:layout_constraintVertical_bias="0.065" />
 
     <!-- Text View to show the text "About of the activity"  -->
+
+    <!--  Edit Text for input the description of the activity  -->
+
     <TextView
         android:id="@+id/textAbout"
-        android:layout_width="350dp"
+        android:layout_width="338dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/about_the_activity"
@@ -57,16 +60,15 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_create"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.196" />
+        app:layout_constraintVertical_bias="0.184" />
 
-    <!--  Edit Text for input the description of the activity  -->
     <EditText
         android:id="@+id/about_the_activity"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:layout_width="337dp"
+        android:layout_height="53dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="1dp"
         android:autofillHints=""
@@ -76,10 +78,10 @@
         android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.242" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <!--  Image Button to show the image of the location  -->
 
@@ -120,32 +122,32 @@
 
     <TextView
         android:id="@+id/date_pick_text1"
-        android:layout_width="135dp"
-        android:layout_height="47dp"
+        android:layout_width="122dp"
+        android:layout_height="44dp"
         android:layout_below="@+id/btn_pickdate1"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.838"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.758"
+        app:layout_constraintVertical_bias="0.755"
         tools:text="@string/date" />
 
     <TextView
         android:id="@+id/date_pick_text2"
-        android:layout_width="135dp"
-        android:layout_height="47dp"
+        android:layout_width="122dp"
+        android:layout_height="46dp"
         android:layout_below="@+id/btn_pickdate2"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.833"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.942"
+        app:layout_constraintVertical_bias="0.945"
         tools:text="@string/date" />
 
     <Button
@@ -157,7 +159,7 @@
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.327"
+        app:layout_constraintHorizontal_bias="0.304"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.621"
@@ -168,14 +170,14 @@
         android:layout_width="109dp"
         android:layout_height="35dp"
         android:backgroundTint="@color/divider"
-        android:textSize="10sp"
         android:text="@string/choose_dateFi"
+        android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.133"
+        app:layout_constraintHorizontal_bias="0.125"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toBottomOf="@+id/btn_pickdate1"
-        app:layout_constraintVertical_bias="0.23"
+        app:layout_constraintVertical_bias="0.125"
         tools:ignore="SmallSp" />
 
     <TextView
@@ -251,8 +253,8 @@
 
     <EditText
         android:id="@+id/street"
-        android:layout_width="191dp"
-        android:layout_height="49dp"
+        android:layout_width="178dp"
+        android:layout_height="48dp"
         android:autoLink="map"
         android:autofillHints=""
         android:hint="@string/set_address1"
@@ -261,16 +263,16 @@
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.45"
+        app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.624" />
+        app:layout_constraintVertical_bias="0.623" />
 
     <EditText
         android:id="@+id/streetNum"
         android:layout_width="60dp"
-        android:layout_height="50dp"
-        android:layout_marginEnd="32dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
         android:autoLink="map"
         android:autofillHints=""
         android:hint="@string/set_address2"
@@ -279,9 +281,10 @@
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/street"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.625" />
+        app:layout_constraintVertical_bias="0.623" />
 
     <Button
         android:id="@+id/btn_invite_friends"
@@ -315,6 +318,8 @@
     <!--  Button to invite friends for the activity through other apps  -->
 
     <!--  Image Button the show the image of the loupe  -->
+
+    <!--  Button to create the activity  -->
     <ImageButton
         android:id="@+id/image_search"
         android:layout_width="39dp"
@@ -324,13 +329,12 @@
         android:src="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintHorizontal_bias="0.835"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837"
+        app:layout_constraintVertical_bias="0.859"
         tools:ignore="ContentDescription" />
 
-    <!--  Button to create the activity  -->
     <Button
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"

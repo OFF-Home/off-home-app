@@ -83,4 +83,22 @@ class ChatRepository {
         })
         return responseSendMessage as MutableLiveData<String>
     }
+
+    fun addChatGroup(chatGroupIde: ChatGroupIdentification): MutableLiveData<String>{
+        val call = chatsService?.addChatGroup(chatGroupIde)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseSendMessage?.value = "Chat group created!"
+                } else responseSendMessage?.value =
+                    "It has been an error and the chat cannot be created"
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseSendMessage?.value =
+                    "It has been an error and the chat cannot be created"
+            }
+        })
+        return responseSendMessage as MutableLiveData<String>
+    }
+
 }

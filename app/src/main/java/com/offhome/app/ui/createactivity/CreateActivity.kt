@@ -19,6 +19,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.data.model.ChatGroupIdentification
 import java.util.*
 import com.offhome.app.model.ActivityData as ActivityData
 
@@ -195,7 +196,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             if (it == "Activity created") {
-                                displayChatGroup(activitydata.titol)
+                                createChatGroup(activitydata.titol)
                                 startActivity(Intent(this, MainActivity::class.java))
                             }
                         }
@@ -205,9 +206,13 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
     }
 
-    private fun displayChatGroup(titolAct: String){
+    private fun createChatGroup(titolAct: String){
         Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
-       // createGroupChat() ???
+        // usid_creator: String, data_hora_ini: String
+        val chatGroupIde = ChatGroupIdentification(
+            "101", "26-5-2000 18:00"
+        )
+        viewModel.addChatGroup(chatGroupIde)
         val SpannableString = SpannableString("Go to chat group")
         val clickableSpan = object: ClickableSpan(){
             override fun onClick(widget: View) {

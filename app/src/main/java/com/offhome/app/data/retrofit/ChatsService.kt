@@ -24,8 +24,16 @@ interface ChatsService {
     @HTTP(method = "GET", path = "xats/grupal", hasBody = true)
     fun getAllMessagesGroup(@Body chat: ChatGroupIdentification?): Call<List<Message>>
 
-
-
+    /**
+     * This is the call for sending messages of a group chat
+     */
     @HTTP(method = "POST", path = "xats/missatgesGrup", hasBody = true)
     fun sendGroupMissage(@Body chat: GroupMessage?): Call<ResponseBody>
+
+    /**
+     * This is the call for creating a new group chat
+     */
+    @HTTP(method = "POST", path = "xats/crearGrup", hasBody = true)
+    fun addChatGroup(@Body chat: ChatGroupIdentification): Call<ResponseBody>
+
 }

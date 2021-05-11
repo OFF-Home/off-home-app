@@ -19,7 +19,7 @@ class GroupChatViewModel: ViewModel() {
      * It calls the repository to get the messages of a group chat
      */
     fun getMessages(uid_creator: String, data_hora_ini: String, activity: AppCompatActivity) {
-        (repository.getMessages(uid_creator, data_hora_ini)).observe(
+        (repository.getMessagesGroup(uid_creator, data_hora_ini)).observe(
             activity, {
                 if (it is Result.Success) {
                     listMessages.value = it.data

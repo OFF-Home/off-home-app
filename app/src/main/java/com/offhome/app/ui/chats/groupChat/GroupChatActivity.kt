@@ -1,10 +1,10 @@
 package com.offhome.app.ui.chats.groupChat
 
+
+
 import android.os.Bundle
 import android.widget.EditText
 import android.widget.ImageButton
-import android.widget.ListView
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,7 +13,7 @@ import com.offhome.app.R
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
 
-class GroupChatActivity: AppCompatActivity() {
+class GroupChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
     private lateinit var viewModel: GroupChatViewModel
 
@@ -21,8 +21,7 @@ class GroupChatActivity: AppCompatActivity() {
     private lateinit var editTextNewMessage: EditText
     private lateinit var btnSendMessage: ImageButton
 
-
-    override fun onCreate(savedInstanceState: Bundle?){
+    override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
@@ -50,18 +49,16 @@ class GroupChatActivity: AppCompatActivity() {
             }
         )
         user_id.let {
-            viewModel.getMessages(it,date_ini, this)
+            viewModel.getMessages(it, date_ini, this)
         }
 
         btnSendMessage.setOnClickListener {
             if (!editTextNewMessage.text.isEmpty()) {
                 val mess = GroupMessage(
-                    user_id,date_ini,user_id,"practico couchsurfing"
+                    user_id, date_ini, user_id, "practico couchsurfing"
                 )
                 viewModel.sendMessage(mess)
             }
         }
     }
-
-
 }

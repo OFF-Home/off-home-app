@@ -1,5 +1,7 @@
 package com.offhome.app.model
 
+
+
 import android.graphics.drawable.Icon
 import com.offhome.app.model.profile.UserInfo
 import java.util.*

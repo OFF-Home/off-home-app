@@ -2,16 +2,14 @@ package com.offhome.app.data
 
 
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
-import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
-import okhttp3.ResponseBody
 import java.io.IOException
+import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -82,7 +80,6 @@ class ChatRepository {
         })
         return result
     }
-
 
     fun sendGroupMessage(message: GroupMessage): MutableLiveData<String> {
         val call = chatsService?.sendGroupMissage(message)

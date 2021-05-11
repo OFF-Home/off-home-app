@@ -5,7 +5,6 @@ package com.offhome.app.ui.chats.singleChat
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
 import com.offhome.app.common.MyApp
@@ -23,7 +22,8 @@ class SingleChatViewModel : ViewModel() {
      */
     fun getMessages(uid1: String, uid2: String, activity: AppCompatActivity) {
         (repository.getMessages(uid1, uid2)).observe(
-            activity, {
+            activity,
+            {
                 if (it is Result.Success) {
                     listMessages.value = it.data
                 } else {

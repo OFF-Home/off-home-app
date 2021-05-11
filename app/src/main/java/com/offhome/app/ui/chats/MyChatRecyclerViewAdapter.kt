@@ -61,7 +61,7 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     override fun getItemViewType(position: Int): Int {
         return if (listMessages.get(position).usid_enviador == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "101") 0
         else 1
-        //aquí sha de canviar i posar que retorni : opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages?? - modificar type?)
+        // aquí sha de canviar i posar que retorni : opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages?? - modificar type?)
     }
 
     /**
@@ -73,5 +73,5 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         notifyDataSetChanged()
     }
 
-    fun setDataGroup(messages: List<GroupMessage>?){}
+    fun setDataGroup(messages: List<GroupMessage>?) {}
 }

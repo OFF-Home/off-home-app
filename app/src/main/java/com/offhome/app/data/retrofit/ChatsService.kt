@@ -3,7 +3,6 @@ package com.offhome.app.data.retrofit
 
 
 import com.offhome.app.data.model.ChatGroupIdentification
-import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message

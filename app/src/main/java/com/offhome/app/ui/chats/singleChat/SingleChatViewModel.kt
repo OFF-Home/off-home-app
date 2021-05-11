@@ -12,8 +12,7 @@ import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
 import com.offhome.app.model.Message
 
-class SingleChatViewModel : ViewModel() {
-    private var repository = ChatRepository()
+class SingleChatViewModel(val chatRepository: ChatRepository) : ViewModel() {
     var listMessages: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
     var sendMessageResult = MutableLiveData<Result<String>>()
 
@@ -21,7 +20,7 @@ class SingleChatViewModel : ViewModel() {
      * It calls the repository to get the messages of a chat
      */
     fun getMessages(uid1: String, uid2: String, activity: AppCompatActivity) {
-        (repository.getMessages(uid1, uid2)).observe(
+        (chatRepository.getMessages(uid1, uid2)).observe(
             activity,
             {
                 if (it is Result.Success) {
@@ -34,6 +33,6 @@ class SingleChatViewModel : ViewModel() {
     }
 
     fun sendMessage(uid1: String, uid2: String, text: String) {
-        sendMessageResult = repository.sendMessage(uid1, uid2, text)
+        sendMessageResult = chatRepository.sendMessage(uid1, uid2, text)
     }
 }

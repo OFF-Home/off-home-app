@@ -81,20 +81,19 @@ class ChatRepository {
         return result
     }
 
-    fun sendGroupMessage(message: GroupMessage): MutableLiveData<String> {
+    fun sendGroupMessage(message: GroupMessage): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
         val call = chatsService?.sendGroupMissage(message)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    responseSendMessage?.value = "Message send!"
-                } else responseSendMessage?.value =
-                    "It has been an error and the message cannot be send"
+                    result.value = Result.Success(response.body().toString())
+                } else result.value = Result.Error(IOException("Error connecting"))
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseSendMessage?.value =
-                    "It has been an error and the message cannot be send"
+                result.value = Result.Error(IOException("Error connecting", t))
             }
         })
-        return responseSendMessage as MutableLiveData<String>
+        return result
     }
 }

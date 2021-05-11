@@ -1,21 +1,48 @@
 package com.offhome.app.ui.inviteChoosePerson
 
 import android.content.Context
+import android.util.SparseBooleanArray
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.R
 import com.offhome.app.model.profile.UserSummaryInfo
+import androidx.recyclerview.selection.ItemDetailsLookup
+import androidx.recyclerview.selection.SelectionTracker
 
-class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<UsersListRecyclerViewAdapter.ViewHolder>() {
+//todo em caldrà descomentar el list dels params? llavors he de igualar el userList a aquest.
+class UsersListRecyclerViewAdapter(/*private val selectedUserList: List<UserSummaryInfo>,*/ private val context: Context?) : RecyclerView.Adapter<UsersListRecyclerViewAdapter.ViewHolder>() {
 
     private var userList: List<UserSummaryInfo> = ArrayList()
+    //private val selectedItems: SparseBooleanArray? = null
+    private var tracker: SelectionTracker<Long>? = null
+
+    init {
+        setHasStableIds(true)
+    }
+
+    override fun getItemId(position: Int): Long {
+        return position.toLong()
+    }
+
+    fun setTracker(tracker: SelectionTracker<Long>?) {
+        this.tracker = tracker
+    }
+
+    /**
+     * Indicates if the item at position position is selected
+     * @param position Position of the item to check
+     * @return true if the item is selected, false otherwise
+     */
+    /*fun isSelected(position: Int): Boolean {
+        return getSelectedItems().contains(position)
+    }*/
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListRecyclerViewAdapter.ViewHolder {    //int?
         val view = LayoutInflater.from(parent.context)
@@ -46,7 +73,6 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
 
     override fun getItemCount(): Int = userList.size
 
-
     fun setData(userList: List<UserSummaryInfo>?) {
         this.userList = userList!!
         notifyDataSetChanged()
@@ -57,5 +83,27 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
         val textViewEmail: TextView = mView.findViewById(R.id.recipient_email)
         val imageViewProfilePic: ImageView = mView.findViewById(R.id.recipient_profile_pic)
         val layout : ConstraintLayout = mView.findViewById(R.id.recipient_item_layout)
+
+        //per la seleccio
+        fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
+            object: ItemDetailsLookup.ItemDetails<Long>() {
+
+                override fun getPosition(): Int = adapterPosition
+                override fun getSelectionKey(): Long? = itemId
+                // More code here
+
+            }
+    }
+    //potser fer-la fora. pero necessita referenciar el ViewHolder
+    class InviteLookup(private val rv: RecyclerView) : ItemDetailsLookup<String>() {
+        override fun getItemDetails(event: MotionEvent) : ItemDetails<String>? {
+            // More code here
+            val view = rv.findChildViewUnder(event.x, event.y)
+            if(view != null) {
+                return (rv.getChildViewHolder(view) as ViewHolder).getItemDetails()         //ojo q aquest ViewHolder que menciona és el inner de dins de UsersListRecyclerViewAdapter
+            }
+            return null
+        }
     }
 }
+

@@ -17,6 +17,8 @@ class InviteViewModel  : ViewModel() {
     private var _followedUsers = MutableLiveData<List<UserSummaryInfo>>()
     var followedUsers: LiveData<List<UserSummaryInfo>> = _followedUsers
 
+    var selectedUserList = listOf<UserSummaryInfo>()
+
     private var nSelectedRecipients:Int = 0
 
     fun getFollowedUsers() {

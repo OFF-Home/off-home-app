@@ -9,6 +9,10 @@ import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
@@ -25,6 +29,8 @@ class InviteActivity : AppCompatActivity() {
     private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private lateinit var textMaxRecipients:TextView
+    //to select multiple contacts:
+    private var selectionTracker: SelectionTracker<Long>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +55,25 @@ class InviteActivity : AppCompatActivity() {
         usersListAdapter = UsersListRecyclerViewAdapter(this)
         val recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewInvite)
         recyclerView.layoutManager = LinearLayoutManager(this)
+            recyclerView.setHasFixedSize(true)  //TODO improves performance. (size vol dir tal qual, a la pantalla). descomentar quan sapiga que funciona
         recyclerView.adapter = usersListAdapter
+
+        //to select multiple contacts:
+        selectionTracker = SelectionTracker.Builder<Long>(
+            "selection-1",
+            recyclerView,
+            StableIdKeyProvider(recyclerView),
+            UsersListRecyclerViewAdapter.InviteLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+
+        //restores the state if there was one (the activity was destroyed or whatever)
+        if(savedInstanceState != null)
+            selectionTracker?.onRestoreInstanceState(savedInstanceState)
+
+        usersListAdapter.setTracker(selectionTracker)
 
         viewModel.getFollowedUsers()
         viewModel.followedUsers.observe(
@@ -74,6 +98,13 @@ class InviteActivity : AppCompatActivity() {
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {    //funciona fent Bundle enlloc de Bundle?.
+        super.onSaveInstanceState(outState)
+
+        if(outState != null)
+            selectionTracker?.onSaveInstanceState(outState)
     }
 
 

@@ -34,6 +34,6 @@ interface ActivitiesService {
     /**
      * This call is to get suggested activities
      */
-    @GET("/activitats/lolazo") //TODO: posar la ruta correcte
+    @GET("/activitats/explore/{email}")
     fun getSuggestedActivities(@Path("email") loggedUserEmail: String): Call<List<ActivityFromList>>
 }

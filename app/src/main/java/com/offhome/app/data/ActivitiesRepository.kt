@@ -7,6 +7,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.Rating
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -23,9 +24,11 @@ import retrofit2.Response
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<String>>? = null
+    private var valoracio: MutableLiveData<Rating>? = null
     private var comments: MutableLiveData<List<String>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
 
@@ -147,5 +150,53 @@ class ActivitiesRepository {
             }
         })
         return participants as MutableLiveData<List<String>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the participants of an activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data string list
+     */
+    fun getValoracio(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Rating> {
+        if (valoracio == null) valoracio = MutableLiveData<Rating>()
+        val call: Call<Rating> = activitiesService!!.getValoracioParticipant(usuariCreador, dataHoraIni, usuariParticipant)
+        call.enqueue(object : Callback<Rating> {
+            override fun onResponse(call: Call<Rating>, response: Response<Rating>) {
+                if (response.isSuccessful) {
+                    valoracio!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<Rating>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting info")
+            }
+        })
+        return valoracio as MutableLiveData<Rating>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to join to an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to join the activity
+     * @return the result with a live data string type
+     */
+    fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+        val call = activitiesService?.addReview(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseValorar?.value = "Your rating has been saved"
+                } else responseValorar?.value =
+                    "There has been an error and your rating could not be saved!"
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseValorar?.value =
+                    "There has been an error and your rating could not be saved!"
+            }
+        })
+        return responseValorar as MutableLiveData<String>
     }
 }

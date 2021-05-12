@@ -8,6 +8,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.Rating
 
 /**
  * View Model for InfoActivity
@@ -15,7 +16,8 @@ import com.offhome.app.model.ActivityFromList
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+    private var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+    private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -47,5 +49,20 @@ class InfoActivityViewModel : ViewModel() {
     fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
         participants = repository.getNamesParticipants(usuariCreador, dataHoraIni)
         return participants
+    }
+
+    /**
+     * gets the user's rating of the activity from the repository
+     */
+    fun getValoracioUsuari(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Rating> {
+        valoracio = repository.getValoracio(usuariCreador, dataHoraIni, usuariParticipant)
+        return valoracio
+    }
+
+    /**
+     * gets the user's rating of the activity from the repository
+     */
+    fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+        return repository.valorarActivitat(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
     }
 }

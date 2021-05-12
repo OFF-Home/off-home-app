@@ -3,6 +3,7 @@ package com.offhome.app.data
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.Rating
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -40,5 +41,13 @@ interface ActivitiesService {
      * This call is to review an activity
      */
     @PUT("/activitats/valorar")
-    fun addReview(@Body usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: String): Call<ResponseBody>
+    fun addReview(@Body usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): Call<ResponseBody>
+
+    /**
+     * This call is to get the rating of the user on an activity
+     */
+    @GET("/activitats/participants/valoracio")
+    fun getValoracioParticipant(@Query("usuariCreador") usuariCreador: String, @Query("dataHoraIni") dataHoraIni: String,
+                                @Query("usuariParticipant") usuariParticipant: String): Call<Rating>
+
 }

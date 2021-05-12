@@ -1,5 +1,6 @@
-package com.offhome.app.ui.infoactivity
+ package com.offhome.app.ui.infoactivity
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -22,12 +24,12 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
-import com.offhome.app.ui.activitieslist.Activities
-import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import java.util.*
 
-/**
+ /**
  * Class *InfoActivity*
  * This class is the one that displays the information about an Activity
  * @author Emma Pereira
@@ -95,9 +97,67 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         description.text = activity.descripcio
 
         val estrelles = findViewById<RatingBar>(R.id.ratingStars)
-        estrelles.numStars = activity.valoracio
+
+        val comment = findViewById<EditText>(R.id.yourcomment)
+
+        val btnsubmit = findViewById<Button>(R.id.submitcomment)
+
+        viewModel.getValoracioUsuari(activity.usuariCreador, activity.dataHoraIni, SharedPreferenceManager.getStringValue(
+            Constants().PREF_EMAIL).toString()).observe(
+            this,
+            {
+                //si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
+                if (it.valoracio != 0) {
+                    estrelles.numStars = it.valoracio
+                    estrelles.isFocusable = false
+                    estrelles.setIsIndicator(true)
+                }
+                //si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
+                if (it.review != " ") {
+                    comment.setHint(R.string.cantreview)
+                    comment.isFocusable = false
+                    btnsubmit.setEnabled(false)
+                }
+            }
+        )
 
         val layout = findViewById<View>(R.id.content)
+
+        //al clicar a submit, envía valoracion a back
+        btnsubmit.setOnClickListener {
+            //si no hay estrellas, muestra mensaje pidiendolas
+            if (estrelles.numStars == 0) {
+                val snackbar: Snackbar = Snackbar
+                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
+                snackbar.show()
+            }
+            //si las hay, enviar datos a back
+            else {
+                viewModel.putValoracio(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
+                    activity.usuariCreador, activity.dataHoraIni, estrelles.numStars, comment.text.toString()).observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "Your rating has been saved") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                                snackbar.show()
+
+                                //cambiar estrellas y edit text a que ya no pueda añadir nada
+                                estrelles.isFocusable = false
+                                estrelles.setIsIndicator(true)
+                                comment.setHint(R.string.cantreview)
+                                comment.isFocusable = false
+                                btnsubmit.setEnabled(false)
+                            }
+                        }
+                    }
+                )
+            }
+        }
+
+
+
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
         var joined = false

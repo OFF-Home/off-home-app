@@ -6,6 +6,7 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_info">Map</string>
     <string name="join">JOIN</string>
+    <string name="submit">SUBMIT</string>
     <string name="participants">Participants:</string>
     <string name="about_the_activity">About the activity:</string>
     <string name="created_by">Created by </string>
@@ -203,7 +204,9 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share">btn_share</string>
-    <string name="valoracions">Ratings</string>
+    <string name="valoracions">Add you rating and review</string>
     <string name="comments">Reviews</string>
-    <string name="addcomment">Add your review </string>
+    <string name="cantreview">You already reviewed this activity</string>
+    <string name="mustaddrating">You must rate the activity!</string>
+    <string name="savedrating">Your rating has been saved</string>
 </resources>

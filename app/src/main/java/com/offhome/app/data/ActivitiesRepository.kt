@@ -141,7 +141,7 @@ class ActivitiesRepository {
                 Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
             }
         })
-        return activities as MutableLiveData<List<ActivityFromList>>
+        return suggestedactivities
 
     }
 }

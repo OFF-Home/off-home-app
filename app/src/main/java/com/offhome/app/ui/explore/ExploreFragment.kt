@@ -46,7 +46,7 @@ class ExploreFragment : Fragment() {
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.explore_fragment, container, false)
         activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
+        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewExploreSuggested)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)

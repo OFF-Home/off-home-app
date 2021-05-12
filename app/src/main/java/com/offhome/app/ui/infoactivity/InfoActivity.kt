@@ -48,8 +48,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var longitude: Double = 0.0
     private lateinit var viewModel: InfoActivityViewModel
     private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
+     private lateinit var reviewsAdapter: ReviewsRecyclerViewAdapter
     private lateinit var layoutParticipants: RecyclerView
+     private lateinit var layoutReviews: RecyclerView
     private var participantsList: List<String> = ArrayList()
+
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -156,7 +159,20 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
+        //mostrar todas las reviews de la activity, repasar esto
+        reviewsAdapter = ReviewsRecyclerViewAdapter()
+        layoutReviews = findViewById(R.id.listComments)
+        with(layoutReviews) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reviewsAdapter
+        }
 
+        viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+            {
+                reviewsAdapter.setData(it)
+            }
+        )
 
 
         val btnJoin = findViewById<Button>(R.id.btn_join)

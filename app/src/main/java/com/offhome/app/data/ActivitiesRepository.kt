@@ -8,6 +8,7 @@ import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
+import com.offhome.app.model.ReviewOfParticipant
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -26,6 +27,7 @@ class ActivitiesRepository {
     private var participants: MutableLiveData<List<String>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var comments: MutableLiveData<List<String>>? = null
+    private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
@@ -198,5 +200,29 @@ class ActivitiesRepository {
             }
         })
         return responseValorar as MutableLiveData<String>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the reviews (with their authors) of an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data list of the data class ReviewOfParticipant
+     */
+    fun getCommentsParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<ReviewOfParticipant>> {
+        if (reviews == null) reviews = MutableLiveData<List<ReviewOfParticipant>>()
+        val call: Call<List<ReviewOfParticipant>> = activitiesService!!.getAllReviews(usuariCreador, dataHoraIni)
+        call.enqueue(object : Callback<List<ReviewOfParticipant>> {
+            override fun onResponse(call: Call<List<ReviewOfParticipant>>, response: Response<List<ReviewOfParticipant>>) {
+                if (response.isSuccessful) {
+                    reviews!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ReviewOfParticipant>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting info")
+            }
+        })
+        return reviews as MutableLiveData<List<ReviewOfParticipant>>
     }
 }

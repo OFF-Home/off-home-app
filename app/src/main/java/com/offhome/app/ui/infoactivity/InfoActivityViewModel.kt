@@ -9,6 +9,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
+import com.offhome.app.model.ReviewOfParticipant
 
 /**
  * View Model for InfoActivity
@@ -17,6 +18,7 @@ import com.offhome.app.model.Rating
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
     private var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+    private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 
     /**
@@ -64,5 +66,13 @@ class InfoActivityViewModel : ViewModel() {
      */
     fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
         return repository.valorarActivitat(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
+    }
+
+    /**
+     * gets the reviews of the activity from the repository
+     */
+    fun getReviews(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<ReviewOfParticipant>> {
+        reviews = repository.getCommentsParticipants(usuariCreador, dataHoraIni)
+        return reviews
     }
 }

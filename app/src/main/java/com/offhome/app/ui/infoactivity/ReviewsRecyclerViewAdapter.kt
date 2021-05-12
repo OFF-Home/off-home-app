@@ -11,12 +11,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.model.ReviewOfParticipant
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Adpter for the recycler view of the activities list
- * @property participantsList is the list of activities
+ * @property reviewsList is the list of reviews of all the participants
  */
 class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAdapter.ViewHolder>() {
 
@@ -31,7 +32,7 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
         context?.startActivity(intent)
     }*/
 
-    private var participantsList: List<String> = ArrayList()
+    private var reviewsList: List<ReviewOfParticipant> = ArrayList()
 
     /**
      * it inflates the view of each participant and seves the ViewHolder of the view
@@ -41,7 +42,7 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewsRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_participant, parent, false)
+            .inflate(R.layout.fragment_comments, parent, false)
         return ViewHolder(view)
     }
 
@@ -51,10 +52,9 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
      * @param position is the position of the view to render
      */
     override fun onBindViewHolder(holder: ReviewsRecyclerViewAdapter.ViewHolder, position: Int) {
-        val item = participantsList[position]
-        holder.textViewUsername.text = item
-        //aqui hay que pedir profile pic realmente
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
+        val item = reviewsList[position]
+        holder.textViewUsername.text = item.username
+        holder.textViewComment.text = item.review
     }
 
 
@@ -62,14 +62,14 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
      * gets the number of views
      * @return the number of views
      */
-    override fun getItemCount(): Int = participantsList.size
+    override fun getItemCount(): Int = reviewsList.size
 
     /**
      * sets the new data and notifies to the adapter to refresh if necessary
-     * @param participantsList is the new list of activites to set
+     * @param reviewsList is the new list of reviews of all the participants
      */
-    fun setData(participantsList: List<String>?) {
-        this.participantsList = participantsList!!
+    fun setData(reviewsList: List<ReviewOfParticipant>?) {
+        this.reviewsList = reviewsList!!
         notifyDataSetChanged()
     }
 
@@ -77,11 +77,11 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
      * ViewHolder class to save the refereces to the views of each view
      * @param mView is the general view
      * @property textViewUsername is the textView where we will render the user's name
-     * @property profilepic is the image to show on of the user
+     * @property textViewComment is the textView where we will render the user's comment
      */
      class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewUsername: TextView = mView.findViewById(R.id.participant_username)
-        val profilepic: ImageView = mView.findViewById(R.id.participant_profile_pic)
+        val textViewComment: TextView = mView.findViewById(R.id.participant_comment)
 
         /**
          * General function that returns the string

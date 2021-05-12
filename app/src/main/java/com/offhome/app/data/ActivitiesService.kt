@@ -4,6 +4,7 @@ import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
+import com.offhome.app.model.ReviewOfParticipant
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -49,5 +50,12 @@ interface ActivitiesService {
     @GET("/activitats/participants/valoracio")
     fun getValoracioParticipant(@Query("usuariCreador") usuariCreador: String, @Query("dataHoraIni") dataHoraIni: String,
                                 @Query("usuariParticipant") usuariParticipant: String): Call<Rating>
+
+    /**
+     * This call is to get all the reviews of an activity (with their authors)
+     */
+    @GET("activitats/participants/comentaris")
+    fun getAllReviews(@Query("usuariCreador") usuariCreador: String,
+                         @Query("dataHoraIni") dataHoraIni: String): Call<List<ReviewOfParticipant>>
 
 }

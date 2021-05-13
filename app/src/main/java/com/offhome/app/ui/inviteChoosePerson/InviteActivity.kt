@@ -83,7 +83,7 @@ class InviteActivity : AppCompatActivity() {
 
         //3r intent
 
-        tracker = SelectionTracker.Builder<Long>(
+        /*tracker = SelectionTracker.Builder<Long>(
             "mySelection",
             recyclerView,
             StableIdKeyProvider(recyclerView),
@@ -91,7 +91,27 @@ class InviteActivity : AppCompatActivity() {
             StorageStrategy.createLongStorage()
         ).withSelectionPredicate(
             SelectionPredicates.createSelectAnything()
-        ).build()
+        ).build()*/
+
+        tracker = SelectionTracker.Builder<Long>(
+            "mySelection",
+            recyclerView,
+            StableIdKeyProvider(recyclerView),
+            RecipientItemDetailsLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(object : SelectionTracker.SelectionPredicate<Long>() {
+            override fun canSelectMultiple(): Boolean {
+                return true
+            }
+            override fun canSetStateForKey(key: Long, nextState: Boolean): Boolean {
+
+                return (! (nextState && tracker?.selection!!.size() >= nMaxRecipients))
+            }
+            override fun canSetStateAtPosition(position: Int, nextState: Boolean): Boolean {
+                return true
+            }
+        }).build()
+
         usersListAdapter.tracker = tracker
 
         tracker?.addObserver(

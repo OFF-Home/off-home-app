@@ -211,4 +211,5 @@
     <string name="valoracions">Ratings</string>
     <string name="comments">Reviews</string>
     <string name="addcomment">Add your review </string>
+    <string name="error_send_message">Something went wrong! Please, send the message again</string>
 </resources>

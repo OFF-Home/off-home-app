@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
 
 class SingleChatActivity : AppCompatActivity() {
@@ -61,13 +62,23 @@ class SingleChatActivity : AppCompatActivity() {
             startActivity(Intent(this, MainActivity::class.java))
         }
 
+        viewModel.sendMessageResult.observe(
+            this,
+            {
+                if (it is Result.Error) Toast.makeText(this, getString(R.string.error_send_message), Toast.LENGTH_LONG).show()
+            }
+        )
+
         btnSendMessage.setOnClickListener {
             if (editTextNewMessage.text.isEmpty())
                 Toast.makeText(
                     this, getString(R.string.error_empty_message),
                     Toast.LENGTH_LONG
                 ).show()
-            else viewModel.sendMessage(editTextNewMessage.text.toString())
+            else viewModel.sendMessage(
+                /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
+                userUid, editTextNewMessage.text.toString()
+            )
         }
     }
 }

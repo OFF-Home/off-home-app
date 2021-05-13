@@ -12,14 +12,18 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.data.model.ChatGroupIdentification
+import com.offhome.app.ui.chats.groupChat.ChatMessage
+import java.text.DateFormat
 import java.util.*
 import com.offhome.app.model.ActivityData as ActivityData
 
@@ -110,6 +114,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         act_title = findViewById(R.id.activity_title)
         category_selected = findViewById(R.id.sp_choose_category)
 
+
         pickDate()
 
         pickAvailability()
@@ -139,7 +144,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             DatePickerDialog(this, this, this.year, this.month, this.day).show()
         }
     }
-
     /**
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
@@ -147,7 +151,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         pick_availability = findViewById(R.id.pick_availability)
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
-
     }
 
     /**
@@ -206,17 +209,17 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
     }
 
-    private fun createChatGroup(titolAct: String){
+    private fun displayChatGroup(titolAct: String) {
         Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
-        // usid_creator: String, data_hora_ini: String
-        val chatGroupIde = ChatGroupIdentification(
-            "101", "26-5-2000 18:00"
-        )
-        viewModel.addChatGroup(chatGroupIde)
+        // createGroupChat() ???
+        //        val chatGroupIde = ChatGroupIdentification(
+        //            "101", "26-5-2000 18:00"
+        //        )
+        //        viewModel.addChatGroup(chatGroupIde)
         val SpannableString = SpannableString("Go to chat group")
-        val clickableSpan = object: ClickableSpan(){
+        val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
-             //   startActivity(Intent(this, GroupChatActivity::class.java))
+                //   startActivity(Intent(this, GroupChatActivity::class.java))
             }
         }
     }
@@ -227,7 +230,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * @return true if the activity can be created; otherwise return false
      */
     private fun validate(): Boolean {
-
         if (act_title.text.toString().isEmpty()) {
             act_title.error = "Name should not be blank"
             return false
@@ -248,7 +250,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         return true
     }
 
-
     /**
      * This function is called every time the user changes the date picked
      */
@@ -258,7 +259,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         savedYear = year
 
         getDateTimeCalendar()
-        TimePickerDialog(this, this, this.hour, this.minute, true).show()
+        TimePickerDialog(this, this, hour, minute, true).show()
     }
 
     @SuppressLint("SetTextI18n")

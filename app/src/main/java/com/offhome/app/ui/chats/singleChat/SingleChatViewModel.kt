@@ -5,7 +5,6 @@ package com.offhome.app.ui.chats.singleChat
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
 import com.offhome.app.R
 import com.offhome.app.common.MyApp
@@ -16,13 +15,15 @@ import com.offhome.app.model.Message
 class SingleChatViewModel : ViewModel() {
     private var repository = ChatRepository()
     var listMessages: MutableLiveData<List<Message>> = MutableLiveData<List<Message>>()
+    var sendMessageResult = MutableLiveData<Result<String>>()
 
     /**
      * It calls the repository to get the messages of a chat
      */
     fun getMessages(uid1: String, uid2: String, activity: AppCompatActivity) {
         (repository.getMessages(uid1, uid2)).observe(
-            activity, {
+            activity,
+            {
                 if (it is Result.Success) {
                     listMessages.value = it.data
                 } else {
@@ -32,7 +33,7 @@ class SingleChatViewModel : ViewModel() {
         )
     }
 
-    fun sendMessage(text: String) {
-        repository.sendMessage(text)
+    fun sendMessage(uid1: String, uid2: String, text: String) {
+        sendMessageResult = repository.sendMessage(uid1, uid2, text)
     }
 }

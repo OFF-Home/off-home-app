@@ -209,7 +209,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
     }
 
-    private fun displayChatGroup(titolAct: String) {
+    private fun createChatGroup(titolAct: String) {
         Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
         // createGroupChat() ???
         //        val chatGroupIde = ChatGroupIdentification(

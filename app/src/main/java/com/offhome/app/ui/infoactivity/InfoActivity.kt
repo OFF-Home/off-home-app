@@ -1,6 +1,5 @@
  package com.offhome.app.ui.infoactivity
 
-import android.annotation.SuppressLint
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -8,7 +7,6 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
-import android.view.View.OnTouchListener
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +25,8 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
  /**
@@ -52,6 +52,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var layoutParticipants: RecyclerView
      private lateinit var layoutReviews: RecyclerView
     private var participantsList: List<String> = ArrayList()
+     private var joined = false
+     private lateinit var estrelles: RatingBar
+     private lateinit var comment: EditText
+     private lateinit var btnsubmit: Button
 
 
     /**
@@ -80,10 +84,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }
 
 
+        //cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
              {
                 participantsAdapter.setData(it)
+                 for (item in it) {
+                     if (item == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) joined = true
+                 }
             }
         )
 
@@ -99,11 +107,32 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
-        val estrelles = findViewById<RatingBar>(R.id.ratingStars)
+        estrelles = findViewById<RatingBar>(R.id.ratingStars)
 
-        val comment = findViewById<EditText>(R.id.yourcomment)
+        comment = findViewById<EditText>(R.id.yourcomment)
 
-        val btnsubmit = findViewById<Button>(R.id.submitcomment)
+        btnsubmit = findViewById<Button>(R.id.submitcomment)
+
+        //get the current date
+        val currentTime = Calendar.getInstance().time
+
+        //transform dataHoraIni into date format
+        val mydate = activity.dataHoraFi
+        var date: Date? = null
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        try {
+            date = format.parse(mydate)
+            System.out.println(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        //si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
+        if (date != null) {
+            if (!joined or (date > currentTime)) {
+                cantreview()
+            }
+        }
 
         viewModel.getValoracioUsuari(activity.usuariCreador, activity.dataHoraIni, SharedPreferenceManager.getStringValue(
             Constants().PREF_EMAIL).toString()).observe(
@@ -176,12 +205,15 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
-        var joined = false
+
+        //mirar si el usario ya es participante de la actividad
+        if (joined) btnJoin.text = "JOINED"
 
         btnJoin.setOnClickListener {
             joined = !joined
             if (joined) {
                 btnJoin.text = "JOINED"
+                reviewpossible()
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -202,7 +234,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
             else {
                 btnJoin.text = "JOIN"
-
+                cantreview()
                 viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -221,7 +253,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 )
             }
-
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -299,5 +330,27 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         return super.onOptionsItemSelected(item)
     }
 
+
+     /**
+      * Function called when we want to disable the rating or review functionalities
+      */
+     fun cantreview() {
+         estrelles.isFocusable = false
+         estrelles.setIsIndicator(true)
+         comment.setHint(R.string.reviewnotpossible)
+         comment.isFocusable = false
+         btnsubmit.setEnabled(false)
+     }
+
+     /**
+      * Function called when we want to enable the rating or review functionalities
+      */
+     fun reviewpossible() {
+         estrelles.isFocusable = true
+         estrelles.setIsIndicator(false)
+         comment.setHint(R.string.insert_text)
+         comment.isFocusable = false
+         btnsubmit.setEnabled(true)
+     }
 
 }

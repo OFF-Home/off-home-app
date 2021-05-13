@@ -35,8 +35,8 @@ interface ActivitiesService {
     /**
      * This call is to get all the participants of an activity
      */
-    @HTTP(method = "GET", path = "activitats/participants/{usuariCreador}", hasBody = true)
-    fun getAllParticipants(@Path("usuariCreador") usuariCreador: String, @Body dataHoraIni: String): Call<List<String>>
+    @GET("/activitats/participants")
+    fun getAllParticipants(@Query("usuariCreador") usuariCreador: String, @Query ("dataHoraIni") dataHoraIni: String): Call<List<String>>
 
     /**
      * This call is to review an activity

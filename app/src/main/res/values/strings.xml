@@ -207,6 +207,7 @@
     <string name="valoracions">Add you rating and review</string>
     <string name="comments">Reviews</string>
     <string name="cantreview">You already reviewed this activity</string>
+    <string name="reviewnotpossible">You can\'t review this activity yet</string>
     <string name="mustaddrating">You must rate the activity!</string>
     <string name="savedrating">Your rating has been saved</string>
 </resources>

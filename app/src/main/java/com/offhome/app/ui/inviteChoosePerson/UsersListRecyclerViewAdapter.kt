@@ -16,7 +16,7 @@ import com.offhome.app.model.profile.UserSummaryInfo
 
 class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<UsersListRecyclerViewAdapter.ViewHolder>() {
 
-    private var userList: List<UserSummaryInfo> = ArrayList()
+    var userList: List<UserSummaryInfo> = ArrayList()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListRecyclerViewAdapter.ViewHolder {    //int?
         val view = LayoutInflater.from(parent.context)

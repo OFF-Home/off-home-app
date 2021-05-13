@@ -1,7 +1,9 @@
 package com.offhome.app.ui.inviteChoosePerson
 
 import android.os.Bundle
+import android.view.View
 import android.widget.TextView
+import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
@@ -17,6 +19,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.UserSummaryInfo
+import java.util.Collections.addAll
 
 class InviteActivity : AppCompatActivity() {
 
@@ -28,6 +31,7 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var textMaxRecipients:TextView
     private lateinit var textNRecipients:TextView
     private lateinit var textRecipientList:TextView
+    private var selectedRecipientList: List<UserSummaryInfo> = ArrayList()
 
     //3r intent
     private var tracker: SelectionTracker<Long>? = null
@@ -97,29 +101,66 @@ class InviteActivity : AppCompatActivity() {
                     val nItems = tracker?.selection!!.size()
                     textNRecipients.text = getString(R.string.n_recipients_banner, nItems.toString(), nMaxRecipients.toString())
 
-                    val recipientList = ""
+                    //omplim el textView amb la llista de recipients seleccionats
+                    var recipientListString = ""
 
                    /*tracker?.selection!!.forEach{
                         tracker
                         it  //es un Long
                     }*/
 
-                    textRecipientList.text = recipientList
+                    val list = tracker?.selection!!.map {
+                        usersListAdapter.userList[it.toInt()]
+                    }.toList()
+
+                    var isThe1stOne = true
+
+                    for(user in list) {
+                        if (!isThe1stOne)
+                            recipientListString += ", "
+
+                        recipientListString += user.username
+
+                        isThe1stOne = false
+                    }
+
+                    textRecipientList.text = recipientListString
+
+                    //aixo se suposa que clona
+                    selectedRecipientList = ArrayList(list)
+
+                    if (nItems <= 0)
+                        fab.visibility = View.GONE
+                    else
+                        fab.visibility = View.VISIBLE
                 }
             })
 
     }
 
+    //fer-lo visible <=> hi hagi algun destinatari seleccionat
     private fun iniFab() {
-        //fer-lo visible <=> hi hagi algun destinatari seleccionat
+
         fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
+            //canviar per algo util
+            var recipientListString = ""
+            var isThe1stOne = true
+            for(user in selectedRecipientList) {
+                if (!isThe1stOne)
+                    recipientListString += ", "
+
+                recipientListString += user.username
+
+                isThe1stOne = false
+            }
+            Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
         }
+        fab.visibility = View.GONE
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.,menu)
         return true
     }*/
+
 }

@@ -64,7 +64,7 @@ class InviteActivity : AppCompatActivity() {
         usersListAdapter = UsersListRecyclerViewAdapter(this)
         val recyclerView = findViewById<RecyclerView>(R.id.RecyclerViewInvite)
         recyclerView.layoutManager = LinearLayoutManager(this)
-            recyclerView.setHasFixedSize(true)  //TODO improves performance. (size vol dir tal qual, a la pantalla). descomentar quan sapiga que funciona
+            recyclerView.setHasFixedSize(true)  //improves performance.
         recyclerView.adapter = usersListAdapter
 
         viewModel.getFollowedUsers()
@@ -80,18 +80,7 @@ class InviteActivity : AppCompatActivity() {
         usersList = listOf(UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"))
         usersListAdapter.setData(usersList)
 
-
         //3r intent
-
-        /*tracker = SelectionTracker.Builder<Long>(
-            "mySelection",
-            recyclerView,
-            StableIdKeyProvider(recyclerView),
-            RecipientItemDetailsLookup(recyclerView),
-            StorageStrategy.createLongStorage()
-        ).withSelectionPredicate(
-            SelectionPredicates.createSelectAnything()
-        ).build()*/
 
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",
@@ -177,5 +166,4 @@ class InviteActivity : AppCompatActivity() {
         menuInflater.inflate(R.menu.,menu)
         return true
     }*/
-
 }

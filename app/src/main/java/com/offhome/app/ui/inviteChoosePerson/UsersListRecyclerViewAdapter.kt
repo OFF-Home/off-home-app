@@ -2,6 +2,7 @@ package com.offhome.app.ui.inviteChoosePerson
 
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.MotionEvent
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
@@ -53,8 +54,8 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
     }
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
-        val textViewUsername: TextView = mView.findViewById(R.id.recipient_username)
-        val textViewEmail: TextView = mView.findViewById(R.id.recipient_email)
+        private val textViewUsername: TextView = mView.findViewById(R.id.recipient_username)
+        private val textViewEmail: TextView = mView.findViewById(R.id.recipient_email)
         val imageViewProfilePic: ImageView = mView.findViewById(R.id.recipient_profile_pic)
         val layout : ConstraintLayout = mView.findViewById(R.id.recipient_item_layout)
 
@@ -63,11 +64,13 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
             object : ItemDetailsLookup.ItemDetails<Long>() {
                 override fun getPosition(): Int = adapterPosition
                 override fun getSelectionKey(): Long? = itemId
+
+                override fun inSelectionHotspot(e: MotionEvent): Boolean {
+                    return true
+                }
             }
 
         fun bind(value: UserSummaryInfo, isActivated: Boolean = false) {
-            //text.text = value.toString()
-            //textViewUsername.text = value.toString()    //nose xd
             textViewUsername.text = value.username
             textViewEmail.text = value.email
             itemView.isActivated = isActivated      //lol?

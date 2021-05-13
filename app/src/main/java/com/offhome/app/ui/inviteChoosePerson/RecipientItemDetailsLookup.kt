@@ -14,14 +14,3 @@ class RecipientItemDetailsLookup(private val recyclerView: RecyclerView) : ItemD
         return null
     }
 }
-
-//amb strings
-/*class RecipientItemDetailsLookup(private val recyclerView: RecyclerView) : ItemDetailsLookup<String>() {
-    override fun getItemDetails(event: MotionEvent): ItemDetails<String>? {
-        val view = recyclerView.findChildViewUnder(event.x, event.y)
-        if (view != null) {
-            return (recyclerView.getChildViewHolder(view) as UsersListRecyclerViewAdapter.ViewHolder).getItemDetails()
-        }
-        return null
-    }
-}*/

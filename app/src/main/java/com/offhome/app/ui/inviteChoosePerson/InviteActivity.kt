@@ -104,11 +104,6 @@ class InviteActivity : AppCompatActivity() {
                     //omplim el textView amb la llista de recipients seleccionats
                     var recipientListString = ""
 
-                   /*tracker?.selection!!.forEach{
-                        tracker
-                        it  //es un Long
-                    }*/
-
                     val list = tracker?.selection!!.map {
                         usersListAdapter.userList[it.toInt()]
                     }.toList()

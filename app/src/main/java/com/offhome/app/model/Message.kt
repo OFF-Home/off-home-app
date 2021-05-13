@@ -18,5 +18,4 @@ data class Message(
             "usid_enviador" to usid_enviador
         )
     }
-
 }

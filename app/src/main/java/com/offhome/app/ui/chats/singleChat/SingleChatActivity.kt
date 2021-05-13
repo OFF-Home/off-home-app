@@ -3,7 +3,6 @@ package com.offhome.app.ui.chats.singleChat
 
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
@@ -56,9 +55,7 @@ class SingleChatActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(SingleChatViewModel::class.java)
 
-        //viewModel.initializeSocket(userUid, this)
-
-
+        // viewModel.initializeSocket(userUid, this)
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -70,9 +67,9 @@ class SingleChatActivity : AppCompatActivity() {
                 }
                 messagesAdapter.setData(listMessages)
                 messagesList.scrollToPosition(messagesList.adapter!!.itemCount - 1)
-                //messagesAdapter.setData(value)
-                //Log.d("RESPONSE", value)
-                //messagesAdapter.setData(value)
+                // messagesAdapter.setData(value)
+                // Log.d("RESPONSE", value)
+                // messagesAdapter.setData(value)
             }
 
             override fun onCancelled(error: DatabaseError) {
@@ -138,10 +135,10 @@ class SingleChatActivity : AppCompatActivity() {
                     myRef.child("m$numMessages").setValue(message)
                     editTextNewMessage.text.clear()
                 }
-    //            else viewModel.sendMessage(
-    //                /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
-    //                userUid, editTextNewMessage.text.toString()
-    //            )
+                //            else viewModel.sendMessage(
+                //                /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
+                //                userUid, editTextNewMessage.text.toString()
+                //            )
             }
         }
     }

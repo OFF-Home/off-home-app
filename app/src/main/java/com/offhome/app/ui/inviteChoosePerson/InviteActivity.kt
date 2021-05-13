@@ -1,5 +1,6 @@
 package com.offhome.app.ui.inviteChoosePerson
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.TextView
@@ -146,7 +147,7 @@ class InviteActivity : AppCompatActivity() {
     private fun iniFab() {
 
         fab.setOnClickListener { view ->
-            //canviar per algo util
+            //placeholder listener
             var recipientListString = ""
             var isThe1stOne = true
             for(user in selectedRecipientList) {
@@ -158,6 +159,21 @@ class InviteActivity : AppCompatActivity() {
                 isThe1stOne = false
             }
             Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
+
+            //el de veritat
+            if (selectedRecipientList.size == 1) {
+                //todo: acabar els 2 intents despres del merge
+                /*val intent = Intent(this, /*Chat concret*/::class.java)
+                //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
+                startActivity(intent)*/
+            }
+            else {
+                Snackbar.make(view, getString(R.string.sending_invitations_snackbar, recipientListString), Snackbar.LENGTH_LONG).show()
+                /*val intent = Intent(this, /*Chats*/::class.java)
+                //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
+                startActivity(intent)*/
+            }
+
         }
         fab.visibility = View.GONE
     }

@@ -21,27 +21,40 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
+@Suppress("IMPLICIT_CAST_TO_ANY")
 class ChatRepository(private val chatsClient: ChatClient) {
     private var chatsService = chatsClient.getChatsService()
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
-    var listMessages: MutableLiveData<ArrayList<Message>> = MutableLiveData<ArrayList<Message>>()
+    var listMessages = MutableLiveData<ArrayList<Message>>()
+    var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
     lateinit var mSocket: Socket
     lateinit var userUid: String
+    lateinit var dataHora: String
     val gson: Gson = Gson()
+    private var typeChat = -1
 
-    fun initializeChatSocket(uid2: String) {
-        mSocket.connect()
+    fun initializeIndividualChatSocket(uid2: String) {
         userUid = uid2
+        typeChat = 0
+        initializeSocket()
+    }
+
+    fun initializeGroupChatSocket(uidCreador: String, dataHoraIni: String) {
+        userUid = uidCreador
+        dataHora = dataHoraIni
+        typeChat = 1
+        initializeSocket()
+    }
+
+    fun initializeSocket() {
+        mSocket.connect()
         mSocket.on(Socket.EVENT_CONNECT, onConnect)
-        mSocket.on("newUserToChatRoom", onNewUser) // To know if the new user entered the room.
         mSocket.on("updateChat", onUpdateChat) // To update if someone send a message to chatroom
-        mSocket.on("userLeftChatRoom", onUserLeft) // To know if the user left the chatroom.
 
         try {
-            //This address is the way you can connect to localhost with AVD(Android Virtual Device)
+            // This address is the way you can connect to localhost with AVD(Android Virtual Device)
             mSocket = IO.socket(Constants().BASE_URL)
             Log.d("success", mSocket.id())
-
         } catch (e: Exception) {
             e.printStackTrace()
             Log.d("fail", "Failed to connect")
@@ -49,7 +62,8 @@ class ChatRepository(private val chatsClient: ChatClient) {
     }
 
     fun disconnect() {
-        val data = ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
+        val data = if (typeChat == 0) ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
+        else ChatGroupIdentification(userUid, dataHora)
         val jsonData = gson.toJson(data)
         mSocket.emit("unsubscribe", jsonData)
         mSocket.disconnect()
@@ -135,29 +149,21 @@ class ChatRepository(private val chatsClient: ChatClient) {
     /** CALLBACKS SOCKETS **/
 
     var onConnect = Emitter.Listener {
-        //After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
-        //send userName and roomName so that they can join the room.
-        val data = ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
+        // After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
+        // send userName and roomName so that they can join the room.
+        val data = if (typeChat == 0) ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
+        else ChatGroupIdentification(userUid, dataHora)
         val jsonData = gson.toJson(data) // Gson changes data object to Json type.
         mSocket.emit("subscribe", jsonData)
     }
 
-    var onNewUser = Emitter.Listener {
-        val name = it[0] as String //This pass the userName!
-        //val chat = Message(name, "", roomName, MessageType.USER_JOIN.index)
-        //addItemToRecyclerView(chat)
-        //Log.d(TAG, "on New User triggered.")
-    }
-
-
-    var onUserLeft = Emitter.Listener {
-        val leftUserName = it[0] as String
-        //val chat: Message = Message(leftUserName, "", "", MessageType.USER_LEAVE.index)
-        //addItemToRecyclerView(chat)
-    }
-
     var onUpdateChat = Emitter.Listener {
-        val chat: Message = gson.fromJson(it[0].toString(), Message::class.java)
-        listMessages.value?.add(chat)
+        if (typeChat == 1) {
+            val chat = gson.fromJson(it[0].toString(), Message::class.java)
+            listMessages.value?.add(chat)
+        } else {
+            val chat = gson.fromJson(it[0].toString(), GroupMessage::class.java)
+            listMessagesGroup.value?.add(chat)
+        }
     }
 }

@@ -2,9 +2,7 @@ package com.offhome.app.ui.chats.singleChat
 
 
 
-import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -12,16 +10,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.common.Constants
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.data.model.ChatIndividualIdentification
-import com.offhome.app.model.Message
 import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
-import io.socket.client.IO
-import io.socket.emitter.Emitter
 
 class SingleChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
@@ -55,7 +46,6 @@ class SingleChatActivity : AppCompatActivity() {
         viewModel = ViewModelProvider(this).get(SingleChatViewModel::class.java)
 
         viewModel.initializeSocket(userUid, this)
-
 
         viewModel.listMessages.observe(
             this,

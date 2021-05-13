@@ -41,9 +41,12 @@ class SingleChatViewModel(val chatRepository: ChatRepository) : ViewModel() {
     }
 
     fun initializeSocket(userUid: String, activity: AppCompatActivity) {
-        chatRepository.initializeChatSocket(userUid)
-        chatRepository.listMessages.observe(activity, {
-            listMessages.value = it
-        })
+        chatRepository.initializeIndividualChatSocket(userUid)
+        chatRepository.listMessages.observe(
+            activity,
+            {
+                listMessages.value = it
+            }
+        )
     }
 }

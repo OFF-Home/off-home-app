@@ -17,13 +17,14 @@ class CreateActivityViewModel : ViewModel() {
 
     private var repository: ActivitiesRepository = ActivitiesRepository()
 
-    private var repositoryChat: ChatRepository = ChatRepository()
+    //private var repositoryChat: ChatRepository = ChatRepository()
 
     fun addActivity(activity: ActivityData): MutableLiveData<String> {
         return repository.addActivity(activity)
     }
 
-    fun addChatGroup(chatGroupide: ChatGroupIdentification): MutableLiveData<String> {
-        return repositoryChat.addChatGroup(chatGroupide)
-    }
+    //fun addChatGroup(chatGroupide: ChatGroupIdentification): MutableLiveData<String> {
+     //   return repositoryChat.addChatGroup(chatGroupide)
+   // }
 }
+

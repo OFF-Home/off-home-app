@@ -26,7 +26,11 @@ class SingleChatViewModel(val chatRepository: ChatRepository) : ViewModel() {
                 if (it is Result.Success) {
                     listMessages.value = it.data
                 } else {
-                    Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error), Toast.LENGTH_SHORT).show()
+                    Toast.makeText(
+                        MyApp.getContext(),
+                        MyApp.getContext().getString(R.string.error),
+                        Toast.LENGTH_SHORT
+                    ).show()
                 }
             }
         )
@@ -35,18 +39,19 @@ class SingleChatViewModel(val chatRepository: ChatRepository) : ViewModel() {
     fun sendMessage(uid1: String, uid2: String, text: String) {
         sendMessageResult = chatRepository.sendMessage(uid1, uid2, text)
     }
-
-    fun disconnectFromSocket() {
-        chatRepository.disconnect()
-    }
-
-    fun initializeSocket(userUid: String, activity: AppCompatActivity) {
-        chatRepository.initializeIndividualChatSocket(userUid)
-        chatRepository.listMessages.observe(
-            activity,
-            {
-                listMessages.value = it
-            }
-        )
-    }
 }
+
+// fun disconnectFromSocket() {
+// chatRepository.disconnect()
+// }
+//
+// fun initializeSocket(userUid: String, activity: AppCompatActivity) {
+// chatRepository.initializeIndividualChatSocket(userUid)
+// chatRepository.listMessages.observe(
+// activity,
+// {
+// listMessages.value = it
+// }
+// )
+// }
+

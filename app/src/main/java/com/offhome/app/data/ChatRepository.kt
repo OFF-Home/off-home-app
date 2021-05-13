@@ -12,9 +12,6 @@ import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
-import io.socket.client.IO
-import io.socket.client.Socket
-import io.socket.emitter.Emitter
 import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -27,10 +24,10 @@ class ChatRepository(private val chatsClient: ChatClient) {
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
     var listMessages = MutableLiveData<ArrayList<Message>>()
     var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
-    lateinit var mSocket: Socket
+    //lateinit var mSocket: Socket
     lateinit var userUid: String
     lateinit var dataHora: String
-    val gson: Gson = Gson()
+   /* val gson: Gson = Gson()
     private var typeChat = -1
 
     fun initializeIndividualChatSocket(uid2: String) {
@@ -67,7 +64,7 @@ class ChatRepository(private val chatsClient: ChatClient) {
         val jsonData = gson.toJson(data)
         mSocket.emit("unsubscribe", jsonData)
         mSocket.disconnect()
-    }
+    }*/
 
     fun getMessages(uid1: String, uid2: String): MutableLiveData<Result<List<Message>>> {
         val result = MutableLiveData<Result<List<Message>>>()
@@ -146,26 +143,6 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return result
     }
 
-    /** CALLBACKS SOCKETS **/
-
-    var onConnect = Emitter.Listener {
-        // After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
-        // send userName and roomName so that they can join the room.
-        val data = if (typeChat == 0) ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
-        else ChatGroupIdentification(userUid, dataHora)
-        val jsonData = gson.toJson(data) // Gson changes data object to Json type.
-        mSocket.emit("subscribe", jsonData)
-    }
-
-    var onUpdateChat = Emitter.Listener {
-        if (typeChat == 1) {
-            val chat = gson.fromJson(it[0].toString(), Message::class.java)
-            listMessages.value?.add(chat)
-        } else {
-            val chat = gson.fromJson(it[0].toString(), GroupMessage::class.java)
-            listMessagesGroup.value?.add(chat)
-        }
-    }
     fun addChatGroup(chatGroupIde: ChatGroupIdentification): MutableLiveData<String>{
         val call = chatsService?.addChatGroup(chatGroupIde)
         call!!.enqueue(object : Callback<ResponseBody> {
@@ -183,3 +160,25 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return responseSendMessage as MutableLiveData<String>
     }
 }
+
+
+/** CALLBACKS SOCKETS **/
+
+  /*  var onConnect = Emitter.Listener {
+        // After getting a Socket.EVENT_CONNECT which indicate socket has been connected to server,
+        // send userName and roomName so that they can join the room.
+        val data = if (typeChat == 0) ChatIndividualIdentification(/*SharedPreferenceManager.getStringValue(Constants().PREF_UID*/ "101", userUid)
+        else ChatGroupIdentification(userUid, dataHora)
+        val jsonData = gson.toJson(data) // Gson changes data object to Json type.
+        mSocket.emit("subscribe", jsonData)
+    }
+
+    var onUpdateChat = Emitter.Listener {
+        if (typeChat == 1) {
+            val chat = gson.fromJson(it[0].toString(), Message::class.java)
+            listMessages.value?.add(chat)
+        } else {
+            val chat = gson.fromJson(it[0].toString(), GroupMessage::class.java)
+            listMessagesGroup.value?.add(chat)
+        }
+    }*/

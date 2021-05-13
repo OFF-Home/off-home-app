@@ -209,4 +209,5 @@
     <string name="title_activity_invite">Invite to activity:</string>
     <string name="action_settings">Settings</string>
     <string name="max_recipients_banner">Select up to %1$s people</string>
+    <string name="n_recipients_banner">(%1$s/%2$s)</string>
 </resources>

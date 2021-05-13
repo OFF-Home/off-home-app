@@ -30,6 +30,7 @@
                     android:layout_marginTop="8dp"
                     android:text="Select up to - people" />
                 <TextView
+                    android:id="@+id/text_n_recipients"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="4dp"

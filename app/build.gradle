@@ -86,4 +86,7 @@ dependencies {
     implementation ('com.google.api-client:google-api-client-android:1.23.0') {
         exclude group: 'org.apache.httpcomponents'
     }
+
+    //Ferran Invite try 3
+    implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
 }

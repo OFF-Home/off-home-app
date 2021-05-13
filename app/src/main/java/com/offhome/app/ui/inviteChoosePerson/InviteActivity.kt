@@ -1,22 +1,22 @@
 package com.offhome.app.ui.inviteChoosePerson
 
 import android.os.Bundle
-import android.text.InputFilter
-import android.view.Menu
 import android.widget.TextView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.selection.SelectionPredicates
+import androidx.recyclerview.selection.SelectionTracker
+import androidx.recyclerview.selection.StableIdKeyProvider
+import androidx.recyclerview.selection.StorageStrategy
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.UserSummaryInfo
-import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
-import com.offhome.app.ui.profile.ProfileFragmentViewModel
 
 class InviteActivity : AppCompatActivity() {
 
@@ -24,7 +24,13 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var fab: FloatingActionButton
     private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
+    private var nMaxRecipients:Int = 200
     private lateinit var textMaxRecipients:TextView
+    private lateinit var textNRecipients:TextView
+    private lateinit var textRecipientList:TextView
+
+    //3r intent
+    private var tracker: SelectionTracker<Long>? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -41,9 +47,14 @@ class InviteActivity : AppCompatActivity() {
 
         fab = findViewById(R.id.fab)
         iniFab()
-        textMaxRecipients = findViewById(R.id.text_max_recipients)
-        textMaxRecipients.text = getString(R.string.max_recipients_banner, activityInfo.maxParticipant.toString()) //todo n_persones remaining
+        nMaxRecipients = activityInfo.maxParticipant //todo n_persones remaining
 
+        textMaxRecipients = findViewById(R.id.text_max_recipients)
+        textMaxRecipients.text = getString(R.string.max_recipients_banner, nMaxRecipients.toString())
+        textNRecipients = findViewById(R.id.text_n_recipients)
+        textNRecipients.text = getString(R.string.n_recipients_banner, "0", nMaxRecipients.toString())
+        textRecipientList = findViewById(R.id.text_recipient_ist)
+        textRecipientList.text = ""
 
         //en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -64,6 +75,39 @@ class InviteActivity : AppCompatActivity() {
         //stub
         usersList = listOf(UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"))
         usersListAdapter.setData(usersList)
+
+
+        //3r intent
+
+        tracker = SelectionTracker.Builder<Long>(
+            "mySelection",
+            recyclerView,
+            StableIdKeyProvider(recyclerView),
+            RecipientItemDetailsLookup(recyclerView),
+            StorageStrategy.createLongStorage()
+        ).withSelectionPredicate(
+            SelectionPredicates.createSelectAnything()
+        ).build()
+        usersListAdapter.tracker = tracker
+
+        tracker?.addObserver(
+            object : SelectionTracker.SelectionObserver<Long>() {
+                override fun onSelectionChanged() {
+                    super.onSelectionChanged()
+                    val nItems = tracker?.selection!!.size()
+                    textNRecipients.text = getString(R.string.n_recipients_banner, nItems.toString(), nMaxRecipients.toString())
+
+                    val recipientList = ""
+
+                   /*tracker?.selection!!.forEach{
+                        tracker
+                        it  //es un Long
+                    }*/
+
+                    textRecipientList.text = recipientList
+                }
+            })
+
     }
 
     private fun iniFab() {

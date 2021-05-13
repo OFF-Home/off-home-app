@@ -4,6 +4,7 @@ package com.offhome.app.ui.chats.singleChat
 
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
@@ -13,8 +14,14 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.ChatIndividualIdentification
+import com.offhome.app.model.Message
 import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
+import io.socket.client.IO
+import io.socket.emitter.Emitter
 
 class SingleChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
@@ -24,13 +31,15 @@ class SingleChatActivity : AppCompatActivity() {
     private lateinit var editTextNewMessage: EditText
     private lateinit var btnSendMessage: ImageButton
 
+    private lateinit var userUid: String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_chat)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val arguments = intent.extras
-        val userUid = "102" // arguments?.getString("uid")
+        userUid = "102" // arguments?.getString("uid")
         val userName = arguments?.getString("username")
         title = userName
 
@@ -45,13 +54,16 @@ class SingleChatActivity : AppCompatActivity() {
 
         viewModel = ViewModelProvider(this).get(SingleChatViewModel::class.java)
 
+        viewModel.initializeSocket(userUid, this)
+
+
         viewModel.listMessages.observe(
             this,
             {
                 messagesAdapter.setData(it)
             }
         )
-
+        /*
         userUid?.let {
             viewModel.getMessages(
                 /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)!!*/"101",
@@ -61,7 +73,7 @@ class SingleChatActivity : AppCompatActivity() {
             Toast.makeText(this, getString(R.string.error), Toast.LENGTH_SHORT).show()
             startActivity(Intent(this, MainActivity::class.java))
         }
-
+*/
         viewModel.sendMessageResult.observe(
             this,
             {
@@ -80,5 +92,10 @@ class SingleChatActivity : AppCompatActivity() {
                 userUid, editTextNewMessage.text.toString()
             )
         }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        viewModel.disconnectFromSocket()
     }
 }

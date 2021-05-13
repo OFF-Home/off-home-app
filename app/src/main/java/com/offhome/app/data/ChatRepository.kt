@@ -87,21 +87,20 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return result
     }
 
-    fun getMessagesGroup(uid_creator: String, data_hora_ini: String): MutableLiveData<Result<List<Message>>> {
-        val result = MutableLiveData<Result<List<Message>>>()
-        val call: Call<List<Message>> = chatsService!!.getAllMessagesGroup(
+    fun getMessagesGroup(uid_creator: String, data_hora_ini: String): MutableLiveData<Result<List<GroupMessage>>> {
+        val result = MutableLiveData<Result<List<GroupMessage>>>()
+        val call: Call<List<GroupMessage>> = chatsService!!.getAllMessagesGroup(
             ChatGroupIdentification(uid_creator, data_hora_ini)
         )
-        call.enqueue(object : Callback<List<Message>> {
-            override fun onResponse(call: Call<List<Message>>, response: Response<List<Message>>) {
+        call.enqueue(object : Callback<List<GroupMessage>> {
+            override fun onResponse(call: Call<List<GroupMessage>>, response: Response<List<GroupMessage>>) {
                 if (response.isSuccessful) {
                     result.value = Result.Success(response.body()!!)
                 } else {
                     result.value = Result.Error(IOException("Error connecting"))
                 }
             }
-
-            override fun onFailure(call: Call<List<Message>>, t: Throwable) {
+            override fun onFailure(call: Call<List<GroupMessage>>, t: Throwable) {
                 result.value = Result.Error(IOException("Error connecting", t))
             }
         })

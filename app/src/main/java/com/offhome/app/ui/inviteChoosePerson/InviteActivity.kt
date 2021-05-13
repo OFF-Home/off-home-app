@@ -161,8 +161,9 @@ class InviteActivity : AppCompatActivity() {
             Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
 
             //el de veritat
+            //si hi ha multiples destinataris, posem snackbar.
             if (selectedRecipientList.size == 1) {
-                //todo: acabar els 2 intents despres del merge
+                //todo: acabar els 2 intents despres del merge. potser he de fer servir view enlloc de this
                 /*val intent = Intent(this, /*Chat concret*/::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)*/
@@ -173,7 +174,6 @@ class InviteActivity : AppCompatActivity() {
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)*/
             }
-
         }
         fab.visibility = View.GONE
     }

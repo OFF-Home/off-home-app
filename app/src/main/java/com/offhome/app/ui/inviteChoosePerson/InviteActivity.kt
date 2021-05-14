@@ -58,7 +58,7 @@ class InviteActivity : AppCompatActivity() {
     //chat messages
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
-    private var currentUID:String = String()
+    private var currentUID:String = String() //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

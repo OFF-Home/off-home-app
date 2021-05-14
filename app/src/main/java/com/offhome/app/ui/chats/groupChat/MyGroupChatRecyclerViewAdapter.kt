@@ -9,7 +9,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.GroupMessage
 
 class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -54,7 +56,8 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
         override fun getItemCount(): Int = listGroupMessages.size
 
         override fun getItemViewType(position: Int): Int {
-            return if (listGroupMessages.get(position).userSender == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "103") 0
+            return if (listGroupMessages.get(position).userSender != SharedPreferenceManager.getStringValue(
+                    Constants().PREF_UID)) 0
             else 1
         }
 

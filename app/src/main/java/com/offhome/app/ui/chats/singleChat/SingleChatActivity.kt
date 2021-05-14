@@ -22,6 +22,18 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.Message
 
+/**
+ * Ativity for a single activity
+ * @property messagesAdapter is the adapter list of Messages
+ * @property viewModel is the viewModel of the activity
+ * @property messagesList is the view of the recycler
+ * @property editTextNewMessage is the EditText of the new message
+ * @property btnSendMessage is the Button to send a message
+ * @property numMessages is the amount of sent messages
+ * @property database is the reference of the database
+ * @property myRef is the reference of the part of the database to read and write
+ */
+
 class SingleChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
     private lateinit var viewModel: SingleChatViewModel
@@ -34,6 +46,9 @@ class SingleChatActivity : AppCompatActivity() {
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
 
+    /**
+     * It is called when creating the activity and has all the connection with database
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_chat)

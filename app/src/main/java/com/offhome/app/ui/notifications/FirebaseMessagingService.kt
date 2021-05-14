@@ -10,9 +10,8 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.R
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
-import java.util.*
 
-class FirebaseMessaging: FirebaseMessagingService() {
+class MyFirebaseMessaging: FirebaseMessagingService() {
     lateinit var title: String
     lateinit var message:String
     var CHANNEL_ID = "CHANNEL"
@@ -26,7 +25,7 @@ class FirebaseMessaging: FirebaseMessagingService() {
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        sendNotification()
+      //  sendNotification()
 
     }
 
@@ -35,26 +34,36 @@ class FirebaseMessaging: FirebaseMessagingService() {
     }
 
     private fun sendNotification(){
-        val intent = Intent(applicationContext,GroupChatActivity::class.java)
+        val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
         intent.putExtra("title", title)
         intent.putExtra("message", message)
         intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            val channel = NotificationChannel(CHANNEL_ID, "pushnotification", NotificationManager.IMPORTANCE_HIGH)
+            val channel = NotificationChannel(
+                CHANNEL_ID,
+                "pushnotification",
+                NotificationManager.IMPORTANCE_HIGH
+            )
             manager.createNotificationChannel(channel)
         }
 
-        val builder = NotificationCompat.Builder(this,CHANNEL_ID)
+        val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setContentTitle(title)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setAutoCancel(true)
             .setContentText(message)
 
-        val pendingintent = PendingIntent.getActivity(applicationContext,0,intent,PendingIntent.FLAG_ONE_SHOT)
+        val pendingintent = PendingIntent.getActivity(
+            applicationContext,
+            0,
+            intent,
+            PendingIntent.FLAG_ONE_SHOT
+        )
 
         builder.setContentIntent(pendingintent)
-        manager.notify(0,builder.build())
+        manager.notify(0, builder.build())
     }
+
 }

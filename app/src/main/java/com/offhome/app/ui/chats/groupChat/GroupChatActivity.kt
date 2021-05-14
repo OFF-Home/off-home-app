@@ -3,6 +3,7 @@ package com.offhome.app.ui.chats.groupChat
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
@@ -11,17 +12,20 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
+import com.offhome.app.ui.notifications.MyFirebaseMessaging
 
 class GroupChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyGroupChatRecyclerViewAdapter
@@ -105,6 +109,7 @@ class GroupChatActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        //else gestionar notificacions
         )
 
         editTextNewMessage.apply {

@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
@@ -31,7 +32,7 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
         context?.startActivity(intent)
     }*/
 
-    private var participantsList: List<String> = ArrayList()
+    private var participantsList: List<UserUsername> = ArrayList()
 
     /**
      * it inflates the view of each participant and seves the ViewHolder of the view
@@ -52,7 +53,7 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      */
     override fun onBindViewHolder(holder: ParticipantsRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = participantsList[position]
-        holder.textViewUsername.text = item
+        holder.textViewUsername.text = item.username
         //aqui hay que pedir profile pic realmente
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
     }
@@ -68,7 +69,7 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      * sets the new data and notifies to the adapter to refresh if necessary
      * @param participantsList is the new list of activites to set
      */
-    fun setData(participantsList: List<String>?) {
+    fun setData(participantsList: List<UserUsername>?) {
         this.participantsList = participantsList!!
         notifyDataSetChanged()
     }

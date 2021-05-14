@@ -5,10 +5,8 @@ import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
-import com.offhome.app.model.ActivityData
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.Rating
-import com.offhome.app.model.ReviewOfParticipant
+import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,7 +22,7 @@ import retrofit2.Response
  */
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
-    private var participants: MutableLiveData<List<String>>? = null
+    private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var comments: MutableLiveData<List<String>>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
@@ -136,22 +134,22 @@ class ActivitiesRepository {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string list
      */
-    fun getNamesParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
-        if (participants == null) participants = MutableLiveData<List<String>>()
-        val call: Call<List<String>> = activitiesService!!.getAllParticipants(usuariCreador, dataHoraIni)
-        call.enqueue(object : Callback<List<String>> {
-            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+    fun getNamesParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<UserUsername>> {
+        if (participants == null) participants = MutableLiveData<List<UserUsername>>()
+        val call: Call<List<UserUsername>> = activitiesService!!.getAllParticipants(usuariCreador, dataHoraIni)
+        call.enqueue(object : Callback<List<UserUsername>> {
+            override fun onResponse(call: Call<List<UserUsername>>, response: Response<List<UserUsername>>) {
                 if (response.isSuccessful) {
                     participants!!.value = response.body()
                 }
             }
 
-            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+            override fun onFailure(call: Call<List<UserUsername>>, t: Throwable) {
                 // Error en la connexion
                 Log.d("GET", "Error getting info")
             }
         })
-        return participants as MutableLiveData<List<String>>
+        return participants as MutableLiveData<List<UserUsername>>
     }
 
     /**
@@ -185,7 +183,8 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
-        val call = activitiesService?.addReview(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
+        val rate = RatingSubmission(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
+        val call = activitiesService?.addReview(rate)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

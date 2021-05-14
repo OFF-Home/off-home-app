@@ -24,6 +24,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityFromList
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -88,9 +89,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
              {
-                participantsAdapter.setData(it)
-                 for (item in it) {
-                     if (item == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) joined = true
+                 if (it != null) {
+                     participantsAdapter.setData(it)
+                     for (item in it) {
+                         if (item.username == "paucuesta") joined = true
+                     }
                  }
             }
         )
@@ -116,6 +119,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         //get the current date
         val currentTime = Calendar.getInstance().time
 
+        /*
         //transform dataHoraIni into date format
         val mydate = activity.dataHoraFi
         var date: Date? = null
@@ -132,7 +136,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!joined or (date > currentTime)) {
                 cantreview()
             }
-        }
+        }*/
 
         viewModel.getValoracioUsuari(activity.usuariCreador, activity.dataHoraIni, SharedPreferenceManager.getStringValue(
             Constants().PREF_EMAIL).toString()).observe(

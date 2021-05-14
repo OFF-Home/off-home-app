@@ -7,6 +7,7 @@ import com.google.firebase.auth.UserInfo
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
 import com.offhome.app.model.ReviewOfParticipant
@@ -17,7 +18,7 @@ import com.offhome.app.model.ReviewOfParticipant
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
+    private var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 
@@ -48,7 +49,7 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the participants from the repository
      */
-    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
+    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<UserUsername>> {
         participants = repository.getNamesParticipants(usuariCreador, dataHoraIni)
         return participants
     }

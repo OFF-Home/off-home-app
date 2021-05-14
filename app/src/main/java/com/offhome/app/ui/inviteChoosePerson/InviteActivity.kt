@@ -17,9 +17,18 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.Message
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.model.profile.UserSummaryInfo
 
@@ -40,12 +49,17 @@ class InviteActivity : AppCompatActivity() {
     // 3r intent
     private var tracker: SelectionTracker<Long>? = null
 
+    //chat messages
+    val database = Firebase.database
+    private lateinit var myRef: DatabaseReference
+    private lateinit var currentUID:String
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite)
         // setSupportActionBar(findViewById(R.id.toolbar))
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)   //todo comentar linea
 
         viewModel = ViewModelProvider(this).get(InviteViewModel::class.java)
 
@@ -63,6 +77,7 @@ class InviteActivity : AppCompatActivity() {
         textNRecipients.text = getString(R.string.n_recipients_banner, "0", nMaxRecipients.toString())
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
+        currentUID = viewModel.getCurrentUID()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -80,7 +95,7 @@ class InviteActivity : AppCompatActivity() {
 
                 usersListFullInfo = it
                 for (user in usersListFullInfo) {
-                    usersList.add(UserSummaryInfo(username = user.username, email = user.email))
+                    usersList.add(UserSummaryInfo(username = user.username, email = user.email, uid = user.uid))
                 }
                 //TODO no sé si funciona pq no puc testejar pero confiem
 
@@ -172,10 +187,18 @@ class InviteActivity : AppCompatActivity() {
             }
             Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
 
+
+
+            for (recipient in selectedRecipientList) {
+                sendMessage(recipient.uid)
+            }
+
+
             // el de veritat
             // si hi ha multiples destinataris, posem snackbar.
             if (selectedRecipientList.size == 1) {
-                // todo: acabar els 2 intents despres del merge. potser he de fer servir view enlloc de this
+
+                // todo: acabar els 2 intents. potser he de fer servir view enlloc de this
                 /*val intent = Intent(this, /*Chat concret*/::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)*/
@@ -187,6 +210,42 @@ class InviteActivity : AppCompatActivity() {
             }
         }
         fab.visibility = View.GONE
+    }
+
+    private fun sendMessage(recipientUID:String) {
+        val userUid = recipientUID //oi?
+        var numMessages:Int = 0
+
+        myRef = database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
+                }
+                myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        var listMessages = ArrayList<Message>()
+                        numMessages = dataSnapshot.childrenCount.toInt()
+                    }
+                    override fun onCancelled(error: DatabaseError) {
+                        TODO("Not yet implemented")
+                    }
+                })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
+
+        ++numMessages
+        val message = Message(
+            getString(R.string.share_activity_message)+"this is supposed to be some kind of URL",
+            SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
+            System.currentTimeMillis()
+        )
+        //aixo envia el message basically
+        myRef.child("m$numMessages").setValue(message)
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {

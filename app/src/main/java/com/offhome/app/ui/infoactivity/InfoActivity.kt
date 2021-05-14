@@ -233,7 +233,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
         } else if (item.itemId == R.id.share_in_app_btn) {
-            // Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
             changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)

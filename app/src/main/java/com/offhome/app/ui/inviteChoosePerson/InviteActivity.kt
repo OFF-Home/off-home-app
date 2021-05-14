@@ -2,6 +2,7 @@ package com.offhome.app.ui.inviteChoosePerson
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -25,6 +26,7 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -33,6 +35,7 @@ import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Message
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.model.profile.UserSummaryInfo
+import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 class InviteActivity : AppCompatActivity() {
 
@@ -173,26 +176,21 @@ class InviteActivity : AppCompatActivity() {
             })
     }
 
-    // fer-lo visible <=> hi hagi algun destinatari seleccionat
+    // és visible <=> hi ha algun destinatari seleccionat
     private fun iniFab() {
 
         fab.setOnClickListener { view ->
-            // placeholder listener
-            var recipientListString = ""
-            var isThe1stOne = true
-            for (user in selectedRecipientList) {
-                if (!isThe1stOne)
-                    recipientListString += ", "
 
-                recipientListString += user.username
+            if (selectedRecipientList.size > 1) {// si hi ha multiples destinataris, posem snackbar.
 
-                isThe1stOne = false
-            }
-            //Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
-
-            // el de veritat
-            // si hi ha multiples destinataris, posem snackbar.
-            if (selectedRecipientList.size > 1) {
+                var recipientListString = ""
+                var isThe1stOne = true
+                for (user in selectedRecipientList) {
+                    if (!isThe1stOne)
+                        recipientListString += ", "
+                    recipientListString += user.username
+                    isThe1stOne = false
+                }
                 Snackbar.make(view, getString(R.string.sending_invitations_snackbar, recipientListString), Snackbar.LENGTH_LONG).show()
             }
 
@@ -202,13 +200,16 @@ class InviteActivity : AppCompatActivity() {
 
             if (selectedRecipientList.size == 1) {
                 // todo: acabar els 2 intents. potser he de fer servir view enlloc de this
-                /*val intent = Intent(this, /*Chat concret*/::class.java)
+                val intent = Intent(this, SingleChatActivity::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
-                startActivity(intent)*/
+
+                intent.putExtra("uid", selectedRecipientList.first().uid)
+                intent.putExtra("username", selectedRecipientList.first().username)
+                startActivity(intent)
             } else {
-                /*val intent = Intent(this, /*Chats*/::class.java)
+                val intent = Intent(this, /*Chats*/MainActivity::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
-                startActivity(intent)*/
+                startActivity(intent)
             }
         }
         fab.visibility = View.GONE

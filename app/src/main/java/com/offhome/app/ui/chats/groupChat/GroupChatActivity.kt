@@ -192,7 +192,7 @@ class GroupChatActivity : AppCompatActivity() {
                 myRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (chatSnapshot in dataSnapshot.children) {
-                            if (chatSnapshot.equals("101_26-5-2000 18:00")) {
+                            if (chatSnapshot.value!!.equals("101_26-5-2000 18:00")) {
                                 chatSnapshot.ref.removeValue()
                                     startActivity(Intent(MyApp.getContext(), MainActivity::class.java))
                                     finish()

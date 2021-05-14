@@ -248,7 +248,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants)))
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants, usuariCreador = activity.usuariCreador, dataHoraIni = activity.dataHoraIni, categoria = activity.categoria, titol = activity.titol, descripcio = activity.descripcio)))
         startActivity(intentCanviAChat)
     }
 

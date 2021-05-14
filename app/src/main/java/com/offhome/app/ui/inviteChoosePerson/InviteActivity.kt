@@ -43,6 +43,7 @@ class InviteActivity : AppCompatActivity() {
     private var usersList: MutableList<UserSummaryInfo> = ArrayList()
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients: Int = 999
+    private lateinit var activityInfo:ActivityDataForInvite
     private lateinit var textMaxRecipients: TextView
     private lateinit var textNRecipients: TextView
     private lateinit var textRecipientList: TextView
@@ -67,7 +68,7 @@ class InviteActivity : AppCompatActivity() {
 
         val arguments = intent.extras
         val activityInfoString = arguments?.getString("activity")
-        val activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityDataForInvite::class.java) // todo canviar per algo q em passi nomes el qui vull? (id de la activity, n_participants.) i el num de persones ja apuntades
+        activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityDataForInvite::class.java) // todo canviar per algo q em passi nomes el qui vull? (id de la activity, n_participants.) i el num de persones ja apuntades
 
         fab = findViewById(R.id.fab)
         iniFab()
@@ -242,7 +243,12 @@ class InviteActivity : AppCompatActivity() {
 
         ++numMessages
         val message = Message(
-            getString(R.string.share_activity_message, "this is supposed to be some kind of URL"),  //TODO el URL
+            getString(R.string.share_activity_message,
+                activityInfo.titol+"\n"
+                +"Category: " + activityInfo.categoria+"\n"+
+                    "description: "+activityInfo.descripcio+"\n"+
+                    "Created by: "+activityInfo.usuariCreador+"\n" +
+                    "at: "+activityInfo.dataHoraIni),  //TODO el URL        //TODO extreure string
             currentUID,
             System.currentTimeMillis()
         )

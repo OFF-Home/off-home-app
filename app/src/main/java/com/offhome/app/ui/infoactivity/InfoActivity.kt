@@ -1,5 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
+
+
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -99,10 +101,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     for (item in it) {
                         if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
                     }
-                    //TODO crec que aquest observer no salta
-                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = "+it.size.toString())
+                    // TODO crec que aquest observer no salta
+                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
                     nRemainingParticipants = activity.maxParticipant - it.size
-                    Log.d("getParticipants", "nRemainingParticipants = "+nRemainingParticipants.toString())
+                    Log.d("getParticipants", "nRemainingParticipants = " + nRemainingParticipants.toString())
                 }
             }
         )
@@ -359,7 +361,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, "this is supposed to be some kind of URL"))   //TODO el URL
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, "this is supposed to be some kind of URL")) // TODO el URL
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
         } else if (item.itemId == R.id.share_in_app_btn) {

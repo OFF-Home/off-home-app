@@ -28,10 +28,7 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.common.Constants
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityDataForInvite
-import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Message
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.model.profile.UserSummaryInfo
@@ -42,11 +39,11 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var viewModel: InviteViewModel
     private lateinit var fab: FloatingActionButton
     private var usersListFullInfo: List<UserInfo> = ArrayList()
-    //private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
+    // private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
     private var usersList: MutableList<UserSummaryInfo> = ArrayList()
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients: Int = 999
-    private lateinit var activityInfo:ActivityDataForInvite
+    private lateinit var activityInfo: ActivityDataForInvite
     private lateinit var textMaxRecipients: TextView
     private lateinit var textNRecipients: TextView
     private lateinit var textRecipientList: TextView
@@ -55,17 +52,17 @@ class InviteActivity : AppCompatActivity() {
     // 3r intent
     private var tracker: SelectionTracker<Long>? = null
 
-    //chat messages
+    // chat messages
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
-    private var currentUID:String = String() //
+    private var currentUID: String = String() //
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_invite)
         // setSupportActionBar(findViewById(R.id.toolbar))
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(false)   //todo algun dia arreglar lo de que el upButton fa que peti
+        supportActionBar?.setDisplayHomeAsUpEnabled(false) // todo algun dia arreglar lo de que el upButton fa que peti
 
         viewModel = ViewModelProvider(this).get(InviteViewModel::class.java)
 
@@ -84,7 +81,7 @@ class InviteActivity : AppCompatActivity() {
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
 
-        //currentUID = "102"
+        // currentUID = "102"
         currentUID = viewModel.getCurrentUID()
 
         // en procés
@@ -99,21 +96,21 @@ class InviteActivity : AppCompatActivity() {
             this,
             Observer {
 
-                //usersList = it
+                // usersList = it
 
                 usersListFullInfo = it
                 for (user in usersListFullInfo) {
                     usersList.add(UserSummaryInfo(username = user.username, email = user.email, uid = user.uid))
                 }
-                //TODO no sé si funciona pq no puc testejar pero confiem
+                // TODO no sé si funciona pq no puc testejar pero confiem
 
                 usersListAdapter.setData(usersList)
             }
         )
 
-        //stub
+        // stub
         usersList =
-            listOf(UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), )
+            listOf(UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"),)
                 as MutableList<UserSummaryInfo>
         usersListAdapter.setData(usersList)
 
@@ -183,7 +180,7 @@ class InviteActivity : AppCompatActivity() {
 
         fab.setOnClickListener { view ->
 
-            if (selectedRecipientList.size > 1) {// si hi ha multiples destinataris, posem snackbar.
+            if (selectedRecipientList.size > 1) { // si hi ha multiples destinataris, posem snackbar.
 
                 var recipientListString = ""
                 var isThe1stOne = true
@@ -203,25 +200,25 @@ class InviteActivity : AppCompatActivity() {
             if (selectedRecipientList.size == 1) {
                 // todo: acabar els 2 intents. potser he de fer servir view enlloc de this
                 val intent = Intent(this, SingleChatActivity::class.java)
-                //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
+                // intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
 
                 intent.putExtra("uid", selectedRecipientList.first().uid)
                 intent.putExtra("username", selectedRecipientList.first().username)
                 startActivity(intent)
             } else {
                 val intent = Intent(this, /*Chats*/MainActivity::class.java)
-                //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
+                // intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)
             }
         }
         fab.visibility = View.GONE
     }
 
-    private fun sendMessage(recipientUID:String) {
-        val userUid = recipientUID //oi?
-        var numMessages:Int = 0
+    private fun sendMessage(recipientUID: String) {
+        val userUid = recipientUID // oi?
+        var numMessages: Int = 0
 
-        myRef = database.getReference("xatsIndividuals/${userUid}_${currentUID}")
+        myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
@@ -233,29 +230,31 @@ class InviteActivity : AppCompatActivity() {
                         numMessages = dataSnapshot.childrenCount.toInt()
                     }
                     override fun onCancelled(error: DatabaseError) {
-                        //TODO Not yet implemented
+                        // TODO Not yet implemented
                         Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
             override fun onCancelled(error: DatabaseError) {
-                //TODO Not yet implemented
+                // TODO Not yet implemented
                 Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
             }
         })
 
         ++numMessages
         val message = Message(
-            getString(R.string.share_activity_message,
-                activityInfo.titol+"\n"
-                +"Category: " + activityInfo.categoria+"\n"+
-                    "description: "+activityInfo.descripcio+"\n"+
-                    "Created by: "+activityInfo.usuariCreador+"\n" +
-                    "at: "+activityInfo.dataHoraIni),  //TODO el URL        //TODO extreure string
+            getString(
+                R.string.share_activity_message,
+                activityInfo.titol + "\n" +
+                    "Category: " + activityInfo.categoria + "\n" +
+                    "description: " + activityInfo.descripcio + "\n" +
+                    "Created by: " + activityInfo.usuariCreador + "\n" +
+                    "at: " + activityInfo.dataHoraIni
+            ), // TODO el URL        //TODO extreure string
             currentUID,
             System.currentTimeMillis()
         )
-        //aixo envia el message basically
+        // aixo envia el message basically
         myRef.child("m$numMessages").setValue(message)
     }
 
@@ -269,28 +268,28 @@ class InviteActivity : AppCompatActivity() {
      * @param menu provided
      * @return true
      */
-    //doing: el buscador
+    // doing: el buscador
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.search_button,menu)
+        menuInflater.inflate(R.menu.search_button, menu)
 
         val menuItem = menu?.findItem(R.id.search)
         val searchView = menuItem?.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
 
-                //if (newText != null && newText.isNotEmpty()) {  //si hi ha algo a la bar. todo descomentar
-                    //get de tots els users i buscar entre ells
-                    //val completeUserList: List<UserInfo>
+                // if (newText != null && newText.isNotEmpty()) {  //si hi ha algo a la bar. todo descomentar
+                // get de tots els users i buscar entre ells
+                // val completeUserList: List<UserInfo>
 
-                    //viewModel.getAllUsers()
+                // viewModel.getAllUsers()
 
-                    usersListAdapter.performFiltering(newText, /*completeUserList*/)
-                //}
+                usersListAdapter.performFiltering(newText, /*completeUserList*/)
+                // }
                 return false
             }
         })

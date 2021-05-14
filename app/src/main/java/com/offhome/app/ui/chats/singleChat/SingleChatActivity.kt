@@ -55,7 +55,7 @@ class SingleChatActivity : AppCompatActivity() {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
-                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
+                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
                 }
                 myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {

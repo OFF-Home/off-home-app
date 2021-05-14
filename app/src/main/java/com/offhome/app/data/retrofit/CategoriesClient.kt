@@ -1,5 +1,6 @@
 package com.offhome.app.data.retrofit
 
+import com.offhome.app.common.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -20,7 +21,7 @@ class CategoriesClient {
      */
     init {
         retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+            .baseUrl(Constants().BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         categoriesService = retrofit!!.create(CategoriesService::class.java)

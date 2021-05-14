@@ -204,7 +204,7 @@ class InviteActivity : AppCompatActivity() {
      * @return true
      */
     //doing: el buscador
-    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_button,menu)
 
         val menuItem = menu?.findItem(R.id.search)
@@ -216,11 +216,19 @@ class InviteActivity : AppCompatActivity() {
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                usersListAdapter.performFiltering(newText)
+
+                //if (newText != null && newText.isNotEmpty()) {  //si hi ha algo a la bar. todo descomentar
+                    //get de tots els users i buscar entre ells
+                    //val completeUserList: List<UserInfo>
+
+                    //viewModel.getAllUsers()
+
+                    usersListAdapter.performFiltering(newText, /*completeUserList*/)
+                //}
                 return false
             }
         })
 
         return true
-    }*/
+    }
 }

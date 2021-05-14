@@ -17,9 +17,16 @@ class InviteViewModel  : ViewModel() {
     private var _followedUsers = MutableLiveData<List<UserInfo>>()
     var followedUsers: LiveData<List<UserInfo>> = _followedUsers
 
+    private var _allUsers = MutableLiveData<List<UserInfo>>()
+    var allUsers: LiveData<List<UserInfo>> = _allUsers
+
     private var nSelectedRecipients:Int = 0
 
     fun getFollowedUsers() {
         followedUsers = profileRepository.getFollowedUsers(loggedUserEmail)
+    }
+
+    fun getAllUsers() {
+        //allUsers = profileRepository.getAllUsers()
     }
 }

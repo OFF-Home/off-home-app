@@ -40,17 +40,3 @@ class SingleChatViewModel(val chatRepository: ChatRepository) : ViewModel() {
         sendMessageResult = chatRepository.sendMessage(uid1, uid2, text)
     }
 }
-
-// fun disconnectFromSocket() {
-// chatRepository.disconnect()
-// }
-//
-// fun initializeSocket(userUid: String, activity: AppCompatActivity) {
-// chatRepository.initializeIndividualChatSocket(userUid)
-// chatRepository.listMessages.observe(
-// activity,
-// {
-// listMessages.value = it
-// }
-// )
-// }

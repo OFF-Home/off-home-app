@@ -9,6 +9,7 @@ import com.google.firebase.database.IgnoreExtraProperties
 data class GroupMessage(
     var message: String = "",
     var userCreator: String = "",
+    var userNameSender: String = "",
     var userSender: String = "",
     var dataHoraIni: String = "",
     var timestamp: Long = 0

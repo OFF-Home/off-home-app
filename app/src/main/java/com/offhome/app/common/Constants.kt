@@ -2,10 +2,10 @@ package com.offhome.app.common
 
 data class Constants(
     val BASE_URL: String = "http://ec2-52-3-247-204.compute-1.amazonaws.com:3000/",
-    //val BASE_URL: String = " https://off-home.herokuapp.com/",
 
     // Preferences
     val PREF_EMAIL: String = "PREF_EMAIL",
+    // val PREF_USERNAME: String = "PREF_NAME",
     val PREF_PROVIDER: String = "PREF_PROVIDER",
     val PREF_PROVIDER_PASSWORD: String = "PASSWORD",
     val PREF_PROVIDER_GOOGLE: String = "GOOGLE",

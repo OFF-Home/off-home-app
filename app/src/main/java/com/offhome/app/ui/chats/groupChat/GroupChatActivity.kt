@@ -6,7 +6,6 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
-import android.view.MenuInflater
 import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -22,13 +21,14 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
+import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
-import com.offhome.app.ui.login.LoginActivity
 
 class GroupChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyGroupChatRecyclerViewAdapter
@@ -40,7 +40,7 @@ class GroupChatActivity : AppCompatActivity() {
 
     private var numMessages = 0
     val database = Firebase.database
-    private val myRef = database.getReference("xatsGrupals/101_26-5-2000 18:00")
+    private var myRef = database.getReference("xatsGrupals/101_26-5-2000 18:00")
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -186,12 +186,28 @@ class GroupChatActivity : AppCompatActivity() {
             logout_dialog.setTitle(R.string.dialog_logout_title)
             logout_dialog.setMessage(R.string.dialog_logout_message)
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
-                //aqui va el que fem per abandonar un xat grupal?
-                //myRef = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+                //aqui va el que fem per abandonar un xat grupal
+                myRef = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+
+                myRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (chatSnapshot in dataSnapshot.children) {
+                            if (chatSnapshot.equals("101_26-5-2000 18:00")) {
+                                chatSnapshot.ref.removeValue()
+                                    startActivity(Intent(MyApp.getContext(), MainActivity::class.java))
+                                    finish()
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
 
                 /* para enviar a otra pantalla, la de todos los xats, next sprint
                 requireActivity().run {
-                    startActivity(Intent(this, LoginActivity::class.java))
+                    startActivity(Intent(this, MainActivity::class.java))
                     finish()
                 }*/
             }

@@ -14,6 +14,10 @@ import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.GroupMessage
 
+/**
+ * Adpter for the recycler view of messages of a group chat
+ * @property listGroupMessages is the list of Messages
+ */
 class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
         private var listGroupMessages: List<GroupMessage> = ArrayList()
@@ -24,6 +28,9 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
             val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
         }
 
+    /**
+     * It assignes the ViewHolder. It depends on the message, if is a self message or not
+     */
         override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
             return when (viewType) {
                 0 -> {
@@ -39,6 +46,9 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
             }
         }
 
+    /**
+     * It loads the view. It depends on the message, if is a self message or not
+     */
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val item = listGroupMessages[position]
             (holder as ViewHolderGroupMessage).textViewMessage.text = item.message
@@ -48,13 +58,18 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
                 return@setOnLongClickListener true
             }
             (holder as ViewHolderGroupMessage).nameViewPerson.text = item.userNameSender
-          //  item.userSender.also { holder.nameViewPerson.text = it }
             // TODO Load image of a user
             Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
         }
 
+    /**
+     * Returns the number of messages
+     */
         override fun getItemCount(): Int = listGroupMessages.size
 
+    /**
+     * It sets the type of view: if it is a message that the users has sent or recieved
+     */
         override fun getItemViewType(position: Int): Int {
             return if (listGroupMessages.get(position).userSender != SharedPreferenceManager.getStringValue(
                     Constants().PREF_UID)) 0

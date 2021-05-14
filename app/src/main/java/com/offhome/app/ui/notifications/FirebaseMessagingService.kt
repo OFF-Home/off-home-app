@@ -11,6 +11,9 @@ import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.R
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 
+/**
+ * Base class for receiving messages from Firebase Cloud Messaging.
+ */
 class MyFirebaseMessaging: FirebaseMessagingService() {
     lateinit var title: String
     lateinit var message:String
@@ -18,6 +21,9 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
 
     private lateinit var manager: NotificationManager
 
+    /**
+     * Called when a message is received.
+     */
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
         title = remotemessage.data.get("title")!!
@@ -29,10 +35,16 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
 
     }
 
+    /**
+     * Called when a new token for the default Firebase project is generated.
+     */
     override fun onNewToken(p0: String) {
         super.onNewToken(p0)
     }
 
+    /**
+     * Called when a notification is going to be send
+     */
     private fun sendNotification(){
         val intent = Intent(applicationContext, GroupChatActivity::class.java)
 

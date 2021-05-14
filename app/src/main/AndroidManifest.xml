@@ -36,7 +36,6 @@
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity">
-
         </activity>
 
     <!--
@@ -82,7 +81,7 @@
                 android:resource="@xml/search" />
         </activity>
         <service
-            android:name=".ui.notifications.FirebaseMessaging"
+            android:name=".ui.notifications.MyFirebaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

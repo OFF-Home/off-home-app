@@ -117,7 +117,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
-                                       // Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
                                         val intent = Intent(this, GroupChatActivity::class.java)
                                         intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
                                         intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
@@ -177,11 +176,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         displayChatGroup()
     }
 
+    /**
+     * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
+     */
     private fun displayChatGroup() {
         groupChat = findViewById(R.id.joinGroupChat)
-
         groupChat.setOnClickListener {
             // go to GroupChatActivity only if the user has joined the activity
+            val intent = Intent(this, GroupChatActivity::class.java)
+            intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
+            intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+            startActivity(intent)
+            finish()
         }
     }
 

@@ -1,9 +1,6 @@
 package com.offhome.app.ui.chats.groupChat
 
-
-
 import android.os.Bundle
-import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
@@ -12,21 +9,18 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
-import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
-import com.offhome.app.ui.notifications.MyFirebaseMessaging
 
 class GroupChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyGroupChatRecyclerViewAdapter
@@ -40,10 +34,13 @@ class GroupChatActivity : AppCompatActivity() {
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
 
-
+    /**
+     * It is called when creating the activity and has all the connection with database
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val arguments = intent.extras
 
@@ -65,25 +62,6 @@ class GroupChatActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
-/*
-        viewModel.listMessages.observe(
-            this,
-            {
-                messagesAdapter.setData(it)
-            }
-        )
-        user_id.let {
-            viewModel.getMessages(it, date_ini, this)
-        }
-
-        btnSendMessage.setOnClickListener {
-            if (!editTextNewMessage.text.isEmpty()) {
-                val mess = GroupMessage(
-                    user_id, date_ini, user_id, "practico couchsurfing"
-                )
-                viewModel.sendMessage(mess)
-            }
-        }*/
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

@@ -192,27 +192,11 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             if (it == "Activity created") {
-                                createChatGroup(activitydata.titol)
                                 startActivity(Intent(this, MainActivity::class.java))
                             }
                         }
                     }
                 )
-            }
-        }
-    }
-
-    private fun createChatGroup(titolAct: String) {
-        Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
-        // createGroupChat() ???
-        //        val chatGroupIde = ChatGroupIdentification(
-        //            "101", "26-5-2000 18:00"
-        //        )
-        //        viewModel.addChatGroup(chatGroupIde)
-        val SpannableString = SpannableString("Go to chat group")
-        val clickableSpan = object : ClickableSpan() {
-            override fun onClick(widget: View) {
-                //   startActivity(Intent(this, GroupChatActivity::class.java))
             }
         }
     }

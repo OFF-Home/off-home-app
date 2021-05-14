@@ -1,5 +1,7 @@
 package com.offhome.app.ui.inviteChoosePerson
 
+
+
 import android.content.Context
 import android.view.LayoutInflater
 import android.view.MotionEvent
@@ -19,7 +21,7 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
 
     var userList: List<UserSummaryInfo> = ArrayList()
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListRecyclerViewAdapter.ViewHolder {    //int?
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UsersListRecyclerViewAdapter.ViewHolder { // int?
         val view = LayoutInflater.from(parent.context)
             .inflate(R.layout.fragment_recipient, parent, false)
         return ViewHolder(view)
@@ -27,13 +29,13 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
 
     private val elementLayoutOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as UserSummaryInfo
-        //val intent = Intent(context, InfoActivity::class.java)
-        //intent.putExtra("activity", GsonBuilder().create().toJson(item))
-        //context?.startActivity(intent)
+        // val intent = Intent(context, InfoActivity::class.java)
+        // intent.putExtra("activity", GsonBuilder().create().toJson(item))
+        // context?.startActivity(intent)
         Snackbar.make(v, "contact tapped", Snackbar.LENGTH_SHORT).show()
     }
 
-    //re-done a try3
+    // re-done a try3
     /*override fun onBindViewHolder(holder: UsersListRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = userList[position]
         holder.textViewUsername.text = item.username
@@ -57,9 +59,9 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
         private val textViewUsername: TextView = mView.findViewById(R.id.recipient_username)
         private val textViewEmail: TextView = mView.findViewById(R.id.recipient_email)
         val imageViewProfilePic: ImageView = mView.findViewById(R.id.recipient_profile_pic)
-        val layout : ConstraintLayout = mView.findViewById(R.id.recipient_item_layout)
+        val layout: ConstraintLayout = mView.findViewById(R.id.recipient_item_layout)
 
-        //3r try
+        // 3r try
         fun getItemDetails(): ItemDetailsLookup.ItemDetails<Long> =
             object : ItemDetailsLookup.ItemDetails<Long>() {
                 override fun getPosition(): Int = adapterPosition
@@ -73,11 +75,11 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
         fun bind(value: UserSummaryInfo, isActivated: Boolean = false) {
             textViewUsername.text = value.username
             textViewEmail.text = value.email
-            itemView.isActivated = isActivated      //lol?
+            itemView.isActivated = isActivated // lol?
         }
     }
 
-    //3r try
+    // 3r try
     init {
         setHasStableIds(true)
     }
@@ -91,6 +93,4 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
             holder.bind(recipient, it.isSelected(position.toLong()))
         }
     }
-
 }
-

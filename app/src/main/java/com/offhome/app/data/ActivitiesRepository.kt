@@ -1,10 +1,11 @@
 package com.offhome.app.data
 
+
+
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.common.Constants
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody
@@ -22,6 +23,8 @@ import retrofit2.Response
  */
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private var participants: MutableLiveData<List<String>>? = null
+    private var comments: MutableLiveData<List<String>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
@@ -51,7 +54,8 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = activitiesService?.createActivityByUser(emailCreator = "victorfer@gmai.com",
+        val call = activitiesService?.createActivityByUser(
+            emailCreator = "victorfer@gmai.com",
             activitydata = newActivity
         )
         call!!.enqueue(object : Callback<ResponseBody> {
@@ -122,5 +126,28 @@ class ActivitiesRepository {
             }
         })
         return responseJoin as MutableLiveData<String>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the participants of an activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data string list
+     */
+    fun getNamesParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
+        if (participants == null) participants = MutableLiveData<List<String>>()
+        val call: Call<List<String>> = activitiesService!!.getAllParticipants(usuariCreador, dataHoraIni)
+        call.enqueue(object : Callback<List<String>> {
+            override fun onResponse(call: Call<List<String>>, response: Response<List<String>>) {
+                if (response.isSuccessful) {
+                    participants!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<String>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting info")
+            }
+        })
+        return participants as MutableLiveData<List<String>>
     }
 }

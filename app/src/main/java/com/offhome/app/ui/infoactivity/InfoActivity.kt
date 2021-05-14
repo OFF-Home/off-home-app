@@ -1,5 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
+
+
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -11,16 +13,20 @@ import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.util.*
 
@@ -42,6 +48,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
     private lateinit var viewModel: InfoActivityViewModel
+    private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
+    private lateinit var layoutParticipants: RecyclerView
+    private var participantsList: List<String> = ArrayList()
+
+    private lateinit var groupChat: FloatingActionButton
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -54,22 +65,26 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         // recibir actividad seleccionada de la otra pantalla
         val arguments = intent.extras
         val activityString = arguments?.getString("activity")
-        // val activityString = "{\n" +
-//                "        \"usuariCreador\": \"victorfer@gmai.com\",\n" +
-//                "        \"nomCarrer\": \"Balmes2\",\n" +
-//                "        \"numCarrer\": 11,\n" +
-//                "        \"dataHoraIni\": \"13h\",\n" +
-//                "        \"categoria\": \"Walking\",\n" +
-//                "        \"maxParticipant\": 7,\n" +
-//                "        \"titol\": \"Running in La Barce\",\n" +
-//                "        \"descripcio\": \"so much fun!!!\",\n" +
-//                "        \"dataHoraFi\": \" 13/5/2021\"\n" +
-//                "    }"
+
         activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
+
+        participantsAdapter = ParticipantsRecyclerViewAdapter()
+        layoutParticipants = findViewById(R.id.listParticipants)
+        with(layoutParticipants) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = participantsAdapter
+        }
+
+        viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+            {
+                participantsAdapter.setData(it)
+            }
+        )
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
@@ -83,10 +98,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
+        val estrelles = findViewById<RatingBar>(R.id.ratingStars)
+        estrelles.numStars = activity.valoracio
+
         val layout = findViewById<View>(R.id.content)
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
-
         var joined = false
 
         btnJoin.setOnClickListener {
@@ -110,8 +127,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         }
                     }
                 )
-            }
-            else {
+            } else {
                 btnJoin.text = "JOIN"
 
                 viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
@@ -132,7 +148,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 )
             }
-
         }
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
@@ -154,6 +169,17 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             } else {
                 imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
+        }
+        displayChatGroup()
+    }
+
+    private fun displayChatGroup() {
+        groupChat = findViewById(R.id.joinGroupChat)
+
+        groupChat.setOnClickListener {
+            // go to GroupChatActivity only if the user has joined the activity
+            startActivity(Intent(this, GroupChatActivity::class.java))
+            finish()
         }
     }
 
@@ -190,7 +216,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_invite_menu,menu)
+        menuInflater.inflate(R.menu.share_invite_menu, menu)
         return true
     }
 
@@ -200,15 +226,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true if the menu is successfully handled
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.share_outside_app_btn){
+        if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
             intent.putExtra(Intent.EXTRA_TEXT, R.string.share_activity_message)
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
-        }
-        else if (item.itemId == R.id.share_in_app_btn) {
-            //Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
+        } else if (item.itemId == R.id.share_in_app_btn) {
+            // Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
             changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
@@ -216,7 +241,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity))  //todo enviar el num de persones que hi ha apuntades
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
         startActivity(intentCanviAChat)
     }
 

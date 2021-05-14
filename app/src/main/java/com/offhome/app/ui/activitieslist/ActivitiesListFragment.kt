@@ -1,5 +1,7 @@
 package com.offhome.app.ui.activitieslist
 
+
+
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
@@ -15,7 +17,6 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 /**
  * Class that defines the fragment to show the List of Activities
@@ -136,17 +137,17 @@ class ActivitiesListFragment : Fragment() {
             .setItems(arrayOf("Ascending", "Descending", "By date")) { dialogInterface, i ->
                 when (i) {
                     0 -> {
-                        //ascending clicked
+                        // ascending clicked
                         dialogInterface.dismiss()
                         activitiesList.sortedBy { it.titol }
                     }
                     1 -> {
-                        //descending clicked
+                        // descending clicked
                         dialogInterface.dismiss()
                         activitiesList.sortedByDescending { it.titol }
                     }
                     2 -> {
-                        //sorted by date
+                        // sorted by date
                         dialogInterface.dismiss()
                         activitiesList.sortedBy { it.dataHoraIni }
                     }
@@ -180,15 +181,14 @@ class ActivitiesListFragment : Fragment() {
             for (j in selectedList.indices) {
                 for (s in activitiesList) {
                     if (s.categoria == (categoriesOptions)[selectedList[j]])
-                    resultlist.add(s)
+                        resultlist.add(s)
                 }
             }
-            //activitiesList = resultlist
+            // activitiesList = resultlist
             Toast.makeText(context, "Filter applied", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         dialog = builder.create()
         dialog.show()
     }
-
 }

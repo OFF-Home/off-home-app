@@ -2,12 +2,8 @@ package com.offhome.app.data
 
 
 
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
-import com.google.gson.Gson
-import com.offhome.app.common.Constants
 import com.offhome.app.data.model.ChatGroupIdentification
-import com.offhome.app.data.model.ChatIndividualIdentification
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
 import com.offhome.app.model.GroupMessage
@@ -24,7 +20,7 @@ class ChatRepository(private val chatsClient: ChatClient) {
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
     var listMessages = MutableLiveData<ArrayList<Message>>()
     var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
-    //lateinit var mSocket: Socket
+    // lateinit var mSocket: Socket
     lateinit var userUid: String
     lateinit var dataHora: String
    /* val gson: Gson = Gson()
@@ -142,7 +138,7 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return result
     }
 
-    fun addChatGroup(chatGroupIde: ChatGroupIdentification): MutableLiveData<String>{
+    fun addChatGroup(chatGroupIde: ChatGroupIdentification): MutableLiveData<String> {
         val call = chatsService?.addChatGroup(chatGroupIde)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -159,7 +155,6 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return responseSendMessage as MutableLiveData<String>
     }
 }
-
 
 /** CALLBACKS SOCKETS **/
 

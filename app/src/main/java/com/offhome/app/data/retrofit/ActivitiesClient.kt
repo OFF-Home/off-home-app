@@ -3,6 +3,7 @@ package com.offhome.app.data.retrofit
 
 
 
+import com.offhome.app.common.Constants
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -13,7 +14,7 @@ class ActivitiesClient {
 
     init {
         retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-52-3-247-204.compute-1.amazonaws.com:3000/")
+            .baseUrl(Constants().BASE_URL)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         activitiesService = retrofit!!.create(ActivitiesService::class.java)

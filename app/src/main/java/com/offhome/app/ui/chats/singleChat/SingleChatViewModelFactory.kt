@@ -17,8 +17,7 @@ class SingleChatViewModelFactory : ViewModelProvider.Factory {
                     chatsClient = ChatClient()
                 )
             ) as T
-        }
-        else if  (modelClass.isAssignableFrom(GroupChatViewModel::class.java)) {
+        } else if (modelClass.isAssignableFrom(GroupChatViewModel::class.java)) {
             return GroupChatViewModel(
                 chatRepo = ChatRepository(
                     chatsClient = ChatClient()

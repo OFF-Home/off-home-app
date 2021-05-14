@@ -55,7 +55,7 @@ class GroupChatActivity : AppCompatActivity() {
             adapter = messagesAdapter
         }
 
-        viewModel = ViewModelProvider(this,SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
+        viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
 /*
         viewModel.listMessages.observe(
             this,
@@ -75,7 +75,6 @@ class GroupChatActivity : AppCompatActivity() {
                 viewModel.sendMessage(mess)
             }
         }*/
-
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

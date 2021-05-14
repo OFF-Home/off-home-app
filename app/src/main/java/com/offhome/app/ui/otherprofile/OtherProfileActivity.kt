@@ -90,7 +90,9 @@ class OtherProfileActivity : AppCompatActivity() {
 
         btnChat.setOnClickListener {
             val intent = Intent(this, SingleChatActivity::class.java)
-            intent.putExtra("uid", "d")
+            intent.putExtra("uid", otherUser.uid)
+            intent.putExtra("username", otherUser.username)
+            startActivity(intent)
         }
 
         observe()

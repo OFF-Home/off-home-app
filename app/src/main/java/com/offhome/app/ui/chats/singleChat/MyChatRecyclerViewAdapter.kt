@@ -11,9 +11,14 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.Message
-
+/**
+ * Adpter for the recycler view of messages of a chat
+ * @property listMessages is the list of Messages
+ */
 class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listMessages: List<Message> = ArrayList()
@@ -23,6 +28,9 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
     }
 
+    /**
+     * It assignes the ViewHolder. It depends on the message, if is a self message or not
+     */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             0 -> {
@@ -38,6 +46,9 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         }
     }
 
+    /**
+     * It loads the view. It depends on the message, if is a self message or not
+     */
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         val item = listMessages[position]
         (holder as ViewHolderMessage).textViewMessage.text = item.message
@@ -50,12 +61,20 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
     }
 
+    /**
+     * Returns the number of messages
+     */
     override fun getItemCount(): Int = listMessages.size
 
+    /**
+     * It sets the type of view: if it is a message that the users has sent or recieved
+     */
     override fun getItemViewType(position: Int): Int {
-        return if (listMessages.get(position).usid_enviador == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "103") 0
+        return if (listMessages.get(position).usid_enviador == SharedPreferenceManager.getStringValue(
+                Constants().PREF_UID
+            )
+        ) 0
         else 1
-        // aquí sha de canviar i posar que retorni : opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages?? - modificar type?)
     }
 
     /**
@@ -66,5 +85,4 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         this.listMessages = messages!!
         notifyDataSetChanged()
     }
-
 }

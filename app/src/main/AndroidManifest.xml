@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.offhome.app">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -15,6 +14,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".common.MyApp"
@@ -24,10 +24,10 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OFFHome"
-        tools:targetApi="n">
+        android:theme="@style/Theme.OFFHome">
         <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity">
+
         </activity>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
@@ -35,7 +35,8 @@
         <activity android:name=".ui.otherprofile.OtherProfileActivity"/>
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
-            android:parentActivityName=".ui.infoactivity.InfoActivity" >
+            android:parentActivityName=".ui.infoactivity.InfoActivity">
+
         </activity>
 
     <!--
@@ -76,8 +77,6 @@
 
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
-
-
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />

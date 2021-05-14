@@ -32,6 +32,9 @@ class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
         )
     }
 
+    /**
+     * It calls the repository to send the messages of a group chat
+     */
     fun sendMessage(message: GroupMessage) {
         sendMessageResult = chatRepo.sendGroupMessage(message)
     }

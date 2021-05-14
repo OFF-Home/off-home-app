@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
@@ -40,21 +41,30 @@ class GroupChatActivity : AppCompatActivity() {
 
     private var numMessages = 0
     val database = Firebase.database
-    private var myRef = database.getReference("xatsGrupals/101_26-5-2000 18:00")
+    private lateinit var myRef: DatabaseReference
+    private lateinit var userUid: String
+    private lateinit var data_ini: String
 
+    /**
+     * It is called when creating the activity and has all the connection with database
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val arguments = intent.extras
-        title = arguments?.getString("This is the title of the activity")
-        val user_id = "101"
-        val date_ini = "26-5-2000 18:00"
-        val user_name =  SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+
+        userUid = arguments?.getString("usuariCreador").toString()
+        data_ini = arguments?.getString("dataHI").toString()
+        val user_name = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+        val uid_user = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
 
         messagesList = findViewById(R.id.messages_view)
         editTextNewMessage = findViewById(R.id.new_message)
         btnSendMessage = findViewById(R.id.sendButton)
+
+        myRef = database.getReference("xatsGrupals/${userUid}_$data_ini")
 
         messagesAdapter = MyGroupChatRecyclerViewAdapter()
         with(messagesList) {
@@ -63,25 +73,6 @@ class GroupChatActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
-/*
-        viewModel.listMessages.observe(
-            this,
-            {
-                messagesAdapter.setData(it)
-            }
-        )
-        user_id.let {
-            viewModel.getMessages(it, date_ini, this)
-        }
-
-        btnSendMessage.setOnClickListener {
-            if (!editTextNewMessage.text.isEmpty()) {
-                val mess = GroupMessage(
-                    user_id, date_ini, user_id, "practico couchsurfing"
-                )
-                viewModel.sendMessage(mess)
-            }
-        }*/
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -112,6 +103,7 @@ class GroupChatActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+            // else gestionar notificacions
         )
 
         editTextNewMessage.apply {
@@ -127,10 +119,10 @@ class GroupChatActivity : AppCompatActivity() {
                             ++numMessages
                             val message = GroupMessage(
                                 editTextNewMessage.text.toString(),
-                                user_id,
-                                "Maria",
-                                user_id,
-                                date_ini,
+                                userUid.toString(),
+                                user_name.toString(),
+                                uid_user.toString(),
+                                data_ini.toString(),
                                 System.currentTimeMillis()
                             )
                             myRef.child("m$numMessages").setValue(message)
@@ -150,10 +142,10 @@ class GroupChatActivity : AppCompatActivity() {
                     val message = user_name?.let { it1 ->
                         GroupMessage(
                             editTextNewMessage.text.toString(),
-                            user_id,
+                            userUid.toString(),
                             it1,
-                            user_id,
-                            date_ini,
+                            uid_user.toString(),
+                            data_ini.toString(),
                             System.currentTimeMillis()
                         )
                     }
@@ -186,16 +178,16 @@ class GroupChatActivity : AppCompatActivity() {
             logout_dialog.setTitle(R.string.dialog_logout_title)
             logout_dialog.setMessage(R.string.dialog_logout_message)
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
-                //aqui va el que fem per abandonar un xat grupal
+                // aqui va el que fem per abandonar un xat grupal
                 myRef = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
 
                 myRef.addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         for (chatSnapshot in dataSnapshot.children) {
-                            if (chatSnapshot.value!!.equals("101_26-5-2000 18:00")) {
+                            if (chatSnapshot.value!!.equals("${userUid}_$data_ini")) {
                                 chatSnapshot.ref.removeValue()
-                                    startActivity(Intent(MyApp.getContext(), MainActivity::class.java))
-                                    finish()
+                                startActivity(Intent(MyApp.getContext(), MainActivity::class.java))
+                                finish()
                             }
                         }
                     }
@@ -218,5 +210,4 @@ class GroupChatActivity : AppCompatActivity() {
         }
         return super.onOptionsItemSelected(item)
     }
-
 }

@@ -1,7 +1,5 @@
 package com.offhome.app.ui.chats.groupChat
 
-
-
 import android.os.Bundle
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
@@ -13,10 +11,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
 import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
@@ -31,20 +32,28 @@ class GroupChatActivity : AppCompatActivity() {
 
     private var numMessages = 0
     val database = Firebase.database
-    private val myRef = database.getReference("xatsGrupals/101_26-5-2000 18:00")
+    private lateinit var myRef: DatabaseReference
 
+    /**
+     * It is called when creating the activity and has all the connection with database
+     */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val arguments = intent.extras
-        title = arguments?.getString("This is the title of the activity")
-        val user_id = "101"
-        val date_ini = "26-5-2000 18:00"
+
+        val userUid = arguments?.getString("usuariCreador")
+        val data_ini = arguments?.getString("dataHI")
+        val user_name =  SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+        val uid_user = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
 
         messagesList = findViewById(R.id.messages_view)
         editTextNewMessage = findViewById(R.id.new_message)
         btnSendMessage = findViewById(R.id.sendButton)
+
+        myRef = database.getReference("xatsGrupals/${userUid}_${data_ini}")
 
         messagesAdapter = MyGroupChatRecyclerViewAdapter()
         with(messagesList) {
@@ -53,29 +62,10 @@ class GroupChatActivity : AppCompatActivity() {
         }
 
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
-/*
-        viewModel.listMessages.observe(
-            this,
-            {
-                messagesAdapter.setData(it)
-            }
-        )
-        user_id.let {
-            viewModel.getMessages(it, date_ini, this)
-        }
-
-        btnSendMessage.setOnClickListener {
-            if (!editTextNewMessage.text.isEmpty()) {
-                val mess = GroupMessage(
-                    user_id, date_ini, user_id, "practico couchsurfing"
-                )
-                viewModel.sendMessage(mess)
-            }
-        }*/
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var listMessages = ArrayList<GroupMessage>()
+                val listMessages = ArrayList<GroupMessage>()
                 numMessages = dataSnapshot.childrenCount.toInt()
                 val iterator = dataSnapshot.children.iterator()
                 while (iterator.hasNext()) {
@@ -102,6 +92,7 @@ class GroupChatActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
+        //else gestionar notificacions
         )
 
         editTextNewMessage.apply {
@@ -117,9 +108,10 @@ class GroupChatActivity : AppCompatActivity() {
                             ++numMessages
                             val message = GroupMessage(
                                 editTextNewMessage.text.toString(),
-                                user_id,
-                                user_id,
-                                date_ini,
+                                userUid.toString(),
+                                user_name.toString(),
+                                uid_user.toString(),
+                                data_ini.toString(),
                                 System.currentTimeMillis()
                             )
                             myRef.child("m$numMessages").setValue(message)
@@ -136,13 +128,16 @@ class GroupChatActivity : AppCompatActivity() {
                     ).show()
                 else {
                     ++numMessages
-                    val message = GroupMessage(
-                        editTextNewMessage.text.toString(),
-                        user_id,
-                        user_id,
-                        date_ini,
-                        System.currentTimeMillis()
-                    )
+                    val message = user_name?.let { it1 ->
+                        GroupMessage(
+                            editTextNewMessage.text.toString(),
+                            userUid.toString(),
+                            it1,
+                            uid_user.toString(),
+                            data_ini.toString(),
+                            System.currentTimeMillis()
+                        )
+                    }
                     myRef.child("m$numMessages").setValue(message)
                     editTextNewMessage.text.clear()
                 }

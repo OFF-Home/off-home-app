@@ -15,6 +15,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.Message
+
 /**
  * Adpter for the recycler view of messages of a chat
  * @property listMessages is the list of Messages

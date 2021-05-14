@@ -39,7 +39,8 @@
         <activity android:name=".ui.otherprofile.OtherProfileActivity"/>
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
-            android:parentActivityName=".ui.infoactivity.InfoActivity" />
+            android:parentActivityName=".ui.infoactivity.InfoActivity">
+        </activity>
 
     <!--
          The API key for Google Maps-based APIs is defined as a string resource.
@@ -83,6 +84,19 @@
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
+        <service
+            android:name=".ui.notifications.MyFirebaseMessaging"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
+        <meta-data
+            android:name="com.google.messaging.default.notification_icon"
+            android:resource="@drawable/ic_launcher_foreground"/>
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/design_default_color_primary" />
     </application>
 
 </manifest>

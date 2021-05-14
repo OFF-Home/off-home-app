@@ -14,12 +14,12 @@ class InviteViewModel  : ViewModel() {
     private var profileRepository: ProfileRepository = ProfileRepository()
     private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
-    private var _followedUsers = MutableLiveData<List<UserSummaryInfo>>()
-    var followedUsers: LiveData<List<UserSummaryInfo>> = _followedUsers
+    private var _followedUsers = MutableLiveData<List<UserInfo>>()
+    var followedUsers: LiveData<List<UserInfo>> = _followedUsers
 
     private var nSelectedRecipients:Int = 0
 
     fun getFollowedUsers() {
-        //followedUsers = profileRepository.getFollowedUsers(loggedUserEmail)
+        followedUsers = profileRepository.getFollowedUsers(loggedUserEmail)
     }
 }

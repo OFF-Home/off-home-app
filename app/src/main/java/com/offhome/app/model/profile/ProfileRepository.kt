@@ -54,6 +54,7 @@ class ProfileRepository {
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
     var activities: MutableLiveData<List<ActivityFromList>>?=null
     var tags: MutableLiveData< List<TagData> >?=null
+    var followedUsers: MutableLiveData<List<UserInfo>>? = null
 
     /**
      * obtains ProfileInfo from the lower level
@@ -411,6 +412,29 @@ class ProfileRepository {
                 Log.d("GET", "Error uploading the image")
             }
         })
+    }
+
+    fun getFollowedUsers(email: String): MutableLiveData<List<UserInfo>> {
+        if (followedUsers == null) followedUsers = MutableLiveData<List<UserInfo>>()
+
+        val call: Call<List<UserInfo>> = userService!!.getFollowedUsers(email)
+
+        call.enqueue(object : Callback<List<UserInfo>> {
+            override fun onResponse(call: Call<List<UserInfo>>, response: Response<List<UserInfo>>) {
+                if (response.isSuccessful) {
+                    followedUsers!!.value = response.body()
+                    Log.d("response", "getFollowedUsers response: is successful")
+                } else {
+                    Log.d("response", "getFollowedUsers response: unsuccessful")
+                }
+            }
+
+            override fun onFailure(call: Call<List<UserInfo>>, t: Throwable) {
+                Log.d("GET", "Error getting getFollowedUsers. communication failure (no response)")
+            }
+        })
+
+        return followedUsers as MutableLiveData<List<UserInfo>>
     }
 
 

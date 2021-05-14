@@ -2,7 +2,9 @@ package com.offhome.app.ui.inviteChoosePerson
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
 import android.view.View
+import android.widget.SearchView
 import android.widget.TextView
 import android.widget.Toast
 import com.google.android.material.floatingactionbutton.FloatingActionButton
@@ -19,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.model.profile.UserSummaryInfo
 import java.util.Collections.addAll
 
@@ -26,7 +29,9 @@ class InviteActivity : AppCompatActivity() {
 
     private lateinit var viewModel: InviteViewModel
     private lateinit var fab: FloatingActionButton
-    private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
+    private var usersListFullInfo: List<UserInfo> = ArrayList()
+    //private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
+    private var usersList: MutableList<UserSummaryInfo> = ArrayList()
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients:Int = 200
     private lateinit var textMaxRecipients:TextView
@@ -72,14 +77,24 @@ class InviteActivity : AppCompatActivity() {
         viewModel.followedUsers.observe(
             this,
             Observer {
-                usersList = it
+
+                //usersList = it
+
+                usersListFullInfo = it
+                for (user in usersListFullInfo) {
+                    usersList.add(UserSummaryInfo(username = user.username, email = user.email))
+                }
+                //TODO no sé si funciona pq no puc testejar pero confiem
+
                 usersListAdapter.setData(usersList)
             }
         )
 
         //stub
-        usersList = listOf(UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"))
-        usersListAdapter.setData(usersList)
+        /*usersList =
+            listOf(UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"))
+                as MutableList<UserSummaryInfo>
+        usersListAdapter.setData(usersList)*/
 
         //3r intent
 
@@ -180,6 +195,32 @@ class InviteActivity : AppCompatActivity() {
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.,menu)
+        return true
+    }*/
+
+    /**
+     * Specifies the options menu for the activity
+     * @param menu provided
+     * @return true
+     */
+    //doing: el buscador
+    /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.search_button,menu)
+
+        val menuItem = menu?.findItem(R.id.search)
+        val searchView = menuItem?.actionView as SearchView
+        searchView.maxWidth = Int.MAX_VALUE
+        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                usersListAdapter.performFiltering(newText)
+                return false
+            }
+        })
+
         return true
     }*/
 }

@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.common.Constants
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
 import java.util.*
@@ -37,7 +38,7 @@ class SignUpDataSource {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private var retrofit: Retrofit =
-        Retrofit.Builder().baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/").addConverterFactory(GsonConverterFactory.create()).build()
+        Retrofit.Builder().baseUrl(Constants().BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     private var signUpService: SignUpService = retrofit.create(SignUpService::class.java)
 
     /**
@@ -71,7 +72,7 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, username, password ?: "undefined", birthDate.toString())
+                    val signedUpUser = SignUpUserData(email, user.uid)
                     val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
 
                     call.enqueue(object : Callback<ResponseBody> {

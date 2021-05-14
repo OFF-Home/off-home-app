@@ -12,21 +12,15 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
-import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
-import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.ui.chats.groupChat.ChatMessage
-import java.text.DateFormat
-import java.util.*
 import com.offhome.app.model.ActivityData as ActivityData
-
+import java.util.*
 
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
@@ -113,7 +107,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_invitefriends = findViewById(R.id.btn_invite_friends)
         act_title = findViewById(R.id.activity_title)
         category_selected = findViewById(R.id.sp_choose_category)
-
 
         pickDate()
 
@@ -274,7 +267,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
         dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
 
-        //això s'ha d'arreglar
+        // això s'ha d'arreglar
         endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
         dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
     }

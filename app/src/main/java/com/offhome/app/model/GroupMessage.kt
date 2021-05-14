@@ -1,6 +1,7 @@
 package com.offhome.app.model
 
 
+
 import com.google.firebase.database.Exclude
 import com.google.firebase.database.IgnoreExtraProperties
 

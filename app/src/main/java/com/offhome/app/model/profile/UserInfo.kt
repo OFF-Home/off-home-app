@@ -6,7 +6,7 @@ package com.offhome.app.model.profile
  * Contains a user's info.
  * @param email a string
  * @param username a string
- * @param password a string
+ * @param uid a string
  * @param birthDate a string
  * @param description a string
  * @param followers follower count. an integer
@@ -19,7 +19,7 @@ package com.offhome.app.model.profile
 data class UserInfo(
     val email: String,
     val username: String,
-    val password: String,
+    val uid: String,
     val birthDate: String,
     val description: String,
     var followers: Int,

@@ -9,6 +9,8 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.LoggedInUser
 import java.io.IOException
 
@@ -37,12 +39,19 @@ class LoginDataSource {
                     if (it.isSuccessful) {
                         val fUser = FirebaseAuth.getInstance().currentUser
                         if (!fUser!!.isEmailVerified) {
+
                             _loggedInUser.value = LoggedInUser(
                                 null,
                                 null,
                                 R.string.login_failed_email
                             )
-                        } else _loggedInUser.value = LoggedInUser(fUser.uid, fUser.email, null)
+                        } else {
+                            SharedPreferenceManager.setStringValue(
+                                Constants().PREF_UID,
+                                fUser.uid
+                            )
+                            _loggedInUser.value = LoggedInUser(fUser.uid, fUser.email, null)
+                        }
                     } else {
                         _loggedInUser.value = LoggedInUser(null, null, R.string.login_failed_login)
                     }

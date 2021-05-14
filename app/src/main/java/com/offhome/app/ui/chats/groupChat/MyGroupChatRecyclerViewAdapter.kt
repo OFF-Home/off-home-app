@@ -1,5 +1,7 @@
 package com.offhome.app.ui.chats.groupChat
 
+
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,7 +16,7 @@ import com.offhome.app.model.GroupMessage
 
 class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
-        private var listGroupMessages: List<GroupMessage> = ArrayList()
+    private var listGroupMessages: List<GroupMessage> = ArrayList()
 
         inner class ViewHolderGroupMessage(mView: View) : RecyclerView.ViewHolder(mView) {
             val nameViewPerson: TextView = mView.findViewById(R.id.userName)
@@ -37,6 +39,7 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
             }
         }
 
+
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val item = listGroupMessages[position]
             (holder as ViewHolderGroupMessage).textViewMessage.text = item.message
@@ -49,21 +52,22 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
           //  item.userSender.also { holder.nameViewPerson.text = it }
             // TODO Load image of a user
             Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
-        }
+    }
 
-        override fun getItemCount(): Int = listGroupMessages.size
+    override fun getItemCount(): Int = listGroupMessages.size
 
         override fun getItemViewType(position: Int): Int {
             return if (listGroupMessages.get(position).userSender == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "103") 0
             else 1
         }
 
-        /**
-         * sets the new data and notifies to the adapter to refresh if necessary
-         * @param messages is the new list of messages to set
-         */
-        fun setDataGroup(messages: List<GroupMessage>?) {
-            this.listGroupMessages = messages!!
-            notifyDataSetChanged()
-        }
+
+    /**
+     * sets the new data and notifies to the adapter to refresh if necessary
+     * @param messages is the new list of messages to set
+     */
+    fun setDataGroup(messages: List<GroupMessage>?) {
+        this.listGroupMessages = messages!!
+        notifyDataSetChanged()
+    }
 }

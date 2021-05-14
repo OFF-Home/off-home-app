@@ -213,7 +213,7 @@
     <string name="addcomment">Add your review </string>
     <string name="error_send_message">Something went wrong! Please, send the message again</string>
     <string name="share_activity_title">Share this activity (invite a friend)</string>
-    <string name="share_activity_message"> "Hey! Check out this great activity: "</string>
+    <string name="share_activity_message"> Hey! Check out this great activity: %1$s</string>
     <string name="share_in_app_title">Invite via DM</string>
     <string name="share_outside_app_title">Invite through external app</string>
     <string name="title_activity_invite">Invite to activity:</string>

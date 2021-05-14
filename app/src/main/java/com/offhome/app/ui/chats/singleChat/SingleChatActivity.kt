@@ -42,8 +42,6 @@ class SingleChatActivity : AppCompatActivity() {
         val arguments = intent.extras
         val userUid = arguments?.getString("uid")
         val userName = arguments?.getString("username")
-        title = userName
-        myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
         messagesList = findViewById(R.id.recyclerViewMessages)
@@ -52,6 +50,35 @@ class SingleChatActivity : AppCompatActivity() {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
         }
+        title = userName
+        myRef = database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                if (!snapshot.exists()) {
+                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
+                }
+                myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        var listMessages = ArrayList<Message>()
+                        numMessages = dataSnapshot.childrenCount.toInt()
+                        val iterator = dataSnapshot.children.iterator()
+                        while (iterator.hasNext()) {
+                            listMessages.add(iterator.next().getValue(Message::class.java) as Message)
+                        }
+                        messagesAdapter.setData(listMessages)
+                        messagesList.scrollToPosition(messagesList.adapter!!.itemCount - 1)
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
 
         viewModel = ViewModelProvider(
             this,
@@ -59,23 +86,6 @@ class SingleChatActivity : AppCompatActivity() {
         ).get(SingleChatViewModel::class.java)
 
         // viewModel.initializeSocket(userUid, this)
-
-        myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
-            override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var listMessages = ArrayList<Message>()
-                numMessages = dataSnapshot.childrenCount.toInt()
-                val iterator = dataSnapshot.children.iterator()
-                while (iterator.hasNext()) {
-                    listMessages.add(iterator.next().getValue(Message::class.java) as Message)
-                }
-                messagesAdapter.setData(listMessages)
-                messagesList.scrollToPosition(messagesList.adapter!!.itemCount - 1)
-            }
-
-            override fun onCancelled(error: DatabaseError) {
-                // Failed to read value
-            }
-        })
 
         editTextNewMessage.apply {
             setOnEditorActionListener { _, actionId, _ ->

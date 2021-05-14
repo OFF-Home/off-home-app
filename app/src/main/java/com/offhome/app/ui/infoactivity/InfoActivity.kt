@@ -137,9 +137,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
-                                        //Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-                                        startActivity(Intent(this, GroupChatActivity::class.java))
-                                        finish()
+                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
                                     }
                                 snackbar.show()
                             } else {
@@ -179,7 +177,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         groupChat.setOnClickListener {
             // go to GroupChatActivity only if the user has joined the activity
-            startActivity(Intent(this, GroupChatActivity::class.java))
+            val intent = Intent(this, GroupChatActivity::class.java)
+            intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
+            intent.putExtra("dataHI", activity.dataHoraIni.split(" ")[0])
+            startActivity(intent)
             finish()
         }
     }

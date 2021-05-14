@@ -265,10 +265,10 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         savedMinute = minute
 
         startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
-        dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
+        dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
 
         // això s'ha d'arreglar
         endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
-        dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
+        dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
     }
 }

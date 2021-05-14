@@ -83,7 +83,9 @@ class InviteActivity : AppCompatActivity() {
         textNRecipients.text = getString(R.string.n_recipients_banner, "0", nMaxRecipients.toString())
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
-        currentUID = "102"//todo viewModel.getCurrentUID()
+
+        //currentUID = "102"
+        currentUID = viewModel.getCurrentUID()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)

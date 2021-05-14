@@ -24,7 +24,7 @@ class InviteViewModel : ViewModel() {
     /*private var _participants = MutableLiveData<List<UserInfo>>()
     var participants: LiveData<List<UserInfo>> =_participants*/
 
-        private var currentUID:String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
+    private var currentUID:String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
     private var nSelectedRecipients: Int = 0
 

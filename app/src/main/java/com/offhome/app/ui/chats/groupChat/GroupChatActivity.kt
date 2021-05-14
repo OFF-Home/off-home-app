@@ -17,9 +17,10 @@ import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
-import com.offhome.app.ui.chats.singleChat.MyChatRecyclerViewAdapter
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
@@ -42,6 +43,7 @@ class GroupChatActivity : AppCompatActivity() {
         title = arguments?.getString("This is the title of the activity")
         val user_id = "101"
         val date_ini = "26-5-2000 18:00"
+        val user_name =  SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
 
         messagesList = findViewById(R.id.messages_view)
         editTextNewMessage = findViewById(R.id.new_message)
@@ -77,7 +79,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {
-                var listMessages = ArrayList<GroupMessage>()
+                val listMessages = ArrayList<GroupMessage>()
                 numMessages = dataSnapshot.childrenCount.toInt()
                 val iterator = dataSnapshot.children.iterator()
                 while (iterator.hasNext()) {
@@ -120,6 +122,7 @@ class GroupChatActivity : AppCompatActivity() {
                             val message = GroupMessage(
                                 editTextNewMessage.text.toString(),
                                 user_id,
+                                "Maria",
                                 user_id,
                                 date_ini,
                                 System.currentTimeMillis()
@@ -138,13 +141,16 @@ class GroupChatActivity : AppCompatActivity() {
                     ).show()
                 else {
                     ++numMessages
-                    val message = GroupMessage(
-                        editTextNewMessage.text.toString(),
-                        user_id,
-                        user_id,
-                        date_ini,
-                        System.currentTimeMillis()
-                    )
+                    val message = user_name?.let { it1 ->
+                        GroupMessage(
+                            editTextNewMessage.text.toString(),
+                            user_id,
+                            it1,
+                            user_id,
+                            date_ini,
+                            System.currentTimeMillis()
+                        )
+                    }
                     myRef.child("m$numMessages").setValue(message)
                     editTextNewMessage.text.clear()
                 }

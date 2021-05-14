@@ -17,7 +17,7 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
         private var listGroupMessages: List<GroupMessage> = ArrayList()
 
         inner class ViewHolderGroupMessage(mView: View) : RecyclerView.ViewHolder(mView) {
-            //val nameViewPerson: TextView = mView.findViewById(R.id.userName)
+            val nameViewPerson: TextView = mView.findViewById(R.id.userName)
             val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
             val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
         }
@@ -45,6 +45,8 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
                 Toast.makeText(MyApp.getContext(), "Long press", Toast.LENGTH_LONG).show()
                 return@setOnLongClickListener true
             }
+            (holder as ViewHolderGroupMessage).nameViewPerson.text = item.userNameSender
+          //  item.userSender.also { holder.nameViewPerson.text = it }
             // TODO Load image of a user
             Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
         }
@@ -54,7 +56,6 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
         override fun getItemViewType(position: Int): Int {
             return if (listGroupMessages.get(position).userSender == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "103") 0
             else 1
-            // aquí sha de canviar i posar que retorni : opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages?? - modificar type?)
         }
 
         /**

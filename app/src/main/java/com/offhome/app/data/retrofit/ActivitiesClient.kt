@@ -13,7 +13,7 @@ class ActivitiesClient {
 
     init {
         retrofit = Retrofit.Builder()
-            .baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/")
+            .baseUrl("http://ec2-52-3-247-204.compute-1.amazonaws.com:3000/")
             .addConverterFactory(GsonConverterFactory.create())
             .build()
         activitiesService = retrofit!!.create(ActivitiesService::class.java)

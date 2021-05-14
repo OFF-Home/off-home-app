@@ -19,7 +19,6 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.model.Message
-import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
 
 class SingleChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter

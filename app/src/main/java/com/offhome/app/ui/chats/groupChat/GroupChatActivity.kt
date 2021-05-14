@@ -19,10 +19,11 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
-import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
+import com.offhome.app.ui.chats.singleChat.MyChatRecyclerViewAdapter
+import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
-    private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
+    private lateinit var messagesAdapter: MyGroupChatRecyclerViewAdapter
     private lateinit var viewModel: GroupChatViewModel
 
     private lateinit var messagesList: RecyclerView
@@ -46,13 +47,13 @@ class GroupChatActivity : AppCompatActivity() {
         editTextNewMessage = findViewById(R.id.new_message)
         btnSendMessage = findViewById(R.id.sendButton)
 
-        messagesAdapter = MyChatRecyclerViewAdapter()
+        messagesAdapter = MyGroupChatRecyclerViewAdapter()
         with(messagesList) {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
         }
 
-        viewModel = ViewModelProvider(this).get(GroupChatViewModel::class.java)
+        viewModel = ViewModelProvider(this,SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
 /*
         viewModel.listMessages.observe(
             this,

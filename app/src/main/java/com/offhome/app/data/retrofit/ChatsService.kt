@@ -33,5 +33,4 @@ interface ChatsService {
      */
     @HTTP(method = "POST", path = "xats/crearGrup", hasBody = true)
     fun addChatGroup(@Body chat: ChatGroupIdentification): Call<ResponseBody>
-
 }

@@ -43,7 +43,8 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 LoginResult(success = LoggedInUserView(data = result.data))
             SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, email)
             SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_PASSWORD)
-            SharedPreferenceManager.setStringValue(Constants().PREF_UID,
+            SharedPreferenceManager.setStringValue(
+                Constants().PREF_UID,
                 FirebaseAuth.getInstance().currentUser!!.uid
             )
         } else {

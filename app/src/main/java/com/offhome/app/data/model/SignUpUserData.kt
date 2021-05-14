@@ -13,5 +13,5 @@ package com.offhome.app.data.model
  */
 data class SignUpUserData(
     val email: String,
-    val usid: String
+    val uid: String
 )

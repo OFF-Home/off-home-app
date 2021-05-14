@@ -56,7 +56,9 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
 
     override fun getItemViewType(position: Int): Int {
         return if (listMessages.get(position).usid_enviador == SharedPreferenceManager.getStringValue(
-                Constants().PREF_UID)) 0
+                Constants().PREF_UID
+            )
+        ) 0
         else 1
     }
 
@@ -68,5 +70,4 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         this.listMessages = messages!!
         notifyDataSetChanged()
     }
-
 }

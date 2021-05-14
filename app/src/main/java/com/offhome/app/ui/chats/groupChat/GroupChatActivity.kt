@@ -19,7 +19,6 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
-import com.offhome.app.ui.chats.singleChat.MyChatRecyclerViewAdapter
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
@@ -53,7 +52,7 @@ class GroupChatActivity : AppCompatActivity() {
             adapter = messagesAdapter
         }
 
-        viewModel = ViewModelProvider(this,SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
+        viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(GroupChatViewModel::class.java)
 /*
         viewModel.listMessages.observe(
             this,
@@ -73,7 +72,6 @@ class GroupChatActivity : AppCompatActivity() {
                 viewModel.sendMessage(mess)
             }
         }*/
-
 
         myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
             override fun onDataChange(dataSnapshot: DataSnapshot) {

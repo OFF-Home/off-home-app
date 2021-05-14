@@ -133,7 +133,8 @@ class LoginActivity : AppCompatActivity() {
                         )
                         SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
                         SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
-                        SharedPreferenceManager.setStringValue(Constants().PREF_UID,
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_UID,
                             FirebaseAuth.getInstance().currentUser!!.uid
                         )
                         val welcome = getString(R.string.welcome)

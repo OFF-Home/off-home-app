@@ -20,7 +20,6 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.Result
 import com.offhome.app.model.Message
 
 class SingleChatActivity : AppCompatActivity() {
@@ -44,7 +43,7 @@ class SingleChatActivity : AppCompatActivity() {
         val userUid = arguments?.getString("uid")
         val userName = arguments?.getString("username")
         title = userName
-        myRef =  database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
+        myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
         messagesList = findViewById(R.id.recyclerViewMessages)

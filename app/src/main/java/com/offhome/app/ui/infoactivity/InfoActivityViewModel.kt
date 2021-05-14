@@ -1,5 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
+
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
@@ -12,6 +14,7 @@ import com.offhome.app.data.ActivitiesRepository
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
+    var participants: MutableLiveData<List<String>> = MutableLiveData<List<String>>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -20,7 +23,8 @@ class InfoActivityViewModel : ViewModel() {
      * @return the result with a live data string type
      */
     fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
-        return repository.joinActivity(usuariCreador, dataHoraIni,
+        return repository.joinActivity(
+            usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         )
     }
@@ -32,8 +36,17 @@ class InfoActivityViewModel : ViewModel() {
      * @return the result with a live data string type
      */
     fun deleteUsuari(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
-        return repository.deleteUsuari(usuariCreador, dataHoraIni,
+        return repository.deleteUsuari(
+            usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         )
+    }
+
+    /**
+     * gets the participants from the repository
+     */
+    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<String>> {
+        participants = repository.getNamesParticipants(usuariCreador, dataHoraIni)
+        return participants
     }
 }

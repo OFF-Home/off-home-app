@@ -1,9 +1,11 @@
 package com.offhome.app.common
 
+
+
 import android.app.Application
 import android.content.Context
 
-class MyApp: Application() {
+class MyApp : Application() {
 
     override fun onCreate() {
         instanceApp = this

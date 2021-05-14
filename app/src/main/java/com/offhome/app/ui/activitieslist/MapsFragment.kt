@@ -1,5 +1,7 @@
 package com.offhome.app.ui.activitieslist
 
+
+
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
@@ -76,7 +78,7 @@ class MapsFragment : Fragment() {
             mMap.addMarker(MarkerOptions().position(place).title(item.titol))
 
             mMap.setOnInfoWindowClickListener {
-                //al clicar al título, se abre la pantalla con la info de la activity
+                // al clicar al título, se abre la pantalla con la info de la activity
                 val intent = Intent(context, InfoActivity::class.java)
                 intent.putExtra("activity", GsonBuilder().create().toJson(item))
                 context?.startActivity(intent)

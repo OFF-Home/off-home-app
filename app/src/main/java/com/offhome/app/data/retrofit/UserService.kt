@@ -1,17 +1,19 @@
 package com.offhome.app.data.retrofit
 
+
+
 import com.offhome.app.data.model.FollowUnfollow
+import com.offhome.app.data.model.FollowingUser
+import com.offhome.app.data.profilejson.NomTag
+import com.offhome.app.data.profilejson.UserDescription
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.TagData
-import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.model.profile.UserInfo
 import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
-import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.data.profilejson.NomTag
-import com.offhome.app.data.profilejson.UserUsername
 
 /**
  * Interface *UserService*
@@ -30,11 +32,11 @@ interface UserService {
     @GET("/users/{email}/show")
     fun getProfileInfo(@Path("email") email: String): Call<UserInfo>
 
-    //this is our multipart request
-    //we have two parameters on is name and other one is description
+    // this is our multipart request
+    // we have two parameters on is name and other one is description
     @Multipart
     @POST("/upload/userimage/{email}")
-    fun uploadProfilePhoto(@Path("email") currentUser: String, @Part(value = "file\"; filename=\"photo.jpeg\" ") file: RequestBody) : Call<ResponseBody>
+    fun uploadProfilePhoto(@Path("email") currentUser: String, @Part(value = "file\"; filename=\"photo.jpeg\" ") file: RequestBody): Call<ResponseBody>
 
     @GET("/users/{username}/getFollow")
     fun following(@Path("username") currentUser: String): Call<List<FollowingUser>>
@@ -45,8 +47,8 @@ interface UserService {
     @HTTP(method = "DELETE", path = "/users/{username}/unfollow", hasBody = true)
     fun stopFollowing(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
-    //in progress
-    //retornava nomes un. canviaran quna puguin a set
+    // in progress
+    // retornava nomes un. canviaran quna puguin a set
     /**
      * gets the tags of a profile from the back-end database
      *
@@ -65,8 +67,8 @@ interface UserService {
     @GET("/activitats/{email}")
     fun getUserActivities(@Path("email") email: String): Call<List<ActivityFromList>>
 
-    //al backend encara no està implementat?
-    //si pero substitueix enlloc de afegir, perque nomes n'hi ha un. o no, nose
+    // al backend encara no està implementat?
+    // si pero substitueix enlloc de afegir, perque nomes n'hi ha un. o no, nose
     /**
      * adds a tag to a user in the back-end database
      *
@@ -95,10 +97,10 @@ interface UserService {
      * @param username username to be set
      * @return returns the call to be executed.
      */
-    //estem a la espera
+    // estem a la espera
     @Headers("Content-Type: application/json")
     @POST("users/{username}/update")
-    fun setUsername(@Path("username") email:String, @Body username: UserUsername): Call<ResponseBody>
+    fun setUsername(@Path("username") email: String, @Body username: UserUsername): Call<ResponseBody>
 
     /**
      * sets a user's description in the back-end database

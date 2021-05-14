@@ -1,5 +1,7 @@
 package com.offhome.app.ui.signup
 
+
+
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData

@@ -16,8 +16,10 @@
     <string name="insert_text">Insert text</string>
     <string name="date">Date</string>
     <string name="choose_location">Choose location</string>
-    <string name="set_location">Set location</string>
-    <string name="choose_date">Choose date</string>
+    <string name="set_address1">Insert street name</string>
+    <string name="set_address2">Num</string>
+    <string name="choose_date">Start time</string>
+    <string name="choose_dateFi">Finish time</string>
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
@@ -157,7 +159,7 @@
     <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
     <string name="invalid_birth_date"> Not a valid birth date </string>
     <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
-    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that the username is  or that the email is invalid </string>
+    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
     <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
     <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
     <string name="title_activity_login">LoginActivity</string>
@@ -168,7 +170,7 @@
     <string name="off_home_logo">OFF Home logo</string>
     <string name="show_password_description">Show Password</string>
     <string name="max_participants">Max participants</string>
-    <string name="invalid_username">Username can\'t be blank</string>
+    <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
     <string name="view_as_another_user">view as another user</string>
     <string name="btn_follow">Follow</string>
@@ -202,6 +204,14 @@
     <string name="tag_deleted_toast">Tag deleted</string>
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
+    <string name="btn_share">btn_share</string>
+    <string name="new_message">Message</string>
+    <string name="error">Something went wrong!</string>
+    <string name="error_empty_message">Please, write your message before sending</string>
+    <string name="valoracions">Ratings</string>
+    <string name="comments">Reviews</string>
+    <string name="addcomment">Add your review </string>
+    <string name="error_send_message">Something went wrong! Please, send the message again</string>
     <string name="share_activity_title">Share this activity (invite a friend)</string>
     <string name="share_activity_message"> "Hey! Check out this great activity: "</string>
     <string name="share_in_app_title">Invite via DM</string>

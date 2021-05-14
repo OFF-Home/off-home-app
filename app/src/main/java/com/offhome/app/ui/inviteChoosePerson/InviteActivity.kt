@@ -7,6 +7,7 @@ import android.view.Menu
 import android.view.View
 import android.widget.SearchView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -27,6 +28,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Message
 import com.offhome.app.model.profile.UserInfo
@@ -40,7 +42,7 @@ class InviteActivity : AppCompatActivity() {
     //private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
     private var usersList: MutableList<UserSummaryInfo> = ArrayList()
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
-    private var nMaxRecipients: Int = 200
+    private var nMaxRecipients: Int = 999
     private lateinit var textMaxRecipients: TextView
     private lateinit var textNRecipients: TextView
     private lateinit var textRecipientList: TextView
@@ -59,17 +61,17 @@ class InviteActivity : AppCompatActivity() {
         setContentView(R.layout.activity_invite)
         // setSupportActionBar(findViewById(R.id.toolbar))
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)   //todo comentar linea
+        supportActionBar?.setDisplayHomeAsUpEnabled(false)   //todo algun dia arreglar lo de que el upButton fa que peti
 
         viewModel = ViewModelProvider(this).get(InviteViewModel::class.java)
 
         val arguments = intent.extras
         val activityInfoString = arguments?.getString("activity")
-        val activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityFromList::class.java) // todo canviar per algo q em passi nomes el qui vull? (id de la activity, n_participants.) i el num de persones ja apuntades
+        val activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityDataForInvite::class.java) // todo canviar per algo q em passi nomes el qui vull? (id de la activity, n_participants.) i el num de persones ja apuntades
 
         fab = findViewById(R.id.fab)
         iniFab()
-        nMaxRecipients = activityInfo.maxParticipant // todo n_persones remaining
+        nMaxRecipients = activityInfo.nRemainingParticipants
 
         textMaxRecipients = findViewById(R.id.text_max_recipients)
         textMaxRecipients.text = getString(R.string.max_recipients_banner, nMaxRecipients.toString())
@@ -77,7 +79,7 @@ class InviteActivity : AppCompatActivity() {
         textNRecipients.text = getString(R.string.n_recipients_banner, "0", nMaxRecipients.toString())
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
-        currentUID = "102"//viewModel.getCurrentUID()
+        currentUID = "102"//todo viewModel.getCurrentUID()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -227,13 +229,14 @@ class InviteActivity : AppCompatActivity() {
                         numMessages = dataSnapshot.childrenCount.toInt()
                     }
                     override fun onCancelled(error: DatabaseError) {
-                        TODO("Not yet implemented")
+                        //TODO Not yet implemented
+                        Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
                     }
                 })
             }
-
             override fun onCancelled(error: DatabaseError) {
-                TODO("Not yet implemented")
+                //TODO Not yet implemented
+                Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
             }
         })
 

@@ -6,6 +6,7 @@ import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -25,6 +26,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -53,6 +55,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var participantsList: List<String> = ArrayList()
 
     private lateinit var groupChat: FloatingActionButton
+    private var nRemainingParticipants: Int = 12
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -83,6 +86,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             this,
             {
                 participantsAdapter.setData(it)
+
+                //TODO crec que aquest observer no salta
+                Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = "+it.size.toString())
+                nRemainingParticipants = activity.maxParticipant - it.size
+                Log.d("getParticipants", "nRemainingParticipants = "+nRemainingParticipants.toString())
             }
         )
 
@@ -240,7 +248,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants)))
         startActivity(intentCanviAChat)
     }
 

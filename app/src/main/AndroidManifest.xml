@@ -27,6 +27,7 @@
         android:theme="@style/Theme.OFFHome">
         <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity">
+
         </activity>
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
@@ -35,11 +36,7 @@
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
         </activity>
 
     <!--
@@ -75,7 +72,11 @@
 
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
 
             <meta-data
                 android:name="android.app.searchable"

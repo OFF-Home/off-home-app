@@ -6,6 +6,7 @@ import android.util.Patterns
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.google.firebase.auth.FirebaseAuth
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -42,6 +43,9 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 LoginResult(success = LoggedInUserView(data = result.data))
             SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, email)
             SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_PASSWORD)
+            SharedPreferenceManager.setStringValue(Constants().PREF_UID,
+                FirebaseAuth.getInstance().currentUser!!.uid
+            )
         } else {
             if (result is Result.Error) {
                 _loginResult.value = LoginResult(error = R.string.login_failed)

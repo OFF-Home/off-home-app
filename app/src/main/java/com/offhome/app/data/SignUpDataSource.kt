@@ -10,6 +10,8 @@ import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
 import java.util.*
@@ -71,7 +73,7 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, username, password ?: "undefined", birthDate.toString())
+                    val signedUpUser = SignUpUserData(email, user.uid)
                     val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
 
                     call.enqueue(object : Callback<ResponseBody> {

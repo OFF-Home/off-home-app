@@ -11,7 +11,9 @@ import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.Message
 
 class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -23,12 +25,6 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
     }
 
-    inner class ViewHolderGroupMessage(mView: View) : RecyclerView.ViewHolder(mView) {
-        val nameViewPerson: TextView = mView.findViewById(R.id.userName)
-        val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
-        val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
-    }
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
         return when (viewType) {
             0 -> {
@@ -36,15 +32,10 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
                     .inflate(R.layout.chat_message_i, parent, false)
                 ViewHolderMessage(view)
             }
-            1 -> {
+            else -> {
                 val view = LayoutInflater.from(parent.context)
                     .inflate(R.layout.chat_message_other, parent, false)
                 ViewHolderMessage(view)
-            }
-            else -> {
-                val view = LayoutInflater.from(parent.context)
-                    .inflate(R.layout.groupchat_message_other, parent, false)
-                ViewHolderGroupMessage(view)
             }
         }
     }
@@ -64,9 +55,9 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
     override fun getItemCount(): Int = listMessages.size
 
     override fun getItemViewType(position: Int): Int {
-        return if (listMessages.get(position).usid_enviador == /*SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)*/ "103") 0
+        return if (listMessages.get(position).usid_enviador == SharedPreferenceManager.getStringValue(
+                Constants().PREF_UID)) 0
         else 1
-        // aquí sha de canviar i posar que retorni : opció=1 -> missatge d'un xat personal i opció=2 -> missatge d'un xat grupal (listMessages?? - modificar type?)
     }
 
     /**

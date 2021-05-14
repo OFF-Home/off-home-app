@@ -52,7 +52,7 @@ class InviteActivity : AppCompatActivity() {
     //chat messages
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
-    private lateinit var currentUID:String
+    private var currentUID:String = String()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,7 +77,7 @@ class InviteActivity : AppCompatActivity() {
         textNRecipients.text = getString(R.string.n_recipients_banner, "0", nMaxRecipients.toString())
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
-        currentUID = viewModel.getCurrentUID()
+        currentUID = "102"//viewModel.getCurrentUID()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -104,10 +104,10 @@ class InviteActivity : AppCompatActivity() {
         )
 
         //stub
-        /*usersList =
-            listOf(UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"), UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"),UserSummaryInfo(email = "ferran@yes.true", username = "ferran"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "AAAAAAAAAAAA"))
+        usersList =
+            listOf(UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), )
                 as MutableList<UserSummaryInfo>
-        usersListAdapter.setData(usersList)*/
+        usersListAdapter.setData(usersList)
 
         // 3r intent
 
@@ -185,25 +185,24 @@ class InviteActivity : AppCompatActivity() {
 
                 isThe1stOne = false
             }
-            Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
+            //Snackbar.make(view, "Selected recipients: $recipientListString", Snackbar.LENGTH_LONG).show()
 
-
+            // el de veritat
+            // si hi ha multiples destinataris, posem snackbar.
+            if (selectedRecipientList.size > 1) {
+                Snackbar.make(view, getString(R.string.sending_invitations_snackbar, recipientListString), Snackbar.LENGTH_LONG).show()
+            }
 
             for (recipient in selectedRecipientList) {
                 sendMessage(recipient.uid)
             }
 
-
-            // el de veritat
-            // si hi ha multiples destinataris, posem snackbar.
             if (selectedRecipientList.size == 1) {
-
                 // todo: acabar els 2 intents. potser he de fer servir view enlloc de this
                 /*val intent = Intent(this, /*Chat concret*/::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)*/
             } else {
-                Snackbar.make(view, getString(R.string.sending_invitations_snackbar, recipientListString), Snackbar.LENGTH_LONG).show()
                 /*val intent = Intent(this, /*Chats*/::class.java)
                 //intent.putExtra("algo", GsonBuilder().create().toJson(/*un objecte*/))    //cal?
                 startActivity(intent)*/
@@ -216,11 +215,11 @@ class InviteActivity : AppCompatActivity() {
         val userUid = recipientUID //oi?
         var numMessages:Int = 0
 
-        myRef = database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+        myRef = database.getReference("xatsIndividuals/${userUid}_${currentUID}")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
-                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
+                    myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
                 }
                 myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
@@ -240,8 +239,8 @@ class InviteActivity : AppCompatActivity() {
 
         ++numMessages
         val message = Message(
-            getString(R.string.share_activity_message)+"this is supposed to be some kind of URL",
-            SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
+            getString(R.string.share_activity_message, "this is supposed to be some kind of URL"),  //TODO el URL
+            currentUID,
             System.currentTimeMillis()
         )
         //aixo envia el message basically

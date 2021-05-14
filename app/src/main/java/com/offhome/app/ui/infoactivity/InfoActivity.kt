@@ -229,7 +229,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, R.string.share_activity_message)
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, "this is supposed to be some kind of URL"))   //TODO el URL
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
         } else if (item.itemId == R.id.share_in_app_btn) {

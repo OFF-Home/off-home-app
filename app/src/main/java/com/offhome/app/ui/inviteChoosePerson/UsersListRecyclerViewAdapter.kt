@@ -109,7 +109,7 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
             val resultList = ArrayList<UserSummaryInfo>()
             for (row in /*completeUserList*/userList) { //per tota fila de la llista de TOTS els users
                 if (row.username.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)))    //si conté la string: el mostrem.
-                    resultList.add(UserSummaryInfo(email = row.email, username = row.username))
+                    resultList.add(UserSummaryInfo(email = row.email, username = row.username, uid = row.uid))
             }
             userList2 = resultList
         }

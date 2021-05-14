@@ -216,7 +216,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_invite_menu,menu)
+        menuInflater.inflate(R.menu.share_invite_menu, menu)
         return true
     }
 
@@ -226,15 +226,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true if the menu is successfully handled
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.share_outside_app_btn){
+        if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
             intent.putExtra(Intent.EXTRA_TEXT, R.string.share_activity_message)
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
-        }
-        else if (item.itemId == R.id.share_in_app_btn) {
-            //Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
+        } else if (item.itemId == R.id.share_in_app_btn) {
+            // Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
             changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
@@ -242,7 +241,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity))  //todo enviar el num de persones que hi ha apuntades
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
         startActivity(intentCanviAChat)
     }
 

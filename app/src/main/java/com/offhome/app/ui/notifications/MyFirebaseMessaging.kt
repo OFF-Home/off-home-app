@@ -1,5 +1,7 @@
 package com.offhome.app.ui.notifications
 
+
+
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
@@ -14,9 +16,9 @@ import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 /**
  * Base class for receiving messages from Firebase Cloud Messaging.
  */
-class MyFirebaseMessaging: FirebaseMessagingService() {
+class MyFirebaseMessaging : FirebaseMessagingService() {
     lateinit var title: String
-    lateinit var message:String
+    lateinit var message: String
     var CHANNEL_ID = "CHANNEL"
 
     private lateinit var manager: NotificationManager
@@ -27,12 +29,11 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
         title = remotemessage.data.get("title")!!
-        message=remotemessage.data.get("message")!!
+        message = remotemessage.data.get("message")!!
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-      //  sendNotification()
-
+        //  sendNotification()
     }
 
     /**
@@ -45,13 +46,13 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
     /**
      * Called when a notification is going to be send
      */
-    private fun sendNotification(){
+    private fun sendNotification() {
         val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
         intent.putExtra("title", title)
         intent.putExtra("message", message)
-        intent.flags=Intent.FLAG_ACTIVITY_CLEAR_TOP
-        intent.flags=Intent.FLAG_ACTIVITY_NEW_TASK
+        intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             val channel = NotificationChannel(
                 CHANNEL_ID,
@@ -77,5 +78,4 @@ class MyFirebaseMessaging: FirebaseMessagingService() {
         builder.setContentIntent(pendingintent)
         manager.notify(0, builder.build())
     }
-
 }

@@ -10,9 +10,6 @@ import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
 import android.os.Bundle
-import android.text.SpannableString
-import android.text.style.ClickableSpan
-import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity

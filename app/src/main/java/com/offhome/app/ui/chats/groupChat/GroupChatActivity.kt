@@ -1,12 +1,19 @@
 package com.offhome.app.ui.chats.groupChat
 
+
+
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
+import android.view.Menu
+import android.view.MenuItem
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.database.DataSnapshot
@@ -15,8 +22,10 @@ import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
+import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.model.GroupMessage
@@ -33,6 +42,8 @@ class GroupChatActivity : AppCompatActivity() {
     private var numMessages = 0
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
+    private lateinit var userUid: String
+    private lateinit var data_ini: String
 
     /**
      * It is called when creating the activity and has all the connection with database
@@ -44,16 +55,16 @@ class GroupChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val arguments = intent.extras
 
-        val userUid = arguments?.getString("usuariCreador")
-        val data_ini = arguments?.getString("dataHI")
-        val user_name =  SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+        userUid = arguments?.getString("usuariCreador").toString()
+        data_ini = arguments?.getString("dataHI").toString()
+        val user_name = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
         val uid_user = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
 
         messagesList = findViewById(R.id.messages_view)
         editTextNewMessage = findViewById(R.id.new_message)
         btnSendMessage = findViewById(R.id.sendButton)
 
-        myRef = database.getReference("xatsGrupals/${userUid}_${data_ini}")
+        myRef = database.getReference("xatsGrupals/${userUid}_$data_ini")
 
         messagesAdapter = MyGroupChatRecyclerViewAdapter()
         with(messagesList) {
@@ -92,7 +103,7 @@ class GroupChatActivity : AppCompatActivity() {
                     Toast.LENGTH_LONG
                 ).show()
             }
-        //else gestionar notificacions
+            // else gestionar notificacions
         )
 
         editTextNewMessage.apply {
@@ -143,5 +154,60 @@ class GroupChatActivity : AppCompatActivity() {
                 }
             }
         }
+    }
+
+    /**
+     * Function to specify the options menu for an activity
+     * @param menu provided
+     * @return true
+     */
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.logout, menu)
+        return true
+    }
+
+    /**
+     * Function called when the user selects an item from the options menu
+     * @param item selected
+     * @return true if the menu is successfully handled
+     */
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == R.id.logout) {
+
+            val logout_dialog = AlertDialog.Builder(this)
+            logout_dialog.setTitle(R.string.dialog_logout_title)
+            logout_dialog.setMessage(R.string.dialog_logout_message)
+            logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
+                // aqui va el que fem per abandonar un xat grupal
+                myRef = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+
+                myRef.addValueEventListener(object : ValueEventListener {
+                    override fun onDataChange(dataSnapshot: DataSnapshot) {
+                        for (chatSnapshot in dataSnapshot.children) {
+                            if (chatSnapshot.value!!.equals("${userUid}_$data_ini")) {
+                                chatSnapshot.ref.removeValue()
+                                startActivity(Intent(MyApp.getContext(), MainActivity::class.java))
+                                finish()
+                            }
+                        }
+                    }
+
+                    override fun onCancelled(error: DatabaseError) {
+                        // Failed to read value
+                    }
+                })
+
+                /* para enviar a otra pantalla, la de todos los xats, next sprint
+                requireActivity().run {
+                    startActivity(Intent(this, MainActivity::class.java))
+                    finish()
+                }*/
+            }
+            logout_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            logout_dialog.show()
+        }
+        return super.onOptionsItemSelected(item)
     }
 }

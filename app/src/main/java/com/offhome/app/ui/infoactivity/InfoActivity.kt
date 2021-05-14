@@ -92,7 +92,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                  if (it != null) {
                      participantsAdapter.setData(it)
                      for (item in it) {
-                         if (item.username == "paucuesta") joined = true
+                         if (item.username == "emma") joined = true
                      }
                  }
             }
@@ -119,7 +119,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         //get the current date
         val currentTime = Calendar.getInstance().time
 
-        /*
+
         //transform dataHoraIni into date format
         val mydate = activity.dataHoraFi
         var date: Date? = null
@@ -136,7 +136,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             if (!joined or (date > currentTime)) {
                 cantreview()
             }
-        }*/
+        }
 
         viewModel.getValoracioUsuari(activity.usuariCreador, activity.dataHoraIni, SharedPreferenceManager.getStringValue(
             Constants().PREF_EMAIL).toString()).observe(
@@ -353,7 +353,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
          estrelles.isFocusable = true
          estrelles.setIsIndicator(false)
          comment.setHint(R.string.insert_text)
-         comment.isFocusable = false
+         comment.isFocusable = true
          btnsubmit.setEnabled(true)
      }
 

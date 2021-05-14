@@ -27,6 +27,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
+import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.util.*
 
 /**
@@ -224,7 +225,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true
      */
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.share_menu, menu)
+        menuInflater.inflate(R.menu.share_invite_menu, menu)
         return true
     }
 
@@ -234,13 +235,28 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * @return true if the menu is successfully handled
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        if (item.itemId == R.id.share_btn) {
+        if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, "Hey! Check out this great activity:")
+            intent.putExtra(Intent.EXTRA_TEXT, R.string.share_activity_message)
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
+        } else if (item.itemId == R.id.share_in_app_btn) {
+            // Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
+            changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun changeToInviteActivity() {
+        val intentCanviAChat = Intent(this, InviteActivity::class.java)
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
+        startActivity(intentCanviAChat)
+    }
+
+    private fun changeToChat() {
+        /*val intentCanviAChat = Intent(this, /**/::class.java)
+        intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
+        startActivity(intentCanviAChat)*/
     }
 }

@@ -25,10 +25,14 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
-        <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
-            android:parentActivityName=".MainActivity">
+        <activity
+            android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
+            android:parentActivityName=".MainActivity" />
 
-        </activity>
+        <activity
+            android:name=".ui.inviteChoosePerson.InviteActivity"
+            android:label="@string/title_activity_invite"
+            android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />

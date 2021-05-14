@@ -16,13 +16,8 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
 
         private var listGroupMessages: List<GroupMessage> = ArrayList()
 
-        inner class ViewHolderMessage(mView: View) : RecyclerView.ViewHolder(mView) {
-            val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
-            val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
-        }
-
         inner class ViewHolderGroupMessage(mView: View) : RecyclerView.ViewHolder(mView) {
-            val nameViewPerson: TextView = mView.findViewById(R.id.userName)
+            //val nameViewPerson: TextView = mView.findViewById(R.id.userName)
             val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
             val imageViewPerson: ImageView = mView.findViewById(R.id.imageViewPhoto)
         }
@@ -31,17 +26,12 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
             return when (viewType) {
                 0 -> {
                     val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.chat_message_i, parent, false)
-                    ViewHolderMessage(view)
-                }
-                1 -> {
-                    val view = LayoutInflater.from(parent.context)
                         .inflate(R.layout.chat_message_other, parent, false)
-                    ViewHolderMessage(view)
+                    ViewHolderGroupMessage(view)
                 }
                 else -> {
                     val view = LayoutInflater.from(parent.context)
-                        .inflate(R.layout.groupchat_message_other, parent, false)
+                        .inflate(R.layout.chat_message_i, parent, false)
                     ViewHolderGroupMessage(view)
                 }
             }
@@ -49,8 +39,8 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
 
         override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
             val item = listGroupMessages[position]
-            (holder as ViewHolderMessage).textViewMessage.text = item.message
-            (holder as ViewHolderMessage).textViewMessage.setOnLongClickListener {
+            (holder as ViewHolderGroupMessage).textViewMessage.text = item.message
+            (holder as ViewHolderGroupMessage).textViewMessage.setOnLongClickListener {
                 // Delete message
                 Toast.makeText(MyApp.getContext(), "Long press", Toast.LENGTH_LONG).show()
                 return@setOnLongClickListener true

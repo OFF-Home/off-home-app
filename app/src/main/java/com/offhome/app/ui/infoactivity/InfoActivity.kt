@@ -137,7 +137,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
-                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                        //Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
+                                        startActivity(Intent(this, GroupChatActivity::class.java))
+                                        finish()
                                     }
                                 snackbar.show()
                             } else {

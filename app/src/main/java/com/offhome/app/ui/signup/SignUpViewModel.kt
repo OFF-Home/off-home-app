@@ -1,5 +1,7 @@
 package com.offhome.app.ui.signup
 
+
+
 import android.util.Patterns
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
@@ -78,6 +80,8 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                     _signUpResult.value = SignUpResult(success = resultRepo.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
+
+                signUpRepository.result.removeObservers(activity)
             }
         )
 
@@ -94,7 +98,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param password password field string
      * @param birthDate birth date field string
      */
-    fun loginDataChanged(email: String, username: String, password: String, birthDate: String) {
+    fun signupDataChanged(email: String, username: String, password: String, birthDate: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {

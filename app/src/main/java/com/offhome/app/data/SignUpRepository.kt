@@ -1,10 +1,11 @@
 package com.offhome.app.data
 
+
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.offhome.app.ui.signup.SignUpActivity
 import java.util.*
 
 /**
@@ -47,6 +48,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                     _result.value = ResultSignUp(success = resultDS.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
+                dataSource.result.removeObservers(activity)
             }
         )
         dataSource.signUp(email, username, password, birthDate, activity)

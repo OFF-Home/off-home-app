@@ -1,5 +1,7 @@
 package com.offhome.app.ui.login
 
+
+
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
@@ -131,6 +133,10 @@ class LoginActivity : AppCompatActivity() {
                         )
                         SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
                         SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_UID,
+                            FirebaseAuth.getInstance().currentUser!!.uid
+                        )
                         val welcome = getString(R.string.welcome)
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
@@ -140,7 +146,6 @@ class LoginActivity : AppCompatActivity() {
                             Toast.LENGTH_LONG
                         ).show()
                         finish()
-
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(

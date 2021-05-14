@@ -1,7 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
-import android.content.Context
-import android.content.Intent
+
+
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,11 +9,8 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.profile.UserInfo
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Adpter for the recycler view of the activities list
@@ -54,10 +51,9 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
     override fun onBindViewHolder(holder: ParticipantsRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = participantsList[position]
         holder.textViewUsername.text = item.username
-        //aqui hay que pedir profile pic realmente
+        // aqui hay que pedir profile pic realmente
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
     }
-
 
     /**
      * gets the number of views
@@ -80,7 +76,7 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      * @property textViewUsername is the textView where we will render the user's name
      * @property profilepic is the image to show on of the user
      */
-     class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
+    class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewUsername: TextView = mView.findViewById(R.id.participant_username)
         val profilepic: ImageView = mView.findViewById(R.id.participant_profile_pic)
 
@@ -91,5 +87,4 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
             return super.toString()
         }
     }
-
 }

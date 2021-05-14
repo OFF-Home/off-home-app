@@ -1,14 +1,13 @@
 package com.offhome.app.ui.otherprofile
 
-import android.app.AlertDialog
+
+
 import android.content.res.ColorStateList
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
@@ -92,10 +91,10 @@ class AboutThemFragment : Fragment() {
         textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
-        omplirTagGroup(uinfo.tags)  //TODO canviar per el de List <TagData>
+        omplirTagGroup(uinfo.tags) // TODO canviar per el de List <TagData>
     }
 
-    //old
+    // old
     private fun omplirTagGroup(tagString: String) {
         val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
         tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
@@ -107,7 +106,7 @@ class AboutThemFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
@@ -119,7 +118,7 @@ class AboutThemFragment : Fragment() {
      * @param tag tag to initialize
      */
     private fun addTagToChipGroup(tag: String) {
-        val chip = Chip(context);
+        val chip = Chip(context)
         chip.text = tag
         chip.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         chip.chipStrokeWidth = 5F

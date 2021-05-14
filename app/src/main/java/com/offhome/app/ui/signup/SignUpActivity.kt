@@ -1,10 +1,13 @@
 package com.offhome.app.ui.signup
 
+
+
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -13,8 +16,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import java.util.*
 
 /**
@@ -45,6 +48,7 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var signUp: Button
     private lateinit var hereButton: TextView
     private lateinit var googleButton: Button
+    private lateinit var showPasswordButton: ImageView
     private lateinit var loading: ProgressBar
     private val activity: SignUpActivity = this
 
@@ -71,6 +75,7 @@ class SignUpActivity : AppCompatActivity() {
         signUp = findViewById(R.id.ButtonSignUp)
         hereButton = findViewById(R.id.textViewHere)
         googleButton = findViewById(R.id.buttonGoogleSignUp)
+        showPasswordButton = findViewById(R.id.ImageViewShowPasswordSignUp)
         loading = findViewById(R.id.loading)
 
         // observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
@@ -79,7 +84,7 @@ class SignUpActivity : AppCompatActivity() {
             Observer {
                 val signUpStateVM = it ?: return@Observer
 
-                // disable login button unless both username / password is valid
+                // disable login button unless all fields are valid
                 signUp.isEnabled = signUpStateVM.isDataValid
 
                 if (signUpStateVM.emailError != null) { // si hi ha error
@@ -93,6 +98,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 if (signUpStateVM.birthDateError != null) {
                     birthDate.error = getString(signUpStateVM.birthDateError)
+                } else {
+                    birthDate.error = null // funciona xd
                 }
             }
         )
@@ -123,7 +130,7 @@ class SignUpActivity : AppCompatActivity() {
         // fan les comprovacions de si els strings son correctes
 
         email.afterTextChanged {
-            signUpViewModel.loginDataChanged(
+            signUpViewModel.signupDataChanged(
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
@@ -132,7 +139,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         username.afterTextChanged {
-            signUpViewModel.loginDataChanged(
+            signUpViewModel.signupDataChanged(
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
@@ -141,7 +148,7 @@ class SignUpActivity : AppCompatActivity() {
         }
 
         birthDate.afterTextChanged {
-            signUpViewModel.loginDataChanged(
+            signUpViewModel.signupDataChanged(
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
@@ -151,7 +158,7 @@ class SignUpActivity : AppCompatActivity() {
 
         password.apply {
             afterTextChanged {
-                signUpViewModel.loginDataChanged(
+                signUpViewModel.signupDataChanged(
                     email.text.toString(),
                     username.text.toString(),
                     password.text.toString(),
@@ -201,7 +208,7 @@ class SignUpActivity : AppCompatActivity() {
                     val humanMonth = selectedMonth + 1 // perque els mesos comencen a 0
                     val textDate = "$selectedDay/$humanMonth/$selectedYear"
                     birthDate.setText(textDate)
-                    signUpViewModel.loginDataChanged(
+                    signUpViewModel.signupDataChanged(
                         email.text.toString(),
                         username.text.toString(),
                         password.text.toString(),
@@ -215,6 +222,16 @@ class SignUpActivity : AppCompatActivity() {
 
         hereButton.setOnClickListener {
             canviALogInActivity()
+        }
+
+        // yoink
+        showPasswordButton.setOnClickListener {
+            password.inputType = if (password.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            password.setSelection(password.text.length)
         }
     }
 
@@ -248,7 +265,7 @@ class SignUpActivity : AppCompatActivity() {
      */
     private fun canviALogInActivity() {
         // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
-        val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
+        val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 
         // aqui s'hauria de fer un finish() i potser un setResult(), crec

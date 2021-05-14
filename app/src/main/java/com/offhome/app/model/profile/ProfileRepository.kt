@@ -1,29 +1,31 @@
 package com.offhome.app.model.profile
 
+
+
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.retrofit.UserClient
-import okhttp3.MediaType
-import okhttp3.RequestBody
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.FollowUnfollow
+import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.model.ActivityFromList
+import java.io.File
+import java.io.IOException
+import java.io.InputStream
+import okhttp3.MediaType
+import okhttp3.RequestBody
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
-import java.io.File
-import java.io.IOException
-import java.io.InputStream
 
 /**
  * Class *ProfileRepository*
@@ -49,25 +51,25 @@ class ProfileRepository {
     private var userService = userClient.getUserService()
     var userInfo: MutableLiveData<UserInfo>? = null
     var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
-    var descriptionSetSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
-    var tagDeletedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
-    var tagAddedSuccessfully: MutableLiveData<ResponseBody> =  MutableLiveData<ResponseBody>()
-    var activities: MutableLiveData<List<ActivityFromList>>?=null
-    var tags: MutableLiveData< List<TagData> >?=null
+    var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var activities: MutableLiveData<List<ActivityFromList>>? = null
+    var tags: MutableLiveData< List<TagData> >? = null
 
     /**
      * obtains ProfileInfo from the lower level
      *
      * does the GET call and observes the result
-     * @param username username of the user whose data is to be obtained
+     * @param email email of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(username: String): MutableLiveData<UserInfo> {
+    fun getProfileInfo(email: String): MutableLiveData<UserInfo> {
 
         if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
         // accés a Backend
-        val call: Call<UserInfo> = userService!!.getProfileInfo(username)
+        val call: Call<UserInfo> = userService!!.getProfileInfo(email)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
@@ -100,7 +102,7 @@ class ProfileRepository {
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities!!.value =response.body()
+                    activities!!.value = response.body()
                     Log.d("response", "getUserActivities response: is successful")
                 } else {
                     Log.d("response", "getUserActivities response: unsuccessful")
@@ -127,7 +129,7 @@ class ProfileRepository {
         call.enqueue(object : Callback< List<TagData> > {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {
-                    tags!!.value =response.body()
+                    tags!!.value = response.body()
                     Log.d("response", "getUserTags response: is successful")
                 } else {
                     Log.d("response", "getUserTags response: unsuccessful")
@@ -154,7 +156,7 @@ class ProfileRepository {
         return bitmap
     }
 
-    //podria funcionar sense tot el rollo de nulls, com setDescription
+    // podria funcionar sense tot el rollo de nulls, com setDescription
     /**
      * Propagates the setUsername process to the lower level
      *
@@ -164,19 +166,19 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email:String, newUsername: String): MutableLiveData<ResponseBody> {
+    fun setUsername(email: String, newUsername: String): MutableLiveData<ResponseBody> {
         if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))   //o algo tipo updateUser()        //he posat "!!"
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername)) // o algo tipo updateUser()
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 usernameSetSuccessfully!!.value = response.body()
                 if (response.isSuccessful) {
-                    //la crida retorna 200 encara que sigui user not found.
+                    // la crida retorna 200 encara que sigui user not found.
                     Log.d("response", "setUsername response: is successful")
-                    //usernameSetSuccessfully!!.value = true
+                    // usernameSetSuccessfully!!.value = true
                 } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "setUsername response: unsuccessful")
-                    //usernameSetSuccessfully!!.value = false
+                    // usernameSetSuccessfully!!.value = false
                 }
             }
 
@@ -191,7 +193,7 @@ class ProfileRepository {
         return usernameSetSuccessfully as MutableLiveData<ResponseBody>
     }
 
-    //funciona sense tot el rollo de nulls
+    // funciona sense tot el rollo de nulls
     /**
      * Propagates the setDescription process to the lower level
      *
@@ -201,8 +203,8 @@ class ProfileRepository {
      * @param newDescription description to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setDescription(email:String, newDescription:String): MutableLiveData<ResponseBody> {
-        val call: Call<ResponseBody> = userService!!.setDescription(email = "victorfer"/*email*/, description = UserDescription(description = newDescription))
+    fun setDescription(email: String, newDescription: String): MutableLiveData<ResponseBody> {
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 descriptionSetSuccessfully.value = response.body()
@@ -217,7 +219,7 @@ class ProfileRepository {
                 Log.d("no response", "setDescription no response")
                 t.printStackTrace()
                 Log.w("no response", "setDescription no response", t.cause)
-                descriptionSetSuccessfully.value =  ResponseBody.create(null, "no response")
+                descriptionSetSuccessfully.value = ResponseBody.create(null, "no response")
             }
         })
         return descriptionSetSuccessfully
@@ -232,8 +234,8 @@ class ProfileRepository {
      * @param tag tag to delete
      * @return mutable live data which will be updated with the result of the call
      */
-    fun deleteTag(email:String, tag:String): MutableLiveData<ResponseBody> {
-        val call :Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
+    fun deleteTag(email: String, tag: String): MutableLiveData<ResponseBody> {
+        val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 tagDeletedSuccessfully.value = response.body()
@@ -261,7 +263,7 @@ class ProfileRepository {
      * @param tag tag to add
      * @return mutable live data which will be updated with the result of the call
      */
-    fun addTag(email:String, tag:String): MutableLiveData<ResponseBody> {
+    fun addTag(email: String, tag: String): MutableLiveData<ResponseBody> {
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -280,7 +282,7 @@ class ProfileRepository {
         })
         return tagAddedSuccessfully
     }
-      
+
     /**
      * obtains profile info of a user from a username
      */
@@ -412,6 +414,4 @@ class ProfileRepository {
             }
         })
     }
-
-
 }

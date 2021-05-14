@@ -1,8 +1,8 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.text.Editable
-import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -52,12 +52,12 @@ class ProfileFragmentViewModel : ViewModel() {
     var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
 
     private var _descriptionSetSuccessfully = MutableLiveData<ResponseBody>()
-    var descriptionSetSuccessfully : LiveData<ResponseBody> = _descriptionSetSuccessfully
+    var descriptionSetSuccessfully: LiveData<ResponseBody> = _descriptionSetSuccessfully
 
     private var _tagAddedSuccessfully = MutableLiveData<ResponseBody>()
-    var tagAddedSuccessfully:LiveData<ResponseBody> = _tagAddedSuccessfully
+    var tagAddedSuccessfully: LiveData<ResponseBody> = _tagAddedSuccessfully
     private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
-    var tagDeletedSuccessfully : LiveData<ResponseBody> = _tagDeletedSuccessfully
+    var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully
 
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
@@ -65,9 +65,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * calls the functions that do the same for the user's activities and tags
      */
     fun getProfileInfo() {
-        val username = "victorfer" // stub
-
-        profileInfo = repository.getProfileInfo(username)!!
+        profileInfo = repository.getProfileInfo(loggedUserEmail)!!
 
         getMyActivities()
         getTags()
@@ -77,7 +75,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * obtains myActivities from the lower level and places them on the live data
      */
     private fun getMyActivities() {
-        myActivities = repository.getUserActivities("victor@gmai.com"/*loggedUserEmail*/)!!      //funciona amb myActivities i no amb _myActivities
+        myActivities = repository.getUserActivities(loggedUserEmail)!! // funciona amb myActivities i no amb _myActivities
     }
 
     /**
@@ -95,7 +93,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param newUsername string to change the username to
      */
     fun usernameChangedByUser(newUsername: Editable) {
-        //repository.setUsername(loggedUserEmail, newUsername.toString())
+        // repository.setUsername(loggedUserEmail, newUsername.toString())
         usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
     }
 
@@ -128,15 +126,15 @@ class ProfileFragmentViewModel : ViewModel() {
      *
      * @param tag tag to be added
      */
-    fun tagAddedByUser(tag:String) {
-        tagAddedSuccessfully =  repository.addTag(loggedUserEmail, tag)
+    fun tagAddedByUser(tag: String) {
+        tagAddedSuccessfully = repository.addTag(loggedUserEmail, tag)
     }
 
     /**
      * This function calls the Repository to manage the photo uploading of the user profile
      * @param photoPath The path of the photo desired
      */
-    fun uploadPhoto(photoPath: String){
+    fun uploadPhoto(photoPath: String) {
         val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         repository.uploadPhoto(email, photoPath)
     }

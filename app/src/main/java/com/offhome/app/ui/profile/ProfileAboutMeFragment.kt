@@ -1,10 +1,13 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.app.AlertDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +16,6 @@ import android.widget.EditText
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
@@ -64,11 +66,11 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
-    private lateinit var addTagButton:ImageView
-    private lateinit var editIconDrawable:Drawable
-    private lateinit var saveIconDrawable:Drawable
-    private lateinit var addIconDrawable:Drawable
-    private lateinit var editTextProfileDescription : EditText
+    private lateinit var addTagButton: ImageView
+    private lateinit var editIconDrawable: Drawable
+    private lateinit var saveIconDrawable: Drawable
+    private lateinit var addIconDrawable: Drawable
+    private lateinit var editTextProfileDescription: EditText
 
     /**
      * Override the onCreateView method
@@ -118,15 +120,15 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val tagsVM = it ?: return@Observer
                 omplirTagGroup(tagsVM)
-                Log.d("tags","tags arriben al fragment")
+                Log.d("tags", "tags arriben al fragment")
             }
         )
 
         // testing
-        omplirTagGroupStub()
+        // omplirTagGroupStub()
 
         iniEditElements()
-        iniEditionResultListeners() //TODO sobra?
+        iniEditionResultListeners() // TODO sobra?
 
         return view
     }
@@ -158,8 +160,8 @@ class ProfileAboutMeFragment : Fragment() {
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
-                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -214,15 +216,15 @@ class ProfileAboutMeFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
     }
 
     private fun omplirTagGroupStub() {
-        var i:Int = 0
-        val nTags:Int = 5
+        var i: Int = 0
+        val nTags: Int = 5
         while (i <nTags) {
             addTagToChipGroup("stub")
             ++i
@@ -302,7 +304,8 @@ class ProfileAboutMeFragment : Fragment() {
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
         saveIconDrawable = BitmapDrawable(
-            resources, Bitmap.createScaledBitmap(
+            resources,
+            Bitmap.createScaledBitmap(
                 bitmap2,
                 70,
                 70,
@@ -412,6 +415,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextlayoutParams.width = 0
 
         editTextProfileDescription.visibility = View.GONE
+
+        // set the max chars
+        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(280))
+        editTextProfileDescription.filters = filterArray
     }
 
     /**
@@ -423,8 +430,9 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
-            textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            val newDescription = editTextProfileDescription.text
+            textViewProfileDescription.text = newDescription
+            profileVM.descriptionChangedByUser(newDescription)
             iniDescriptionSetListener()
             changeDescriptionToDisplay()
         }
@@ -465,10 +473,9 @@ class ProfileAboutMeFragment : Fragment() {
             .setPositiveButton("Add") { dialog, which ->
                 val tag = textInput.text.toString()
                 if (tag.isEmpty()) {
-                    Toast.makeText(context, R.string.tags_cant_be_empty_toast,Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.tags_cant_be_empty_toast, Toast.LENGTH_LONG).show()
                     addTagPressed()
-                }
-                else
+                } else
                     addTag(tag)
             }
             .setNegativeButton(
@@ -478,7 +485,7 @@ class ProfileAboutMeFragment : Fragment() {
         val alertDialog = alertDialogBuilder.show()
     }
 
-    //afegeix tag a la app (chip) i al backend
+    // afegeix tag a la app (chip) i al backend
     /**
      * Adds the tag in the app (meaning the chip) and starts the process to add it to the backend database
      * @param tag tag to add

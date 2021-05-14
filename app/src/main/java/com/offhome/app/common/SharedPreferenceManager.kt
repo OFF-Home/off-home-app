@@ -1,12 +1,14 @@
 package com.offhome.app.common
 
+
+
 import android.content.Context
 import android.content.SharedPreferences
 
 class SharedPreferenceManager {
 
     companion object Factory {
-        private val appSettingsFile ="APP_SETTINGS"
+        private val appSettingsFile = "APP_SETTINGS"
         private fun getSharedPreferences(): SharedPreferences {
             return MyApp.getInstance().getSharedPreferences(
                 appSettingsFile,

@@ -1,4 +1,4 @@
-package com.offhome.app.ui.chats
+package com.offhome.app.ui.chats.singleChat
 
 
 
@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.common.MyApp
-import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 
 class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
@@ -79,5 +78,4 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         notifyDataSetChanged()
     }
 
-    fun setDataGroup(messages: List<GroupMessage>?) {}
 }

@@ -12,7 +12,7 @@
     <!--  Text View to show the text "Title of the activity"  -->
     <TextView
         android:id="@+id/textTitle"
-        android:layout_width="350dp"
+        android:layout_width="338dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/title_of_the_activity"
@@ -29,8 +29,8 @@
     <!--  Edit Text for input the title of the activity  -->
     <EditText
         android:id="@+id/activity_title"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:layout_width="337dp"
+        android:layout_height="56dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="1dp"
         android:autofillHints=""
@@ -46,9 +46,12 @@
         app:layout_constraintVertical_bias="0.065" />
 
     <!-- Text View to show the text "About of the activity"  -->
+
+    <!--  Edit Text for input the description of the activity  -->
+
     <TextView
         android:id="@+id/textAbout"
-        android:layout_width="350dp"
+        android:layout_width="338dp"
         android:layout_height="25dp"
         android:layout_marginStart="11dp"
         android:text="@string/about_the_activity"
@@ -57,16 +60,15 @@
         android:textSize="20sp"
         app:layout_constraintBottom_toBottomOf="@+id/btn_create"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.48"
+        app:layout_constraintHorizontal_bias="0.483"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.196" />
+        app:layout_constraintVertical_bias="0.184" />
 
-    <!--  Edit Text for input the description of the activity  -->
     <EditText
         android:id="@+id/about_the_activity"
-        android:layout_width="350dp"
-        android:layout_height="60dp"
+        android:layout_width="337dp"
+        android:layout_height="53dp"
         android:layout_marginStart="12dp"
         android:layout_marginEnd="1dp"
         android:autofillHints=""
@@ -76,29 +78,32 @@
         android:padding="18dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.479"
+        app:layout_constraintHorizontal_bias="0.442"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.242" />
+        app:layout_constraintVertical_bias="0.225" />
 
     <!--  Image Button to show the image of the location  -->
-    <ImageButton
-        android:id="@+id/btn_location"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:backgroundTint="@color/white"
-        android:src="@drawable/ic_baseline_add_location_alt_24"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toStartOf="@+id/locationpck2"
-        app:layout_constraintHorizontal_bias="0.148"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.589"
-        tools:ignore="ContentDescription" />
 
     <!-- Image Button to show the image of the calendar -->
+
+    <!--  Text View to show the date and hour selected for the activity  -->
+
+
+    <!-- Image Button to show the image of people  -->
+
+    <!--  Edit Text for input the activity location  -->
+
+    <!--  Button for input the date and hour of the activity -->
+
+    <!--  Text View to show the text "Max participants"  -->
+
+    <!--  Number Picker to select the maximum number of participants for the activity  -->
+
+    <!--  Spinner to choose the category that fits better the activity  -->
+
+    <!-- Image Button to show the image of the categories  -->
+
     <ImageButton
         android:id="@+id/btnPickDate"
         android:layout_width="45dp"
@@ -108,31 +113,111 @@
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_baseline_event_24"
         app:layout_constraintBottom_toTopOf="@+id/btn_availability"
-        app:layout_constraintEnd_toStartOf="@+id/btn_pickdate"
-        app:layout_constraintHorizontal_bias="0.129"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pickdate1"
+        app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.906"
+        app:layout_constraintVertical_bias="0.852"
         tools:ignore="ContentDescription" />
 
-    <!--  Text View to show the date and hour selected for the activity  -->
     <TextView
-        android:id="@+id/date_pick_text"
-        android:layout_width="135dp"
-        android:layout_height="47dp"
-        android:layout_below="@+id/btn_pickdate"
+        android:id="@+id/date_pick_text1"
+        android:layout_width="122dp"
+        android:layout_height="44dp"
+        android:layout_below="@+id/btn_pickdate1"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.865"
+        app:layout_constraintHorizontal_bias="0.919"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.88"
+        app:layout_constraintVertical_bias="0.755"
         tools:text="@string/date" />
 
+    <TextView
+        android:id="@+id/date_pick_text2"
+        android:layout_width="122dp"
+        android:layout_height="46dp"
+        android:layout_below="@+id/btn_pickdate2"
+        android:textColor="@color/black"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toTopOf="@+id/pick_availability"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.919"
+        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.945"
+        tools:text="@string/date" />
 
-    <!-- Image Button to show the image of people  -->
+    <Button
+        android:id="@+id/btn_pickdate1"
+        android:layout_width="109dp"
+        android:layout_height="35dp"
+        android:backgroundTint="@color/divider"
+        android:text="@string/choose_date"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/street"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.304"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.621"
+        tools:ignore="SmallSp" />
+
+    <Button
+        android:id="@+id/btn_pickdate2"
+        android:layout_width="109dp"
+        android:layout_height="35dp"
+        android:backgroundTint="@color/divider"
+        android:text="@string/choose_dateFi"
+        android:textSize="10sp"
+        app:layout_constraintBottom_toTopOf="@+id/street"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pickdate1"
+        app:layout_constraintVertical_bias="0.125"
+        tools:ignore="SmallSp" />
+
+    <TextView
+        android:id="@+id/participants"
+        android:layout_width="199dp"
+        android:layout_height="25dp"
+        android:text="@string/max_participants"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.276"
+        app:layout_constraintStart_toEndOf="@+id/pick_availability"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.516" />
+
+    <NumberPicker
+        android:id="@+id/pick_availability"
+        android:layout_width="34dp"
+        android:layout_height="39dp"
+        android:layout_marginBottom="24dp"
+        android:textColor="@color/black"
+        app:layout_constraintBottom_toTopOf="@+id/street"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="1.0" />
+
+    <Spinner
+        android:id="@+id/sp_choose_category"
+        android:layout_width="213dp"
+        android:layout_height="31dp"
+        android:entries="@array/select_category"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.714" />
+
     <ImageButton
         android:id="@+id/btn_availability"
         android:layout_width="wrap_content"
@@ -144,87 +229,76 @@
         app:backgroundTint="@color/white"
         app:layout_constraintBottom_toTopOf="@+id/btn_location"
         app:layout_constraintEnd_toStartOf="@+id/pick_availability"
-        app:layout_constraintHorizontal_bias="0.137"
+        app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.906"
+        app:layout_constraintVertical_bias="0.93"
         tools:ignore="ContentDescription" />
 
-    <!--  Edit Text for input the activity location  -->
+    <ImageButton
+        android:id="@+id/btn_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:backgroundTint="@color/white"
+        android:src="@drawable/ic_baseline_add_location_alt_24"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toStartOf="@+id/street"
+        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.622"
+        tools:ignore="ContentDescription" />
+
     <EditText
-        android:id="@+id/locationpck2"
-        android:layout_width="191dp"
-        android:layout_height="49dp"
+        android:id="@+id/street"
+        android:layout_width="178dp"
+        android:layout_height="48dp"
         android:autoLink="map"
         android:autofillHints=""
-        android:hint="@string/set_location"
+        android:hint="@string/set_address1"
         android:inputType="textPostalAddress"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.424"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.596" />
+        app:layout_constraintVertical_bias="0.623" />
 
-    <!--  Button for input the date and hour of the activity -->
+    <EditText
+        android:id="@+id/streetNum"
+        android:layout_width="60dp"
+        android:layout_height="48dp"
+        android:layout_marginEnd="16dp"
+        android:autoLink="map"
+        android:autofillHints=""
+        android:hint="@string/set_address2"
+        android:inputType="textPostalAddress"
+        android:textColor="@color/black"
+        app:autoSizeTextType="uniform"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toEndOf="@+id/street"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.623" />
+
     <Button
-        android:id="@+id/btn_pickdate"
-        android:layout_width="109dp"
-        android:layout_height="35dp"
-        android:backgroundTint="@color/divider"
-        android:text="@string/choose_date"
-        android:textSize="12sp"
-        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.357"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.711" />
-
-    <!--  Text View to show the text "Max participants"  -->
-    <TextView
-        android:id="@+id/participants"
-        android:layout_width="199dp"
-        android:layout_height="25dp"
-        android:text="@string/max_participants"
-        android:textColor="@color/black"
-        android:textSize="18sp"
+        android:id="@+id/btn_invite_friends"
+        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
+        android:layout_width="301dp"
+        android:layout_height="53dp"
+        android:text="@string/invite_friends"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.459"
-        app:layout_constraintStart_toEndOf="@+id/pick_availability"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.484" />
-
-    <!--  Number Picker to select the maximum number of participants for the activity  -->
-    <NumberPicker
-        android:id="@+id/pick_availability"
-        android:layout_width="34dp"
-        android:layout_height="39dp"
-        android:layout_marginBottom="24dp"
-        android:textColor="@color/black"
-        app:layout_constraintBottom_toTopOf="@+id/locationpck2"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.286"
+        app:layout_constraintHorizontal_bias="0.254"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.985" />
+        app:layout_constraintVertical_bias="0.862" />
 
-    <!--  Spinner to choose the category that fits better the activity  -->
-    <Spinner
-        android:id="@+id/sp_choose_category"
-        android:layout_width="213dp"
-        android:layout_height="31dp"
-        android:entries="@array/select_category"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.555"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.695" />
-
-    <!-- Image Button to show the image of the categories  -->
     <ImageButton
         android:id="@+id/btn_select_category"
         android:layout_width="wrap_content"
@@ -235,27 +309,17 @@
         android:src="@drawable/ic_baseline_category_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/sp_choose_category"
-        app:layout_constraintHorizontal_bias="0.153"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.692"
-        tools:ignore="ContentDescription" />
-
-    <!--  Button to invite friends for the activity through other apps  -->
-    <Button
-        android:id="@+id/btn_invite_friends"
-        style="@style/Widget.AppCompat.Light.AutoCompleteTextView"
-        android:layout_width="301dp"
-        android:layout_height="53dp"
-        android:text="@string/invite_friends"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.845" />
+        app:layout_constraintVertical_bias="0.719"
+        tools:ignore="ContentDescription" />
+
+    <!--  Button to invite friends for the activity through other apps  -->
 
     <!--  Image Button the show the image of the loupe  -->
+
+    <!--  Button to create the activity  -->
     <ImageButton
         android:id="@+id/image_search"
         android:layout_width="39dp"
@@ -265,13 +329,12 @@
         android:src="@drawable/ic_baseline_search_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.862"
+        app:layout_constraintHorizontal_bias="0.835"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.837"
+        app:layout_constraintVertical_bias="0.859"
         tools:ignore="ContentDescription" />
 
-    <!--  Button to create the activity  -->
     <Button
         android:id="@+id/btn_create"
         android:layout_width="wrap_content"

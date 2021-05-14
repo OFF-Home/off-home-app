@@ -5,6 +5,7 @@ package com.offhome.app.data
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
 import okhttp3.ResponseBody

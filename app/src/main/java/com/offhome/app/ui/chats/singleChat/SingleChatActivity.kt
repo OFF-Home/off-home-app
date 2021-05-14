@@ -19,7 +19,6 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.model.Message
-import com.offhome.app.ui.chats.MyChatRecyclerViewAdapter
 
 class SingleChatActivity : AppCompatActivity() {
     private lateinit var messagesAdapter: MyChatRecyclerViewAdapter
@@ -53,7 +52,10 @@ class SingleChatActivity : AppCompatActivity() {
             adapter = messagesAdapter
         }
 
-        viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(SingleChatViewModel::class.java)
+        viewModel = ViewModelProvider(
+            this,
+            SingleChatViewModelFactory()
+        ).get(SingleChatViewModel::class.java)
 
         // viewModel.initializeSocket(userUid, this)
 
@@ -116,7 +118,11 @@ class SingleChatActivity : AppCompatActivity() {
                             ).show()
                         else {
                             ++numMessages
-                            val message = Message(editTextNewMessage.text.toString(), "103", System.currentTimeMillis())
+                            val message = Message(
+                                editTextNewMessage.text.toString(),
+                                "103",
+                                System.currentTimeMillis()
+                            )
                             myRef.child("m$numMessages").setValue(message)
                             editTextNewMessage.text.clear()
                         }
@@ -131,7 +137,11 @@ class SingleChatActivity : AppCompatActivity() {
                     ).show()
                 else {
                     ++numMessages
-                    val message = Message(editTextNewMessage.text.toString(), "103", System.currentTimeMillis())
+                    val message = Message(
+                        editTextNewMessage.text.toString(),
+                        "103",
+                        System.currentTimeMillis()
+                    )
                     myRef.child("m$numMessages").setValue(message)
                     editTextNewMessage.text.clear()
                 }
@@ -142,9 +152,9 @@ class SingleChatActivity : AppCompatActivity() {
             }
         }
     }
+}
 
-    override fun onDestroy() {
+    /*override fun onDestroy() {
         super.onDestroy()
         viewModel.disconnectFromSocket()
-    }
-}
+    }*/

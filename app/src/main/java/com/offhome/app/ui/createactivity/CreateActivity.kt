@@ -12,15 +12,21 @@ import android.os.Build
 import android.os.Bundle
 import android.text.SpannableString
 import android.text.style.ClickableSpan
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
+import com.google.firebase.database.FirebaseDatabase
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityData as ActivityData
+import com.offhome.app.ui.chats.groupChat.ChatMessage
+import java.text.DateFormat
 import java.util.*
+import com.offhome.app.model.ActivityData as ActivityData
+
 
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
@@ -54,12 +60,19 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
 
     private lateinit var pick_availability: NumberPicker
     private lateinit var datePicker: TextView
+    private lateinit var dateFinishPicker: TextView
     private lateinit var btn_invitefriends: Button
     private lateinit var act_title: EditText
     private lateinit var btn_CREATED: Button
     private lateinit var description: EditText
-    private lateinit var finalDate: TextView
-    private lateinit var location: EditText
+    private lateinit var startDate: TextView
+    private lateinit var endDate: TextView
+    private lateinit var dataHoraIni: String
+    private lateinit var dataHoraEnd: String
+    private lateinit var maxParticipants: String
+    private lateinit var nameStreet: EditText
+    private lateinit var numberStreet: EditText
+    private lateinit var category_selected: Spinner
 
     /**
      * This function represents the current time using current locale and timezone
@@ -89,6 +102,19 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         this.title = "Create activity"
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
+        act_title = findViewById(R.id.activity_title)
+        description = findViewById(R.id.about_the_activity)
+        startDate = findViewById(R.id.date_pick_text1)
+        endDate = findViewById(R.id.date_pick_text2)
+        datePicker = findViewById(R.id.btn_pickdate1)
+        dateFinishPicker = findViewById(R.id.btn_pickdate2)
+        nameStreet = findViewById(R.id.street)
+        numberStreet = findViewById(R.id.streetNum)
+        btn_invitefriends = findViewById(R.id.btn_invite_friends)
+        act_title = findViewById(R.id.activity_title)
+        category_selected = findViewById(R.id.sp_choose_category)
+
+
         pickDate()
 
         pickAvailability()
@@ -107,14 +133,17 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This function let the user pick a date where the activity created will take place
      */
     private fun pickDate() {
-        datePicker = findViewById(R.id.btn_pickdate)
         datePicker.setOnClickListener {
             getDateTimeCalendar()
 
             DatePickerDialog(this, this, this.year, this.month, this.day).show()
         }
-    }
+        dateFinishPicker.setOnClickListener {
+            getDateTimeCalendar()
 
+            DatePickerDialog(this, this, this.year, this.month, this.day).show()
+        }
+    }
     /**
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
@@ -128,8 +157,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This function let the user invite friends by sending the data of the new activity to other apps of the user's device
      */
     private fun inviteFriends() {
-        btn_invitefriends = findViewById(R.id.btn_invite_friends)
-        act_title = findViewById(R.id.activity_title)
         btn_invitefriends.setOnClickListener {
             val message: String = act_title.text.toString()
 
@@ -150,15 +177,20 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
+                pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
+                    maxParticipants = if (oldVal != newVal) "$newVal"
+                    else "$oldVal"
+                }
+
                 val activitydata = ActivityData(
-                    "Balmes2",
-                    11,
-                    "13h",
+                    nameStreet.text.toString(),
+                    numberStreet.text.toString().toInt(),
+                    dataHoraIni,
                     "Walking",
-                    7,
-                    "Running in La Barce",
-                    "so much fun!!!",
-                    " 13/5/2021"
+                    maxParticipants.toInt(),
+                    act_title.text.toString(),
+                    description.text.toString(),
+                    dataHoraEnd
                 )
 
                 viewModel.addActivity(activitydata).observe(
@@ -167,7 +199,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             if (it == "Activity created") {
-                                displayChatGroup(activitydata.titol)
+                                createChatGroup(activitydata.titol)
                                 startActivity(Intent(this, MainActivity::class.java))
                             }
                         }
@@ -177,9 +209,13 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
     }
 
-    private fun displayChatGroup(titolAct: String) {
+    private fun createChatGroup(titolAct: String) {
         Toast.makeText(this, "Group chat created", Toast.LENGTH_LONG).show()
         // createGroupChat() ???
+        //        val chatGroupIde = ChatGroupIdentification(
+        //            "101", "26-5-2000 18:00"
+        //        )
+        //        viewModel.addChatGroup(chatGroupIde)
         val SpannableString = SpannableString("Go to chat group")
         val clickableSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
@@ -194,27 +230,23 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * @return true if the activity can be created; otherwise return false
      */
     private fun validate(): Boolean {
-        act_title = findViewById(R.id.activity_title)
-        description = findViewById(R.id.about_the_activity)
-        finalDate = findViewById(R.id.date_pick_text)
-        location = findViewById(R.id.locationpck2)
-
         if (act_title.text.toString().isEmpty()) {
             act_title.error = "Name should not be blank"
             return false
-        }
-        if (description.text.toString().isEmpty()) {
+        } else if (description.text.toString().isEmpty()) {
             description.error = "Name should not be blank"
             return false
-        }
-        if (finalDate.text.toString() == "") {
-            finalDate.error = "Date should not be blank"
+        } else if (startDate.text.toString() == "") {
+            startDate.error = "Start date should not be blank"
+            return false
+        } else if (endDate.text.toString() == "") {
+            endDate.error = "End date should not be blank"
+            return false
+        } else if (nameStreet.text.toString() == "") {
+            nameStreet.error = "Street number should not be blank"
             return false
         }
-        if (location.text.toString().isEmpty()) {
-            location.error = "Location should not be blank"
-            return false
-        }
+        //      else if (category_selected. etc)
         return true
     }
 
@@ -238,7 +270,12 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     override fun onTimeSet(view: TimePicker?, hourOfDay: Int, minute: Int) {
         savedHour = hourOfDay
         savedMinute = minute
-        finalDate = findViewById(R.id.date_pick_text)
-        finalDate.text = "$savedDay-$savedMonth-$savedYear\n Hour: $savedHour Minute: $savedMinute"
+
+        startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
+        dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
+
+        //això s'ha d'arreglar
+        endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
+        dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00.000"
     }
 }

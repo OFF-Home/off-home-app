@@ -16,8 +16,10 @@
     <string name="insert_text">Insert text</string>
     <string name="date">Date</string>
     <string name="choose_location">Choose location</string>
-    <string name="set_location">Set location</string>
-    <string name="choose_date">Choose date</string>
+    <string name="set_address1">Insert street name</string>
+    <string name="set_address2">Num</string>
+    <string name="choose_date">Start time</string>
+    <string name="choose_dateFi">Finish time</string>
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">

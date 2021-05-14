@@ -14,6 +14,7 @@ import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.observe
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.model.ActivityData as ActivityData

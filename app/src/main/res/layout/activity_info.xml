@@ -160,14 +160,16 @@
                 android:id="@+id/listParticipants"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                tools:listitem="@layout/fragment_participant"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
-                app:layout_constraintBottom_toTopOf="@id/textViewValoracio"/>
+                tools:listitem="@layout/fragment_participant" />
 
             <TextView
                 android:id="@+id/textViewValoracio"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
                 android:fontFamily="sans-serif"
                 android:padding="6dp"
                 android:text="@string/valoracions"
@@ -183,29 +185,15 @@
                 style="?android:attr/ratingBarStyleIndicator"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:isIndicator="false"
                 android:layout_gravity="center"
-                android:layout_marginTop="5dp"
-                android:layout_marginBottom="5dp"
+                android:isIndicator="false"
                 android:max="5"
-                android:numStars="5"
+                android:numStars="0"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textViewValoracio" />
+                app:layout_constraintTop_toBottomOf="@id/textViewValoracio" />
 
-            <TextView
-                android:id="@+id/textViewAddYourComment"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:fontFamily="sans-serif"
-                android:padding="6dp"
-                android:text="@string/addcomment"
-                android:textColor="@color/black"
-                android:textSize="18sp"
-                android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@id/btn_join"
-                app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/ratingStars" />
+
 
             <EditText
                 android:id="@+id/yourcomment"
@@ -221,9 +209,23 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.479"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/textViewAddYourComment"
-                app:layout_constraintBottom_toTopOf="@id/textViewComments"
+                app:layout_constraintTop_toBottomOf="@id/ratingStars"
+                app:layout_constraintBottom_toTopOf="@id/submitcomment"
                 app:layout_constraintVertical_bias="0.242" />
+
+            <Button
+                android:id="@+id/submitcomment"
+                android:layout_width="120dp"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/secondary_light"
+                android:alpha="0.7"
+                android:text="@string/submit"
+                android:textSize="14dp"
+                app:cornerRadius="18dp"
+                app:layout_constraintEnd_toEndOf="@id/box"
+                app:layout_constraintHorizontal_bias="0.497"
+                app:layout_constraintStart_toStartOf="@+id/box"
+                app:layout_constraintTop_toBottomOf="@+id/yourcomment" />
 
             <TextView
                 android:id="@+id/textViewComments"
@@ -236,7 +238,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/yourcomment" />
+                app:layout_constraintTop_toBottomOf="@id/submitcomment" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listComments"

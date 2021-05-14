@@ -13,5 +13,4 @@ data class ActivityFromList(
     val titol: String,
     val descripcio: String,
     val dataHoraFi: String,
-    val valoracio: Int
 )

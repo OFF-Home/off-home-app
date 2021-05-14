@@ -5,18 +5,16 @@ package com.offhome.app.ui.infoactivity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.offhome.app.R
-import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.model.ReviewOfParticipant
 
 /**
  * Adpter for the recycler view of the activities list
- * @property participantsList is the list of activities
+ * @property reviewsList is the list of reviews of all the participants
  */
-class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyclerViewAdapter.ViewHolder>() {
+class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAdapter.ViewHolder>() {
 
     /*repasar esto
     /**
@@ -29,7 +27,7 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
         context?.startActivity(intent)
     }*/
 
-    private var participantsList: List<UserUsername> = ArrayList()
+    private var reviewsList: List<ReviewOfParticipant> = ArrayList()
 
     /**
      * it inflates the view of each participant and seves the ViewHolder of the view
@@ -37,9 +35,9 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      * @param viewType is the type of the View
      * @return the view holder of the view
      */
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ParticipantsRecyclerViewAdapter.ViewHolder {
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ReviewsRecyclerViewAdapter.ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_participant, parent, false)
+            .inflate(R.layout.fragment_comments, parent, false)
         return ViewHolder(view)
     }
 
@@ -48,25 +46,24 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      * @param holder is the view holder of that view
      * @param position is the position of the view to render
      */
-    override fun onBindViewHolder(holder: ParticipantsRecyclerViewAdapter.ViewHolder, position: Int) {
-        val item = participantsList[position]
+    override fun onBindViewHolder(holder: ReviewsRecyclerViewAdapter.ViewHolder, position: Int) {
+        val item = reviewsList[position]
         holder.textViewUsername.text = item.username
-        // aqui hay que pedir profile pic realmente
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
+        holder.textViewComment.text = item.review
     }
 
     /**
      * gets the number of views
      * @return the number of views
      */
-    override fun getItemCount(): Int = participantsList.size
+    override fun getItemCount(): Int = reviewsList.size
 
     /**
      * sets the new data and notifies to the adapter to refresh if necessary
-     * @param participantsList is the new list of activites to set
+     * @param reviewsList is the new list of reviews of all the participants
      */
-    fun setData(participantsList: List<UserUsername>?) {
-        this.participantsList = participantsList!!
+    fun setData(reviewsList: List<ReviewOfParticipant>?) {
+        this.reviewsList = reviewsList!!
         notifyDataSetChanged()
     }
 
@@ -74,11 +71,11 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
      * ViewHolder class to save the refereces to the views of each view
      * @param mView is the general view
      * @property textViewUsername is the textView where we will render the user's name
-     * @property profilepic is the image to show on of the user
+     * @property textViewComment is the textView where we will render the user's comment
      */
     class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewUsername: TextView = mView.findViewById(R.id.participant_username)
-        val profilepic: ImageView = mView.findViewById(R.id.participant_profile_pic)
+        val textViewComment: TextView = mView.findViewById(R.id.participant_comment)
 
         /**
          * General function that returns the string

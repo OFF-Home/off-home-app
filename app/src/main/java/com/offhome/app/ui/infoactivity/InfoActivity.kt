@@ -25,9 +25,13 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 
 /**
@@ -49,8 +53,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var longitude: Double = 0.0
     private lateinit var viewModel: InfoActivityViewModel
     private lateinit var participantsAdapter: ParticipantsRecyclerViewAdapter
+    private lateinit var reviewsAdapter: ReviewsRecyclerViewAdapter
     private lateinit var layoutParticipants: RecyclerView
+    private lateinit var layoutReviews: RecyclerView
     private var participantsList: List<String> = ArrayList()
+    private var joined = false
+    private lateinit var estrelles: RatingBar
+    private lateinit var comment: EditText
+    private lateinit var btnsubmit: Button
 
     private lateinit var groupChat: FloatingActionButton
 
@@ -79,10 +89,16 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter = participantsAdapter
         }
 
+        // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
             {
-                participantsAdapter.setData(it)
+                if (it != null) {
+                    participantsAdapter.setData(it)
+                    for (item in it) {
+                        if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
+                    }
+                }
             }
         )
 
@@ -98,18 +114,118 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
-        val estrelles = findViewById<RatingBar>(R.id.ratingStars)
-        estrelles.numStars = activity.valoracio
+        estrelles = findViewById<RatingBar>(R.id.ratingStars)
+
+        comment = findViewById<EditText>(R.id.yourcomment)
+
+        btnsubmit = findViewById<Button>(R.id.submitcomment)
+
+        // get the current date
+        val currentTime = Calendar.getInstance().time
+
+        // transform dataHoraIni into date format
+        val mydate = activity.dataHoraFi
+        var date: Date? = null
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+        try {
+            date = format.parse(mydate)
+            System.out.println(date)
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }
+
+        // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
+        if (date != null) {
+            if (!joined or (date > currentTime)) {
+                cantreview()
+            }
+        }
+
+        viewModel.getValoracioUsuari(
+            activity.usuariCreador, activity.dataHoraIni,
+            SharedPreferenceManager.getStringValue(
+                Constants().PREF_EMAIL
+            ).toString()
+        ).observe(
+            this,
+            {
+                // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
+                if (it.valoracio != 0) {
+                    estrelles.numStars = it.valoracio
+                    estrelles.isFocusable = false
+                    estrelles.setIsIndicator(true)
+                }
+                // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
+                if (it.review != " ") {
+                    comment.setHint(R.string.cantreview)
+                    comment.isFocusable = false
+                    btnsubmit.setEnabled(false)
+                }
+            }
+        )
 
         val layout = findViewById<View>(R.id.content)
 
+        // al clicar a submit, envía valoracion a back
+        btnsubmit.setOnClickListener {
+            // si no hay estrellas, muestra mensaje pidiendolas
+            if (estrelles.numStars == 0) {
+                val snackbar: Snackbar = Snackbar
+                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
+                snackbar.show()
+            }
+            // si las hay, enviar datos a back
+            else {
+                viewModel.putValoracio(
+                    SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
+                    activity.usuariCreador, activity.dataHoraIni, estrelles.numStars, comment.text.toString()
+                ).observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "Your rating has been saved") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                                snackbar.show()
+
+                                // cambiar estrellas y edit text a que ya no pueda añadir nada
+                                estrelles.isFocusable = false
+                                estrelles.setIsIndicator(true)
+                                comment.setHint(R.string.cantreview)
+                                comment.isFocusable = false
+                                btnsubmit.setEnabled(false)
+                            }
+                        }
+                    }
+                )
+            }
+        }
+
+        // mostrar todas las reviews de la activity, repasar esto
+        reviewsAdapter = ReviewsRecyclerViewAdapter()
+        layoutReviews = findViewById(R.id.listComments)
+        with(layoutReviews) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reviewsAdapter
+        }
+
+        viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+            {
+                reviewsAdapter.setData(it)
+            }
+        )
+
         val btnJoin = findViewById<Button>(R.id.btn_join)
-        var joined = false
+
+        // mirar si el usario ya es participante de la actividad
+        if (joined) btnJoin.text = "JOINED"
 
         btnJoin.setOnClickListener {
             joined = !joined
             if (joined) {
                 btnJoin.text = "JOINED"
+                reviewpossible()
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -133,7 +249,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             } else {
                 btnJoin.text = "JOIN"
-
+                cantreview()
                 viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -252,6 +368,28 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
         intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
         startActivity(intentCanviAChat)
+    }
+
+    /**
+     * Function called when we want to disable the rating or review functionalities
+     */
+    fun cantreview() {
+        estrelles.isFocusable = false
+        estrelles.setIsIndicator(true)
+        comment.setHint(R.string.reviewnotpossible)
+        comment.isFocusable = false
+        btnsubmit.setEnabled(false)
+    }
+
+    /**
+     * Function called when we want to enable the rating or review functionalities
+     */
+    fun reviewpossible() {
+        estrelles.isFocusable = true
+        estrelles.setIsIndicator(false)
+        comment.setHint(R.string.insert_text)
+        comment.isFocusable = true
+        btnsubmit.setEnabled(true)
     }
 
     private fun changeToChat() {

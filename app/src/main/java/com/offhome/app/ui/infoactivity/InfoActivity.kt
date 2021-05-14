@@ -1,11 +1,10 @@
 package com.offhome.app.ui.infoactivity
 
-
-
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -27,6 +26,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -63,6 +63,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var btnsubmit: Button
 
     private lateinit var groupChat: FloatingActionButton
+    private var nRemainingParticipants: Int = 12
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -98,6 +99,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     for (item in it) {
                         if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
                     }
+                    //TODO crec que aquest observer no salta
+                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = "+it.size.toString())
+                    nRemainingParticipants = activity.maxParticipant - it.size
+                    Log.d("getParticipants", "nRemainingParticipants = "+nRemainingParticipants.toString())
                 }
             }
         )
@@ -354,11 +359,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         if (item.itemId == R.id.share_outside_app_btn) {
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, R.string.share_activity_message)
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, "this is supposed to be some kind of URL"))   //TODO el URL
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
         } else if (item.itemId == R.id.share_in_app_btn) {
-            // Toast.makeText(this,"create message",Toast.LENGTH_SHORT).show()
             changeToInviteActivity()
         }
         return super.onOptionsItemSelected(item)
@@ -366,7 +370,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun changeToInviteActivity() {
         val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(activity)) // todo enviar el num de persones que hi ha apuntades
+        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants, usuariCreador = activity.usuariCreador, dataHoraIni = activity.dataHoraIni, categoria = activity.categoria, titol = activity.titol, descripcio = activity.descripcio)))
         startActivity(intentCanviAChat)
     }
 

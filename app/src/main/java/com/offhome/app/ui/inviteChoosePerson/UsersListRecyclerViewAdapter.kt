@@ -15,7 +15,11 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.R
+import com.offhome.app.model.Category
+import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.model.profile.UserSummaryInfo
+import java.util.*
+import kotlin.collections.ArrayList
 
 class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<UsersListRecyclerViewAdapter.ViewHolder>() {
 
@@ -92,5 +96,25 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
         tracker?.let {
             holder.bind(recipient, it.isSelected(position.toLong()))
         }
+    }
+
+    fun performFiltering(constraint: String?/*, completeUserList:ArrayList<UserInfo>*/) {
+        val charSearch = constraint.toString()
+
+        val userList2:List<UserSummaryInfo> //pot ser innecessaria peor weno
+        if (charSearch.isEmpty()) { //si buscador buit, mostrar la original (aka no tocar)
+            userList2 = userList
+        }
+        else {
+            val resultList = ArrayList<UserSummaryInfo>()
+            for (row in /*completeUserList*/userList) { //per tota fila de la llista de TOTS els users
+                if (row.username.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT)))    //si conté la string: el mostrem.
+                    resultList.add(UserSummaryInfo(email = row.email, username = row.username, uid = row.uid))
+            }
+            userList2 = resultList
+        }
+
+        userList = userList2
+        notifyDataSetChanged()
     }
 }

@@ -17,8 +17,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityData as ActivityData
+import com.offhome.app.model.ActivityData
 import java.util.*
+
 
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
@@ -61,7 +62,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     private lateinit var endDate: TextView
     private lateinit var dataHoraIni: String
     private lateinit var dataHoraEnd: String
-    private lateinit var maxParticipants: String
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
@@ -105,7 +105,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_invitefriends = findViewById(R.id.btn_invite_friends)
         act_title = findViewById(R.id.activity_title)
         category_selected = findViewById(R.id.sp_choose_category)
-
+        pick_availability = findViewById(R.id.pick_availability)
         pickDate()
 
         pickAvailability()
@@ -139,7 +139,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
     private fun pickAvailability() {
-        pick_availability = findViewById(R.id.pick_availability)
         pick_availability.maxValue = 10
         pick_availability.minValue = 3
     }
@@ -168,17 +167,18 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
-                pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
+              //  maxParticipants = pick_availability.value.toInt()
+              /*  pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
                     maxParticipants = if (oldVal != newVal) "$newVal"
                     else "$oldVal"
-                }
+                }*/
 
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
                     dataHoraIni,
-                    "Walking",
-                    maxParticipants.toInt(),
+                    category_selected.toString(),
+                    pick_availability.value,
                     act_title.text.toString(),
                     description.text.toString(),
                     dataHoraEnd
@@ -221,7 +221,10 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             nameStreet.error = "Street number should not be blank"
             return false
         }
-        //      else if (category_selected. etc)
+        else if (category_selected.selectedItemPosition <= 0){
+            Toast.makeText(this, "You should choose a category for the activity", Toast.LENGTH_LONG).show()
+            return false
+        }
         return true
     }
 

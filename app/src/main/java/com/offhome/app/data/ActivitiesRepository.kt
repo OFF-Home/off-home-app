@@ -4,6 +4,8 @@ package com.offhome.app.data
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.model.ActivityData
@@ -54,10 +56,12 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = activitiesService?.createActivityByUser(
-            emailCreator = "victorfer@gmai.com",
-            activitydata = newActivity
-        )
+        val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
+            activitiesService?.createActivityByUser(
+                emailCreator = it,
+                activitydata = newActivity
+            )
+        }
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
                 call: retrofit2.Call<ResponseBody>,

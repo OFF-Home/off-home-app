@@ -3,8 +3,8 @@ package com.offhome.app.data.retrofit
 
 
 import com.offhome.app.data.model.JoInActivity
-import com.offhome.app.model.ActivityData
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -35,12 +35,31 @@ interface ActivitiesService {
     /**
      * This call is to get all the participants of an activity
      */
-    @HTTP(method = "GET", path = "activitats/participants/{usuariCreador}", hasBody = true)
-    fun getAllParticipants(@Path("usuariCreador") usuariCreador: String, @Body dataHoraIni: String): Call<List<String>>
+    @GET("/activitats/participants/{usuariCreador}")
+    fun getAllParticipants(@Path("usuariCreador") usuariCreador: String, @Query("dataHoraIni") dataHoraIni: String): Call<List<UserUsername>>
 
     /**
      * This call is to review an activity
      */
     @PUT("/activitats/valorar")
-    fun addReview(@Body usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: String): Call<ResponseBody>
+    fun addReview(@Body rate: RatingSubmission): Call<ResponseBody>
+
+    /**
+     * This call is to get the rating of the user on an activity
+     */
+    @GET("/activitats/participants/valoracio")
+    fun getValoracioParticipant(
+        @Query("usuariCreador") usuariCreador: String,
+        @Query("dataHoraIni") dataHoraIni: String,
+        @Query("usuariParticipant") usuariParticipant: String
+    ): Call<Rating>
+
+    /**
+     * This call is to get all the reviews of an activity (with their authors)
+     */
+    @GET("activitats/participants/comentaris")
+    fun getAllReviews(
+        @Query("usuariCreador") usuariCreador: String,
+        @Query("dataHoraIni") dataHoraIni: String
+    ): Call<List<ReviewOfParticipant>>
 }

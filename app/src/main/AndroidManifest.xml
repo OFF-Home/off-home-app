@@ -25,18 +25,21 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
-        <activity android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
-            android:parentActivityName=".MainActivity">
+        <activity
+            android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
+            android:parentActivityName=".MainActivity" />
 
-        </activity>
+        <activity
+            android:name=".ui.inviteChoosePerson.InviteActivity"
+            android:label="@string/title_activity_invite"
+            android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
         <activity android:name=".ui.otherprofile.OtherProfileActivity"/>
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
-            android:parentActivityName=".ui.infoactivity.InfoActivity">
-        </activity>
+            android:parentActivityName=".ui.infoactivity.InfoActivity" />
 
     <!--
          The API key for Google Maps-based APIs is defined as a string resource.

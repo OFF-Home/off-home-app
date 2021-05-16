@@ -42,8 +42,8 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var viewModel: InviteViewModel
     private lateinit var fab: FloatingActionButton
     private var usersListFullInfo: List<UserInfo> = ArrayList()
-    //private var usersList: List<UserSummaryInfo> = ArrayList()  //todo acabara sent userInfo i ya.
-    private var usersList: MutableList<UserSummaryInfo> = ArrayList()
+    //private var usersList: List<UserSummaryInfo> = ArrayList()
+    private var usersList: MutableList<UserSummaryInfo> = ArrayList()   //potser acabara sent userInfo i ya.
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients: Int = 999
     private lateinit var activityInfo:ActivityDataForInvite
@@ -71,7 +71,7 @@ class InviteActivity : AppCompatActivity() {
 
         val arguments = intent.extras
         val activityInfoString = arguments?.getString("activity")
-        activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityDataForInvite::class.java) // todo canviar per algo q em passi nomes el qui vull? (id de la activity, n_participants.) i el num de persones ja apuntades
+        activityInfo = GsonBuilder().create().fromJson(activityInfoString, ActivityDataForInvite::class.java)
 
         fab = findViewById(R.id.fab)
         iniFab()

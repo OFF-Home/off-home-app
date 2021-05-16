@@ -221,4 +221,5 @@
     <string name="max_recipients_banner">Select up to %1$s people</string>
     <string name="n_recipients_banner">(%1$s/%2$s)</string>
     <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
+    <string name="share_activity_message_details"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
 </resources>

@@ -17,7 +17,7 @@ import com.offhome.app.model.ReviewOfParticipant
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
+    var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 

@@ -61,7 +61,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     private lateinit var endDate: TextView
     private lateinit var dataHoraIni: String
     private lateinit var dataHoraEnd: String
-    private lateinit var maxParticipants: String
+    private lateinit var maxParticipant: String
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
@@ -169,7 +169,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             if (validate()) {
 
                 pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
-                    maxParticipants = if (oldVal != newVal) "$newVal"
+                    maxParticipant = if (oldVal != newVal) "$newVal"
                     else "$oldVal"
                 }
 
@@ -178,7 +178,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
                     numberStreet.text.toString().toInt(),
                     dataHoraIni,
                     "Walking",
-                    maxParticipants.toInt(),
+                    maxParticipant.toInt(),
                     act_title.text.toString(),
                     description.text.toString(),
                     dataHoraEnd

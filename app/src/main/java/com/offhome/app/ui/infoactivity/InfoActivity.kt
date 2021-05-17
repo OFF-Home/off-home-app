@@ -28,8 +28,10 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.ParseException
@@ -58,11 +60,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var reviewsAdapter: ReviewsRecyclerViewAdapter
     private lateinit var layoutParticipants: RecyclerView
     private lateinit var layoutReviews: RecyclerView
-    private var participantsList: List<String> = ArrayList()
     private var joined = false
     private lateinit var estrelles: RatingBar
     private lateinit var comment: EditText
     private lateinit var btnsubmit: Button
+    private var reviewsList: MutableList<ReviewOfParticipant> = ArrayList()
 
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
@@ -92,6 +94,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter = participantsAdapter
         }
 
+        val btnJoin = findViewById<Button>(R.id.btn_join)
+
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -99,8 +103,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 if (it != null) {
                     participantsAdapter.setData(it)
                     for (item in it) {
-                        if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
-                    }
+                        //if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
+                        if (item.username == "emma") joined = true
+                     }
+                    // mirar si el usario ya es participante de la actividad
+                    if (joined) btnJoin.text = "JOINED"
+
                     // TODO crec que aquest observer no salta
                     Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
                     nRemainingParticipants = activity.maxParticipant - it.size
@@ -112,11 +120,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
 
-        val capacity = findViewById<TextView>(R.id.textViewCapacity)
-        capacity.text = activity.maxParticipant.toString()
-
         val creator = findViewById<TextView>(R.id.textViewCreator)
         creator.text = getString(R.string.created_by) + activity.usuariCreador
+
+        val capacity = findViewById<TextView>(R.id.textViewCapacity)
+        capacity.text = activity.maxParticipant.toString()
 
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
@@ -127,19 +135,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         btnsubmit = findViewById<Button>(R.id.submitcomment)
 
+
+
         // get the current date
         val currentTime = Calendar.getInstance().time
-
-        // transform dataHoraIni into date format
-        val mydate = activity.dataHoraFi
-        var date: Date? = null
-        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
-        try {
-            date = format.parse(mydate)
-            System.out.println(date)
-        } catch (e: ParseException) {
-            e.printStackTrace()
-        }
+        //change final date format
+        var date = changeDateFormat()
 
         // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
         if (date != null) {
@@ -158,7 +159,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             {
                 // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
                 if (it.valoracio != 0) {
-                    estrelles.numStars = it.valoracio
+                    estrelles.setRating(it.valoracio.toFloat());
+                    estrelles.invalidate();
                     estrelles.isFocusable = false
                     estrelles.setIsIndicator(true)
                 }
@@ -208,7 +210,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        // mostrar todas las reviews de la activity, repasar esto
+        // mostrar todas las reviews de la activity
         reviewsAdapter = ReviewsRecyclerViewAdapter()
         layoutReviews = findViewById(R.id.listComments)
         with(layoutReviews) {
@@ -219,20 +221,21 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
             {
-                reviewsAdapter.setData(it)
+                if (it != null) {
+                    for (item in it) {
+                        if (item.review != null) reviewsList.add(item)
+                    }
+                }
+                reviewsAdapter.setData(reviewsList)
             }
         )
-
-        val btnJoin = findViewById<Button>(R.id.btn_join)
-
-        // mirar si el usario ya es participante de la actividad
-        if (joined) btnJoin.text = "JOINED"
 
         btnJoin.setOnClickListener {
             joined = !joined
             if (joined) {
                 btnJoin.text = "JOINED"
-                reviewpossible()
+                if (date < currentTime) reviewpossible()
+                else cantreview()
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
@@ -248,6 +251,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                         finish()
                                     }
                                 snackbar.show()
+                                val participants = ArrayList<UserUsername>()
+                                val actualParticipants = viewModel.participants.value
+                                for (item in actualParticipants!!) {
+                                    if (item.username != "emma") participants.add(item)
+                                }
+                                participants.add(UserUsername("emma"))
+                                participantsAdapter.setData(participants)
                             } else {
                                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             }
@@ -264,10 +274,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             if (it == "You have left the activity :(") {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
-                                    .setAction(getString(R.string.go_chat)) {
-                                        Toast.makeText(this, "Clicked", Toast.LENGTH_SHORT).show()
-                                    }
                                 snackbar.show()
+                                val participants = ArrayList<UserUsername>()
+                                val actualParticipants = viewModel.participants.value
+                                for (item in actualParticipants!!) {
+                                    participants.add(item)
+                                }
+                                participants.remove(UserUsername("emma"))
+                                participantsAdapter.setData(participants)
                             } else {
                                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             }
@@ -330,7 +344,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         // transform address to coordinates
         val geocoder = Geocoder(this, Locale.getDefault())
         val addresses: List<Address>
-        addresses = geocoder.getFromLocationName(activity.nomCarrer + " " + activity.carrerNum, 1)
+        addresses = geocoder.getFromLocationName(activity.nomCarrer + " " + activity.numCarrer, 1)
         if (addresses.size > 0) {
             latitude = addresses[0].latitude
             longitude = addresses[0].longitude
@@ -394,8 +408,25 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         estrelles.isFocusable = true
         estrelles.setIsIndicator(false)
         comment.setHint(R.string.insert_text)
-        comment.isFocusable = true
+        comment.isFocusableInTouchMode = true
         btnsubmit.setEnabled(true)
+    }
+
+    fun changeDateFormat(): Date {
+        // transform dataHoraIni into date format
+        val mydate = activity.dataHoraFi
+        var date: Date? = null
+        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+        date = format.parse(mydate)
+        return date
+
+        /*try {
+            date = format.parse(mydate)
+            return date
+        } catch (e: ParseException) {
+            e.printStackTrace()
+        }*/
     }
 
     private fun changeToChat() {

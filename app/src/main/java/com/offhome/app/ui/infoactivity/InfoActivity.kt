@@ -166,7 +166,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
                 // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
                 if (it.review != " ") {
-                    comment.setHint(R.string.cantreview)
+                    comment.setHint(R.string.reviewnotpossible)
                     comment.isFocusable = false
                     btnsubmit.setEnabled(false)
                 }
@@ -200,7 +200,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 // cambiar estrellas y edit text a que ya no pueda añadir nada
                                 estrelles.isFocusable = false
                                 estrelles.setIsIndicator(true)
-                                comment.setHint(R.string.cantreview)
+                                comment.setHint(R.string.reviewnotpossible)
                                 comment.isFocusable = false
                                 btnsubmit.setEnabled(false)
                             }

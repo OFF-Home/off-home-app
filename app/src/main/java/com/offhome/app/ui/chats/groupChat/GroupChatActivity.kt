@@ -52,8 +52,10 @@ class GroupChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_group_chat)
 
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         val arguments = intent.extras
+        //this.title = arguments?.getString("titleAct").toString()
+        this.title = "Correr"
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         userUid = arguments?.getString("usuariCreador").toString()
         data_ini = arguments?.getString("dataHI").toString()

@@ -244,6 +244,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                         val intent = Intent(this, GroupChatActivity::class.java)
                                         intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
                                         intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+                                        intent.putExtra("titleAct", activity.titol)
                                         startActivity(intent)
                                         finish()
                                     }

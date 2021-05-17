@@ -61,9 +61,9 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
+        val call = SharedPreferenceManager.getStringValue(Constants().PREF_UID)?.let {
             activitiesService?.createActivityByUser(
-                emailCreator = it,
+                uidCreator = it,
                 activitydata = newActivity
             )
         }

@@ -152,8 +152,8 @@
 
     <Button
         android:id="@+id/btn_pickdate1"
-        android:layout_width="109dp"
-        android:layout_height="35dp"
+        android:layout_width="105dp"
+        android:layout_height="31dp"
         android:backgroundTint="@color/divider"
         android:text="@string/choose_date"
         android:textSize="10sp"
@@ -167,56 +167,56 @@
 
     <Button
         android:id="@+id/btn_pickdate2"
-        android:layout_width="109dp"
-        android:layout_height="35dp"
+        android:layout_width="105dp"
+        android:layout_height="34dp"
         android:backgroundTint="@color/divider"
         android:text="@string/choose_dateFi"
         android:textSize="10sp"
         app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.125"
+        app:layout_constraintHorizontal_bias="0.112"
         app:layout_constraintStart_toEndOf="@+id/btnPickDate"
         app:layout_constraintTop_toBottomOf="@+id/btn_pickdate1"
-        app:layout_constraintVertical_bias="0.125"
+        app:layout_constraintVertical_bias="0.076"
         tools:ignore="SmallSp" />
 
     <TextView
         android:id="@+id/participants"
-        android:layout_width="199dp"
-        android:layout_height="25dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="@string/max_participants"
         android:textColor="@color/black"
         android:textSize="18sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.276"
+        app:layout_constraintHorizontal_bias="0.481"
         app:layout_constraintStart_toEndOf="@+id/pick_availability"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.516" />
+        app:layout_constraintVertical_bias="0.527" />
 
     <NumberPicker
         android:id="@+id/pick_availability"
-        android:layout_width="34dp"
-        android:layout_height="39dp"
+        android:layout_width="58dp"
+        android:layout_height="34dp"
         android:layout_marginBottom="24dp"
         android:textColor="@color/black"
         app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.244"
+        app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="1.0" />
+        app:layout_constraintTop_toBottomOf="@+id/btn_pickdate2"
+        app:layout_constraintVertical_bias="0.969" />
 
     <Spinner
         android:id="@+id/sp_choose_category"
         android:layout_width="213dp"
-        android:layout_height="31dp"
+        android:layout_height="wrap_content"
         android:entries="@array/select_category"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.714" />
+        app:layout_constraintVertical_bias="0.717" />
 
     <ImageButton
         android:id="@+id/btn_availability"
@@ -245,16 +245,16 @@
         android:src="@drawable/ic_baseline_add_location_alt_24"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/street"
-        app:layout_constraintHorizontal_bias="0.279"
+        app:layout_constraintHorizontal_bias="0.177"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.622"
+        app:layout_constraintVertical_bias="0.614"
         tools:ignore="ContentDescription" />
 
     <EditText
         android:id="@+id/street"
-        android:layout_width="178dp"
-        android:layout_height="48dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:autoLink="map"
         android:autofillHints=""
         android:hint="@string/set_address1"
@@ -263,15 +263,15 @@
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.424"
+        app:layout_constraintHorizontal_bias="0.407"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.623" />
+        app:layout_constraintVertical_bias="0.62" />
 
     <EditText
         android:id="@+id/streetNum"
-        android:layout_width="60dp"
-        android:layout_height="48dp"
+        android:layout_width="59dp"
+        android:layout_height="45dp"
         android:layout_marginEnd="16dp"
         android:autoLink="map"
         android:autofillHints=""

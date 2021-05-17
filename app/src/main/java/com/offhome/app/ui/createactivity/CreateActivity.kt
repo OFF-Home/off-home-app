@@ -6,6 +6,8 @@ package com.offhome.app.ui.createactivity
 
 import android.annotation.SuppressLint
 import android.app.DatePickerDialog
+import android.app.DatePickerDialog.OnDateSetListener
+import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
 import android.os.Build
@@ -30,11 +32,10 @@ import java.util.*
  * @property act_title references the EditText to input the title of the activity
  * @property btn_CREATED references the Button to create the activity
  * @property description references the EditText to input the description of the activity
- * @property finalDate references the TextView that indicates the date chosen for the activity on the screen
  * @property location references the EditText to input the location where the activity will take place
  **/
 
-class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, TimePickerDialog.OnTimeSetListener {
+class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.OnTimeSetListener {
 
     @SuppressLint("SetTextI18n")
     @RequiresApi(Build.VERSION_CODES.N)
@@ -50,6 +51,18 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
     var savedYear = 0
     var savedHour = 0
     var savedMinute = 0
+
+    var day2 = 0
+    var month2 = 0
+    var year2 = 0
+    var hour2 = 0
+    var minute2 = 0
+
+    var savedDay2 = 0
+    var savedMonth2 = 0
+    var savedYear2 = 0
+    var savedHour2 = 0
+    var savedMinute2 = 0
 
     private lateinit var pick_availability: NumberPicker
     private lateinit var datePicker: TextView
@@ -135,6 +148,33 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
             DatePickerDialog(this, this, this.year, this.month, this.day).show()
         }
     }
+
+    var start_dateListener: OnDateSetListener? = null
+    var end_dateListener: OnDateSetListener? = null
+    var DATE_PICKER_START = 0
+    var DATE_PICKER_END = 1
+
+    override fun onCreateDialog(id: Int): Dialog? {
+        when (id) {
+            DATE_PICKER_START -> return DatePickerDialog(
+                this,
+                start_dateListener,
+                year,
+                month,
+                day
+            )
+            DATE_PICKER_END -> return DatePickerDialog(
+                this,
+                end_dateListener,
+                year2,
+                month2,
+                day2
+            )
+        }
+        return null
+    }
+
+
     /**
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
@@ -166,12 +206,6 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         btn_CREATED = findViewById(R.id.btn_create)
         btn_CREATED.setOnClickListener {
             if (validate()) {
-
-              //  maxParticipants = pick_availability.value.toInt()
-              /*  pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
-                    maxParticipants = if (oldVal != newVal) "$newVal"
-                    else "$oldVal"
-                }*/
 
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
@@ -227,6 +261,7 @@ class CreateActivity : AppCompatActivity(), DatePickerDialog.OnDateSetListener, 
         }
         return true
     }
+
 
     /**
      * This function is called every time the user changes the date picked

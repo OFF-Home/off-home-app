@@ -75,6 +75,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private lateinit var endDate: TextView
     private lateinit var dataHoraIni: String
     private lateinit var dataHoraEnd: String
+    private lateinit var maxParticipant: String
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
@@ -207,6 +208,12 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
+
+                pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
+                    maxParticipant = if (oldVal != newVal) "$newVal"
+                    else "$oldVal"
+                }
+                
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),

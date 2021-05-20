@@ -95,4 +95,6 @@ dependencies {
     implementation 'com.google.firebase:firebase-database-ktx'
     implementation 'androidx.recyclerview:recyclerview-selection:1.1.0'
     implementation 'com.google.firebase:firebase-dynamic-links-ktx'
+    implementation 'com.google.firebase:firebase-core:19.0.0'
+    implementation 'com.google.firebase:firebase-dynamic-links:20.0.0'
 }

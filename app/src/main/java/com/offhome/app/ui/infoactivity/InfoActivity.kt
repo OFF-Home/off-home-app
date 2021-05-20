@@ -37,7 +37,6 @@ import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
-import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -80,7 +79,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        getDynamicLink()
+        checkForDynamicLinks()
 
         //TODO fer que nomes faci aixo si no hi ha dynamic link
         if (intent.extras != null) {    //nou
@@ -326,6 +325,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         displayChatGroup()
     }
 
+    //Ferran: no sé si cal. és pels dynamic links
+    override fun onStart() {
+        super.onStart()
+        checkForDynamicLinks()
+    }
+
     /**
      * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
      */
@@ -447,18 +452,24 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intentCanviAChat)*/
     }
 
-    private fun getDynamicLink(): Boolean {
+    private fun checkForDynamicLinks(): Boolean {
+        //al video (de fa 1any i mig) ho fa una mica diferent
+        //el seu segur q habilita analytics
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                Log.w("dynamicLink", "getDynamicLink:onSuccess")
+                //ara tenim el dynamic link. let's extract the deeplink url
+
                 // Get deep link from result (may be null if no link is found)
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
 
                     //fer-lo servir. o fer-ne servir els params, nose.
-                    //deepLink.
                 }
+                var activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
+                var activityDateTime =deepLink?.getQueryParameter("dataHora")
 
                 // Handle the deep link. For example, open the linked
                 // content, or apply promotional credit to the user's

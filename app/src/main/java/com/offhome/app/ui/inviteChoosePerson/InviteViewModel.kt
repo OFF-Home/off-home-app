@@ -9,7 +9,6 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
-import com.offhome.app.model.profile.UserSummaryInfo
 
 class InviteViewModel : ViewModel() {
     private var profileRepository: ProfileRepository = ProfileRepository()
@@ -24,7 +23,7 @@ class InviteViewModel : ViewModel() {
     /*private var _participants = MutableLiveData<List<UserInfo>>()
     var participants: LiveData<List<UserInfo>> =_participants*/
 
-    private var currentUID:String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
+    private var currentUID: String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
     private var nSelectedRecipients: Int = 0
 
@@ -33,9 +32,9 @@ class InviteViewModel : ViewModel() {
     }
 
     fun getAllUsers() {
-        //allUsers = profileRepository.getAllUsers()
+        // allUsers = profileRepository.getAllUsers()
     }
-    fun getCurrentUID():String = currentUID
+    fun getCurrentUID(): String = currentUID
 
     /*fun getParticipants() {
         participants = activitiesRepository.getParticipants

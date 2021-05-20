@@ -121,7 +121,7 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/date_pick_text1"
+        android:id="@+id/tvDate1"
         android:layout_width="122dp"
         android:layout_height="44dp"
         android:layout_below="@+id/btn_pickdate1"
@@ -136,7 +136,7 @@
         tools:text="@string/date" />
 
     <TextView
-        android:id="@+id/date_pick_text2"
+        android:id="@+id/tvDate2"
         android:layout_width="122dp"
         android:layout_height="46dp"
         android:layout_below="@+id/btn_pickdate2"

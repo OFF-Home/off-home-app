@@ -56,7 +56,19 @@
         <activity
             android:name=".ui.infoactivity.InfoActivity"
             android:label="@string/title_activity_info"
-            android:parentActivityName=".ui.activitieslist.Activities" />
+            android:parentActivityName=".ui.activitieslist.Activities">
+
+            <!-- intent filter per als dynamic links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data
+                    android:host="offhome.page.link"
+                    android:scheme="https"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.activitieslist.Activities"
             android:launchMode="singleTop"

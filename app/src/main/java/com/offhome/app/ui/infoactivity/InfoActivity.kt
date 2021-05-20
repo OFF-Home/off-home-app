@@ -5,6 +5,7 @@ package com.offhome.app.ui.infoactivity
 import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
+import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -24,6 +25,8 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.android.material.snackbar.Snackbar
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
@@ -77,11 +80,19 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
 
-        // recibir actividad seleccionada de la otra pantalla
-        val arguments = intent.extras
-        val activityString = arguments?.getString("activity")
+        getDynamicLink()
 
-        activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
+        //TODO fer que nomes faci aixo si no hi ha dynamic link
+        if (intent.extras != null) {    //nou
+            // recibir actividad seleccionada de la otra pantalla
+            val arguments = intent.extras
+            val activityString = arguments?.getString("activity")
+
+            activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
+        }
+        else {                          //si extras nulls, per a que no peti
+            //activity = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -434,5 +445,26 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         /*val intentCanviAChat = Intent(this, /**/::class.java)
         intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
         startActivity(intentCanviAChat)*/
+    }
+
+    private fun getDynamicLink(): Boolean {
+        Firebase.dynamicLinks
+            .getDynamicLink(intent)
+            .addOnSuccessListener(this) { pendingDynamicLinkData ->
+                // Get deep link from result (may be null if no link is found)
+                var deepLink: Uri? = null
+                if (pendingDynamicLinkData != null) {
+                    deepLink = pendingDynamicLinkData.link
+                }
+
+                // Handle the deep link. For example, open the linked
+                // content, or apply promotional credit to the user's
+                // account.
+                // ...
+
+                // ...
+            }
+            .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e)}
+        return false
     }
 }

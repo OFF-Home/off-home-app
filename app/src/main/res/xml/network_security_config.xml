@@ -2,5 +2,9 @@
 <network-security-config>
     <domain-config cleartextTrafficPermitted="true">
         <domain includeSubdomains="true">off-home.herokuapp.com/</domain>
+        <domain includeSubdomains="true">ec2-34-229-177-211.compute-1.amazonaws.com</domain>
+        <domain includeSubdomains="true">127.0.0.1</domain>
+        <domain includeSubdomains="true">10.0.0.1</domain>
+        <domain includeSubdomains="true">localhost</domain>
     </domain-config>
 </network-security-config>

@@ -227,4 +227,5 @@
     <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
     <string name="add_calendar">Add to Google Calendar</string>
     <string name="error_no_calendar">No Calendar found on device!</string>
+    <string name="saved_to_calendar">Succesfully saved into calendar!</string>
 </resources>

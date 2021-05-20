@@ -4,7 +4,6 @@ package com.offhome.app.ui.activitieslist
 
 import android.app.AlertDialog
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Spinner

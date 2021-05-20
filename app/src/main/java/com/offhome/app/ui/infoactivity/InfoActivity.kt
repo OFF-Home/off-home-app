@@ -455,6 +455,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
+
+                    //fer-lo servir. o fer-ne servir els params, nose.
+                    //deepLink.
                 }
 
                 // Handle the deep link. For example, open the linked

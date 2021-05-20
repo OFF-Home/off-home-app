@@ -3,6 +3,7 @@ package com.offhome.app.ui.inviteChoosePerson
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.view.Menu
 import android.view.View
@@ -24,6 +25,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
@@ -214,6 +220,29 @@ class InviteActivity : AppCompatActivity() {
         fab.visibility = View.GONE
     }
 
+    private fun generateDynamicLink():Uri {
+        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
+            link = Uri.parse("https://offhome.es/") //nose xd
+            domainUriPrefix = "https://offhome.page.link"
+            // Open links with this app on Android
+            androidParameters {
+                //minimumVersion = 23
+            }
+
+            socialMetaTagParameters {
+                title = activityInfo.titol
+                description = "OFF Home Activity"
+            }
+
+            // si fessim la app a iOS: Open links with com.example.ios on iOS
+            //iosParameters("com.example.ios") { }
+        }
+
+        val dynamicLinkUri = dynamicLink.uri
+
+        return dynamicLinkUri
+    }
+
     private fun sendMessage(recipientUID: String) {
         val userUid = recipientUID // oi?
         var numMessages: Int = 0
@@ -241,15 +270,18 @@ class InviteActivity : AppCompatActivity() {
             }
         })
 
+        val dynamicLinkUri=generateDynamicLink()
+
         ++numMessages
         val message = Message(
             getString(
                 R.string.share_activity_message,
-                activityInfo.titol + "\n" +
+                /*activityInfo.titol + "\n" +
                     "Category: " + activityInfo.categoria + "\n" +
                     "description: " + activityInfo.descripcio + "\n" +
                     "Created by: " + activityInfo.usuariCreador + "\n" +
-                    "at: " + activityInfo.dataHoraIni
+                    "at: " + activityInfo.dataHoraIni*/
+            dynamicLinkUri
             ), // TODO el URL        //TODO extreure string
             currentUID,
             System.currentTimeMillis()

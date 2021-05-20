@@ -10,7 +10,6 @@ import android.content.Intent
 import android.location.Address
 import android.location.Geocoder
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
 import android.provider.CalendarContract
 import android.util.Log
@@ -35,11 +34,8 @@ import com.google.gson.GsonBuilder
 import com.karumi.dexter.Dexter
 import com.karumi.dexter.MultiplePermissionsReport
 import com.karumi.dexter.PermissionToken
-import com.karumi.dexter.listener.PermissionDeniedResponse
-import com.karumi.dexter.listener.PermissionGrantedResponse
 import com.karumi.dexter.listener.PermissionRequest
 import com.karumi.dexter.listener.multi.MultiplePermissionsListener
-import com.karumi.dexter.listener.single.PermissionListener
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -51,7 +47,6 @@ import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat
 import java.util.*
-
 
 /**
  * Class *InfoActivity*
@@ -331,7 +326,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
-                            if(report.areAllPermissionsGranted()){
+                            if (report.areAllPermissionsGranted()) {
                                 val sdf = SimpleDateFormat("yyyy-MM-dd hh:mm:ss")
                                 sdf.timeZone = TimeZone.getDefault()
                                 val dataHoraIni = sdf.parse(activity.dataHoraIni)
@@ -348,7 +343,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 values.put(CalendarContract.Events.DTEND, millisEnd)
                                 values.put(CalendarContract.Events.TITLE, activity.titol)
                                 values.put(CalendarContract.Events.DESCRIPTION, activity.descripcio)
-                                values.put(CalendarContract.Events.CALENDAR_ID, getCalendarId());
+                                values.put(CalendarContract.Events.CALENDAR_ID, getCalendarId())
                                 values.put(CalendarContract.Events.ORGANIZER, activity.usuariCreador)
                                 values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
                                 val uri: Uri? = cr.insert(CalendarContract.Events.CONTENT_URI, values)
@@ -363,7 +358,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     ) {
                         token?.continuePermissionRequest()
                     }
-
                 }).check()
         }
 
@@ -524,7 +518,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }*/
     }
 
-    private fun getCalendarId() : Long? {
+    private fun getCalendarId(): Long? {
         val projection = arrayOf(CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)
 
         var calCursor = applicationContext.contentResolver.query(

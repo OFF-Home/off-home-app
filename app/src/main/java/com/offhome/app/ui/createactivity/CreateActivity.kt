@@ -69,8 +69,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     var DATE_DIALOG_ID2 = 2
 
     private lateinit var pick_availability: NumberPicker
-    private lateinit var datePicker: TextView
-    private lateinit var dateFinishPicker: TextView
+    private lateinit var datePicker: Button
+    private lateinit var dateFinishPicker: Button
     private lateinit var btn_invitefriends: Button
     private lateinit var act_title: EditText
     private lateinit var btn_CREATED: Button
@@ -93,8 +93,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         startDate = findViewById(R.id.tvDate1)
         endDate = findViewById(R.id.tvDate2)
 
-        datePicker = findViewById(R.id.btn_pickdate1)
-        dateFinishPicker = findViewById(R.id.btn_pickdate2)
+        datePicker = findViewById(R.id.btn_pickDate1)
+        dateFinishPicker = findViewById(R.id.btn_pickDate2)
 
         val cal = Calendar.getInstance()
         day = cal.get(Calendar.DAY_OF_MONTH)
@@ -106,8 +106,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         cal.set(Calendar.MONTH, month);
         cal.set(Calendar.DAY_OF_MONTH, day);
         cal.set(Calendar.YEAR, year);
-
-        //datePicker.setMinDate(cal.timeInMillis);
 
         startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
         endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
@@ -156,6 +154,10 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         return true
     }
 
+    var start_dateListener: OnDateSetListener? = null
+    var end_dateListener: OnDateSetListener? = null
+
+
     /**
      * This function let the user pick a date where the activity created will take place
      */
@@ -163,18 +165,18 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
 
         datePicker.setOnClickListener {
             showDialog(DATE_DIALOG_ID1)
-            DatePickerDialog(this, this, this.year, this.month, this.day).show()
-
+            val dialogDate1 = DatePickerDialog(this, this, this.year, this.month, this.day)
+            dialogDate1.show()
+            dialogDate1.datePicker.minDate = System.currentTimeMillis()
         }
         dateFinishPicker.setOnClickListener {
             showDialog(DATE_DIALOG_ID2)
-            DatePickerDialog(this, this, this.year, this.month, this.day).show()
+            val dialogDate2 = DatePickerDialog(this, this, this.year, this.month, this.day)
+            dialogDate2.show()
+            dialogDate2.datePicker.minDate = System.currentTimeMillis()
         }
 
     }
-
-    var start_dateListener: OnDateSetListener? = null
-    var end_dateListener: OnDateSetListener? = null
 
     override fun onCreateDialog(id: Int): Dialog? {
         when (id) {
@@ -202,6 +204,9 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         return null
     }
 
+    /**
+     * This function is called every time the user changes the date picked
+     */
     @SuppressLint("SetTextI18n")
     override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
 
@@ -212,19 +217,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
 
         TimePickerDialog(this, this, hour, minute, true).show()
     }
-/*
-    /**
-     * This function is called every time the user changes the date picked
-     */
-    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
-        savedDay = dayOfMonth
-        savedMonth = month
-        savedYear = year
-
-        getDateTimeCalendar()
-        TimePickerDialog(this, this, hour, minute, true).show()
-    }
-*/
 
     /**
      * This function is called when the user is done setting a new time and the dialog has closed

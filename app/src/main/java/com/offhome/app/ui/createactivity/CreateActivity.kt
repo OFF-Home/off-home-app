@@ -22,7 +22,6 @@ import com.offhome.app.R
 import com.offhome.app.model.ActivityData
 import java.util.*
 
-
 /**
  * This class interacts with the User and let him/her create a new activity indicating its parameters on the corresponding screen
  * @author Maria Nievas Viñals
@@ -236,8 +235,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
         }
     }
-
-
     /**
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
@@ -270,12 +267,11 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         btn_CREATED.setOnClickListener {
             if (validate()) {
 
-
                 pick_availability.setOnValueChangedListener { _, oldVal, newVal ->
                     maxParticipant = if (oldVal != newVal) "$newVal"
                     else "$oldVal"
                 }
-                
+
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
@@ -323,8 +319,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         } else if (nameStreet.text.toString() == "") {
             nameStreet.error = "Street number should not be blank"
             return false
-        }
-        else if (category_selected.selectedItemPosition <= 0){
+        } else if (category_selected.selectedItemPosition <= 0) {
             Toast.makeText(this, "You should choose a category for the activity", Toast.LENGTH_LONG).show()
             return false
         }

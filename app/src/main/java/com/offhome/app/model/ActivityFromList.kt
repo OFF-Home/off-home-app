@@ -9,7 +9,7 @@ data class ActivityFromList(
     val numCarrer: Int,
     val dataHoraIni: String,
     val categoria: String,
-    //val participants: Int,
+    // val participants: Int,
     val maxParticipant: Int,
     val titol: String,
     val descripcio: String,

@@ -19,6 +19,8 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityData
 import java.util.*
 
@@ -272,6 +274,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                     else "$oldVal"
                 }
 
+                val uidCreator = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
@@ -280,7 +283,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                     pick_availability.value,
                     act_title.text.toString(),
                     description.text.toString(),
-                    dataHoraEnd
+                    dataHoraEnd,
+                    uidCreator.toString()
                 )
 
                 viewModel.addActivity(activitydata).observe(

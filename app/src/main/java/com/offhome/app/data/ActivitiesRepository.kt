@@ -29,7 +29,6 @@ class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
-    private var comments: MutableLiveData<List<String>>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
@@ -61,9 +60,9 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = SharedPreferenceManager.getStringValue(Constants().PREF_UID)?.let {
+        val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
             activitiesService?.createActivityByUser(
-                uidCreator = it,
+                usCreador = it,
                 activitydata = newActivity
             )
         }

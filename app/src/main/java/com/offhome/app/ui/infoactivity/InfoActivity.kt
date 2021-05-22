@@ -163,7 +163,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         capacity.text = activity.maxParticipant.toString()
         description.text = activity.descripcio
 
-
         // get the current date
         val currentTime = Calendar.getInstance().time
         //change final date format

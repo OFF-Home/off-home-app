@@ -71,6 +71,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
 
+    private lateinit var btnJoin:Button
+    private lateinit var datahora: TextView
+    private lateinit var creator: TextView
+    private lateinit var capacity: TextView
+    private lateinit var description: TextView
+    private lateinit var layout:View
+
+
     /**
      * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
@@ -78,20 +86,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
-
-        checkForDynamicLinks()
-
-        //TODO fer que nomes faci aixo si no hi ha dynamic link
-        if (intent.extras != null) {    //nou
-            // recibir actividad seleccionada de la otra pantalla
-            val arguments = intent.extras
-            val activityString = arguments?.getString("activity")
-
-            activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
-        }
-        else {                          //si extras nulls, per a que no peti
-            //activity = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
-        }
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -104,8 +98,49 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter = participantsAdapter
         }
 
-        val btnJoin = findViewById<Button>(R.id.btn_join)
+        btnJoin = findViewById<Button>(R.id.btn_join)
+        datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
+        creator = findViewById<TextView>(R.id.textViewCreator)
+        capacity = findViewById<TextView>(R.id.textViewCapacity)
+        description = findViewById<TextView>(R.id.textViewDescription)
+        estrelles = findViewById<RatingBar>(R.id.ratingStars)
+        comment = findViewById<EditText>(R.id.yourcomment)
+        btnsubmit = findViewById<Button>(R.id.submitcomment)
+        layout = findViewById<View>(R.id.content)
 
+        // mostrar todas las reviews de la activity
+        reviewsAdapter = ReviewsRecyclerViewAdapter()
+        layoutReviews = findViewById(R.id.listComments)
+        with(layoutReviews) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reviewsAdapter
+        }
+
+        //ara procedim a obtenir les dades de la activitat per a poder mostrar algo
+
+        if (intent.extras != null) {    //si tenim intent.extras (és a dir, venim d'una altra activity de la app)
+            // recibir actividad seleccionada de la otra pantalla
+            val arguments = intent.extras
+            val activityString = arguments?.getString("activity")
+
+            activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
+        }
+        else {                          //si extras nulls, per a que no peti
+
+            checkForDynamicLinks()
+
+            //activity = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+        }
+
+
+
+        //Ferran
+        iniMostrarActivitat()
+
+    }
+
+    //Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
+    private fun iniMostrarActivitat() {
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -115,7 +150,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     for (item in it) {
                         //if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
                         if (item.username == "emma") joined = true
-                     }
+                    }
                     // mirar si el usario ya es participante de la actividad
                     if (joined) btnJoin.text = "JOINED"
 
@@ -127,24 +162,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         )
 
-        val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
-
-        val creator = findViewById<TextView>(R.id.textViewCreator)
         creator.text = getString(R.string.created_by) + activity.usuariCreador
-
-        val capacity = findViewById<TextView>(R.id.textViewCapacity)
         capacity.text = activity.maxParticipant.toString()
-
-        val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
-
-        estrelles = findViewById<RatingBar>(R.id.ratingStars)
-
-        comment = findViewById<EditText>(R.id.yourcomment)
-
-        btnsubmit = findViewById<Button>(R.id.submitcomment)
-
 
 
         // get the current date
@@ -183,7 +204,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         )
 
-        val layout = findViewById<View>(R.id.content)
 
         // al clicar a submit, envía valoracion a back
         btnsubmit.setOnClickListener {
@@ -220,13 +240,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        // mostrar todas las reviews de la activity
-        reviewsAdapter = ReviewsRecyclerViewAdapter()
-        layoutReviews = findViewById(R.id.listComments)
-        with(layoutReviews) {
-            layoutManager = LinearLayoutManager(context)
-            adapter = reviewsAdapter
-        }
 
         viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -452,7 +465,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         startActivity(intentCanviAChat)*/
     }
 
-    private fun checkForDynamicLinks(): Boolean {
+    private fun checkForDynamicLinks() {
         //al video (de fa 1any i mig) ho fa una mica diferent
         //el seu segur q habilita analytics
         Firebase.dynamicLinks
@@ -470,11 +483,17 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 // content, or apply promotional credit to the user's
                 // account.
                 // ...
-                var activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
-                var activityDateTime =deepLink?.getQueryParameter("dataHora")
-                //TODO mostrar la activitat
+                val activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
+                val activityDateTime =deepLink?.getQueryParameter("dataHora")
+
+                //hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
+                getInfoActivitatIMostrar(activityCreator, activityDateTime)
             }
             .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e)}
-        return false
+    }
+
+    private fun getInfoActivitatIMostrar(activityCreator: String?, activityDateTime: String?) {
+        viewModel.getActivity(activityCreator, activityDateTime)
+
     }
 }

@@ -77,4 +77,8 @@ class InfoActivityViewModel : ViewModel() {
         reviews = repository.getCommentsParticipants(usuariCreador, dataHoraIni)
         return reviews
     }
+
+    fun getActivity(activityCreator: String?, activityDateTime: String?) {
+
+    }
 }

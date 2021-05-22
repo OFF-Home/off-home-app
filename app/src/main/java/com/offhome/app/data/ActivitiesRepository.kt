@@ -12,6 +12,7 @@ import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.model.*
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,6 +37,7 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private var singleActivity : MutableLiveData<ActivityFromList>? = null
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -231,5 +233,27 @@ class ActivitiesRepository {
             }
         })
         return reviews as MutableLiveData<List<ReviewOfParticipant>>
+    }
+
+    //gets a single activity identified by its creator and date
+    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
+        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
+
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                if (response.isSuccessful) {
+                    singleActivity!!.value = response.body()
+                    Log.d("response", "getActivity response: is successful")
+                } else {
+                    Log.d("response", "getActivity response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("GET", "Error getting getActivity. communication failure (no response)")
+            }
+        })
+        return singleActivity as MutableLiveData<ActivityFromList>
     }
 }

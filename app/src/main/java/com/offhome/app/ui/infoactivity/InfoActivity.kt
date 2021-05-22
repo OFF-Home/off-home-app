@@ -124,19 +124,15 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             val activityString = arguments?.getString("activity")
 
             activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
-        }
-        else {                          //si extras nulls, per a que no peti
 
-            checkForDynamicLinks()
+            //Ferran
+            iniMostrarActivitat()
+        }
+        else {                          //si extras nulls, potser hem vingut a aquesta activity a través d'un dynamic link
+            checkForDynamicLinks()      //aquesta funció obté la PK d'una activitat a través del dynamic link, fa GET per obtenir-ne totes les dades, i LLAVORS crida a iniMostrarActivitat()
 
             //activity = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
         }
-
-
-
-        //Ferran
-        iniMostrarActivitat()
-
     }
 
     //Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
@@ -486,14 +482,29 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 val activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
                 val activityDateTime =deepLink?.getQueryParameter("dataHora")
 
-                //hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
-                getInfoActivitatIMostrar(activityCreator, activityDateTime)
+                if (activityCreator!=null && activityDateTime !=null) {
+                    //hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
+                    getInfoActivitatIMostrar(activityCreator, activityDateTime)
+                }
+                else {
+                    //no hauria d'arribar aquí. ja faré tractat de l'error per si a cas I guess
+                    Log.w("deep link query params", "getDynamicLink: deep link query params are null")
+                }
             }
             .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e)}
     }
 
-    private fun getInfoActivitatIMostrar(activityCreator: String?, activityDateTime: String?) {
-        viewModel.getActivity(activityCreator, activityDateTime)
-
+    private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
+        viewModel.getActivity(activityCreator, activityDateTime).observe(
+            this,
+            {
+                if (it != null) {
+                    //poso a l'atribut activity la info
+                    activity = it
+                    //i ja puc mostrar la info
+                    iniMostrarActivitat()
+                }
+            }
+        )
     }
 }

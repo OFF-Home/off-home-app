@@ -8,6 +8,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
 import com.offhome.app.model.ReviewOfParticipant
 
@@ -20,6 +21,7 @@ class InfoActivityViewModel : ViewModel() {
     var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
+    private var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -78,7 +80,9 @@ class InfoActivityViewModel : ViewModel() {
         return reviews
     }
 
-    fun getActivity(activityCreator: String?, activityDateTime: String?) {
-
+    //gets a single activity identified by its creator and date
+    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
+        infoActivitat = repository.getActivity(activityCreator, activityDateTime)
+        return infoActivitat
     }
 }

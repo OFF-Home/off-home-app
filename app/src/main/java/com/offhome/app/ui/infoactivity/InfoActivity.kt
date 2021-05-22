@@ -36,6 +36,7 @@ import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
+import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat
 import java.util.*
@@ -119,6 +120,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         //ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
         if (intent.extras != null) {    //si tenim intent.extras (és a dir, venim d'una altra activity de la app)
+            Log.w("intent.extras", "is not null")
             // recibir actividad seleccionada de la otra pantalla
             val arguments = intent.extras
             val activityString = arguments?.getString("activity")
@@ -137,6 +139,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     //Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
     private fun iniMostrarActivitat() {
+        Log.w("iniMostrarActivitat", "entro a iniMostrarActivitat")
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -336,7 +339,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     //Ferran: no sé si cal. és pels dynamic links
     override fun onStart() {
         super.onStart()
-        checkForDynamicLinks()
+        //checkForDynamicLinks()
     }
 
     /**
@@ -398,9 +401,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.share_outside_app_btn) {
+
+            val linkGenerator = AuxGenerateDynamicLink()
+            val dynamicLinkUri:Uri=linkGenerator.generateDynamicLink(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants, usuariCreador = activity.usuariCreador, dataHoraIni = activity.dataHoraIni, categoria = activity.categoria, titol = activity.titol, descripcio = activity.descripcio))
+
+
             val intent = Intent()
             intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, "this is supposed to be some kind of URL")) // TODO el URL
+            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, dynamicLinkUri)) // TODO el URL
             intent.type = "text/plain"
             startActivity(Intent.createChooser(intent, "Share To:"))
         } else if (item.itemId == R.id.share_in_app_btn) {
@@ -461,6 +469,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun checkForDynamicLinks() {
+        Log.d("dynamic links", "we check for dynamic links")
         //al video (de fa 1any i mig) ho fa una mica diferent
         //el seu segur q habilita analytics
         Firebase.dynamicLinks
@@ -473,6 +482,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
+                    Log.w("dynamicLink-deeplink", "pendingDynamicLinkData != null")
                 }
                 // Handle the deep link. For example, open the linked
                 // content, or apply promotional credit to the user's
@@ -483,6 +493,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
                 if (activityCreator!=null && activityDateTime !=null) {
                     //hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
+                    Log.w("dynamicLink", "getInfoActivitatIMostrar")
                     getInfoActivitatIMostrar(activityCreator, activityDateTime)
                 }
                 else {
@@ -498,6 +509,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             this,
             {
                 if (it != null) {
+                    Log.w("getInfoActivitatIMostra", "it != null")
                     //poso a l'atribut activity la info
                     activity = it
                     //i ja puc mostrar la info

@@ -229,4 +229,5 @@
     <string name="error_no_calendar">No Calendar found on device!</string>
     <string name="saved_to_calendar">Succesfully saved into calendar!</string>
     <string name="share_activity_message_details"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
+    <string name="error_getting_chats">Error getting chats!</string>
 </resources>

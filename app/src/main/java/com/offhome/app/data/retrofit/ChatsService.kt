@@ -4,6 +4,7 @@ package com.offhome.app.data.retrofit
 
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.SendMessage
+import com.offhome.app.model.ChatInfo
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 import okhttp3.ResponseBody
@@ -33,4 +34,7 @@ interface ChatsService {
      */
     @HTTP(method = "POST", path = "xats/crearGrup", hasBody = true)
     fun addChatGroup(@Body chat: ChatGroupIdentification): Call<ResponseBody>
+
+    @GET("xats/{user}")
+    fun getChats(@Path("user") userUid: String): Call<List<ChatInfo>>
 }

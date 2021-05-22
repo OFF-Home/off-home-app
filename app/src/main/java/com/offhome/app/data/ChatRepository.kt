@@ -6,6 +6,7 @@ import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
+import com.offhome.app.model.ChatInfo
 import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 import java.io.IOException
@@ -153,6 +154,22 @@ class ChatRepository(private val chatsClient: ChatClient) {
             }
         })
         return responseSendMessage as MutableLiveData<String>
+    }
+
+    fun getChats(userUid: String): MutableLiveData<Result<List<ChatInfo>>> {
+        val result = MutableLiveData<Result<List<ChatInfo>>>()
+        val call = chatsService?.getChats(userUid)
+        call!!.enqueue(object : Callback<List<ChatInfo>> {
+            override fun onResponse(call: Call<List<ChatInfo>>, response: Response<List<ChatInfo>>) {
+                if (response.isSuccessful) {
+                    result.value = Result.Success(response.body() as List<ChatInfo>)
+                } else result.value = Result.Error(IOException("Error connecting"))
+            }
+            override fun onFailure(call: Call<List<ChatInfo>>, t: Throwable) {
+                result.value = Result.Error(IOException("Error connecting", t))
+            }
+        })
+        return result
     }
 }
 

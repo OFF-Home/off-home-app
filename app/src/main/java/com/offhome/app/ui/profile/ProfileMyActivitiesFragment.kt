@@ -19,6 +19,7 @@ import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.Activities
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
+import com.offhome.app.ui.oldandliked.OldActivities
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*
@@ -75,7 +76,7 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         //nos lleva a la pantalla con las actividades viejas
         buttonold.setOnClickListener {
-            val intent = Intent(context, Activities::class.java)
+            val intent = Intent(context, OldActivities::class.java)
         }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList

@@ -10,21 +10,21 @@ import com.offhome.app.ui.activitieslist.Activities
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 
-class OldActivities : AppCompatActivity() {
+class LikedActivities : AppCompatActivity() {
 
-    private lateinit var oldActivitiesViewModel: ActivitiesViewModel
-    private lateinit var oldActivitiesListAdapter: OldActivitiesListRecyclerViewAdapter
+    private lateinit var likedActivitiesViewModel: ActivitiesViewModel
+    private lateinit var likedActivitiesListAdapter: ActivitiesListRecyclerViewAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_old_activities)
 
-        oldActivitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
-        /*oldActivitiesListAdapter = OldActivitiesListRecyclerViewAdapter(context as Activities)
+        likedActivitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
+        /*likedActivitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities)
 
         val layout = findViewById<RecyclerView>(R.id.listActivities)
         layout.layoutManager = LinearLayoutManager(context)
-        layout.adapter = oldActivitiesListAdapter
+        layout.adapter = likedActivitiesListAdapter
 
         setHasOptionsMenu(true)*/
 

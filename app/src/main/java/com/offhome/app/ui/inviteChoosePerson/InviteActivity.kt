@@ -222,7 +222,7 @@ class InviteActivity : AppCompatActivity() {
 
     private fun generateDynamicLink():Uri {
         val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = Uri.parse("https://offhome.es/activity?creator="+activityInfo.usuariCreador+"&dataHora="+activityInfo.dataHoraIni) //nose xd   //aquest és el deeplink crec
+            link = Uri.parse("https://offhome.es/activity?creator="+activityInfo.usuariCreador+"&dataHora="+activityInfo.dataHoraIni)  //aquest és el deeplink crec
             domainUriPrefix = "https://offhome.page.link"
             // Open links with this app on Android
             androidParameters {

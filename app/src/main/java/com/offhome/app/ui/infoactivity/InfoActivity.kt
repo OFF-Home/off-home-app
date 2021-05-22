@@ -465,18 +465,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 var deepLink: Uri? = null
                 if (pendingDynamicLinkData != null) {
                     deepLink = pendingDynamicLinkData.link
-
-                    //fer-lo servir. o fer-ne servir els params, nose.
                 }
-                var activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
-                var activityDateTime =deepLink?.getQueryParameter("dataHora")
-
                 // Handle the deep link. For example, open the linked
                 // content, or apply promotional credit to the user's
                 // account.
                 // ...
-
-                // ...
+                var activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
+                var activityDateTime =deepLink?.getQueryParameter("dataHora")
+                //TODO mostrar la activitat
             }
             .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e)}
         return false

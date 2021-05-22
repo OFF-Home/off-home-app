@@ -279,7 +279,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
                     dataHoraIni,
-                    category_selected.toString(),
+                    category_selected.selectedItem.toString(),
                     pick_availability.value,
                     act_title.text.toString(),
                     description.text.toString(),

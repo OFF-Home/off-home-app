@@ -67,6 +67,8 @@ class LoginActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
 
+        setTheme(R.style.Theme_OFFHome)
+
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)

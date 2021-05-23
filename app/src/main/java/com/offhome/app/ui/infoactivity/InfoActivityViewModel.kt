@@ -2,6 +2,7 @@ package com.offhome.app.ui.infoactivity
 
 
 
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
@@ -11,6 +12,7 @@ import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
 import com.offhome.app.model.ReviewOfParticipant
+import com.offhome.app.model.profile.UserInfo
 
 /**
  * View Model for InfoActivity
@@ -21,7 +23,10 @@ class InfoActivityViewModel : ViewModel() {
     var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
-    private var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
+
+    //private var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
+    private var _infoActivitat = MutableLiveData<ActivityFromList>()
+    var infoActivitat: LiveData<ActivityFromList> = _infoActivitat
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -81,8 +86,10 @@ class InfoActivityViewModel : ViewModel() {
     }
 
     //gets a single activity identified by its creator and date
-    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
-        infoActivitat = repository.getActivity(activityCreator, activityDateTime)
-        return infoActivitat
+    fun getActivity(activityCreator: String, activityDateTime: String)/*: MutableLiveData<ActivityFromList>*/ {
+        /*infoActivitat = repository.getActivity(activityCreator, activityDateTime)
+        return infoActivitat*/
+
+        _infoActivitat = repository.getActivity(activityCreator, activityDateTime)
     }
 }

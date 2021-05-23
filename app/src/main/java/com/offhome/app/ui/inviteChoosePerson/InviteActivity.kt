@@ -220,7 +220,7 @@ class InviteActivity : AppCompatActivity() {
         fab.visibility = View.GONE
     }
 
-    private fun generateDynamicLink():Uri {
+    /*private fun generateDynamicLink():Uri {
         val dynamicLink = Firebase.dynamicLinks.dynamicLink {
             link = Uri.parse("https://offhome.es/activity?creator="+activityInfo.usuariCreador+"&dataHora="+activityInfo.dataHoraIni)  //aquest és el deeplink crec
             domainUriPrefix = "https://offhome.page.link"
@@ -241,7 +241,7 @@ class InviteActivity : AppCompatActivity() {
         val dynamicLinkUri = dynamicLink.uri
 
         return dynamicLinkUri
-    }
+    }*/
 
     private fun sendMessage(recipientUID: String) {
         val userUid = recipientUID // oi?
@@ -270,7 +270,9 @@ class InviteActivity : AppCompatActivity() {
             }
         })
 
-        val dynamicLinkUri=generateDynamicLink()
+        val linkGenerator = AuxGenerateDynamicLink()
+        val dynamicLinkUri:Uri=linkGenerator.generateDynamicLink(activityInfo)
+        //val dynamicLinkUri=generateDynamicLink()
 
         ++numMessages
         val message = Message(

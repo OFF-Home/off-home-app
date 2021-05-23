@@ -119,7 +119,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         //ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
-        if (intent.extras != null) {    //si tenim intent.extras (és a dir, venim d'una altra activity de la app)
+        if (intent.extras != null && intent.extras!!.getString("activity")!=null) {    //si tenim intent.extras (és a dir, venim d'una altra activity de la app)
             Log.w("intent.extras", "is not null")
             // recibir actividad seleccionada de la otra pantalla
             val arguments = intent.extras
@@ -505,17 +505,37 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
-        viewModel.getActivity(activityCreator, activityDateTime).observe(
-            this,
-            {
-                if (it != null) {
-                    Log.w("getInfoActivitatIMostra", "it != null")
-                    //poso a l'atribut activity la info
-                    activity = it
-                    //i ja puc mostrar la info
-                    iniMostrarActivitat()
+
+        viewModel.getActivity(activityCreator, activityDateTime)
+        viewModel.infoActivitat.observe(this@InfoActivity, androidx.lifecycle.Observer {
+            Log.w("getInfoActivitatIMostra", "salta l'observer")
+            val resultVM = it ?: return@Observer
+            Log.w("getInfoActivitatIMostra", "salta l'observer2")
+            /*if (it != null) {
+                Log.w("getInfoActivitatIMostra", "it != null")*/
+                //poso a l'atribut activity la info
+                activity = resultVM
+                //i ja puc mostrar la info
+                iniMostrarActivitat()
+            //}
+            /*else
+                Log.w("getInfoActivitatIMostra", "it == null")*/
+        })
+
+            /*viewModel.getActivity(activityCreator, activityDateTime).observe(
+                this,
+                {
+                    Log.w("getInfoActivitatIMostra", "salta l'observer")
+                    if (it != null) {
+                        Log.w("getInfoActivitatIMostra", "it != null")
+                        //poso a l'atribut activity la info
+                        activity = it
+                        //i ja puc mostrar la info
+                        iniMostrarActivitat()
+                    }
+                    else
+                        Log.w("getInfoActivitatIMostra", "it == null")
                 }
-            }
-        )
+            )*/
     }
 }

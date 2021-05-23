@@ -58,7 +58,7 @@ import java.util.*
  * @property latitude references the latitude coordinate of the activity's location the map
  * @property longitude references the longitude coordinate of the activity's location on the map
  */
-class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
+class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var imageLike: ImageView

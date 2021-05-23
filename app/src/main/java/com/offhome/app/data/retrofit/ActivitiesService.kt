@@ -15,7 +15,7 @@ interface ActivitiesService {
      * This call is for creating a new activity
      */
     @POST("activitats/create/{usuariCreador}")
-    fun createActivityByUser(@Path("usuariCreador") uidCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
+    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
 
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>

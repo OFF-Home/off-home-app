@@ -91,5 +91,6 @@ class InfoActivityViewModel : ViewModel() {
         return infoActivitat*/
 
         _infoActivitat = repository.getActivity(activityCreator, activityDateTime)
+        infoActivitat = _infoActivitat
     }
 }

@@ -37,7 +37,7 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
-    private var singleActivity : MutableLiveData<ActivityFromList>? = null
+    private var singleActivity : MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -237,7 +237,7 @@ class ActivitiesRepository {
 
     //gets a single activity identified by its creator and date
     fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
-        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
+        //if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
 
         val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
 

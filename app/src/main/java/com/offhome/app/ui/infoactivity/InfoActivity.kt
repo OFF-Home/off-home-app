@@ -40,6 +40,7 @@ import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.lifecycle.Observer
 
 /**
  * Class *InfoActivity*
@@ -507,11 +508,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
 
         viewModel.getActivity(activityCreator, activityDateTime)
-        viewModel.infoActivitat.observe(this@InfoActivity, androidx.lifecycle.Observer {
-            Log.w("getInfoActivitatIMostra", "salta l'observer")
-            val resultVM = it ?: return@Observer
-            Log.w("getInfoActivitatIMostra", "salta l'observer2")
-            /*if (it != null) {
+        viewModel.infoActivitat.observe(
+            this@InfoActivity,
+            Observer {
+                Log.w("getInfoActivitatIMostra", "salta l'observer")
+                val resultVM = it ?: return@Observer
+                Log.w("getInfoActivitatIMostra", "salta l'observer2")
+                /*if (it != null) {
                 Log.w("getInfoActivitatIMostra", "it != null")*/
                 //poso a l'atribut activity la info
                 activity = resultVM

@@ -20,7 +20,7 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/box2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <TextView
                 android:id="@+id/changePsw"
@@ -30,175 +30,204 @@
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Change password"
+                android:text="@string/change_password"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView8"
+                app:layout_constraintBottom_toTopOf="@+id/language"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+                app:layout_constraintTop_toBottomOf="@+id/nameUser" />
 
             <TextView
-                android:id="@+id/textView2"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/emailUser"
+                android:layout_width="189dp"
+                android:layout_height="22dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="32dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="email: marianievas@gmail.com"
+                android:text="@string/email"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView3"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toTopOf="@+id/nameUser"
+                app:layout_constraintEnd_toStartOf="@+id/emailUser2"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
-                android:id="@+id/textView3"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:id="@+id/nameUser"
+                android:layout_width="189dp"
+                android:layout_height="23dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="username: mariaguapa"
+                android:text="@string/username"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/changePsw"
+                app:layout_constraintEnd_toStartOf="@+id/nameUser2"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailUser" />
+
+            <TextView
+                android:id="@+id/emailUser2"
+                android:layout_width="189dp"
+                android:layout_height="22dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginEnd="36dp"
+                android:layout_marginBottom="8dp"
+                android:textStyle="bold"
+                app:layout_constraintBottom_toTopOf="@+id/nameUser2"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.0" />
+
+            <TextView
+                android:id="@+id/nameUser2"
+                android:layout_width="189dp"
+                android:layout_height="23dp"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/changePsw"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="1.0"
+                app:layout_constraintHorizontal_bias="0.975"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView2" />
+                app:layout_constraintTop_toBottomOf="@+id/emailUser" />
 
             <TextView
-                android:id="@+id/textView8"
+                android:id="@+id/language"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Language"
+                android:text="@string/language"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView5"
+                app:layout_constraintBottom_toTopOf="@+id/notifications"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/changePsw" />
 
             <TextView
-                android:id="@+id/textView5"
+                android:id="@+id/notifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Notifications"
+                android:text="@string/notifications"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView6"
+                app:layout_constraintBottom_toTopOf="@+id/aboutOFFHome"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView8" />
+                app:layout_constraintTop_toBottomOf="@+id/language" />
 
             <TextView
-                android:id="@+id/textView6"
+                android:id="@+id/aboutOFFHome"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="About OFF_HOME"
+                android:text="@string/about_off_home"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView7"
+                app:layout_constraintBottom_toTopOf="@+id/privacyPolicy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+                app:layout_constraintTop_toBottomOf="@+id/notifications" />
 
             <TextView
-                android:id="@+id/textView7"
+                android:id="@+id/privacyPolicy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Privacy policy"
+                android:text="@string/privacy_policy"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView11"
+                app:layout_constraintBottom_toTopOf="@+id/COVIDPolicy"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/aboutOFFHome" />
 
             <TextView
-                android:id="@+id/textView11"
+                android:id="@+id/COVIDPolicy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="COVID policy"
+                android:text="@string/covid_policy"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView10"
+                app:layout_constraintBottom_toTopOf="@+id/darkTheme"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView7" />
+                app:layout_constraintTop_toBottomOf="@+id/privacyPolicy" />
 
 
             <TextView
-                android:id="@+id/textView10"
+                android:id="@+id/darkTheme"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Dark theme"
+                android:text="@string/dark_theme"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView9"
+                android:textColor="@color/black"
+                app:layout_constraintBottom_toTopOf="@+id/syncGoogle"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView11" />
+                app:layout_constraintTop_toBottomOf="@+id/COVIDPolicy" />
 
             <TextView
-                android:id="@+id/textView9"
+                android:id="@+id/syncGoogle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
-                android:text="Sync with Google Calendar"
+                android:text="@string/sync_with_google_calendar"
                 android:textStyle="bold"
-                app:layout_constraintBottom_toTopOf="@+id/textView12"
+                app:layout_constraintBottom_toTopOf="@+id/deleteAccount"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView10" />
+                app:layout_constraintTop_toBottomOf="@+id/darkTheme" />
 
             <TextView
-                android:id="@+id/textView12"
+                android:id="@+id/deleteAccount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="32dp"
-                android:text="Delete my account"
+                android:text="@string/delete_my_account"
                 android:textColor="@color/secondary"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView9" />
+                app:layout_constraintTop_toBottomOf="@+id/syncGoogle" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </ScrollView>

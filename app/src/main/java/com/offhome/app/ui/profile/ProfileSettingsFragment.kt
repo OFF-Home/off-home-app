@@ -1,17 +1,22 @@
 package com.offhome.app.ui.profile
 
 import android.annotation.SuppressLint
+import android.app.AlertDialog
+import android.content.ContentValues.TAG
+import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
+import android.util.Log
+import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -19,9 +24,11 @@ import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
 class ProfileSettingsFragment: Fragment() {
 
-    lateinit var darkOFFHome : TextView
     lateinit var usernameTV : TextView
     lateinit var emailTV : TextView
+    lateinit var deleteAccount: TextView
+
+    lateinit var btnChangePwd: TextView
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -48,8 +55,39 @@ class ProfileSettingsFragment: Fragment() {
         usernameTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)
         usernameTV.setTextColor(Color.LTGRAY)
 
-        val btnChangePwd = view.findViewById<TextView>(R.id.changePsw)
+        deleteAccount = view.findViewById(R.id.deleteAccount)
+        deleteAccount.setOnClickListener {
 
+            val builder = AlertDialog.Builder(context)
+            val title = TextView(context)
+            title.text = "Delete your account"
+            title.setPadding(10, 10, 10, 10)
+            title.gravity = CENTER
+            title.textSize = 18F
+            builder.setCustomTitle(title)
+            builder.setMessage("Are you sure you want to delete your account? This will permanently erase your account.")
+
+            builder.setCancelable(true)
+            builder.setPositiveButton("Delete"){
+                    _, _ ->
+                val user = Firebase.auth.currentUser!!
+                user.delete()
+                    .addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            Log.d("POST", "User account deleted.")
+                        }
+                    }
+                //FALTA CRIDA A BACK PER BORRAR EL USER DEL SERVER
+                //després ha de portar a la pàgina del log in
+            }
+            builder.setNegativeButton(
+                "Cancel"
+            ) { dialog, _ -> dialog.cancel() }
+            val alert = builder.create()
+            alert.show()
+        }
+
+        btnChangePwd = view.findViewById(R.id.changePsw)
         btnChangePwd.setOnClickListener {
             if (SharedPreferenceManager.getStringValue(Constants().PREF_PROVIDER) == Constants().PREF_PROVIDER_PASSWORD)
                 requireActivity().run {
@@ -57,7 +95,11 @@ class ProfileSettingsFragment: Fragment() {
                     finish()
                 }
             else
-                Toast.makeText(context, getString(R.string.error_change_password_google), Toast.LENGTH_LONG).show()
+                Toast.makeText(
+                    context,
+                    getString(R.string.error_change_password_google),
+                    Toast.LENGTH_LONG
+                ).show()
         }
     }
 

@@ -74,11 +74,11 @@ class ActivitiesRepository {
                 if (response.isSuccessful) {
                     mutableLiveData?.value = "Activity created!"
                 } else mutableLiveData?.value =
-                    "It has been an error and the activity cannot be created"
+                    "There has been an error and the activity cannot be created"
             }
             override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
                 mutableLiveData?.value =
-                    "It has been an error and the activity cannot be created"
+                    "There has been an error and the activity cannot be created"
             }
         })
         return mutableLiveData as MutableLiveData<String>

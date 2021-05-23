@@ -22,6 +22,15 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
+/**
+ * Class *ProfileSettingsFragment*
+ *
+ * Fragment for the "Settings" section (page) of the Profile screen.
+ * This class is one of the Views in this screen's MVVM's
+ *
+ * @author Maria
+ *
+ */
 class ProfileSettingsFragment: Fragment() {
 
     lateinit var usernameTV : TextView
@@ -30,6 +39,18 @@ class ProfileSettingsFragment: Fragment() {
 
     lateinit var btnChangePwd: TextView
 
+    /**
+     * Override the onCreateView method
+     *
+     * Does the fragment inflation
+     * Initializes the attributes
+     * Initializes the attributes that reference layout objects
+     *
+     * @param inflater
+     * @param container
+     * @param savedInstanceState
+     * @return returns the view
+     */
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,

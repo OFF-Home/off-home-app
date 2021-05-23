@@ -71,8 +71,6 @@ class ProfileFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
 
-    private lateinit var viewAsOtherProfile: Button
-
     private lateinit var firebaseAuth: FirebaseAuth
 
     /**
@@ -101,7 +99,6 @@ class ProfileFragment : Fragment() {
         textViewUsername = view.findViewById(R.id.textViewUsername)
         estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
         constraintLayout1 = view.findViewById(R.id.profileConstraintLayoutDinsAppBarLO)
-        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
@@ -129,10 +126,6 @@ class ProfileFragment : Fragment() {
 
         iniEditElements()
         iniUsernameSetListener() // TODO sobra?
-
-        viewAsOtherProfile.setOnClickListener {
-            canviAOtherProfile()
-        }
 
         imageViewProfilePic.setOnClickListener {
             // takePictureIntent()
@@ -349,21 +342,6 @@ class ProfileFragment : Fragment() {
 
         textViewUsername.visibility = View.VISIBLE
         editTextUsername.visibility = View.GONE
-    }
-
-    // aixo es completament per a testejar
-    private fun canviAOtherProfile() {
-
-        // stub
-        val userInfo = com.offhome.app.model.profile.UserInfo(
-            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
-            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
-        )
-
-        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
-        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
-        startActivity(intentCanviAOtherProfile)
     }
 
     /**

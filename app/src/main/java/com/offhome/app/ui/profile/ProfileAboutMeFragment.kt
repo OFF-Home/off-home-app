@@ -3,6 +3,7 @@ package com.offhome.app.ui.profile
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -12,18 +13,17 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.profile.TagData
+import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
 /**
@@ -71,6 +71,8 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var addIconDrawable: Drawable
     private lateinit var editTextProfileDescription: EditText
+    private lateinit var viewAsOtherProfile: Button
+
 
     /**
      * Override the onCreateView method
@@ -99,6 +101,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout = view.findViewById(R.id.aboutMeConstraintLayout)
+        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
@@ -123,6 +126,10 @@ class ProfileAboutMeFragment : Fragment() {
                 Log.d("tags", "tags arriben al fragment")
             }
         )
+
+        viewAsOtherProfile.setOnClickListener {
+            canviAOtherProfile()
+        }
 
         // testing
         // omplirTagGroupStub()
@@ -495,4 +502,20 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.tagAddedByUser(tag)
         iniTagAdditionListener()
     }
+
+    // aixo es completament per a testejar
+    private fun canviAOtherProfile() {
+
+        // stub
+        val userInfo = com.offhome.app.model.profile.UserInfo(
+            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
+            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
+        )
+
+        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
+        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
+        startActivity(intentCanviAOtherProfile)
+    }
+
 }

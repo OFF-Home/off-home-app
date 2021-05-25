@@ -14,6 +14,7 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -64,10 +65,9 @@ class LoginActivity : AppCompatActivity() {
      * @param savedInstanceState is the instance of the saved State of the activity
      */
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(R.style.Theme_OFFHome)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
-
-        setTheme(R.style.Theme_OFFHome)
 
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)
@@ -78,7 +78,6 @@ class LoginActivity : AppCompatActivity() {
         setUp()
         startObservers()
         editTextsChanges()
-
         btnShowPassword.setOnClickListener {
             editTextPassword.inputType = if (editTextPassword.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                 InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD

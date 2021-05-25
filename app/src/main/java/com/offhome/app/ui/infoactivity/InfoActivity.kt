@@ -535,7 +535,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 //i ja puc mostrar la info
                 //iniMostrarActivitat()
             })*/
-        viewModel.infoActivitat3.observe(
+        /*viewModel.infoActivitat3.observe(     //aquesta not bad
             this@InfoActivity,
             Observer {
                 Log.w("getInfoActivitatIMostr3", "salta l'observer1")
@@ -551,6 +551,29 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     else {
                         Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
                         activity = it
+                        //i ja puc mostrar la info
+                        iniMostrarActivitat()
+                    }
+                }
+
+            })*/
+
+        viewModel.infoActivitat4.observe(     //aquesta not bad
+            this@InfoActivity,
+            Observer {
+                Log.w("getInfoActivitatIMostr3", "salta l'observer1")
+                if (it == null)
+                    Log.w("getInfoActivitatIMostr3", "it is null")
+                else {
+                    Log.w("getInfoActivitatIMostr3", "it is not null")
+
+                    if (it.toString().contains("unsuccessful"))
+                        Toast.makeText(this,"Couldn't retrieve that activity. Please make sure the link is correct",Toast.LENGTH_LONG).show()
+                    else if (it.toString().contains("failure"))
+                        Toast.makeText(this,"Couldn't reach the server. Please try again later", Toast.LENGTH_LONG).show()
+                    else {
+                        Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
+                        //activity = it.data
                         //i ja puc mostrar la info
                         iniMostrarActivitat()
                     }

@@ -31,6 +31,8 @@ class InfoActivityViewModel : ViewModel() {
 
     var infoActivitat2 = MutableLiveData<Result<String>>()
     var infoActivitat3 = MutableLiveData<ActivityFromList>()
+    var infoActivitat4 = MutableLiveData<Result<ActivityFromList>>()
+
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -97,11 +99,16 @@ class InfoActivityViewModel : ViewModel() {
         /*_infoActivitat = repository.getActivity(activityCreator, activityDateTime)
         infoActivitat = _infoActivitat*/
 
-        getActivity2(activityCreator, activityDateTime)
+        //getActivity2(activityCreator, activityDateTime)
+        getActivity4(activityCreator, activityDateTime)
     }
 
     fun getActivity2(activityCreator: String, activityDateTime: String) {
         //infoActivitat2 = repository.getActivity2(activityCreator, activityDateTime)
         infoActivitat3 = repository.getActivity3(activityCreator, activityDateTime)
+    }
+
+    fun getActivity4(activityCreator: String, activityDateTime: String) {
+        infoActivitat4 = repository.getActivity4(activityCreator, activityDateTime)
     }
 }

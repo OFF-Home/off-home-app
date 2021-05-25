@@ -302,4 +302,37 @@ class ActivitiesRepository {
         })
         return result
     }
+
+     fun getActivity4(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
+         val result = MutableLiveData<Result<ActivityFromList>>()
+         val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+         call.enqueue(object : Callback<ActivityFromList> {
+             override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                 if (response.isSuccessful) {
+                     Log.d("repo::getActivity4", "response.code() == " + response.code())
+                     if(response.code() == 200) {
+                         if (response.body() == null)
+                             Log.d(
+                                 "repo::getActivity4",
+                                 "response.body() == null. (a back retornen 204)"
+                             )
+                         //else {
+                             Log.d("response", "getActivity2 response: is successful")
+                             result.value = Result.Success(response.body()!!)
+                         //}
+                     }
+                 } else {
+                     Log.d("response", "getActivity2 response: unsuccessful")
+                     result.value = Result.Error(IOException("getActivity2 Error: unsuccessful"))
+                 }
+             }
+
+             override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                 Log.d("no response", "getActivity2 no response")
+                 result.value = Result.Error(IOException("getActivity2 Error: failure", t))
+             }
+         })
+
+         return result
+     }
 }

@@ -549,9 +549,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     else if (it.usuariCreador == "****ERROR2")
                         Toast.makeText(this,"Couldn't reach the server. Please try again later", Toast.LENGTH_LONG).show()
                     else {
+                        Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
                         activity = it
                         //i ja puc mostrar la info
-                        //iniMostrarActivitat()
+                        iniMostrarActivitat()
                     }
                 }
 

@@ -209,6 +209,7 @@ class ProfileRepository {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 descriptionSetSuccessfully.value = response.body()
+                descriptionSetSuccessfully.postValue(response.body())
                 if (response.isSuccessful) {
                     Log.d("response", "setDescription response: is successful")
                 } else {
@@ -224,6 +225,28 @@ class ProfileRepository {
             }
         })
         return descriptionSetSuccessfully
+    }
+    fun setDescription2(email: String, newDescription: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "setDescription response: is successful")
+                    result.value = Result.Success(response.body().toString())
+                } else {
+                    Log.d("response", "setDescription response: unsuccessful")
+                    result.value = Result.Error(IOException("setDescription2 Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "setDescription no response")
+                result.value = Result.Error(IOException("setDescription2 Error: failure", t))
+            }
+        })
+        return result
     }
 
     /**

@@ -6,6 +6,7 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
@@ -59,6 +60,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully
 
+    var descriptionSetSuccessfully2 = MutableLiveData<Result<String>>()
+
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
      *
@@ -105,7 +108,12 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param newDescription string to change the description to
      */
     fun descriptionChangedByUser(newDescription: Editable) {
-        descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
+        //descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
+        descriptionChangedByUser2(newDescription)
+    }
+
+    fun descriptionChangedByUser2(newDescription: Editable) {
+        descriptionSetSuccessfully2 = repository.setDescription2(loggedUserEmail, newDescription.toString())
     }
 
     /**

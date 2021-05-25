@@ -525,6 +525,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 Log.w("getInfoActivitatIMostra", "it == null")*/
         })
 
+
             /*viewModel.getActivity(activityCreator, activityDateTime).observe(
                 this,
                 {

@@ -97,8 +97,8 @@ class ActivitiesListFragment : Fragment() {
                             }
                         }
                     }
-                    //TODO treure ferran
-                    activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
+                    //stub ferran
+                    //activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
                 }
                 activitiesListAdapter.setData(activitiesList)
             }

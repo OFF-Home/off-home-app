@@ -25,14 +25,7 @@ class InfoActivityViewModel : ViewModel() {
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 
-    //private var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
-    private var _infoActivitat = MutableLiveData<ActivityFromList>()
-    var infoActivitat: LiveData<ActivityFromList> = _infoActivitat
-
-    var infoActivitat2 = MutableLiveData<Result<String>>()
-    var infoActivitat3 = MutableLiveData<ActivityFromList>()
     var infoActivitat4 = MutableLiveData<Result<ActivityFromList>>()
-
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -92,23 +85,7 @@ class InfoActivityViewModel : ViewModel() {
     }
 
     //gets a single activity identified by its creator and date
-    fun getActivity(activityCreator: String, activityDateTime: String)/*: MutableLiveData<ActivityFromList>*/ {
-        /*infoActivitat = repository.getActivity(activityCreator, activityDateTime)
-        return infoActivitat*/
-
-        /*_infoActivitat = repository.getActivity(activityCreator, activityDateTime)
-        infoActivitat = _infoActivitat*/
-
-        //getActivity2(activityCreator, activityDateTime)
-        getActivity4(activityCreator, activityDateTime)
-    }
-
-    fun getActivity2(activityCreator: String, activityDateTime: String) {
-        //infoActivitat2 = repository.getActivity2(activityCreator, activityDateTime)
-        infoActivitat3 = repository.getActivity3(activityCreator, activityDateTime)
-    }
-
-    fun getActivity4(activityCreator: String, activityDateTime: String) {
+    fun getActivity(activityCreator: String, activityDateTime: String) {
         infoActivitat4 = repository.getActivity4(activityCreator, activityDateTime)
     }
 }

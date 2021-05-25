@@ -5,13 +5,13 @@ package com.offhome.app.model
  * It contains the activity information that the database needs to receive
  */
 data class ActivityData(
-    val nameStreet: String,
-    val numberStreet: Int,
-    val dateStartTime: String,
-    val category: String,
+    val nomCarrer: String,
+    val carrerNum: Int,
+    val dataHoraIni: String,
+    val categoria: String,
     val maxParticipants: Int,
-    val title: String,
-    val description: String,
-    val dateFinishTime: String,
-    val uidCreator: String,
+    val titol: String,
+    val descripcio: String,
+    val dataHoraFi: String,
+    val uid_creador: String,
 )

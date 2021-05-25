@@ -20,7 +20,8 @@
         <androidx.constraintlayout.widget.ConstraintLayout
             android:id="@+id/box2"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            tools:ignore="MissingConstraints">
 
             <TextView
                 android:id="@+id/changePsw"
@@ -43,7 +44,7 @@
                 android:layout_width="189dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="32dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/email"
@@ -74,7 +75,7 @@
                 android:id="@+id/emailUser2"
                 android:layout_width="189dp"
                 android:layout_height="22dp"
-                android:layout_marginTop="32dp"
+                android:layout_marginTop="24dp"
                 android:layout_marginEnd="36dp"
                 android:layout_marginBottom="8dp"
                 android:textStyle="bold"
@@ -129,6 +130,25 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/language" />
+
+
+            <ImageView
+                android:id="@+id/imageViewIconNot"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="32dp"
+                android:layout_marginBottom="8dp"
+                android:contentDescription="@string/icon"
+                android:padding="5dp"
+                android:src="@drawable/ic_baseline_notifications_active_24"
+                app:layout_constraintBottom_toTopOf="@+id/aboutOFFHome"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.983"
+                app:layout_constraintStart_toEndOf="@+id/notifications"
+                app:layout_constraintTop_toBottomOf="@+id/language"
+                app:layout_constraintVertical_bias="1.0" />
 
             <TextView
                 android:id="@+id/aboutOFFHome"

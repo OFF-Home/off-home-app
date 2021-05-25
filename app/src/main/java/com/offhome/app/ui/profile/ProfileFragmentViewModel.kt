@@ -138,4 +138,9 @@ class ProfileFragmentViewModel : ViewModel() {
         val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         repository.uploadPhoto(email, photoPath)
     }
+
+    fun deleteAccount(){
+        //delete account from back
+        repository.deleteAccount()
+    }
 }

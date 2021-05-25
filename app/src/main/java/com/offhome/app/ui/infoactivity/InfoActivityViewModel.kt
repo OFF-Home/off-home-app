@@ -8,6 +8,7 @@ import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
@@ -27,6 +28,9 @@ class InfoActivityViewModel : ViewModel() {
     //private var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
     private var _infoActivitat = MutableLiveData<ActivityFromList>()
     var infoActivitat: LiveData<ActivityFromList> = _infoActivitat
+
+    var infoActivitat2 = MutableLiveData<Result<String>>()
+    var infoActivitat3 = MutableLiveData<ActivityFromList>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -90,7 +94,14 @@ class InfoActivityViewModel : ViewModel() {
         /*infoActivitat = repository.getActivity(activityCreator, activityDateTime)
         return infoActivitat*/
 
-        _infoActivitat = repository.getActivity(activityCreator, activityDateTime)
-        infoActivitat = _infoActivitat
+        /*_infoActivitat = repository.getActivity(activityCreator, activityDateTime)
+        infoActivitat = _infoActivitat*/
+
+        getActivity2(activityCreator, activityDateTime)
+    }
+
+    fun getActivity2(activityCreator: String, activityDateTime: String) {
+        //infoActivitat2 = repository.getActivity2(activityCreator, activityDateTime)
+        infoActivitat3 = repository.getActivity3(activityCreator, activityDateTime)
     }
 }

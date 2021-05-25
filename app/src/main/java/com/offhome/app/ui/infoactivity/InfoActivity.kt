@@ -508,7 +508,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
 
         viewModel.getActivity(activityCreator, activityDateTime)
-        viewModel.infoActivitat.observe(
+        /*viewModel.infoActivitat.observe(
             this@InfoActivity,
             Observer {
                 Log.w("getInfoActivitatIMostra", "salta l'observer")
@@ -524,6 +524,38 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             /*else
                 Log.w("getInfoActivitatIMostra", "it == null")*/
         })
+        viewModel.infoActivitat2.observe(
+            this@InfoActivity,
+            Observer {
+                Log.w("getInfoActivitatIMostra", "salta l'observer")
+                val resultVM = it ?: return@Observer
+                Log.w("getInfoActivitatIMostra", "salta l'observer2. resultVM.string = "+resultVM.toString())
+
+                //activity = resultVM.
+                //i ja puc mostrar la info
+                //iniMostrarActivitat()
+            })*/
+        viewModel.infoActivitat3.observe(
+            this@InfoActivity,
+            Observer {
+                Log.w("getInfoActivitatIMostr3", "salta l'observer1")
+                if (it == null)
+                    Log.w("getInfoActivitatIMostr3", "it is null")
+                else {
+                    Log.w("getInfoActivitatIMostr3", "it is not null")
+
+                    if (it.usuariCreador == "****ERROR1")
+                        Toast.makeText(this,"Couldn't retrieve that activity. Please make sure the link is correct",Toast.LENGTH_LONG).show()
+                    else if (it.usuariCreador == "****ERROR2")
+                        Toast.makeText(this,"Couldn't reach the server. Please try again later", Toast.LENGTH_LONG).show()
+                    else {
+                        activity = it
+                        //i ja puc mostrar la info
+                        //iniMostrarActivitat()
+                    }
+                }
+
+            })
 
 
             /*viewModel.getActivity(activityCreator, activityDateTime).observe(

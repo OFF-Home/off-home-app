@@ -17,6 +17,7 @@ import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import java.io.IOException
 
 /**
  * This class requests the response of the creation of the activities
@@ -255,5 +256,50 @@ class ActivitiesRepository {
             }
         })
         return singleActivity as MutableLiveData<ActivityFromList>
+    }
+
+   /* fun getActivity2(activityCreator: String, activityDateTime: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "getActivity2 response: is successful")
+                    result.value = Result.Success(response.body().toString())
+                    Result.Success(response.body())
+                } else {
+                    Log.d("response", "getActivity2 response: unsuccessful")
+                    result.value = Result.Error(IOException("getActivity2 Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivity2 no response")
+                result.value = Result.Error(IOException("getActivity2 Error: failure", t))
+            }
+        })
+
+        return result
+    }*/
+
+    fun getActivity3(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
+        val result = MutableLiveData<ActivityFromList>()
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                if (response.isSuccessful) {
+                    Log.d("response", "getActivity2 response: is successful")
+                    result.value = response.body()
+                } else {
+                    Log.d("response", "getActivity2 response: unsuccessful")
+                    result.value = ActivityFromList(usuariCreador = "****ERROR1", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa")
+                }
+            }
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivity2 no response")
+                result.value = ActivityFromList(usuariCreador = "****ERROR2", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa")
+            }
+        })
+        return result
     }
 }

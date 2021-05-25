@@ -205,7 +205,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
 
         // when dialog box is closed, below method will be called.
         savedDay = dayOfMonth
-        savedMonth = month
+        savedMonth = month+1
         savedYear = year
 
         TimePickerDialog(this, this, hour, minute, true).show()

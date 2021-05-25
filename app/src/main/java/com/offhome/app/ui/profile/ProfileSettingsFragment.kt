@@ -12,6 +12,7 @@ import android.view.Gravity.CENTER
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -39,6 +40,7 @@ class ProfileSettingsFragment: Fragment() {
 
     lateinit var btnChangePwd: TextView
 
+    lateinit var btnNotifications: ImageView
     /**
      * Override the onCreateView method
      *
@@ -69,14 +71,31 @@ class ProfileSettingsFragment: Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         emailTV = view.findViewById(R.id.emailUser2)
+        usernameTV = view.findViewById(R.id.nameUser2)
+        deleteAccount = view.findViewById(R.id.deleteAccount)
+        btnChangePwd = view.findViewById(R.id.changePsw)
+        btnNotifications = view.findViewById(R.id.imageViewIconNot)
+
+        manageUserInfo()
+
+        deleteAccount()
+
+        changePassword()
+
+        manageNotifications()
+    }
+
+
+
+    private fun manageUserInfo(){
         emailTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
         emailTV.setTextColor(Color.LTGRAY)
 
-        usernameTV = view.findViewById(R.id.nameUser2)
         usernameTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)
         usernameTV.setTextColor(Color.LTGRAY)
+    }
 
-        deleteAccount = view.findViewById(R.id.deleteAccount)
+    private fun deleteAccount(){
         deleteAccount.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
@@ -108,7 +127,9 @@ class ProfileSettingsFragment: Fragment() {
             alert.show()
         }
 
-        btnChangePwd = view.findViewById(R.id.changePsw)
+    }
+
+    private fun changePassword(){
         btnChangePwd.setOnClickListener {
             if (SharedPreferenceManager.getStringValue(Constants().PREF_PROVIDER) == Constants().PREF_PROVIDER_PASSWORD)
                 requireActivity().run {
@@ -121,6 +142,23 @@ class ProfileSettingsFragment: Fragment() {
                     getString(R.string.error_change_password_google),
                     Toast.LENGTH_LONG
                 ).show()
+        }
+    }
+
+    private fun manageNotifications(){
+        var clicked = false
+        btnNotifications.setOnClickListener {
+            clicked = !clicked
+            if (clicked){
+                btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
+                Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
+                //crida a Back
+            }
+            else {
+                btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
+                Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
+                //crida a Back
+            }
         }
     }
 

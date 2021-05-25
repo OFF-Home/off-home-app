@@ -56,14 +56,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     var day2 = 0
     var month2 = 0
     var year2 = 0
-    var hour2 = 0
-    var minute2 = 0
-
-    var savedDay2 = 0
-    var savedMonth2 = 0
-    var savedYear2 = 0
-    var savedHour2 = 0
-    var savedMinute2 = 0
 
     var current = 0
     var DATE_DIALOG_ID1 = 1

@@ -438,4 +438,8 @@ class ProfileRepository {
 
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
+
+    fun deleteAccount(){
+        //delete account
+    }
 }

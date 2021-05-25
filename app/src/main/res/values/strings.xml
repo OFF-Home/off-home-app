@@ -227,4 +227,6 @@
     <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
     <string name="share_activity_message_details"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
+    <string name="couldnt_retrieve_link_activity" >Couldn\'t retrieve that activity. Please make sure the link is correct</string>
+    <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
 </resources>

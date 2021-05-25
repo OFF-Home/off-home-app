@@ -402,16 +402,32 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.share_outside_app_btn) {
+            if (this::activity.isInitialized) {
+                val linkGenerator = AuxGenerateDynamicLink()
+                val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(
+                    ActivityDataForInvite(
+                        maxParticipant = activity.maxParticipant,
+                        nRemainingParticipants = this.nRemainingParticipants,
+                        usuariCreador = activity.usuariCreador,
+                        dataHoraIni = activity.dataHoraIni,
+                        categoria = activity.categoria,
+                        titol = activity.titol,
+                        descripcio = activity.descripcio
+                    )
+                )
 
-            val linkGenerator = AuxGenerateDynamicLink()
-            val dynamicLinkUri:Uri=linkGenerator.generateDynamicLink(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants, usuariCreador = activity.usuariCreador, dataHoraIni = activity.dataHoraIni, categoria = activity.categoria, titol = activity.titol, descripcio = activity.descripcio))
-
-
-            val intent = Intent()
-            intent.action = Intent.ACTION_SEND
-            intent.putExtra(Intent.EXTRA_TEXT, getString(R.string.share_activity_message, dynamicLinkUri)) // TODO el URL
-            intent.type = "text/plain"
-            startActivity(Intent.createChooser(intent, "Share To:"))
+                val intent = Intent()
+                intent.action = Intent.ACTION_SEND
+                intent.putExtra(
+                    Intent.EXTRA_TEXT,
+                    getString(R.string.share_activity_message, dynamicLinkUri)
+                )
+                intent.type = "text/plain"
+                startActivity(Intent.createChooser(intent, "Share To:"))
+            }
+            else {
+                Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
+            }
         } else if (item.itemId == R.id.share_in_app_btn) {
             changeToInviteActivity()
         }
@@ -419,9 +435,27 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun changeToInviteActivity() {
-        val intentCanviAChat = Intent(this, InviteActivity::class.java)
-        intentCanviAChat.putExtra("activity", GsonBuilder().create().toJson(ActivityDataForInvite(maxParticipant = activity.maxParticipant, nRemainingParticipants = this.nRemainingParticipants, usuariCreador = activity.usuariCreador, dataHoraIni = activity.dataHoraIni, categoria = activity.categoria, titol = activity.titol, descripcio = activity.descripcio)))
-        startActivity(intentCanviAChat)
+        if (this::activity.isInitialized) {
+            val intentCanviAChat = Intent(this, InviteActivity::class.java)
+            intentCanviAChat.putExtra(
+                "activity",
+                GsonBuilder().create().toJson(
+                    ActivityDataForInvite(
+                        maxParticipant = activity.maxParticipant,
+                        nRemainingParticipants = this.nRemainingParticipants,
+                        usuariCreador = activity.usuariCreador,
+                        dataHoraIni = activity.dataHoraIni,
+                        categoria = activity.categoria,
+                        titol = activity.titol,
+                        descripcio = activity.descripcio
+                    )
+                )
+            )
+            startActivity(intentCanviAChat)
+        }
+        else {
+            Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
+        }
     }
 
     /**
@@ -519,9 +553,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     Log.w("getInfoActivitatIMostr3", "it is not null")
 
                     if (it.toString().contains("unsuccessful"))
-                        Toast.makeText(this,"Couldn't retrieve that activity. Please make sure the link is correct",Toast.LENGTH_LONG).show()
+                        Toast.makeText(this,R.string.couldnt_retrieve_link_activity,Toast.LENGTH_LONG).show()
                     else if (it.toString().contains("failure"))
-                        Toast.makeText(this,"Couldn't reach the server. Please try again later", Toast.LENGTH_LONG).show()
+                        Toast.makeText(this,R.string.couldnt_reach_the_server, Toast.LENGTH_LONG).show()
                     else {
                         Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
                         //activity = it.data

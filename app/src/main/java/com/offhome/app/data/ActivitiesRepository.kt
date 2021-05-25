@@ -238,6 +238,8 @@ class ActivitiesRepository {
 
      fun getActivity4(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
          val result = MutableLiveData<Result<ActivityFromList>>()
+         Log.d("making dynLink call", "activityCreator = "+activityCreator+" activityDateTime = "+activityDateTime)
+
          val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
          call.enqueue(object : Callback<ActivityFromList> {
              override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
@@ -247,18 +249,18 @@ class ActivitiesRepository {
                          if (response.body() == null)
                              Log.d("repo::getActivity4","response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
 
-                         Log.d("response", "getActivity2 response: is successful")
+                         Log.d("response", "getActivity4 response: is successful")
                          result.value = Result.Success(response.body()!!)
                      }
                  } else {
-                     Log.d("response", "getActivity2 response: unsuccessful")
-                     result.value = Result.Error(IOException("getActivity2 Error: unsuccessful"))
+                     Log.d("response", "getActivity4 response: unsuccessful")
+                     result.value = Result.Error(IOException("getActivity4 Error: unsuccessful"))
                  }
              }
 
              override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
-                 Log.d("no response", "getActivity2 no response")
-                 result.value = Result.Error(IOException("getActivity2 Error: failure", t))
+                 Log.d("no response", "getActivity4 no response")
+                 result.value = Result.Error(IOException("getActivity4 Error: failure", t))
              }
          })
 

@@ -75,9 +75,9 @@ class ProfileRepository {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
                     userInfo!!.value = response.body()
-                    Log.d("success response", "got a response indicating success")
+                    Log.d("success response", "getProfileInfo: got a response indicating success")
                 } else {
-                    Log.d("failure response", "got a response indicating failure")
+                    Log.d("failure response", "getProfileInfo: got a response indicating failure")
                 }
             }
 
@@ -141,6 +141,35 @@ class ProfileRepository {
             }
         })
         return tags as MutableLiveData<List<TagData>>
+    }
+    //Versio millor, en procés. Si la acabo i funciona, faltarà adaptar el ProfileFragment a aixo.
+    fun getUserTagsResult(email: String): MutableLiveData<Result<List<TagData>>> {
+        Log.d("comença getUserTagsRes", "email = "+email)
+        val result = MutableLiveData<Result<List<TagData>>>()
+
+        val call: Call<List<TagData>> = userService!!.getTags(email = email)
+        call.enqueue(object : Callback< List<TagData> > {
+            override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
+                if (response.isSuccessful) {
+                    Log.d("repo::getUserTagsResult", "response.code() == " + response.code())
+                    if(response.code() == 200) {
+                        if (response.body() == null)
+                            Log.d("repo::getUserTagsResult","response.body() == null.")
+
+                        Log.d("response", "getUserTagsResult response: is successful")
+                        result.value = Result.Success(response.body()!!)
+                    }
+                } else {
+                    Log.d("response", "getUserTagsResult response: unsuccessful")
+                    result.value = Result.Error(IOException("getUserTagsResult Error: unsuccessful"))
+                }
+            }
+            override fun onFailure(call: Call< List<TagData> >, t: Throwable) {
+                Log.d("GET", "Error getting getUserTagsResult. communication failure (no response)")
+                result.value = Result.Error(IOException("getUserTagsResult Error: failure", t))
+            }
+        })
+        return result
     }
 
     // per quan agafem la profilePic de backend.
@@ -345,14 +374,14 @@ class ProfileRepository {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     result.value = response.body()?.string()
-                    Log.d("success response", "got a response indicating success")
+                    Log.d("success response", "follow: got a response indicating success")
                 } else {
-                    Log.d("failure response", "got a response indicating failure")
+                    Log.d("failure response", "follow: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GET", "Error getting info. communication failure (no response)")
+                Log.d("GET", "follow: Error getting info. communication failure (no response)")
             }
         })
         return result
@@ -372,14 +401,14 @@ class ProfileRepository {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
                     result.value = response.body()?.string()
-                    Log.d("success response", "got a response indicating success")
+                    Log.d("success response", "stopFollowing: got a response indicating success")
                 } else {
-                    Log.d("failure response", "got a response indicating failure")
+                    Log.d("failure response", "stopFollowing: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GET", "Error getting info. communication failure (no response)")
+                Log.d("GET", "stopFollowing: Error getting info. communication failure (no response)")
             }
         })
         return result
@@ -398,14 +427,14 @@ class ProfileRepository {
             override fun onResponse(call: Call<List<FollowingUser>>, response: Response<List<FollowingUser>>) {
                 if (response.isSuccessful) {
                     result.value = response.body()
-                    Log.d("success response", "got a response indicating success")
+                    Log.d("success response", "following: got a response indicating success")
                 } else {
-                    Log.d("failure response", "got a response indicating failure")
+                    Log.d("failure response", "following: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<List<FollowingUser>>, t: Throwable) {
-                Log.d("GET", "Error getting info. communication failure (no response)")
+                Log.d("GET", "following: Error getting info. communication failure (no response)")
             }
         })
         return result

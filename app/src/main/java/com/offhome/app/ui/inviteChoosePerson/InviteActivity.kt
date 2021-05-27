@@ -284,7 +284,7 @@ class InviteActivity : AppCompatActivity() {
                     "Created by: " + activityInfo.usuariCreador + "\n" +
                     "at: " + activityInfo.dataHoraIni*/
             dynamicLinkUri
-            ), // TODO el URL        //TODO extreure string
+            ),
             currentUID,
             System.currentTimeMillis()
         )

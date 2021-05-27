@@ -154,7 +154,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     // mirar si el usario ya es participante de la actividad
                     if (joined) btnJoin.text = "JOINED"
 
-                    // TODO crec que aquest observer no salta
+                    // aquest observer salta?
                     Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
                     nRemainingParticipants = activity.maxParticipant - it.size
                     Log.d("getParticipants", "nRemainingParticipants = " + nRemainingParticipants.toString())
@@ -559,6 +559,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     else {
                         Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
                         //activity = it.data
+                        activity = it.getDataOrNull() as ActivityFromList
                         //i ja puc mostrar la info
                         iniMostrarActivitat()
                     }

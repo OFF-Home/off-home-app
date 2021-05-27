@@ -21,7 +21,7 @@ import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.ActivityData
+import com.offhome.app.data.model.ActivityData
 import java.util.*
 
 /**

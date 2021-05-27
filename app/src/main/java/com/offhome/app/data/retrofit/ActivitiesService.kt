@@ -2,9 +2,8 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

@@ -1,4 +1,4 @@
-package com.offhome.app.model.profile
+package com.offhome.app.data
 
 
 
@@ -9,14 +9,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.Result
 import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.UserClient
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -54,6 +55,7 @@ class ProfileRepository {
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var accountDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
@@ -438,4 +440,24 @@ class ProfileRepository {
 
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
+
+    fun deleteAccount(email: String): MutableLiveData<ResponseBody> {
+        val call: Call<ResponseBody> = userService!!.deleteAccount(email)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                accountDeletedSuccessfully.value = response.body()
+                if (response.isSuccessful) {
+                    Log.d("response", "deleteAccount response: is successful")
+                } else {
+                    Log.d("response", "deleteAccount response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("DELETE", "Error deleting user account. communication failure (no response)")
+            }
+        })
+        return accountDeletedSuccessfully
+    }
+
 }

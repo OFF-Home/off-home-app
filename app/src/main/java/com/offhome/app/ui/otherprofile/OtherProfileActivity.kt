@@ -17,7 +17,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.UserInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**

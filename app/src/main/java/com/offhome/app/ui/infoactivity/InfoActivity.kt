@@ -40,9 +40,9 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.ActivityDataForInvite
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.ReviewOfParticipant
+import com.offhome.app.data.model.ActivityDataForInvite
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat

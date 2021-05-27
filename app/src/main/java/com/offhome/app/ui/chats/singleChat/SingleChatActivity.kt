@@ -20,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.Message
 
 /**
  * Ativity for a single activity

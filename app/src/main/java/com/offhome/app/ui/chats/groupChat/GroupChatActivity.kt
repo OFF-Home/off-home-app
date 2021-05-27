@@ -28,7 +28,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.model.GroupMessage
+import com.offhome.app.data.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {

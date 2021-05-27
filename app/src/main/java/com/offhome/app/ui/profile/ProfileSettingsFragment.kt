@@ -15,8 +15,11 @@ import android.view.ViewGroup
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.observe
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -38,6 +41,7 @@ class ProfileSettingsFragment: Fragment() {
     lateinit var deleteAccount: TextView
 
     lateinit var btnChangePwd: TextView
+    private lateinit var profileVM: ProfileFragmentViewModel
 
     /**
      * Override the onCreateView method
@@ -90,16 +94,22 @@ class ProfileSettingsFragment: Fragment() {
 
             builder.setCancelable(true)
             builder.setPositiveButton("Delete"){
-                    _, _ ->
                 val user = Firebase.auth.currentUser!!
-                user.delete()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("POST", "User account deleted.")
+                profileVM.deleteAccount().observe(requireContext(), Observer {
+                    if (it != " ") {
+                        Toast.makeText(this, " ", Toast.LENGTH_LONG).show()
+                        if (it == "Account deleted") {
+                            user.delete()
+                                .addOnCompleteListener { task ->
+                                    if (task.isSuccessful) {
+                                        Log.d("POST", "User account deleted.")
+                                        //retornar a la pàgina de log in
+                                    }
+                                }
                         }
                     }
-                //FALTA CRIDA A BACK PER BORRAR EL USER DEL SERVER
-                //després ha de portar a la pàgina del log in
+                }
+                )
             }
             builder.setNegativeButton(
                 "Cancel"

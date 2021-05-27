@@ -8,8 +8,8 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.Rating
-import com.offhome.app.model.ReviewOfParticipant
+import com.offhome.app.data.model.Rating
+import com.offhome.app.data.model.ReviewOfParticipant
 
 /**
  * View Model for InfoActivity

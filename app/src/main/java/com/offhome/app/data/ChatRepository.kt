@@ -6,8 +6,8 @@ import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.data.retrofit.ChatClient
-import com.offhome.app.model.GroupMessage
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.GroupMessage
+import com.offhome.app.data.model.Message
 import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call

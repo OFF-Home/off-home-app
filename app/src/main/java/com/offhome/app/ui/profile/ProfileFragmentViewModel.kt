@@ -6,10 +6,10 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.ProfileRepository
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import okhttp3.ResponseBody
 
 /**
@@ -135,7 +135,10 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param photoPath The path of the photo desired
      */
     fun uploadPhoto(photoPath: String) {
-        val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
-        repository.uploadPhoto(email, photoPath)
+        repository.uploadPhoto(loggedUserEmail, photoPath)
+    }
+
+    fun deleteAccount(): MutableLiveData<ResponseBody> {
+        return repository.deleteAccount(loggedUserEmail)
     }
 }

@@ -5,7 +5,7 @@ package com.offhome.app
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.retrofit.CategoriesClient
-import com.offhome.app.model.Category
+import com.offhome.app.data.model.Category
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response

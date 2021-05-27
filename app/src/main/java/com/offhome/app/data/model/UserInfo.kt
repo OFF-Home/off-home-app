@@ -1,4 +1,4 @@
-package com.offhome.app.model.profile
+package com.offhome.app.data.model
 
 /**
  * Data Class *UserInfo*

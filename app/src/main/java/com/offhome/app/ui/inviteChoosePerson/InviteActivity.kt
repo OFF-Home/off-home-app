@@ -28,10 +28,10 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityDataForInvite
-import com.offhome.app.model.Message
-import com.offhome.app.model.profile.UserInfo
-import com.offhome.app.model.profile.UserSummaryInfo
+import com.offhome.app.data.model.ActivityDataForInvite
+import com.offhome.app.data.model.Message
+import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.UserSummaryInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 class InviteActivity : AppCompatActivity() {

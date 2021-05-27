@@ -11,11 +11,10 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 import java.text.ParseException
 import java.text.SimpleDateFormat
 import java.util.*

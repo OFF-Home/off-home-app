@@ -5,7 +5,7 @@ package com.offhome.app.ui.createactivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
-import com.offhome.app.model.ActivityData
+import com.offhome.app.data.model.ActivityData
 
 /**
  * View Model for CreateActivity Activity

@@ -27,6 +27,7 @@ import retrofit2.Response
  */
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var comments: MutableLiveData<List<String>>? = null
@@ -49,10 +50,28 @@ class ActivitiesRepository {
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Erro getting info")
+                Log.d("GET", "Error getting activities")
             }
         })
         return activities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    fun getOldAct(userEmail: String): MutableLiveData<List<ActivityFromList>> {
+        if (oldActivities == null) oldActivities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getOldActivities(userEmail)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    oldActivities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting old activities")
+            }
+        })
+        return oldActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     /**

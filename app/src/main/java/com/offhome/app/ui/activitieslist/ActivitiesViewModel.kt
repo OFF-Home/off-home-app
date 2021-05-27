@@ -15,6 +15,7 @@ import com.offhome.app.model.ActivityFromList
 class ActivitiesViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
     private lateinit var activitiesList: LiveData<List<ActivityFromList>>
+    private lateinit var oldActivitiesList: LiveData<List<ActivityFromList>>
 
     /**
      * gets the activities from the repository
@@ -22,5 +23,13 @@ class ActivitiesViewModel : ViewModel() {
     fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
         activitiesList = repository.getAll(categoryName)
         return activitiesList
+    }
+
+    /**
+     * gets the activities from the repository
+     */
+    fun getOldActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
+        oldActivitiesList = repository.getOldAct(userEmail)
+        return oldActivitiesList
     }
 }

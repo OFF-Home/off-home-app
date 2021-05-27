@@ -20,6 +20,9 @@ interface ActivitiesService {
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 
+    @GET("activitats/acabades/{userEmail}")
+    fun getOldActivities(@Path("userEmail") userEmail: String): Call<List<ActivityFromList>>
+
     /**
      * This call is for joining an activity
      */

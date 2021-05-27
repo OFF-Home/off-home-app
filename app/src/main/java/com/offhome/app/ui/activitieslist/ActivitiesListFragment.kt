@@ -144,11 +144,11 @@ class ActivitiesListFragment : Fragment() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        if (id == R.id.action_sort) {
-            sortActivities()
+        sortActivities()
+    /*    if (id == R.id.action_sort) {
         } else if (id == R.id.action_sort_categories) {
             sortActivitiesByCategory()
-        }
+        }*/
         return super.onOptionsItemSelected(item)
     }
 
@@ -164,16 +164,19 @@ class ActivitiesListFragment : Fragment() {
                         // ascending clicked
                         dialogInterface.dismiss()
                         activitiesList.sortedBy { it.titol }
+                        activitiesListAdapter.setData(activitiesList)
                     }
                     1 -> {
                         // descending clicked
                         dialogInterface.dismiss()
                         activitiesList.sortedByDescending { it.titol }
+                        activitiesListAdapter.setData(activitiesList)
                     }
                     2 -> {
                         // sorted by date
                         dialogInterface.dismiss()
                         activitiesList.sortedBy { it.dataHoraIni }
+                        activitiesListAdapter.setData(activitiesList)
                     }
                 }
             }.show()

@@ -24,6 +24,7 @@
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
+        <item>Select a category</item>
         <item>Running</item>
         <item>Walking</item>
         <item>Skating</item>

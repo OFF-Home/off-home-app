@@ -72,7 +72,7 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
         }
     }
 
-    fun existsUser(email: String): MutableLiveData<UserInfo> {
+    fun existsUser(email: String): MutableLiveData<Result<UserInfo>> {
         return profileRepository.getProfileInfo(email)
     }
 

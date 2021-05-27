@@ -36,6 +36,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.ui.login.LoginActivity
 
 /**
@@ -115,10 +116,11 @@ class ProfileFragment : Fragment() {
             viewLifecycleOwner,
             Observer {
                 val profileInfoVM = it ?: return@Observer
-
-                textViewUsername.text = profileInfoVM.username
-                estrelles.rating = profileInfoVM.estrelles.toFloat()
-                // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                if (profileInfoVM is Result.Success) {
+                    textViewUsername.text = profileInfoVM.data.username
+                    estrelles.rating = profileInfoVM.data.estrelles.toFloat()
+                    // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                }
             }
         )
 

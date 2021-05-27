@@ -27,6 +27,7 @@ import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
@@ -127,24 +128,34 @@ class LoginActivity : AppCompatActivity() {
                         loginViewModel.existsUser(account.email.toString()).observe(
                             this,
                             Observer { it ->
-                                val profileInfoVM = it ?: signUp(it)
-                            }
-                        )
-                        SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
-                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
-                        SharedPreferenceManager.setStringValue(
-                            Constants().PREF_UID,
-                            FirebaseAuth.getInstance().currentUser!!.uid
-                        )
-                        val welcome = getString(R.string.welcome)
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        Toast.makeText(
-                            applicationContext,
-                            "$welcome ${account.email}",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                                if (it is Result.Success) {
+                                    SharedPreferenceManager.setStringValue(
+                                        Constants().PREF_EMAIL,
+                                        account.email.toString()
+                                    )
+                                    SharedPreferenceManager.setStringValue(
+                                        Constants().PREF_PROVIDER,
+                                        Constants().PREF_PROVIDER_GOOGLE
+                                    )
+                                    SharedPreferenceManager.setStringValue(
+                                        Constants().PREF_UID,
+                                        FirebaseAuth.getInstance().currentUser!!.uid
+                                    )
+                                    SharedPreferenceManager.setStringValue(
+                                        Constants().PREF_USERNAME,
+                                        it.data.username
+                                    )
+                                    val welcome = getString(R.string.welcome)
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "$welcome ${account.email}",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    finish()
+                                } else signUp()
+                            })
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(
@@ -163,11 +174,11 @@ class LoginActivity : AppCompatActivity() {
         }
     }
 
-    private fun signUp(info: UserInfo): UserInfo {
-        val usernameDialog = AlertDialog.Builder(applicationContext)
+    private fun signUp() {
+        val usernameDialog = AlertDialog.Builder(this@LoginActivity)
         val view = layoutInflater.inflate(R.layout.dialog_username, null)
-        usernameDialog.setTitle(R.string.dialog_logout_title)
-        usernameDialog.setMessage(R.string.dialog_logout_message)
+        usernameDialog.setTitle(R.string.set_username)
+        usernameDialog.setMessage(R.string.set_username_description)
         usernameDialog.setPositiveButton(R.string.ok) { dialog, id ->
             loading.visibility = View.VISIBLE
             val user = FirebaseAuth.getInstance().currentUser
@@ -180,6 +191,13 @@ class LoginActivity : AppCompatActivity() {
 
                     loading.visibility = View.GONE
                     if (signUpResultVM.success != null) {
+                        SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, FirebaseAuth.getInstance().currentUser.email)
+                        SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
+                        SharedPreferenceManager.setStringValue(
+                            Constants().PREF_UID,
+                            FirebaseAuth.getInstance().currentUser!!.uid
+                        )
+                        SharedPreferenceManager.setStringValue(Constants().PREF_USERNAME, view.findViewById<EditText>(R.id.editTextUsername).text.toString())
                         val intent = Intent(this, MainActivity::class.java)
                         startActivity(intent)
                         dialog.dismiss()
@@ -201,7 +219,6 @@ class LoginActivity : AppCompatActivity() {
         }
         usernameDialog.setView(view)
         usernameDialog.show()
-        return info
     }
 
     /**

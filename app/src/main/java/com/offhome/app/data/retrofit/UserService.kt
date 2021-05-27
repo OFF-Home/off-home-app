@@ -120,5 +120,5 @@ interface UserService {
     fun getFollowedUsers(@Path("username") email: String): Call<List<UserInfo>>
 
     @DELETE("/users/delete/{email}")
-    fun deleteAccount(@Path("email") email: String?): Call<ResponseBody>
+    fun deleteAccount(@Path("email") email: String): Call<ResponseBody>
 }

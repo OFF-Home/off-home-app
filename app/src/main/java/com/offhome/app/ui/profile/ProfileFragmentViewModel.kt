@@ -65,7 +65,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * calls the functions that do the same for the user's activities and tags
      */
     fun getProfileInfo() {
-        profileInfo = repository.getProfileInfo(loggedUserEmail)!!
+        profileInfo = repository.getProfileInfo(loggedUserEmail)
 
         getMyActivities()
         getTags()
@@ -75,14 +75,15 @@ class ProfileFragmentViewModel : ViewModel() {
      * obtains myActivities from the lower level and places them on the live data
      */
     private fun getMyActivities() {
-        myActivities = repository.getUserActivities(loggedUserEmail)!! // funciona amb myActivities i no amb _myActivities
+        myActivities =
+            repository.getUserActivities(loggedUserEmail) // funciona amb myActivities i no amb _myActivities
     }
 
     /**
      * obtains tags from the lower level and places them on the live data
      */
     private fun getTags() {
-        tags = repository.getUserTags(loggedUserEmail)!!
+        tags = repository.getUserTags(loggedUserEmail)
     }
 
     /**
@@ -94,7 +95,7 @@ class ProfileFragmentViewModel : ViewModel() {
      */
     fun usernameChangedByUser(newUsername: Editable) {
         // repository.setUsername(loggedUserEmail, newUsername.toString())
-        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
+        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())
     }
 
     /**
@@ -139,11 +140,6 @@ class ProfileFragmentViewModel : ViewModel() {
     }
 
     fun deleteAccount(): MutableLiveData<String> {
-        return repository.deleteAccount(loggedUserEmail)!!
-    }
-
-    fun deleteAccount(){
-        //delete account from back
-        repository.deleteAccount()
+        return repository.deleteAccount(loggedUserEmail)
     }
 }

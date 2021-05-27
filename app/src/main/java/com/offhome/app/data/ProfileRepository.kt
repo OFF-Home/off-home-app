@@ -441,7 +441,7 @@ class ProfileRepository {
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
 
-    fun deleteAccount(email: String): MutableLiveData<String>? {
+    fun deleteAccount(email: String): MutableLiveData<String> {
         val call: Call<ResponseBody> = userService!!.deleteAccount(email)
 
         call.enqueue(object : Callback<ResponseBody> {
@@ -449,14 +449,14 @@ class ProfileRepository {
                 if (response.isSuccessful) {
                     accountDeletedSuccessfully!!.value = "Account deleted"
                 } else {
-                    Log.d("response", "delete account response unsuccessful")
+                    accountDeletedSuccessfully!!.value = "delete account response unsuccessful"
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("DELETE", "Error deleting user account. communication failure (no response)")
+                accountDeletedSuccessfully!!.value = "Error deleting user account. communication failure (no response)"
             }
         })
-        return accountDeletedSuccessfully
+        return accountDeletedSuccessfully!!
     }
 
 }

@@ -16,13 +16,14 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.Observer
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.createactivity.CreateActivityViewModel
+import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
 /**
@@ -74,7 +75,8 @@ class ProfileSettingsFragment: Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        profileVM = ViewModelProviders.of(this).get(ProfileFragmentViewModel::class.java)
+        val profileFragment: ProfileFragment = parentFragment as ProfileFragment
+        profileVM = profileFragment.getViewModel()
 
         emailTV = view.findViewById(R.id.emailUser2)
         usernameTV = view.findViewById(R.id.nameUser2)
@@ -110,30 +112,32 @@ class ProfileSettingsFragment: Fragment() {
     @SuppressLint("SetTextI18n")
     private fun deleteAccount(){
         deleteAccount.setOnClickListener {
-
             val builder = AlertDialog.Builder(context)
             val title = TextView(context)
             title.text = "Delete your account"
             title.setPadding(10, 10, 10, 10)
             title.gravity = CENTER
             title.textSize = 18F
+            val user = Firebase.auth.currentUser!!
+
             builder.setCustomTitle(title)
             builder.setMessage("Are you sure you want to delete your account? This will permanently erase your account.")
-
             builder.setCancelable(true)
-            builder.setPositiveButton("Delete"){
-                    _, _ ->
-                val user = Firebase.auth.currentUser!!
-                user.delete()
-                    .addOnCompleteListener { task ->
-                        if (task.isSuccessful) {
-                            Log.d("POST", "User account deleted.")
-                            profileVM.deleteAccount()
-                        }
-                        else Toast.makeText(context, "There has been an error and the account has not been deleted", Toast.LENGTH_LONG).show()
-                    }
-                //FALTA CRIDA A BACK PER BORRAR EL USER DEL SERVER
-                //després ha de portar a la pàgina del log in
+            builder.setPositiveButton("Delete"){ _, _ ->
+                profileVM.deleteAccount().observe(viewLifecycleOwner, { sth ->
+                    if (sth.equals("Account deleted")) {
+                        user.delete()
+                            .addOnCompleteListener { task ->
+                                if (task.isSuccessful) {
+                                    Log.d("POST", "User account deleted")
+                                    Toast.makeText(context, "User account deleted", Toast.LENGTH_LONG).show()
+
+                                    val intent = Intent(context, LoginActivity::class.java)
+                                    startActivity(intent)
+                                    //retornar a la pàgina de log in
+                                } } }
+                    else Toast.makeText(context, sth, Toast.LENGTH_LONG).show()
+                })
             }
             builder.setNegativeButton(
                 "Cancel"
@@ -141,7 +145,6 @@ class ProfileSettingsFragment: Fragment() {
             val alert = builder.create()
             alert.show()
         }
-
     }
 
     /**

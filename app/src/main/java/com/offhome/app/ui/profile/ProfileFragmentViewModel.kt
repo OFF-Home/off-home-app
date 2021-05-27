@@ -138,7 +138,7 @@ class ProfileFragmentViewModel : ViewModel() {
         repository.uploadPhoto(loggedUserEmail, photoPath)
     }
 
-    fun deleteAccount(): MutableLiveData<ResponseBody> {
-        return repository.deleteAccount(loggedUserEmail)
+    fun deleteAccount(): MutableLiveData<String> {
+        return repository.deleteAccount(loggedUserEmail)!!
     }
 }

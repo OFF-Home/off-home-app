@@ -55,7 +55,7 @@ class ProfileRepository {
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
-    var accountDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var accountDeletedSuccessfully: MutableLiveData<String>? = MutableLiveData(" ")
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
@@ -441,16 +441,15 @@ class ProfileRepository {
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
 
-    fun deleteAccount(email: String): MutableLiveData<ResponseBody> {
+    fun deleteAccount(email: String): MutableLiveData<String>? {
         val call: Call<ResponseBody> = userService!!.deleteAccount(email)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                accountDeletedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
-                    Log.d("response", "deleteAccount response: is successful")
+                    accountDeletedSuccessfully!!.value = "Account deleted"
                 } else {
-                    Log.d("response", "deleteAccount response: unsuccessful")
+                    Log.d("response", "delete account response unsuccessful")
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {

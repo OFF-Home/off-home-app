@@ -60,6 +60,9 @@ class ProfileSettingsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+        val profileFragment: ProfileFragment = parentFragment as ProfileFragment
+        profileVM = profileFragment.getViewModel()
+
         return inflater.inflate(R.layout.profile_settings_fragment, container, false)
     }
 
@@ -82,34 +85,29 @@ class ProfileSettingsFragment: Fragment() {
 
         deleteAccount = view.findViewById(R.id.deleteAccount)
         deleteAccount.setOnClickListener {
-
             val builder = AlertDialog.Builder(context)
             val title = TextView(context)
             title.text = "Delete your account"
             title.setPadding(10, 10, 10, 10)
             title.gravity = CENTER
             title.textSize = 18F
+            val user = Firebase.auth.currentUser!!
+
             builder.setCustomTitle(title)
             builder.setMessage("Are you sure you want to delete your account? This will permanently erase your account.")
-
             builder.setCancelable(true)
-            builder.setPositiveButton("Delete"){
-                val user = Firebase.auth.currentUser!!
-                profileVM.deleteAccount().observe(requireContext(), Observer {
-                    if (it != " ") {
-                        Toast.makeText(this, " ", Toast.LENGTH_LONG).show()
-                        if (it == "Account deleted") {
+            builder.setPositiveButton("Delete"){ _, _ ->
+                profileVM.deleteAccount().observe(viewLifecycleOwner, Observer { sth ->
+                    if (sth.equals(" ")) {
+                        Toast.makeText(context, " ", Toast.LENGTH_LONG).show() }
+                    else if (sth.equals("Account deleted")) {
                             user.delete()
                                 .addOnCompleteListener { task ->
                                     if (task.isSuccessful) {
                                         Log.d("POST", "User account deleted.")
                                         //retornar a la pàgina de log in
-                                    }
-                                }
-                        }
-                    }
-                }
-                )
+                                    } } }
+                })
             }
             builder.setNegativeButton(
                 "Cancel"

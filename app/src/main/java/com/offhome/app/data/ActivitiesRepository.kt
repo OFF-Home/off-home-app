@@ -9,7 +9,6 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
-import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback

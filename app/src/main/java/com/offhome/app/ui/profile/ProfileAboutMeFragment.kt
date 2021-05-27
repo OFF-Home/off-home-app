@@ -73,7 +73,6 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var editTextProfileDescription: EditText
     private lateinit var viewAsOtherProfile: Button
 
-
     /**
      * Override the onCreateView method
      *
@@ -517,5 +516,4 @@ class ProfileAboutMeFragment : Fragment() {
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
     }
-
 }

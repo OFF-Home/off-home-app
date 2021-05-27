@@ -69,7 +69,7 @@ class SingleChatActivity : AppCompatActivity() {
         }
         title = userName
         myRef = if (userUid!! < SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!) database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
-                else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
+        else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
@@ -135,7 +135,7 @@ class SingleChatActivity : AppCompatActivity() {
 
     private fun sendMessage() {
         if (!exists) {
-            val referenceUser1 = database.getReference("usuaris/${userUid}")
+            val referenceUser1 = database.getReference("usuaris/$userUid")
             val referenceUser2 = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
             referenceUser1.push().setValue(SharedPreferenceManager.getStringValue(Constants().PREF_UID))
             referenceUser2.push().setValue(userUid)

@@ -139,8 +139,8 @@ class ProfileFragmentViewModel : ViewModel() {
         repository.uploadPhoto(email, photoPath)
     }
 
-    fun deleteAccount(){
-        //delete account from back
+    fun deleteAccount() {
+        // delete account from back
         repository.deleteAccount()
     }
 }

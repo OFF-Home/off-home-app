@@ -1,9 +1,9 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
-import android.content.DialogInterface
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -22,7 +22,6 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.ui.createactivity.CreateActivityViewModel
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
 /**
@@ -35,10 +34,10 @@ import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
  *
  */
 @Suppress("DEPRECATION")
-class ProfileSettingsFragment: Fragment() {
+class ProfileSettingsFragment : Fragment() {
 
-    lateinit var usernameTV : TextView
-    lateinit var emailTV : TextView
+    lateinit var usernameTV: TextView
+    lateinit var emailTV: TextView
     lateinit var deleteAccount: TextView
     lateinit var btnChangePwd: TextView
     lateinit var btnNotifications: ImageView
@@ -91,11 +90,10 @@ class ProfileSettingsFragment: Fragment() {
         manageNotifications()
     }
 
-
     /**
      * This function inicializes the user information - the user name and his/her email - in the Settings screen inside the app profile
      */
-    private fun manageUserInfo(){
+    private fun manageUserInfo() {
         emailTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
         emailTV.setTextColor(Color.LTGRAY)
 
@@ -108,7 +106,7 @@ class ProfileSettingsFragment: Fragment() {
      * It also calls the Firebase to delete the user from there and the viewModel to send the info to the back.
      */
     @SuppressLint("SetTextI18n")
-    private fun deleteAccount(){
+    private fun deleteAccount() {
         deleteAccount.setOnClickListener {
 
             val builder = AlertDialog.Builder(context)
@@ -121,19 +119,18 @@ class ProfileSettingsFragment: Fragment() {
             builder.setMessage("Are you sure you want to delete your account? This will permanently erase your account.")
 
             builder.setCancelable(true)
-            builder.setPositiveButton("Delete"){
-                    _, _ ->
+            builder.setPositiveButton("Delete") {
+                _, _ ->
                 val user = Firebase.auth.currentUser!!
                 user.delete()
                     .addOnCompleteListener { task ->
                         if (task.isSuccessful) {
                             Log.d("POST", "User account deleted.")
                             profileVM.deleteAccount()
-                        }
-                        else Toast.makeText(context, "There has been an error and the account has not been deleted", Toast.LENGTH_LONG).show()
+                        } else Toast.makeText(context, "There has been an error and the account has not been deleted", Toast.LENGTH_LONG).show()
                     }
-                //FALTA CRIDA A BACK PER BORRAR EL USER DEL SERVER
-                //després ha de portar a la pàgina del log in
+                // FALTA CRIDA A BACK PER BORRAR EL USER DEL SERVER
+                // després ha de portar a la pàgina del log in
             }
             builder.setNegativeButton(
                 "Cancel"
@@ -141,13 +138,12 @@ class ProfileSettingsFragment: Fragment() {
             val alert = builder.create()
             alert.show()
         }
-
     }
 
     /**
      * This function manages the change of the user's password.
      */
-    private fun changePassword(){
+    private fun changePassword() {
         btnChangePwd.setOnClickListener {
             if (SharedPreferenceManager.getStringValue(Constants().PREF_PROVIDER) == Constants().PREF_PROVIDER_PASSWORD)
                 requireActivity().run {
@@ -166,21 +162,19 @@ class ProfileSettingsFragment: Fragment() {
     /**
      * This function manages the Notifications preferences (on / off)
      */
-    private fun manageNotifications(){
+    private fun manageNotifications() {
         var clicked = false
         btnNotifications.setOnClickListener {
             clicked = !clicked
-            if (clicked){
+            if (clicked) {
                 btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
                 Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                //crida a Back
-            }
-            else {
+                // crida a Back
+            } else {
                 btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
                 Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                //crida a Back
+                // crida a Back
             }
         }
     }
-
 }

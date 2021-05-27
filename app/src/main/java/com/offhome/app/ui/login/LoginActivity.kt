@@ -15,7 +15,6 @@ import android.view.inputmethod.EditorInfo
 import android.widget.*
 import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
-import androidx.appcompat.app.AppCompatDelegate
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
@@ -125,9 +124,12 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
-                        loginViewModel.existsUser(account.email.toString()).observe(this, Observer { it ->
-                            val profileInfoVM = it ?: signUp(it)
-                        })
+                        loginViewModel.existsUser(account.email.toString()).observe(
+                            this,
+                            Observer { it ->
+                                val profileInfoVM = it ?: signUp(it)
+                            }
+                        )
                         SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
                         SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
                         SharedPreferenceManager.setStringValue(
@@ -171,24 +173,28 @@ class LoginActivity : AppCompatActivity() {
             val user = FirebaseAuth.getInstance().currentUser
             val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
                 .get(SignUpViewModel::class.java)
-            signUpViewModel.signUpResult.observe(this, Observer {
-                val signUpResultVM = it ?: return@Observer
+            signUpViewModel.signUpResult.observe(
+                this,
+                Observer {
+                    val signUpResultVM = it ?: return@Observer
 
-                loading.visibility = View.GONE
-                if (signUpResultVM.success != null) {
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    dialog.dismiss()
-                } else {
-                    Toast.makeText(this, getString(R.string.error_username), Toast.LENGTH_LONG).show()
+                    loading.visibility = View.GONE
+                    if (signUpResultVM.success != null) {
+                        val intent = Intent(this, MainActivity::class.java)
+                        startActivity(intent)
+                        dialog.dismiss()
+                    } else {
+                        Toast.makeText(this, getString(R.string.error_username), Toast.LENGTH_LONG).show()
+                    }
+                    setResult(Activity.RESULT_OK)
                 }
-                setResult(Activity.RESULT_OK)
-            })
+            )
             signUpViewModel.signUpBack(
                 user.email,
                 view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
                 user.uid,
-                this)
+                this
+            )
         }
         usernameDialog.setNegativeButton(R.string.cancel) { dialog, id ->
             dialog.dismiss()

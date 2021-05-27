@@ -6,12 +6,12 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
 import okhttp3.ResponseBody
-import com.offhome.app.data.Result
 
 /**
  * Class *ProfileFragmentViewModel*

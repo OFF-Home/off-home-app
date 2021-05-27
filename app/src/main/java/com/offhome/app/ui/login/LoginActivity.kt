@@ -28,7 +28,6 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
@@ -155,7 +154,8 @@ class LoginActivity : AppCompatActivity() {
                                     ).show()
                                     finish()
                                 } else signUp()
-                            })
+                            }
+                        )
                     } else {
                         Log.w("LOGIN", "signInWithEmail:failure", it.exception)
                         Toast.makeText(

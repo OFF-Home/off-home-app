@@ -22,6 +22,7 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
@@ -73,7 +74,6 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var editTextProfileDescription: EditText
     private lateinit var viewAsOtherProfile: Button
 
-
     /**
      * Override the onCreateView method
      *
@@ -112,10 +112,12 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val profileInfoVM = it ?: return@Observer
                 // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
+                if (profileInfoVM is Result.Success) {
+                    textViewProfileDescription.text = profileInfoVM.data.description
+                    textViewBirthDate.text = profileInfoVM.data.birthDate
+                    textViewFollowerCount.text = profileInfoVM.data.followers.toString()
+                    textViewFollowingCount.text = profileInfoVM.data.following.toString()
+                }
             }
         )
         profileVM.tags.observe(
@@ -517,5 +519,4 @@ class ProfileAboutMeFragment : Fragment() {
         intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
         startActivity(intentCanviAOtherProfile)
     }
-
 }

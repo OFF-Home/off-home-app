@@ -244,4 +244,7 @@
     <string name="datatime">DataTime</string>
     <string name="places_available">Places available</string>
     <string name="this_is_the_description_of_the_activity">This is the description of the activity.</string>
+    <string name="error_username">Username has already been chosen</string>
+    <string name="set_username">Username</string>
+    <string name="set_username_description">Please, set your username</string>
 </resources>

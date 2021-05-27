@@ -37,7 +37,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
             0 -> ProfileMyActivitiesFragment()
             1 -> ProfileAboutMeFragment()
             else -> ProfileSettingsFragment()
-            //else -> ProfilePlaceholderFragment() // Placeholder, change when creating the settings fragment
+            // else -> ProfilePlaceholderFragment() // Placeholder, change when creating the settings fragment
         }
     }
 

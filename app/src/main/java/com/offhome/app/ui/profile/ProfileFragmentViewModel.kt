@@ -141,4 +141,9 @@ class ProfileFragmentViewModel : ViewModel() {
     fun deleteAccount(): MutableLiveData<String> {
         return repository.deleteAccount(loggedUserEmail)!!
     }
+
+    fun deleteAccount(){
+        //delete account from back
+        repository.deleteAccount()
+    }
 }

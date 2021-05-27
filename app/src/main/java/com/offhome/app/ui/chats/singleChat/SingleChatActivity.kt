@@ -45,6 +45,8 @@ class SingleChatActivity : AppCompatActivity() {
     private var numMessages = 0
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
+    private var exists = true
+    private lateinit var userUid: String
 
     /**
      * It is called when creating the activity and has all the connection with database
@@ -55,7 +57,7 @@ class SingleChatActivity : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val arguments = intent.extras
-        val userUid = arguments?.getString("uid")
+        userUid = arguments?.getString("uid").toString()
         val userName = arguments?.getString("username")
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
@@ -66,15 +68,16 @@ class SingleChatActivity : AppCompatActivity() {
             adapter = messagesAdapter
         }
         title = userName
-        myRef = database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+        myRef = if (userUid!! < SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!) database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+                else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
-                    myRef = database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
+                    exists = false
                 }
                 myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        var listMessages = ArrayList<Message>()
+                        val listMessages = ArrayList<Message>()
                         numMessages = dataSnapshot.childrenCount.toInt()
                         val iterator = dataSnapshot.children.iterator()
                         while (iterator.hasNext()) {
@@ -112,14 +115,7 @@ class SingleChatActivity : AppCompatActivity() {
                                 Toast.LENGTH_LONG
                             ).show()
                         else {
-                            ++numMessages
-                            val message = Message(
-                                editTextNewMessage.text.toString(),
-                                SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
-                                System.currentTimeMillis()
-                            )
-                            myRef.child("m$numMessages").setValue(message)
-                            editTextNewMessage.text.clear()
+                            sendMessage()
                         }
                 }
                 false
@@ -131,16 +127,27 @@ class SingleChatActivity : AppCompatActivity() {
                         Toast.LENGTH_LONG
                     ).show()
                 else {
-                    ++numMessages
-                    val message = Message(
-                        editTextNewMessage.text.toString(),
-                        SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
-                        System.currentTimeMillis()
-                    )
-                    myRef.child("m$numMessages").setValue(message)
-                    editTextNewMessage.text.clear()
+                    sendMessage()
                 }
             }
         }
+    }
+
+    private fun sendMessage() {
+        if (!exists) {
+            val referenceUser1 = database.getReference("usuaris/${userUid}")
+            val referenceUser2 = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
+            referenceUser1.push().setValue(SharedPreferenceManager.getStringValue(Constants().PREF_UID))
+            referenceUser2.push().setValue(userUid)
+            exists = true
+        }
+        ++numMessages
+        val message = Message(
+            editTextNewMessage.text.toString(),
+            SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
+            System.currentTimeMillis()
+        )
+        myRef.child("m$numMessages").setValue(message)
+        editTextNewMessage.text.clear()
     }
 }

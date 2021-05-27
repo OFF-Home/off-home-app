@@ -45,6 +45,7 @@ import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
+import com.offhome.app.ui.profile.ProfileFragmentViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -76,6 +77,8 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var btnsubmit: Button
     private var reviewsList: MutableList<ReviewOfParticipant> = ArrayList()
     private lateinit var btnAddCalendar: Button
+
+    private lateinit var userUID: String
 
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
@@ -265,14 +268,9 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                     .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
                                         val intent = Intent(this, GroupChatActivity::class.java)
-                                        intent.putExtra(
-                                            "usuariCreador",
-                                            "xNuDwnUek5Q4mcceIAwGKO3lY5k2"
-                                        )
-                                        intent.putExtra(
-                                            "dataHI",
-                                            activity.dataHoraIni.split(".")[0]
-                                        )
+                                        intent.putExtra("usuariCreador", activity.usuariCreador)
+                                        //intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+                                        intent.putExtra("dataHI", activity.dataHoraIni)
                                         intent.putExtra("titleAct", activity.titol)
                                         startActivity(intent)
                                         finish()
@@ -390,14 +388,26 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun displayChatGroup() {
         groupChat = findViewById(R.id.joinGroupChat)
         groupChat.setOnClickListener {
+
+            viewModel.getProfileInfoByUsername(activity.usuariCreador)
+            viewModel.profileInfo.observe(
+                this, Observer@{
+                    val profileInfoVM = it ?: return@Observer
+                    userUID = profileInfoVM.uid
+                }
+            )
+
             // go to GroupChatActivity only if the user has joined the activity
             val intent = Intent(this, GroupChatActivity::class.java)
-            intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
+            intent.putExtra("usuariCreador", userUID)
             intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+            intent.putExtra("titleAct", activity.titol)
             startActivity(intent)
             finish()
         }
     }
+
+
 
     /**
      * Manipulates the map once available.

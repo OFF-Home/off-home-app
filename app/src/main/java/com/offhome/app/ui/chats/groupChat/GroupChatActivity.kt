@@ -54,7 +54,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         val arguments = intent.extras
         // this.title = arguments?.getString("titleAct").toString()
-        this.title = "Correr"
+        title = arguments?.getString("titleAct").toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         userUid = arguments?.getString("usuariCreador").toString()

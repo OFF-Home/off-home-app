@@ -3,6 +3,7 @@ package com.offhome.app.ui.login
 
 
 import android.app.Activity
+import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -27,6 +28,7 @@ import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
@@ -123,15 +125,9 @@ class LoginActivity : AppCompatActivity() {
                 FirebaseAuth.getInstance().signInWithCredential(credential).addOnCompleteListener {
                     if (it.isSuccessful) {
                         Log.d("LOGIN", "signInWithEmail:success")
-                        val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
-                            .get(SignUpViewModel::class.java)
-                        signUpViewModel.signUp(
-                            account.email.toString(),
-                            account.displayName.toString(),
-                            null,
-                            null,
-                            this
-                        )
+                        loginViewModel.existsUser(account.email.toString()).observe(this, Observer { it ->
+                            val profileInfoVM = it ?: signUp(it)
+                        })
                         SharedPreferenceManager.setStringValue(Constants().PREF_EMAIL, account.email.toString())
                         SharedPreferenceManager.setStringValue(Constants().PREF_PROVIDER, Constants().PREF_PROVIDER_GOOGLE)
                         SharedPreferenceManager.setStringValue(
@@ -163,6 +159,43 @@ class LoginActivity : AppCompatActivity() {
                 ).show()
             }
         }
+    }
+
+    private fun signUp(info: UserInfo): UserInfo {
+        val usernameDialog = AlertDialog.Builder(applicationContext)
+        val view = layoutInflater.inflate(R.layout.dialog_username, null)
+        usernameDialog.setTitle(R.string.dialog_logout_title)
+        usernameDialog.setMessage(R.string.dialog_logout_message)
+        usernameDialog.setPositiveButton(R.string.ok) { dialog, id ->
+            loading.visibility = View.VISIBLE
+            val user = FirebaseAuth.getInstance().currentUser
+            val signUpViewModel = ViewModelProvider(this, SignUpViewModelFactory())
+                .get(SignUpViewModel::class.java)
+            signUpViewModel.signUpResult.observe(this, Observer {
+                val signUpResultVM = it ?: return@Observer
+
+                loading.visibility = View.GONE
+                if (signUpResultVM.success != null) {
+                    val intent = Intent(this, MainActivity::class.java)
+                    startActivity(intent)
+                    dialog.dismiss()
+                } else {
+                    Toast.makeText(this, getString(R.string.error_username), Toast.LENGTH_LONG).show()
+                }
+                setResult(Activity.RESULT_OK)
+            })
+            signUpViewModel.signUpBack(
+                user.email,
+                view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
+                user.uid,
+                this)
+        }
+        usernameDialog.setNegativeButton(R.string.cancel) { dialog, id ->
+            dialog.dismiss()
+        }
+        usernameDialog.setView(view)
+        usernameDialog.show()
+        return info
     }
 
     /**

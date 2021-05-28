@@ -85,11 +85,7 @@ class InfoActivityViewModel : ViewModel() {
         return reviews
     }
 
-    fun getProfileInfoByUsername(username: String) {
-        val result: Result<MutableLiveData<UserInfo>> = repositoryProfile.getProfileInfoByUsername(username)
-
-        if (result is Result.Success) {
-            profileInfo.value = result.data.value
-        }
+    fun getProfileInfo(email: String) {
+        profileInfo = repositoryProfile.getProfileInfo(email)
     }
 }

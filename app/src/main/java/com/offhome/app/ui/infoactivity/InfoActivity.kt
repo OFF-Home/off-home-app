@@ -79,6 +79,7 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var btnAddCalendar: Button
 
     private lateinit var userUID: String
+    private lateinit var username: String
 
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
@@ -87,7 +88,7 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
@@ -107,6 +108,17 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             layoutManager = LinearLayoutManager(context)
             adapter = participantsAdapter
         }
+        val creator = findViewById<TextView>(R.id.textViewCreator)
+        viewModel.getProfileInfo(activity.usuariCreador)
+        viewModel.profileInfo.observe(
+            this, Observer@{
+                val profileInfoVM = it ?: return@Observer
+                userUID = profileInfoVM.uid
+                username = profileInfoVM.username
+
+                creator.text = getString(R.string.created_by) + " " + username
+            }
+        )
 
         val btnJoin = findViewById<Button>(R.id.btn_join)
 
@@ -139,9 +151,6 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
-
-        val creator = findViewById<TextView>(R.id.textViewCreator)
-        creator.text = getString(R.string.created_by) + activity.usuariCreador
 
         val capacity = findViewById<TextView>(R.id.textViewCapacity)
         capacity.text = activity.maxParticipant.toString()
@@ -388,15 +397,6 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun displayChatGroup() {
         groupChat = findViewById(R.id.joinGroupChat)
         groupChat.setOnClickListener {
-
-            viewModel.getProfileInfoByUsername(activity.usuariCreador)
-            viewModel.profileInfo.observe(
-                this, Observer@{
-                    val profileInfoVM = it ?: return@Observer
-                    userUID = profileInfoVM.uid
-                }
-            )
-
             // go to GroupChatActivity only if the user has joined the activity
             val intent = Intent(this, GroupChatActivity::class.java)
             intent.putExtra("usuariCreador", userUID)

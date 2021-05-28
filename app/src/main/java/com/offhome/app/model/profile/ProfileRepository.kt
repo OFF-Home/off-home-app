@@ -144,7 +144,7 @@ class ProfileRepository {
     }
     //Versio millor, en procés. Si la acabo i funciona, faltarà adaptar el ProfileFragment a aixo.
     fun getUserTagsResult(email: String): MutableLiveData<Result<List<TagData>>> {
-        Log.d("comença getUserTagsRes", "email = "+email)
+        Log.d("comença getUserTagsRes", "email = "+ email)
         val result = MutableLiveData<Result<List<TagData>>>()
 
         val call: Call<List<TagData>> = userService!!.getTags(email = email)

@@ -238,6 +238,7 @@ class ActivitiesRepository {
 
      fun getActivity4(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
          val result = MutableLiveData<Result<ActivityFromList>>()
+         //val activityCreator = "agnesmgomez@gmail.com"; val activityDateTime = "2021-5-29 23:59:00"
          Log.d("making dynLink call", "activityCreator = "+activityCreator+" activityDateTime = "+activityDateTime)
 
          val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)

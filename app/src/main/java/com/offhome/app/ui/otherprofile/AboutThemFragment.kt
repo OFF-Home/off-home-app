@@ -105,10 +105,14 @@ class AboutThemFragment : Fragment() {
                 Log.d("tags", "tags arriben al aboutThemFragment2")
 
 
-                if (it.toString().contains("unsuccessful"))
-                    Toast.makeText(context,"unsuccessful", Toast.LENGTH_LONG).show()
-                else if (it.toString().contains("failure"))
-                    Toast.makeText(context,"communication failure", Toast.LENGTH_LONG).show()
+                if (it.toString().contains("unsuccessful")) {
+                    Log.d("tags", "userTagsFromBack.observe: Result és unsuccessful")
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
+                }
+                else if (it.toString().contains("failure")) {
+                    Log.d("tags", "userTagsFromBack.observe: Result és comm failure")
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
+                }
                 else {
                     //TODO esto
                     omplirTagGroup(tagsVM.getDataOrNull() as List<TagData>)

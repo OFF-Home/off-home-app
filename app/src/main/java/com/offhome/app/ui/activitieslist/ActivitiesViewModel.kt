@@ -18,7 +18,7 @@ class ActivitiesViewModel : ViewModel() {
     private lateinit var oldActivitiesList: LiveData<List<ActivityFromList>>
 
     /**
-     * gets the activities from the repository
+     * gets the activities of a category from the repository
      */
     fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
         activitiesList = repository.getAll(categoryName)
@@ -26,7 +26,7 @@ class ActivitiesViewModel : ViewModel() {
     }
 
     /**
-     * gets the activities from the repository
+     * gets the old activities a user has joined from the repository
      */
     fun getOldActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
         oldActivitiesList = repository.getOldAct(userEmail)

@@ -20,6 +20,9 @@ interface ActivitiesService {
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 
+    /**
+     * This call is to get the old activities
+     */
     @GET("activitats/acabades/{userEmail}")
     fun getOldActivities(@Path("userEmail") userEmail: String): Call<List<ActivityFromList>>
 

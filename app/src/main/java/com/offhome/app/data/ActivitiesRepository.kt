@@ -38,6 +38,11 @@ class ActivitiesRepository {
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
 
+    /**
+     * This function calls the [activitiesService] in order to get all the activities in a category
+     * @param categoryName is the category that we want to get the activities of
+     * @return the result with a live data list of the data class ActivityFromList
+     */
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
         val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
@@ -56,6 +61,11 @@ class ActivitiesRepository {
         return activities as MutableLiveData<List<ActivityFromList>>
     }
 
+    /**
+     * This function calls the [activitiesService] in order to get all the old activities that a user has joined
+     * @param userEmail is the email of the user
+     * @return the result with a live data list of the data class ActivityFromList
+     */
     fun getOldAct(userEmail: String): MutableLiveData<List<ActivityFromList>> {
         if (oldActivities == null) oldActivities = MutableLiveData<List<ActivityFromList>>()
         val call: Call<List<ActivityFromList>> = activitiesService!!.getOldActivities(userEmail)

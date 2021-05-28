@@ -79,7 +79,7 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
 
     /**
      * sets the new data and notifies to the adapter to refresh if necessary
-     * @param activitiesList is the new list of activites to set
+     * @param oldActivitiesList is the new list of activites to set
      */
     fun setData(oldActivitiesList: List<ActivityFromList>?) {
         this.oldActivitiesList = oldActivitiesList!!
@@ -113,24 +113,4 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
             return super.toString()
         }
     }
-
-    /* no se si cal
-    fun performFiltering(constraint: CharSequence?) {
-        if (tempListAct.isNotEmpty()) activitiesList = tempListAct
-
-        tempListAct = ArrayList(activitiesList)
-        this.listActivitiesFull = ArrayList(activitiesList)
-
-        val charSearch = constraint.toString()
-        listActivitiesFull = if (charSearch.isEmpty()) tempListAct
-        else {
-            val resultList = ArrayList<ActivityFromList>()
-            for (row in activitiesList) {
-                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
-            }
-            resultList
-        }
-        activitiesList = listActivitiesFull
-        notifyDataSetChanged()
-    }*/
 }

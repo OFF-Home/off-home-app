@@ -53,7 +53,6 @@ class GroupChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_chat)
 
         val arguments = intent.extras
-        // this.title = arguments?.getString("titleAct").toString()
         title = arguments?.getString("titleAct").toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
@@ -147,7 +146,7 @@ class GroupChatActivity : AppCompatActivity() {
                             userUid.toString(),
                             it1,
                             uid_user.toString(),
-                            data_ini.toString(),
+                            data_ini,
                             System.currentTimeMillis()
                         )
                     }

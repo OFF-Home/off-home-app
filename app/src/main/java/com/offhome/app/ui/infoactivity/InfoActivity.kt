@@ -45,7 +45,6 @@ import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
-import com.offhome.app.ui.profile.ProfileFragmentViewModel
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -84,6 +83,10 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
 
+    private lateinit var btnJoin: Button
+    private lateinit var creator: TextView
+    private lateinit var layout: View
+
     /**
      * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
@@ -101,14 +104,153 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
-
         participantsAdapter = ParticipantsRecyclerViewAdapter()
+
+        btnJoin = findViewById(R.id.btn_join)
+        creator = findViewById(R.id.textViewCreator)
         layoutParticipants = findViewById(R.id.listParticipants)
+
         with(layoutParticipants) {
             layoutManager = LinearLayoutManager(context)
             adapter = participantsAdapter
         }
-        val creator = findViewById<TextView>(R.id.textViewCreator)
+
+        setInfoUsuariCreador()
+        uploadParticipants()
+
+        val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
+        datahora.text = activity.dataHoraIni
+
+        val capacity = findViewById<TextView>(R.id.textViewCapacity)
+        capacity.text = activity.maxParticipant.toString()
+
+        val description = findViewById<TextView>(R.id.textViewDescription)
+        description.text = activity.descripcio
+
+        estrelles = findViewById(R.id.ratingStars)
+        comment = findViewById(R.id.yourcomment)
+        btnsubmit = findViewById(R.id.submitcomment)
+        btnAddCalendar = findViewById(R.id.btnAddToCalendar)
+
+        // get the current date
+        val currentTime = Calendar.getInstance().time
+        // change final date format
+        var date = changeDateFormat()
+
+        // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
+        if (date != null) {
+            if (!joined or (date > currentTime)) cantreview()
+        }
+
+        valoracioUsuari()
+
+        showReviews()
+
+        btnJoin.setOnClickListener {
+        joined = !joined
+        if (joined) {
+            btnJoin.text = "JOINED"
+            if (date < currentTime) reviewpossible()
+            else cantreview()
+            viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
+                this,
+                {
+                    if (it != " ") {
+                        if (it == "You have joined the activity!") {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.go_chat)) {
+                                    displayChatGroup()
+                                }
+                            snackbar.show()
+                            val participants = ArrayList<UserUsername>()
+                            val actualParticipants = viewModel.participants.value
+                            for (item in actualParticipants!!) {
+                                if (item.username != "emma") participants.add(item)
+                            }
+                            participants.add(UserUsername("emma"))
+                            participantsAdapter.setData(participants)
+                            btnAddCalendar.visibility = View.VISIBLE
+                        } else {
+                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            )
+        } else {
+            btnJoin.text = "JOIN"
+            cantreview()
+            viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
+                this,
+                {
+                    if (it != " ") {
+                        if (it == "You have left the activity :(") {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
+                            snackbar.show()
+                            val participants = ArrayList<UserUsername>()
+                            val actualParticipants = viewModel.participants.value
+                            for (item in actualParticipants!!) {
+                                participants.add(item)
+                            }
+                            participants.remove(UserUsername("emma"))
+                            participantsAdapter.setData(participants)
+                            btnAddCalendar.visibility = View.GONE
+                        } else {
+                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                        }
+                    }
+                }
+            )
+        }
+        }
+        addToCalendar()
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        // asignar título actividad como título de la pantalla
+        title = activity.titol
+
+        // canviar like al clicar
+        var clicked = false
+
+        imageLike = findViewById(R.id.imageViewIconLike)
+        imageLike.setOnClickListener {
+            clicked = !clicked
+            if (clicked) {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_24)
+            } else {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+        }
+
+        groupChat = findViewById(R.id.joinGroupChat)
+        groupChat.setOnClickListener {
+            displayChatGroup()
+        }
+    }
+
+
+                        /*********************************************************************************************************/
+
+    /**
+     * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
+     */
+    private fun displayChatGroup() {
+        // go to GroupChatActivity only if the user has joined the activity
+        val intent = Intent(this, GroupChatActivity::class.java)
+        intent.putExtra("usuariCreador", userUID)
+        intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+        intent.putExtra("titleAct", activity.titol)
+        startActivity(intent)
+        finish()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setInfoUsuariCreador(){
         viewModel.getProfileInfo(activity.usuariCreador)
         viewModel.profileInfo.observe(
             this, Observer@{
@@ -119,9 +261,9 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 creator.text = getString(R.string.created_by) + " " + username
             }
         )
+    }
 
-        val btnJoin = findViewById<Button>(R.id.btn_join)
-
+    private fun uploadParticipants(){
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -148,36 +290,9 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         )
+    }
 
-        val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
-        datahora.text = activity.dataHoraIni
-
-        val capacity = findViewById<TextView>(R.id.textViewCapacity)
-        capacity.text = activity.maxParticipant.toString()
-
-        val description = findViewById<TextView>(R.id.textViewDescription)
-        description.text = activity.descripcio
-
-        estrelles = findViewById<RatingBar>(R.id.ratingStars)
-
-        comment = findViewById<EditText>(R.id.yourcomment)
-
-        btnsubmit = findViewById<Button>(R.id.submitcomment)
-
-        btnAddCalendar = findViewById(R.id.btnAddToCalendar)
-
-        // get the current date
-        val currentTime = Calendar.getInstance().time
-        // change final date format
-        var date = changeDateFormat()
-
-        // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
-        if (date != null) {
-            if (!joined or (date > currentTime)) {
-                cantreview()
-            }
-        }
-
+    private fun valoracioUsuari(){
         viewModel.getValoracioUsuari(
             activity.usuariCreador, activity.dataHoraIni,
             SharedPreferenceManager.getStringValue(
@@ -201,8 +316,7 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         )
-
-        val layout = findViewById<View>(R.id.content)
+        layout = findViewById(R.id.content)
 
         // al clicar a submit, envía valoracion a back
         btnsubmit.setOnClickListener {
@@ -241,7 +355,9 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             }
         }
+    }
 
+    private fun showReviews(){
         // mostrar todas las reviews de la activity
         reviewsAdapter = ReviewsRecyclerViewAdapter()
         layoutReviews = findViewById(R.id.listComments)
@@ -261,75 +377,15 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 reviewsAdapter.setData(reviewsList)
             }
         )
+    }
 
-        btnJoin.setOnClickListener {
-            joined = !joined
-            if (joined) {
-                btnJoin.text = "JOINED"
-                if (date < currentTime) reviewpossible()
-                else cantreview()
-                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "You have joined the activity!") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                                    .setAction(getString(R.string.go_chat)) {
-                                        val intent = Intent(this, GroupChatActivity::class.java)
-                                        intent.putExtra("usuariCreador", activity.usuariCreador)
-                                        //intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
-                                        intent.putExtra("dataHI", activity.dataHoraIni)
-                                        intent.putExtra("titleAct", activity.titol)
-                                        startActivity(intent)
-                                        finish()
-                                    }
-                                snackbar.show()
-                                val participants = ArrayList<UserUsername>()
-                                val actualParticipants = viewModel.participants.value
-                                for (item in actualParticipants!!) {
-                                    if (item.username != "emma") participants.add(item)
-                                }
-                                participants.add(UserUsername("emma"))
-                                participantsAdapter.setData(participants)
-                                btnAddCalendar.visibility = View.VISIBLE
-                            } else {
-                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                )
-            } else {
-                btnJoin.text = "JOIN"
-                cantreview()
-                viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "You have left the activity :(") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
-                                snackbar.show()
-                                val participants = ArrayList<UserUsername>()
-                                val actualParticipants = viewModel.participants.value
-                                for (item in actualParticipants!!) {
-                                    participants.add(item)
-                                }
-                                participants.remove(UserUsername("emma"))
-                                participantsAdapter.setData(participants)
-                                btnAddCalendar.visibility = View.GONE
-                            } else {
-                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                            }
-                        }
-                    }
-                )
-            }
-        }
-
+    private fun addToCalendar(){
         btnAddCalendar.setOnClickListener {
             Dexter.withContext(this)
-                .withPermissions(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
+                .withPermissions(
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR
+                )
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
@@ -351,10 +407,21 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 values.put(CalendarContract.Events.TITLE, activity.titol)
                                 values.put(CalendarContract.Events.DESCRIPTION, activity.descripcio)
                                 values.put(CalendarContract.Events.CALENDAR_ID, getCalendarId())
-                                values.put(CalendarContract.Events.ORGANIZER, activity.usuariCreador)
-                                values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
-                                val uri: Uri? = cr.insert(CalendarContract.Events.CONTENT_URI, values)
-                                Toast.makeText(applicationContext, getString(R.string.saved_to_calendar), Toast.LENGTH_LONG).show()
+                                values.put(
+                                    CalendarContract.Events.ORGANIZER,
+                                    activity.usuariCreador
+                                )
+                                values.put(
+                                    CalendarContract.Events.EVENT_TIMEZONE,
+                                    TimeZone.getDefault().id
+                                )
+                                val uri: Uri? =
+                                    cr.insert(CalendarContract.Events.CONTENT_URI, values)
+                                Toast.makeText(
+                                    applicationContext,
+                                    getString(R.string.saved_to_calendar),
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
                     }
@@ -367,46 +434,7 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }).check()
         }
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        // asignar título actividad como título de la pantalla
-        title = activity.titol
-
-        // canviar like al clicar
-        var clicked = false
-
-        imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
-        imageLike.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                imageLike.setImageResource(R.drawable.ic_baseline_favorite_24)
-            } else {
-                imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-        }
-        displayChatGroup()
     }
-
-    /**
-     * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
-     */
-    private fun displayChatGroup() {
-        groupChat = findViewById(R.id.joinGroupChat)
-        groupChat.setOnClickListener {
-            // go to GroupChatActivity only if the user has joined the activity
-            val intent = Intent(this, GroupChatActivity::class.java)
-            intent.putExtra("usuariCreador", userUID)
-            intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
-            intent.putExtra("titleAct", activity.titol)
-            startActivity(intent)
-            finish()
-        }
-    }
-
 
 
     /**
@@ -566,9 +594,4 @@ class   InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         return null
     }
 
-    private fun changeToChat() {
-        /*val intentCanviAChat = Intent(this, /**/::class.java)
-        intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
-        startActivity(intentCanviAChat)*/
-    }
 }

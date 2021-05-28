@@ -2,8 +2,7 @@ package com.offhome.app.ui.profile
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.content.ContentValues.TAG
-import android.content.DialogInterface
+import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -16,15 +15,15 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.Observer
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.ui.createactivity.CreateActivityViewModel
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
+
 
 /**
  * Class *ProfileSettingsFragment*
@@ -43,6 +42,8 @@ class ProfileSettingsFragment: Fragment() {
     lateinit var deleteAccount: TextView
     lateinit var btnChangePwd: TextView
     lateinit var btnNotifications: ImageView
+
+    private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var profileVM: ProfileFragmentViewModel
 
@@ -63,6 +64,9 @@ class ProfileSettingsFragment: Fragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
+
+        super.onCreate(savedInstanceState)
+        firebaseAuth = Firebase.auth
         return inflater.inflate(R.layout.profile_settings_fragment, container, false)
     }
 
@@ -124,19 +128,29 @@ class ProfileSettingsFragment: Fragment() {
             builder.setMessage("Are you sure you want to delete your account? This will permanently erase your account.")
             builder.setCancelable(true)
             builder.setPositiveButton("Delete"){ _, _ ->
+                //val progress = ProgressDialog.show(context, "Loading", "Please wait...", true)
                 profileVM.deleteAccount().observe(viewLifecycleOwner, { sth ->
                     if (sth.equals("Account deleted")) {
                         user.delete()
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
                                     Log.d("POST", "User account deleted")
-                                    Toast.makeText(context, "User account deleted", Toast.LENGTH_LONG).show()
-
-                                    val intent = Intent(context, LoginActivity::class.java)
-                                    startActivity(intent)
+                                    Toast.makeText(
+                                        context,
+                                        "User account deleted",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                     //retornar a la pàgina de log in
-                                } } }
-                    else Toast.makeText(context, sth, Toast.LENGTH_LONG).show()
+                                    SharedPreferenceManager.deleteData()
+                                    requireActivity().run {
+                                        startActivity(Intent(this, LoginActivity::class.java))
+                                        finish()
+                                    }
+                                }
+                            }
+                    } else {
+                        Toast.makeText(context, sth, Toast.LENGTH_LONG).show()
+                    }
                 })
             }
             builder.setNegativeButton(

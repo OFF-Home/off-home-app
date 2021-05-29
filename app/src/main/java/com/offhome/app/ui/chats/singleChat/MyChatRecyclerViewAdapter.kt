@@ -4,24 +4,18 @@ package com.offhome.app.ui.chats.singleChat
 
 import android.app.AlertDialog
 import android.content.Context
-import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Message
-import com.offhome.app.ui.infoactivity.InfoActivity
-import com.offhome.app.ui.login.LoginActivity
 
 /**
  * Adpter for the recycler view of messages of a chat
@@ -33,7 +27,6 @@ class MyChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Ad
 
     private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
         val item = v.tag as Message
-
     }
 
     inner class ViewHolderMessage(mView: View) : RecyclerView.ViewHolder(mView) {

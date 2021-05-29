@@ -214,6 +214,7 @@ class GroupChatActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+
     fun deleteMessage(usidEnviador: String, timestamp: Long) {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

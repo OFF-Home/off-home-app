@@ -155,7 +155,7 @@ class SingleChatActivity : AppCompatActivity() {
             override fun onDataChange(snapshot: DataSnapshot) {
                 myRef
                     .orderByChild("timestamp")
-                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object: ValueEventListener {
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val iterator = snapshot.children.iterator()
                             while (iterator.hasNext()) {
@@ -169,7 +169,6 @@ class SingleChatActivity : AppCompatActivity() {
                         override fun onCancelled(error: DatabaseError) {
                             TODO("Not yet implemented")
                         }
-
                     })
             }
 

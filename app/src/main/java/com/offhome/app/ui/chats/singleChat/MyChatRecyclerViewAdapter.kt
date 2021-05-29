@@ -60,16 +60,18 @@ class MyChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Ad
         (holder as ViewHolderMessage).textViewMessage.text = item.message
         (holder as ViewHolderMessage).textViewMessage.setOnLongClickListener {
             // Delete message
-            val delete_dialog = AlertDialog.Builder(context)
-            delete_dialog.setTitle(R.string.dialog_delete_message_title)
-            delete_dialog.setMessage(R.string.dialog_delete_message_message)
-            delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
-                (context as SingleChatActivity).deleteMessage(item.usid_enviador, item.timestamp)
+            if (item.usid_enviador == SharedPreferenceManager.getStringValue(Constants().PREF_UID)) {
+                val delete_dialog = AlertDialog.Builder(context)
+                delete_dialog.setTitle(R.string.dialog_delete_message_title)
+                delete_dialog.setMessage(R.string.dialog_delete_message_message)
+                delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
+                    (context as SingleChatActivity).deleteMessage(item.usid_enviador, item.timestamp)
+                }
+                delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                    dialog.dismiss()
+                }
+                delete_dialog.show()
             }
-            delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
-                dialog.dismiss()
-            }
-            delete_dialog.show()
             return@setOnLongClickListener true
         }
         // TODO Load image of a user

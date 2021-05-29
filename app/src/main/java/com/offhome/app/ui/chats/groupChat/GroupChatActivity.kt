@@ -214,6 +214,11 @@ class GroupChatActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
+    /**
+     * Function called to delete a message of the chat
+     * @param usidEnviador uid of the user that has sent the message
+     * @param timestamp time of the message to delete
+     */
     fun deleteMessage(usidEnviador: String, timestamp: Long) {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {

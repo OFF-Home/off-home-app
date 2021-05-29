@@ -58,16 +58,18 @@ class MyGroupChatRecyclerViewAdapter(private val context: Context?) : RecyclerVi
         (holder as ViewHolderGroupMessage).textViewMessage.text = item.message
         (holder as ViewHolderGroupMessage).textViewMessage.setOnLongClickListener {
             // Delete message
-            val delete_dialog = AlertDialog.Builder(context)
-            delete_dialog.setTitle(R.string.dialog_delete_message_title)
-            delete_dialog.setMessage(R.string.dialog_delete_message_message)
-            delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
-                (context as SingleChatActivity).deleteMessage(item.userSender, item.timestamp)
+            if (item.userSender == SharedPreferenceManager.getStringValue(Constants().PREF_UID)) {
+                val delete_dialog = AlertDialog.Builder(context)
+                delete_dialog.setTitle(R.string.dialog_delete_message_title)
+                delete_dialog.setMessage(R.string.dialog_delete_message_message)
+                delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
+                    (context as GroupChatActivity).deleteMessage(item.userSender, item.timestamp)
+                }
+                delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                    dialog.dismiss()
+                }
+                delete_dialog.show()
             }
-            delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
-                dialog.dismiss()
-            }
-            delete_dialog.show()
             return@setOnLongClickListener true
         }
         (holder as ViewHolderGroupMessage).nameViewPerson.text = item.userNameSender

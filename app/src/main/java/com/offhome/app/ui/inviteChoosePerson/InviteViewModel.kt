@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.ProfileRepository
+import com.offhome.app.data.model.UserInfo
 
 class InviteViewModel : ViewModel() {
     private var profileRepository: ProfileRepository = ProfileRepository()

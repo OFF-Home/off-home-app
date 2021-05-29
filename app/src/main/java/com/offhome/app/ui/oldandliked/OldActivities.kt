@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import java.util.*
 

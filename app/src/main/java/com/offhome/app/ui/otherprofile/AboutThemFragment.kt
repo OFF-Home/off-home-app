@@ -18,8 +18,8 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
 import com.offhome.app.data.Result
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 
 /**
  * Fragment for the "about them" part of the OtherProfile screen

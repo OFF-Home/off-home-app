@@ -2,9 +2,8 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -68,6 +67,15 @@ interface ActivitiesService {
         @Query("usuariCreador") usuariCreador: String,
         @Query("dataHoraIni") dataHoraIni: String
     ): Call<List<ReviewOfParticipant>>
+
+    @GET("activitats/orderByNameDesc")
+    fun getActivitiesByDescTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByName")
+    fun getActivitiesByAscTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByDate")
+    fun getActivitiesByDate(): Call<List<ActivityFromList>>
 
     // gets a single activity identified by its creator and date
     @GET("/activitats/{username}/{datahora}")

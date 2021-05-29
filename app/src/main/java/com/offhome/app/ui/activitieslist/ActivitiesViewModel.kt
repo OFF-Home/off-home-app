@@ -3,9 +3,10 @@ package com.offhome.app.ui.activitieslist
 
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 
 /**
  * ViewModel for Activities
@@ -23,6 +24,18 @@ class ActivitiesViewModel : ViewModel() {
     fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
         activitiesList = repository.getAll(categoryName)
         return activitiesList
+    }
+
+    fun getActivitiesByDescTitle(): MutableLiveData<List<ActivityFromList>> {
+        return repository.getActivitiesByDescTitle()
+    }
+
+    fun getActivitiesByAscTitle(): MutableLiveData<List<ActivityFromList>> {
+        return repository.getActivitiesByAscTitle()
+    }
+
+    fun getActivitiesByDate(): MutableLiveData<List<ActivityFromList>> {
+        return repository.getActivitiesByDate()
     }
 
     /**

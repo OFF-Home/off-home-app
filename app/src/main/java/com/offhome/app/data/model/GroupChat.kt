@@ -1,9 +1,8 @@
-package com.offhome.app.model
+package com.offhome.app.data.model
 
 
 
 import android.graphics.drawable.Icon
-import com.offhome.app.model.profile.UserInfo
 import java.util.*
 import kotlin.collections.ArrayList
 

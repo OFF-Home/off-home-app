@@ -28,8 +28,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.model.GroupMessage
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
@@ -54,8 +53,7 @@ class GroupChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_chat)
 
         val arguments = intent.extras
-        // this.title = arguments?.getString("titleAct").toString()
-        this.title = "Correr"
+        title = arguments?.getString("titleAct").toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         userUid = arguments?.getString("usuariCreador").toString()
@@ -148,7 +146,7 @@ class GroupChatActivity : AppCompatActivity() {
                             userUid.toString(),
                             it1,
                             uid_user.toString(),
-                            data_ini.toString(),
+                            data_ini,
                             System.currentTimeMillis()
                         )
                     }
@@ -229,7 +227,7 @@ class GroupChatActivity : AppCompatActivity() {
                             val iterator = snapshot.children.iterator()
                             while (iterator.hasNext()) {
                                 val next = iterator.next()
-                                val message = next.getValue(Message::class.java) as GroupMessage
+                                val message = next.getValue(GroupMessage::class.java) as GroupMessage
                                 if (message.timestamp == timestamp && message.userSender == usidEnviador)
                                     next.ref.removeValue()
                             }

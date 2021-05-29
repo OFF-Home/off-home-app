@@ -6,11 +6,11 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import okhttp3.ResponseBody
 
 /**
@@ -78,14 +78,15 @@ class ProfileFragmentViewModel : ViewModel() {
      * obtains myActivities from the lower level and places them on the live data
      */
     private fun getMyActivities() {
-        myActivities = repository.getUserActivities(loggedUserEmail)!! // funciona amb myActivities i no amb _myActivities
+        myActivities =
+            repository.getUserActivities(loggedUserEmail) // funciona amb myActivities i no amb _myActivities
     }
 
     /**
      * obtains tags from the lower level and places them on the live data
      */
     private fun getTags() {
-        tags = repository.getUserTags(loggedUserEmail)!!
+        tags = repository.getUserTags(loggedUserEmail)
     }
 
     /**
@@ -97,7 +98,7 @@ class ProfileFragmentViewModel : ViewModel() {
      */
     fun usernameChangedByUser(newUsername: Editable) {
         // repository.setUsername(loggedUserEmail, newUsername.toString())
-        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
+        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())
     }
 
     /**
@@ -143,12 +144,10 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param photoPath The path of the photo desired
      */
     fun uploadPhoto(photoPath: String) {
-        val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
-        repository.uploadPhoto(email, photoPath)
+        repository.uploadPhoto(loggedUserEmail, photoPath)
     }
 
-    fun deleteAccount() {
-        // delete account from back
-        repository.deleteAccount()
+    fun deleteAccount(): MutableLiveData<Result<String>> {
+        return repository.deleteAccount(loggedUserEmail)
     }
 }

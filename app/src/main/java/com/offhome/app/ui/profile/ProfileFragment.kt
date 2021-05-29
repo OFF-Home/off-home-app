@@ -115,10 +115,9 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-                if (profileInfoVM is Result.Success) {
-                    textViewUsername.text = profileInfoVM.data.username
-                    estrelles.rating = profileInfoVM.data.estrelles.toFloat()
+                if (it is Result.Success) {
+                    textViewUsername.text = it.data.username
+                    estrelles.rating = it.data.estrelles.toFloat()
                     // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
                 }
             }

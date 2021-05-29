@@ -10,7 +10,7 @@ import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
-import com.offhome.app.model.GroupMessage
+import com.offhome.app.data.model.GroupMessage
 
 class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
     var listMessages: MutableLiveData<List<GroupMessage>> = MutableLiveData<List<GroupMessage>>()

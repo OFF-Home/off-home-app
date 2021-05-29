@@ -5,7 +5,7 @@ package com.offhome.app.ui.categories
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.CategoryRepository
-import com.offhome.app.model.Category
+import com.offhome.app.data.model.Category
 
 /**
  * ViewModel for Categories

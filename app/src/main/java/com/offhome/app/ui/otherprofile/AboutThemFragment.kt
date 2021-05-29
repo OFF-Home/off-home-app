@@ -101,20 +101,17 @@ class AboutThemFragment : Fragment() {
             Observer {
                 Log.d("tags", "tags arriben al aboutThemFragment1")
                 val tagsVM = it ?: return@Observer
-                //omplirTagGroup(tagsVM)
+                // omplirTagGroup(tagsVM)
                 Log.d("tags", "tags arriben al aboutThemFragment2")
-
 
                 if (it.toString().contains("unsuccessful")) {
                     Log.d("tags", "userTagsFromBack.observe: Result és unsuccessful")
                     Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
-                }
-                else if (it.toString().contains("failure")) {
+                } else if (it.toString().contains("failure")) {
                     Log.d("tags", "userTagsFromBack.observe: Result és comm failure")
                     Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    //TODO esto
+                } else {
+                    // TODO esto
                     omplirTagGroup(tagsVM.getDataOrNull() as List<TagData>)
                 }
             }
@@ -138,7 +135,7 @@ class AboutThemFragment : Fragment() {
             addTagToChipGroup(tagData.nomTag)
         }
         if (tagList.isEmpty()) {
-            //TODO treure
+            // TODO treure
             Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
         }
     }

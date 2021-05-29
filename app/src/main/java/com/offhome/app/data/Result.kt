@@ -16,7 +16,7 @@ sealed class Result<out T : Any> {
         }
     }
 
-    //ferran
+    // ferran
     fun getDataOrNull(): Any? {
         return when (this) {
             is Success<*> -> data

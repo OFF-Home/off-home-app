@@ -180,9 +180,9 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = "+resultVM.toString())
+                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
 
-                Log.d("setDescription", "resultVM.toString().length = "+resultVM.toString().length)
+                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
 
                 if (!resultVM.toString().contains("Error")) {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()

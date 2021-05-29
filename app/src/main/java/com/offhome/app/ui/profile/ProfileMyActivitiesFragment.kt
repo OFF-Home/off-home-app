@@ -11,19 +11,13 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
-import com.offhome.app.ui.activitieslist.Activities
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
-import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import com.offhome.app.ui.oldandliked.LikedActivities
 import com.offhome.app.ui.oldandliked.OldActivities
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -76,13 +70,13 @@ class ProfileMyActivitiesFragment : Fragment() {
         buttonold = view.findViewById<Button>(R.id.buttonOlderActivities)
         buttonliked = view.findViewById<Button>(R.id.buttonLikedActivities)
 
-        //nos lleva a la pantalla con las actividades viejas
+        // nos lleva a la pantalla con las actividades viejas
         buttonold.setOnClickListener {
             val intent = Intent(context, OldActivities::class.java)
             context?.startActivity(intent)
         }
 
-        //nos lleva a la pantalla con las actividades viejas
+        // nos lleva a la pantalla con las actividades viejas
         buttonliked.setOnClickListener {
             val intent = Intent(context, LikedActivities::class.java)
         }

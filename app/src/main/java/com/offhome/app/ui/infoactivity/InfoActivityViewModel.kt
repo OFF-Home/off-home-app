@@ -83,12 +83,12 @@ class InfoActivityViewModel : ViewModel() {
         return reviews
     }
 
-    //gets a single activity identified by its creator and date
+    // gets a single activity identified by its creator and date
     fun getActivityResult(activityCreator: String, activityDateTime: String) {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
     }
 
-    fun getActivity (activityCreator: String, activityDateTime: String) {
+    fun getActivity(activityCreator: String, activityDateTime: String) {
         infoActivitat = repository.getActivity(activityCreator, activityDateTime)
     }
 }

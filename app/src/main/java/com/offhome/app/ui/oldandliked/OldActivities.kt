@@ -1,7 +1,9 @@
 package com.offhome.app.ui.oldandliked
 
-import androidx.appcompat.app.AppCompatActivity
+
+
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -43,10 +45,9 @@ class OldActivities : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
-
-
         oldActivitiesViewModel.getOldActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
-            this, Observer {
+            this,
+            Observer {
                 oldActivitiesList = it as MutableList<ActivityFromList>
                 oldActivitiesListAdapter.setData(oldActivitiesList)
             }

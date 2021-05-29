@@ -38,7 +38,7 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
-    private var singleActivity : MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
+    private var singleActivity : MutableLiveData<ActivityFromList>? = null
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -236,7 +236,7 @@ class ActivitiesRepository {
         return reviews as MutableLiveData<List<ReviewOfParticipant>>
     }
 
-     fun getActivity4(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
+     fun getActivityResult(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
          val result = MutableLiveData<Result<ActivityFromList>>()
          //val activityCreator = "agnesmgomez@gmail.com"; val activityDateTime = "2021-5-29 23:59:00"
          Log.d("making dynLink call", "activityCreator = "+activityCreator+" activityDateTime = "+activityDateTime)
@@ -245,26 +245,59 @@ class ActivitiesRepository {
          call.enqueue(object : Callback<ActivityFromList> {
              override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
                  if (response.isSuccessful) {
-                     Log.d("repo::getActivity4", "response.code() == " + response.code())
+                     Log.d("repo::getActivityResult", "response.code() == " + response.code())
                      if(response.code() == 200) {
                          if (response.body() == null)
-                             Log.d("repo::getActivity4","response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
+                             Log.d("repo::getActivityResult","response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
 
-                         Log.d("response", "getActivity4 response: is successful")
+                         Log.d("response", "getActivityResult response: is successful")
                          result.value = Result.Success(response.body()!!)
                      }
                  } else {
-                     Log.d("response", "getActivity4 response: unsuccessful")
-                     result.value = Result.Error(IOException("getActivity4 Error: unsuccessful"))
+                     Log.d("response", "getActivityResult response: unsuccessful")
+                     result.value = Result.Error(IOException("getActivityResult Error: unsuccessful"))
                  }
              }
 
              override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
-                 Log.d("no response", "getActivity4 no response")
-                 result.value = Result.Error(IOException("getActivity4 Error: failure", t))
+                 Log.d("no response", "getActivityResult no response")
+                 result.value = Result.Error(IOException("getActivityResult Error: failure", t))
              }
          })
 
          return result
      }
+
+    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
+        val activityCreator = "AAAAagnesmgomez@gmail.com"; val activityDateTime = "2022-5-1 9:0:00"
+        Log.d("making dynLink call", "activityCreator = "+activityCreator+" activityDateTime = "+activityDateTime)
+        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(
+                call: Call<ActivityFromList>,
+                response: Response<ActivityFromList>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("repo::getActivity", "response.code() == " + response.code())
+                    if(response.code() == 200) {
+                        if (response.body() == null)
+                            Log.d("repo::getActivity","response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
+
+                        Log.d("response", "getActivity response: is successful")
+                        singleActivity!!.value = response.body()
+                    }
+                } else {
+                    Log.d("response", "getActivity response: unsuccessful")
+                    //singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivity no response")
+                //singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+            }
+        })
+        return singleActivity as MutableLiveData<ActivityFromList>
+    }
 }

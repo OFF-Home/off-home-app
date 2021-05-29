@@ -541,9 +541,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
 
-        viewModel.getActivity(activityCreator, activityDateTime)
-
-        viewModel.infoActivitat4.observe(     //aquesta not bad
+        /*viewModel.getActivityResult(activityCreator, activityDateTime)
+        viewModel.infoActivitatResult.observe(     //aquesta not bad
             this@InfoActivity,
             Observer {
                 Log.w("getInfoActivitatIMostr3", "salta l'observer1")
@@ -565,7 +564,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     }
                 }
 
-            })
+            })*/
+        viewModel.getActivity(activityCreator, activityDateTime)
+        viewModel.infoActivitat.observe(
+            this, Observer/*@*/{
+                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. 1")
+                val infoVM = it ?: return@Observer
+                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. NO ES null")
+                activity = infoVM
+                //i ja puc mostrar la info
+                iniMostrarActivitat()
+            }
+        )
 
             /*viewModel.getActivity(activityCreator, activityDateTime).observe(
                 this,

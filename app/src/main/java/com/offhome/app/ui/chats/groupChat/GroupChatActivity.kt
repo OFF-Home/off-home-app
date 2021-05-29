@@ -214,13 +214,12 @@ class GroupChatActivity : AppCompatActivity() {
         return super.onOptionsItemSelected(item)
     }
 
-
     fun deleteMessage(usidEnviador: String, timestamp: Long) {
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 myRef
                     .orderByChild("timestamp")
-                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object: ValueEventListener {
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             val iterator = snapshot.children.iterator()
                             while (iterator.hasNext()) {
@@ -234,7 +233,6 @@ class GroupChatActivity : AppCompatActivity() {
                         override fun onCancelled(error: DatabaseError) {
                             TODO("Not yet implemented")
                         }
-
                     })
             }
 

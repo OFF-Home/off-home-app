@@ -294,37 +294,4 @@ class ActivitiesRepository {
 
         return result
     }
-
-    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
-        // val activityCreator = "AAAAagnesmgomez@gmail.com"; val activityDateTime = "2022-5-1 9:0:00"
-        Log.d("making dynLink call", "activityCreator = " + activityCreator + " activityDateTime = " + activityDateTime)
-        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
-        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
-        call.enqueue(object : Callback<ActivityFromList> {
-            override fun onResponse(
-                call: Call<ActivityFromList>,
-                response: Response<ActivityFromList>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("repo::getActivity", "response.code() == " + response.code())
-                    if (response.code() == 200) {
-                        if (response.body() == null)
-                            Log.d("repo::getActivity", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
-
-                        Log.d("response", "getActivity response: is successful")
-                        singleActivity!!.value = response.body()
-                    }
-                } else {
-                    Log.d("response", "getActivity response: unsuccessful")
-                    // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
-                }
-            }
-
-            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
-                Log.d("no response", "getActivity no response")
-                // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
-            }
-        })
-        return singleActivity as MutableLiveData<ActivityFromList>
-    }
 }

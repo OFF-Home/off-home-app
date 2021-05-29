@@ -59,7 +59,7 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
         val item = oldActivitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
-        //holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
+        // holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
         holder.textViewCapacity.text = item.maxParticipant.toString()
         holder.stars.setRating((item.valoracio.toFloat()))
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)

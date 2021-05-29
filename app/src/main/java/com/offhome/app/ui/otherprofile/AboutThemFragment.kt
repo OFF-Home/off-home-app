@@ -17,6 +17,7 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
 
@@ -101,21 +102,12 @@ class AboutThemFragment : Fragment() {
             Observer {
                 Log.d("tags", "tags arriben al aboutThemFragment1")
                 val tagsVM = it ?: return@Observer
-                //omplirTagGroup(tagsVM)
                 Log.d("tags", "tags arriben al aboutThemFragment2")
 
-
-                if (it.toString().contains("unsuccessful")) {
-                    Log.d("tags", "userTagsFromBack.observe: Result és unsuccessful")
+                if (tagsVM is Result.Success) {
+                    omplirTagGroup(tagsVM.data)
+                } else {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
-                }
-                else if (it.toString().contains("failure")) {
-                    Log.d("tags", "userTagsFromBack.observe: Result és comm failure")
-                    Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    //TODO esto
-                    omplirTagGroup(tagsVM.getDataOrNull() as List<TagData>)
                 }
             }
         )
@@ -138,7 +130,7 @@ class AboutThemFragment : Fragment() {
             addTagToChipGroup(tagData.nomTag)
         }
         if (tagList.isEmpty()) {
-            //TODO treure
+            // TODO treure
             Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
         }
     }

@@ -11,7 +11,6 @@ import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.TagData
 import com.offhome.app.model.profile.UserInfo
-import org.apache.http.client.UserTokenHandler
 
 /**
  * Class *OtherProfileViewModel*
@@ -56,7 +55,7 @@ class OtherProfileViewModel : ViewModel() {
         userTags = tags
     }
     fun getUserTags()/*: List<TagData>*/ {
-        //return userTags
+        // return userTags
         userTagsFromBack = repository.getUserTagsResult(userInfo.email)
     }
 

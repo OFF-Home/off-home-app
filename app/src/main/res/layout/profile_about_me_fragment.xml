@@ -7,12 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileAboutMeFragment">
 
+    <Button
+        android:id="@+id/viewAsOtherProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="244dp"
+        android:backgroundTint="@color/primary_light"
+        android:text="@string/view_my_public_profile"
+        android:textColor="@color/primary_text"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewProfileDescriptionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/description"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -25,7 +38,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="I love running and being outdoors with my friends"
+        android:text="-"
         android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -51,7 +64,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="16dp"
-        android:text="19/12/2000"
+        android:text="-"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/textViewBirthDateTitle" />
@@ -97,20 +110,7 @@
         app:layout_constraintTop_toBottomOf="@id/textViewTagsTitle"
         app:singleLine="false">
 
-        <com.google.android.material.chip.Chip
-            android:id="@+id/chip6"
-            style="@style/Widget.MaterialComponents.Chip.Entry"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="5dp"
-            android:layout_marginEnd="5dp"
-            android:text="trash"
-            android:textAppearance="@style/TextAppearance.AppCompat.Caption"
-            android:textSize="14sp"
-            app:chipStrokeColor="@color/primary_light"
-            app:chipSurfaceColor="@color/primary_light" />
-
-        <!-- una altra opcio de style es action. crec que es el que farem servir a veurePerfilAltreUsuari -->
+        <!-- una opcio de style de chip es action. crec que es el que farem servir a veurePerfilAltreUsuari -->
 
     </com.google.android.material.chip.ChipGroup>
 
@@ -146,7 +146,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:text="74"
+        android:text="-"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewFollowersTitle2"
         app:layout_constraintStart_toStartOf="@+id/textViewFollowersTitle2"
@@ -169,7 +169,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:gravity="bottom"
-        android:text="200"
+        android:text="-"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/textViewFollowingTitle2"
         app:layout_constraintStart_toStartOf="@+id/textViewFollowingTitle2"

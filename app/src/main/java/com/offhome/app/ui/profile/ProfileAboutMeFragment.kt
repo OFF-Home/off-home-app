@@ -1,27 +1,30 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.model.profile.TagData
+import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
 /**
@@ -64,11 +67,12 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
-    private lateinit var addTagButton:ImageView
-    private lateinit var editIconDrawable:Drawable
-    private lateinit var saveIconDrawable:Drawable
-    private lateinit var addIconDrawable:Drawable
-    private lateinit var editTextProfileDescription : EditText
+    private lateinit var addTagButton: ImageView
+    private lateinit var editIconDrawable: Drawable
+    private lateinit var saveIconDrawable: Drawable
+    private lateinit var addIconDrawable: Drawable
+    private lateinit var editTextProfileDescription: EditText
+    private lateinit var viewAsOtherProfile: Button
 
     /**
      * Override the onCreateView method
@@ -97,6 +101,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout = view.findViewById(R.id.aboutMeConstraintLayout)
+        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
@@ -107,10 +112,12 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val profileInfoVM = it ?: return@Observer
                 // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
+                if (profileInfoVM is Result.Success) {
+                    textViewProfileDescription.text = profileInfoVM.data.description
+                    textViewBirthDate.text = profileInfoVM.data.birthDate
+                    textViewFollowerCount.text = profileInfoVM.data.followers.toString()
+                    textViewFollowingCount.text = profileInfoVM.data.following.toString()
+                }
             }
         )
         profileVM.tags.observe(
@@ -118,15 +125,19 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val tagsVM = it ?: return@Observer
                 omplirTagGroup(tagsVM)
-                Log.d("tags","tags arriben al fragment")
+                Log.d("tags", "tags arriben al fragment")
             }
         )
 
+        viewAsOtherProfile.setOnClickListener {
+            canviAOtherProfile()
+        }
+
         // testing
-        omplirTagGroupStub()
+        // omplirTagGroupStub()
 
         iniEditElements()
-        iniEditionResultListeners() //TODO sobra?
+        iniEditionResultListeners() // TODO sobra?
 
         return view
     }
@@ -147,19 +158,40 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniDescriptionSetListener() {
-        profileVM.descriptionSetSuccessfully.observe(
+        /*profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
+                Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment")
+                Log.d("setDescription", "salta el observer del fragment2")
                 if (resultVM.string() == "User has been updated") {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
-                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+            }
+        )*/
+
+        profileVM.descriptionSetSuccessfully2.observe(
+            viewLifecycleOwner,
+            Observer {
+                Log.d("setDescription", "salta el observer del fragment1")
+                val resultVM = it ?: return@Observer
+                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
+
+                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
+
+                if (!resultVM.toString().contains("Error")) {
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                }
+
+                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -214,15 +246,15 @@ class ProfileAboutMeFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
     }
 
     private fun omplirTagGroupStub() {
-        var i:Int = 0
-        val nTags:Int = 5
+        var i: Int = 0
+        val nTags: Int = 5
         while (i <nTags) {
             addTagToChipGroup("stub")
             ++i
@@ -302,7 +334,8 @@ class ProfileAboutMeFragment : Fragment() {
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
         saveIconDrawable = BitmapDrawable(
-            resources, Bitmap.createScaledBitmap(
+            resources,
+            Bitmap.createScaledBitmap(
                 bitmap2,
                 70,
                 70,
@@ -412,6 +445,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextlayoutParams.width = 0
 
         editTextProfileDescription.visibility = View.GONE
+
+        // set the max chars
+        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(280))
+        editTextProfileDescription.filters = filterArray
     }
 
     /**
@@ -423,8 +460,9 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
-            textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            val newDescription = editTextProfileDescription.text
+            textViewProfileDescription.text = newDescription
+            profileVM.descriptionChangedByUser(newDescription)
             iniDescriptionSetListener()
             changeDescriptionToDisplay()
         }
@@ -465,10 +503,9 @@ class ProfileAboutMeFragment : Fragment() {
             .setPositiveButton("Add") { dialog, which ->
                 val tag = textInput.text.toString()
                 if (tag.isEmpty()) {
-                    Toast.makeText(context, R.string.tags_cant_be_empty_toast,Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.tags_cant_be_empty_toast, Toast.LENGTH_LONG).show()
                     addTagPressed()
-                }
-                else
+                } else
                     addTag(tag)
             }
             .setNegativeButton(
@@ -478,7 +515,7 @@ class ProfileAboutMeFragment : Fragment() {
         val alertDialog = alertDialogBuilder.show()
     }
 
-    //afegeix tag a la app (chip) i al backend
+    // afegeix tag a la app (chip) i al backend
     /**
      * Adds the tag in the app (meaning the chip) and starts the process to add it to the backend database
      * @param tag tag to add
@@ -487,5 +524,20 @@ class ProfileAboutMeFragment : Fragment() {
         addTagToChipGroup(tag)
         profileVM.tagAddedByUser(tag)
         iniTagAdditionListener()
+    }
+
+    // aixo es completament per a testejar
+    private fun canviAOtherProfile() {
+
+        // stub
+        val userInfo = com.offhome.app.model.profile.UserInfo(
+            email = "victor@gmai.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
+            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp"
+        )
+
+        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
+        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
+        startActivity(intentCanviAOtherProfile)
     }
 }

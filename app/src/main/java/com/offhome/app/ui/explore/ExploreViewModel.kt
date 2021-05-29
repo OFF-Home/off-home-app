@@ -1,13 +1,12 @@
 package com.offhome.app.ui.explore
 
+
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
-import com.offhome.app.ui.login.LoggedInUserView
-import com.offhome.app.ui.login.LoginResult
 
 /**
  * ViewModel of ExploreActivity

@@ -1,5 +1,7 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.content.Context
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -34,7 +36,8 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager) :
         return when (position) {
             0 -> ProfileMyActivitiesFragment()
             1 -> ProfileAboutMeFragment()
-            else -> ProfilePlaceholderFragment() // Placeholder, change when creating the settings fragment
+            else -> ProfileSettingsFragment()
+            // else -> ProfilePlaceholderFragment() // Placeholder, change when creating the settings fragment
         }
     }
 

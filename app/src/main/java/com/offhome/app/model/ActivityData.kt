@@ -13,4 +13,5 @@ data class ActivityData(
     val titol: String,
     val descripcio: String,
     val dataHoraFi: String,
+    val uid_creador: String,
 )

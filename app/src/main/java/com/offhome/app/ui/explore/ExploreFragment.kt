@@ -1,12 +1,14 @@
 package com.offhome.app.ui.explore
 
+
+
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
@@ -31,7 +33,8 @@ class ExploreFragment : Fragment() {
      * it is called when creating view
      */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
@@ -46,16 +49,19 @@ class ExploreFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
-        viewModel.profileInfo.observe(viewLifecycleOwner, {
-            if (it != null) {
-                val intent = Intent(activity, OtherProfileActivity::class.java)
-                val userInfoJSON = GsonBuilder().create().toJson(it)
-                intent.putExtra("user_info", userInfoJSON)
-                startActivity(intent)
-            } else {
-                Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
+        viewModel.profileInfo.observe(
+            viewLifecycleOwner,
+            {
+                if (it != null) {
+                    val intent = Intent(activity, OtherProfileActivity::class.java)
+                    val userInfoJSON = GsonBuilder().create().toJson(it)
+                    intent.putExtra("user_info", userInfoJSON)
+                    startActivity(intent)
+                } else {
+                    Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
+                }
             }
-        })
+        )
     }
 
     /**
@@ -69,7 +75,7 @@ class ExploreFragment : Fragment() {
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrBlank())
                     Toast.makeText(context, getString(R.string.error_search_user), Toast.LENGTH_LONG).show()
@@ -83,5 +89,4 @@ class ExploreFragment : Fragment() {
             }
         })
     }
-
 }

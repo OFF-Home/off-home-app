@@ -25,7 +25,6 @@
                 android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="412dp"
                 android:layout_height="240dp"
-                android:layout_marginBottom="12dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
@@ -35,7 +34,7 @@
                 android:id="@+id/imageViewIconLike"
                 android:layout_width="46dp"
                 android:layout_height="46dp"
-                android:contentDescription="Icon"
+                android:contentDescription="@string/icon"
                 android:padding="5dp"
                 app:layout_constraintEnd_toEndOf="@+id/map"
                 app:layout_constraintTop_toTopOf="@+id/map"
@@ -58,12 +57,25 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="6dp"
-                android:text="DataTime"
+                android:text="@string/datatime"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageViewDataTime"
                 app:layout_constraintTop_toBottomOf="@id/map" />
+
+            <Button
+                android:id="@+id/btnAddToCalendar"
+                android:layout_width="wrap_content"
+                android:layout_height="40dp"
+                android:backgroundTint="@color/secondary_light"
+                android:alpha="0.7"
+                android:text="@string/add_calendar"
+                android:textSize="14sp"
+                app:cornerRadius="18dp"
+                app:layout_constraintEnd_toEndOf="@id/box"
+                app:layout_constraintStart_toStartOf="@+id/box"
+                app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
 
             <ImageView
                 android:id="@+id/imageViewCapacity"
@@ -71,7 +83,7 @@
                 android:layout_height="36dp"
                 android:padding="6dp"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@+id/imageViewDataTime"
+                app:layout_constraintTop_toBottomOf="@+id/btnAddToCalendar"
                 app:srcCompat="@drawable/ic_baseline_people_alt_24" />
 
             <TextView
@@ -80,12 +92,12 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="6dp"
-                android:text="Places available"
+                android:text="@string/places_available"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/imageViewCapacity"
-                app:layout_constraintTop_toBottomOf="@+id/textViewDataTimeActivity" />
+                app:layout_constraintTop_toBottomOf="@+id/btnAddToCalendar" />
 
             <ImageView
                 android:id="@+id/imageViewCreator"
@@ -102,7 +114,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="6dp"
-                android:text="Created by "
+                android:text="@string/created_by"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 android:textStyle="bold"
@@ -128,7 +140,7 @@
                 android:layout_height="wrap_content"
                 android:fontFamily="sans-serif"
                 android:padding="6dp"
-                android:text="This is the description of the activity."
+                android:text="@string/this_is_the_description_of_the_activity"
                 android:textColor="@color/black"
                 android:textSize="18sp"
                 app:layout_constraintStart_toStartOf="@id/box"
@@ -220,7 +232,7 @@
                 android:backgroundTint="@color/secondary_light"
                 android:alpha="0.7"
                 android:text="@string/submit"
-                android:textSize="14dp"
+                android:textSize="14sp"
                 app:cornerRadius="18dp"
                 app:layout_constraintEnd_toEndOf="@id/box"
                 app:layout_constraintHorizontal_bias="0.497"
@@ -255,7 +267,7 @@
                 android:layout_height="58dp"
                 android:backgroundTint="@color/secondary"
                 android:text="@string/join"
-                android:textSize="20dp"
+                android:textSize="20sp"
                 app:cornerRadius="18dp"
                 app:layout_constraintBottom_toBottomOf="@id/box"
                 app:layout_constraintEnd_toEndOf="@id/box"

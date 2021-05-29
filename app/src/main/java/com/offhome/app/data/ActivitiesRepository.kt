@@ -29,9 +29,9 @@ import java.io.IOException
  */
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
-    private var comments: MutableLiveData<List<String>>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
     private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
@@ -40,6 +40,11 @@ class ActivitiesRepository {
     private var activitiesService = activitiesClient.getActivitiesService()
     private var singleActivity : MutableLiveData<ActivityFromList>? = null
 
+    /**
+     * This function calls the [activitiesService] in order to get all the activities in a category
+     * @param categoryName is the category that we want to get the activities of
+     * @return the result with a live data list of the data class ActivityFromList
+     */
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
         val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
@@ -52,10 +57,33 @@ class ActivitiesRepository {
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Erro getting info")
+                Log.d("GET", "Error getting activities")
             }
         })
         return activities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the old activities that a user has joined
+     * @param userEmail is the email of the user
+     * @return the result with a live data list of the data class ActivityFromList
+     */
+    fun getOldAct(userEmail: String): MutableLiveData<List<ActivityFromList>> {
+        if (oldActivities == null) oldActivities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getOldActivities(userEmail)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    oldActivities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting old activities")
+            }
+        })
+        return oldActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     /**
@@ -64,9 +92,9 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
-        val call = SharedPreferenceManager.getStringValue(Constants().PREF_UID)?.let {
+        val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
             activitiesService?.createActivityByUser(
-                uidCreator = it,
+                emailCreator = it,
                 activitydata = newActivity
             )
         }
@@ -78,11 +106,11 @@ class ActivitiesRepository {
                 if (response.isSuccessful) {
                     mutableLiveData?.value = "Activity created!"
                 } else mutableLiveData?.value =
-                    "It has been an error and the activity could not be created"
+                    "There has been an error and the activity cannot be created"
             }
             override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
                 mutableLiveData?.value =
-                    "It has been an error and the activity could not be created"
+                    "There has been an error and the activity cannot be created"
             }
         })
         return mutableLiveData as MutableLiveData<String>

@@ -24,14 +24,15 @@
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
-        <item>Sports</item>
-        <item>Bicycling</item>
-        <item>Cultural</item>
-        <item>Dancing</item>
-        <item>Volunteering</item>
+        <item>Running</item>
         <item>Walking</item>
-        <item>Self care</item>
-        <item>Gardering</item>
+        <item>Skating</item>
+        <item>Cycling</item>
+        <item>Meditation</item>
+        <item>Cultural</item>
+        <item>Volunteering</item>
+        <item>Gastronomic</item>
+        <item>WaterSports</item>
     </string-array>
     <string name="title_activity_sign_up">SignUpActivity</string>
     <string name="prompt_email">Email</string>
@@ -173,7 +174,7 @@
     <string name="max_participants">Max participants</string>
     <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
-    <string name="view_as_another_user">view as another user</string>
+    <string name="view_my_public_profile">View my public profile</string>
     <string name="btn_follow">Follow</string>
     <string name="btn_following">Following</string>
     <string name="error_follow">Error! Please try it again later</string>
@@ -190,7 +191,6 @@
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint">search_hint</string>
-    <string name="change_password">Change password</string>
     <string name="Update_password">updatePassword</string>
     <string name="new_password">new password</string>
     <string name="new_password_repeat">repeat new password</string>
@@ -225,8 +225,29 @@
     <string name="max_recipients_banner">Select up to %1$s people</string>
     <string name="n_recipients_banner">(%1$s/%2$s)</string>
     <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
+    <string name="add_calendar">Add to Google Calendar</string>
+    <string name="error_no_calendar">No Calendar found on device!</string>
+    <string name="saved_to_calendar">Succesfully saved into calendar!</string>
     <string name="share_activity_message_details"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
     <string name="couldnt_retrieve_link_activity" >Couldn\'t retrieve that activity. Please make sure the link is correct</string>
     <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
+    <string name="change_password">Change password</string>
+    <string name="language">Language</string>
+    <string name="notifications">Show notifications</string>
+    <string name="about_off_home">About OFF_HOME</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="covid_policy">COVID policy</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="sync_with_google_calendar">Sync with Google Calendar</string>
+    <string name="delete_my_account">Delete my account</string>
+    <string name="email">email: </string>
+    <string name="username">username: </string>
+    <string name="icon">Icon</string>
+    <string name="datatime">DataTime</string>
+    <string name="places_available">Places available</string>
+    <string name="this_is_the_description_of_the_activity">This is the description of the activity.</string>
+    <string name="error_username">Username has already been chosen</string>
+    <string name="set_username">Username</string>
+    <string name="set_username_description">Please, set your username</string>
 </resources>

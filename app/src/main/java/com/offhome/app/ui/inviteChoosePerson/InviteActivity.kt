@@ -46,8 +46,8 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var viewModel: InviteViewModel
     private lateinit var fab: FloatingActionButton
     private var usersListFullInfo: List<UserInfo> = ArrayList()
-    //private var usersList: List<UserSummaryInfo> = ArrayList()
-    private var usersList: MutableList<UserSummaryInfo> = ArrayList()   //potser acabara sent userInfo i ya.
+    // private var usersList: List<UserSummaryInfo> = ArrayList()
+    private var usersList: MutableList<UserSummaryInfo> = ArrayList() // potser acabara sent userInfo i ya.
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients: Int = 999
     private lateinit var activityInfo: ActivityDataForInvite

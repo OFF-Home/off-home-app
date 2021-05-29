@@ -40,8 +40,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var repository = ProfileRepository()
     private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
-    private var _profileInfo = MutableLiveData<UserInfo>()
-    var profileInfo: LiveData<UserInfo> = _profileInfo
+    private var _profileInfo = MutableLiveData<Result<UserInfo>>()
+    var profileInfo: LiveData<Result<UserInfo>> = _profileInfo
 
     private var _tags = MutableLiveData< List<TagData> >()
     var tags: LiveData<List<TagData>> = _tags
@@ -68,7 +68,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * calls the functions that do the same for the user's activities and tags
      */
     fun getProfileInfo() {
-        profileInfo = repository.getProfileInfo(loggedUserEmail)!!
+        profileInfo = repository.getProfileInfo(loggedUserEmail)
 
         getMyActivities()
         getTags()
@@ -145,5 +145,10 @@ class ProfileFragmentViewModel : ViewModel() {
     fun uploadPhoto(photoPath: String) {
         val email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         repository.uploadPhoto(email, photoPath)
+    }
+
+    fun deleteAccount() {
+        // delete account from back
+        repository.deleteAccount()
     }
 }

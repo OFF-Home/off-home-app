@@ -105,15 +105,15 @@
     <!-- Image Button to show the image of the categories  -->
 
     <ImageButton
-        android:id="@+id/btnPickDate"
+        android:id="@+id/img_date"
         android:layout_width="45dp"
         android:layout_height="45dp"
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="?attr/selectableItemBackgroundBorderless"
         android:src="@drawable/ic_baseline_event_24"
-        app:layout_constraintBottom_toTopOf="@+id/btn_availability"
-        app:layout_constraintEnd_toStartOf="@+id/btn_pickdate1"
+        app:layout_constraintBottom_toTopOf="@+id/img_availability"
+        app:layout_constraintEnd_toStartOf="@+id/btn_pickDate1"
         app:layout_constraintHorizontal_bias="0.142"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -121,37 +121,37 @@
         tools:ignore="ContentDescription" />
 
     <TextView
-        android:id="@+id/date_pick_text1"
+        android:id="@+id/tvDate1"
         android:layout_width="122dp"
         android:layout_height="44dp"
-        android:layout_below="@+id/btn_pickdate1"
+        android:layout_below="@+id/btn_pickDate1"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.919"
-        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintStart_toEndOf="@+id/img_date"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.755"
         tools:text="@string/date" />
 
     <TextView
-        android:id="@+id/date_pick_text2"
+        android:id="@+id/tvDate2"
         android:layout_width="122dp"
         android:layout_height="46dp"
-        android:layout_below="@+id/btn_pickdate2"
+        android:layout_below="@+id/btn_pickDate2"
         android:textColor="@color/black"
         app:autoSizeTextType="uniform"
         app:layout_constraintBottom_toTopOf="@+id/pick_availability"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.919"
-        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
+        app:layout_constraintStart_toEndOf="@+id/img_date"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.945"
         tools:text="@string/date" />
 
     <Button
-        android:id="@+id/btn_pickdate1"
+        android:id="@+id/btn_pickDate1"
         android:layout_width="105dp"
         android:layout_height="31dp"
         android:backgroundTint="@color/divider"
@@ -166,7 +166,7 @@
         tools:ignore="SmallSp" />
 
     <Button
-        android:id="@+id/btn_pickdate2"
+        android:id="@+id/btn_pickDate2"
         android:layout_width="105dp"
         android:layout_height="34dp"
         android:backgroundTint="@color/divider"
@@ -175,8 +175,8 @@
         app:layout_constraintBottom_toTopOf="@+id/street"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.112"
-        app:layout_constraintStart_toEndOf="@+id/btnPickDate"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pickdate1"
+        app:layout_constraintStart_toEndOf="@+id/img_date"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pickDate1"
         app:layout_constraintVertical_bias="0.076"
         tools:ignore="SmallSp" />
 
@@ -204,7 +204,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.26"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btn_pickdate2"
+        app:layout_constraintTop_toBottomOf="@+id/btn_pickDate2"
         app:layout_constraintVertical_bias="0.969" />
 
     <Spinner
@@ -219,7 +219,7 @@
         app:layout_constraintVertical_bias="0.717" />
 
     <ImageButton
-        android:id="@+id/btn_availability"
+        android:id="@+id/img_availability"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -227,7 +227,7 @@
         android:backgroundTint="@color/white"
         android:src="@drawable/ic_baseline_people_alt_24"
         app:backgroundTint="@color/white"
-        app:layout_constraintBottom_toTopOf="@+id/btn_location"
+        app:layout_constraintBottom_toTopOf="@+id/img_location"
         app:layout_constraintEnd_toStartOf="@+id/pick_availability"
         app:layout_constraintHorizontal_bias="0.213"
         app:layout_constraintStart_toStartOf="parent"
@@ -236,7 +236,7 @@
         tools:ignore="ContentDescription" />
 
     <ImageButton
-        android:id="@+id/btn_location"
+        android:id="@+id/img_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -300,7 +300,7 @@
         app:layout_constraintVertical_bias="0.862" />
 
     <ImageButton
-        android:id="@+id/btn_select_category"
+        android:id="@+id/img_select_category"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"

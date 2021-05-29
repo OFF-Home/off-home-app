@@ -23,6 +23,7 @@
             android:layout_marginStart="16dp"
             android:background="@drawable/background_chat_other"
             android:text="Text"
+            android:autoLink="web"
             android:textColor="@color/white" />
     </RelativeLayout>
 

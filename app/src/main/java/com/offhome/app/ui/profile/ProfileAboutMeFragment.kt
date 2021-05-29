@@ -185,16 +185,16 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagDeletionListener() {
-        profileVM.tagDeletedSuccessfully.observe(
+        profileVM.tagDeletedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Delete tag al usuario") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagDeletedSuccessfully.removeObservers(viewLifecycleOwner)
+                profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }

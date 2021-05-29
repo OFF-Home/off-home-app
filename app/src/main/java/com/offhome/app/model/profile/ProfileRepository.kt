@@ -277,24 +277,35 @@ class ProfileRepository {
      * @param tag tag to delete
      * @return mutable live data which will be updated with the result of the call
      */
-    fun deleteTag(email: String, tag: String): MutableLiveData<ResponseBody> {
+    fun deleteTag(email: String, tag: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
         val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                tagDeletedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
-                    Log.d("response", "deleteTag response: is successful")
-                } else {
+                    Log.d("repo::deleteTag", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() == 201) {
+                        if (response.body() == null)
+                            Log.d("repo::deleteTag", "response.body() == null.")
+                        Log.d("response", "deleteTag response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+                    else {
+                        Log.d("repo::deleteTag", "response code not in (200, 201)")
+                    }
+
+                } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "deleteTag response: unsuccessful")
+                    result.value = Result.Error(IOException("deleteTag Error: unsuccessful"))
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "deleteTag no response")
-                tagDeletedSuccessfully.value = ResponseBody.create(null, "no response")
+                result.value = Result.Error(IOException("deleteTag Error: unsuccessful"))
             }
         })
-        return tagDeletedSuccessfully
+        return result
     }
 
     /**

@@ -53,11 +53,12 @@ class ProfileFragmentViewModel : ViewModel() {
 
     /*private var _tagAddedSuccessfully = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: LiveData<ResponseBody> = _tagAddedSuccessfully*/
-    private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
-    var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully
+    /*private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
+    var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully*/
 
     var descriptionSetSuccessfully = MutableLiveData<Result<String>>()
     var tagAddedSuccessfullyResult =  MutableLiveData<Result<String>>()
+    var tagDeletedSuccessfullyResult =  MutableLiveData<Result<String>>()
 
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
@@ -115,7 +116,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param tag tag to be deleted
      */
     fun tagDeletedByUser(tag: String) {
-        tagDeletedSuccessfully = repository.deleteTag(loggedUserEmail, tag)
+        tagDeletedSuccessfullyResult = repository.deleteTag(loggedUserEmail, tag)
     }
 
     /**

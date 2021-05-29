@@ -133,8 +133,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         else {                          //si extras nulls, potser hem vingut a aquesta activity a través d'un dynamic link
             checkForDynamicLinks()      //aquesta funció obté la PK d'una activitat a través del dynamic link, fa GET per obtenir-ne totes les dades, i LLAVORS crida a iniMostrarActivitat()
-
-            //activity = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
         }
     }
 
@@ -202,7 +200,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         )
-
 
         // al clicar a submit, envía valoracion a back
         btnsubmit.setOnClickListener {
@@ -335,12 +332,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         displayChatGroup()
-    }
-
-    //Ferran: no sé si cal. és pels dynamic links
-    override fun onStart() {
-        super.onStart()
-        //checkForDynamicLinks()
     }
 
     /**
@@ -497,12 +488,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }*/
     }
 
-    private fun changeToChat() {
-        /*val intentCanviAChat = Intent(this, /**/::class.java)
-        intentCanviAChat.putExtra(/**/, GsonBuilder().create().toJson(/**/))
-        startActivity(intentCanviAChat)*/
-    }
-
     private fun checkForDynamicLinks() {
         Log.d("dynamic links", "we check for dynamic links")
         //al video (de fa 1any i mig) ho fa una mica diferent
@@ -576,21 +561,5 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 iniMostrarActivitat()
             }
         )
-
-            /*viewModel.getActivity(activityCreator, activityDateTime).observe(
-                this,
-                {
-                    Log.w("getInfoActivitatIMostra", "salta l'observer")
-                    if (it != null) {
-                        Log.w("getInfoActivitatIMostra", "it != null")
-                        //poso a l'atribut activity la info
-                        activity = it
-                        //i ja puc mostrar la info
-                        iniMostrarActivitat()
-                    }
-                    else
-                        Log.w("getInfoActivitatIMostra", "it == null")
-                }
-            )*/
     }
 }

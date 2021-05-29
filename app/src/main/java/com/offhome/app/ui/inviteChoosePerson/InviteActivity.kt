@@ -56,7 +56,6 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var textRecipientList: TextView
     private var selectedRecipientList: List<UserSummaryInfo> = ArrayList()
 
-    // 3r intent
     private var tracker: SelectionTracker<Long>? = null
 
     // chat messages
@@ -88,7 +87,6 @@ class InviteActivity : AppCompatActivity() {
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
 
-        // currentUID = "102"
         currentUID = viewModel.getCurrentUID()
 
         // en procés
@@ -102,8 +100,6 @@ class InviteActivity : AppCompatActivity() {
         viewModel.followedUsers.observe(
             this,
             Observer {
-
-                // usersList = it
 
                 usersListFullInfo = it
                 for (user in usersListFullInfo) {
@@ -120,8 +116,6 @@ class InviteActivity : AppCompatActivity() {
             listOf(UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"))
                 as MutableList<UserSummaryInfo>
         usersListAdapter.setData(usersList)
-
-        // 3r intent
 
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",
@@ -221,29 +215,6 @@ class InviteActivity : AppCompatActivity() {
         fab.visibility = View.GONE
     }
 
-    /*private fun generateDynamicLink():Uri {
-        val dynamicLink = Firebase.dynamicLinks.dynamicLink {
-            link = Uri.parse("https://offhome.es/activity?creator="+activityInfo.usuariCreador+"&dataHora="+activityInfo.dataHoraIni)  //aquest és el deeplink crec
-            domainUriPrefix = "https://offhome.page.link"
-            // Open links with this app on Android
-            androidParameters {
-                //minimumVersion = 23
-            }
-
-            socialMetaTagParameters {
-                title = activityInfo.titol
-                description = "OFF Home Activity"
-            }
-
-            // si fessim la app a iOS: Open links with com.example.ios on iOS
-            //iosParameters("com.example.ios") { }
-        }
-
-        val dynamicLinkUri = dynamicLink.uri
-
-        return dynamicLinkUri
-    }*/
-
     private fun sendMessage(recipientUID: String) {
         val userUid = recipientUID // oi?
         var numMessages: Int = 0
@@ -274,7 +245,6 @@ class InviteActivity : AppCompatActivity() {
 
         val linkGenerator = AuxGenerateDynamicLink()
         val dynamicLinkUri:Uri=linkGenerator.generateDynamicLink(activityInfo)
-        //val dynamicLinkUri=generateDynamicLink()
 
         ++numMessages
         val message = Message(
@@ -304,7 +274,7 @@ class InviteActivity : AppCompatActivity() {
      * @param menu provided
      * @return true
      */
-    // doing: el buscador
+    // a mitjes i blocked: el buscador. no crec que l'acabi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_button, menu)
 

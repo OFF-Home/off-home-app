@@ -144,11 +144,9 @@ class ActivitiesListFragment : Fragment() {
      */
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-        sortActivities()
-    /*    if (id == R.id.action_sort) {
-        } else if (id == R.id.action_sort_categories) {
-            sortActivitiesByCategory()
-        }*/
+        if (id == R.id.action_sort) {
+            sortActivities()
+        }
         return super.onOptionsItemSelected(item)
     }
 

@@ -28,6 +28,7 @@ class ActivitiesRepository {
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
     private var suggestedactivities: MutableLiveData<List<ActivityFromList>> = MutableLiveData<List<ActivityFromList>>()
+    private var friendsactivities: MutableLiveData<List<ActivityFromList>> = MutableLiveData<List<ActivityFromList>>()
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -143,5 +144,23 @@ class ActivitiesRepository {
         })
         return suggestedactivities
 
+    }
+
+    fun getFriendsActivities(loggedUserEmail: String): LiveData<List<ActivityFromList>> {
+        val call: Call<List<ActivityFromList>> = activitiesService?.getFriendsActivities(loggedUserEmail)!!
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    friendsactivities.value =response.body()
+                    Log.d("response", "getSuggestedActivities response: is successful")
+                } else {
+                    Log.d("response", "getSuggestedActivities response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
+            }
+        })
+        return friendsactivities
     }
 }

@@ -36,4 +36,10 @@ interface ActivitiesService {
      */
     @GET("/activitats/explore/{email}")
     fun getSuggestedActivities(@Path("email") loggedUserEmail: String): Call<List<ActivityFromList>>
+
+    /**
+     * This call is to get friends activities
+     */
+    @GET ("/activitats/offriends/{email}")
+    fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
 }

@@ -57,6 +57,15 @@ class ExploreFragment : Fragment() {
                 activitiesList = it
                 activitiesListAdapter.setData(activitiesList)
             })
+        /*
+        viewModel.friendsActivities.observe(
+            viewLifecycleOwner,
+            Observer {
+                activitiesList = it
+                activitiesListAdapter.setData(activitiesList)
+            })
+            */
+
         return view
     }
 

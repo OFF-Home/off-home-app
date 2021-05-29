@@ -38,7 +38,7 @@
             android:parentActivityName=".ui.login.LoginActivity" />
         <activity android:name=".ui.otherprofile.OtherProfileActivity" />
         <activity
-            android:name=""
+            android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.

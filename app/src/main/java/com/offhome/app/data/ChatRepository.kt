@@ -2,11 +2,12 @@ package com.offhome.app.data
 
 
 
+import android.widget.Toast
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.data.model.ChatGroupIdentification
 import com.offhome.app.data.model.SendMessage
+import com.offhome.app.data.model.SendNotification
 import com.offhome.app.data.retrofit.ChatClient
-import com.offhome.app.model.GroupMessage
 import com.offhome.app.model.Message
 import java.io.IOException
 import okhttp3.ResponseBody
@@ -18,6 +19,7 @@ import retrofit2.Response
 class ChatRepository(private val chatsClient: ChatClient) {
     private var chatsService = chatsClient.getChatsService()
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseSendNotification: MutableLiveData<String>? = MutableLiveData(" ")
     var listMessages = MutableLiveData<ArrayList<Message>>()
     var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
     // lateinit var mSocket: Socket
@@ -150,6 +152,23 @@ class ChatRepository(private val chatsClient: ChatClient) {
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 responseSendMessage?.value =
                     "It has been an error and the chat cannot be created"
+            }
+        })
+        return responseSendMessage as MutableLiveData<String>
+    }
+
+    fun sendMissageNotification(message: SendNotification): MutableLiveData<String>{
+        val call = chatsService?.sendMissageNotification(message)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseSendNotification?.value = "Notification sent!"
+                } else responseSendNotification?.value =
+                    "It has been an error and the notification cannot be sent"
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseSendNotification?.value =
+                    "It has been an error and the notification cannot be sent"
             }
         })
         return responseSendMessage as MutableLiveData<String>

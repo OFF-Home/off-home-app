@@ -18,6 +18,7 @@ import com.offhome.app.data.retrofit.UserClient
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.TagData
 import com.offhome.app.data.model.UserInfo
+import io.socket.client.IO
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -55,7 +56,7 @@ class ProfileRepository {
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
-    var accountDeletedSuccessfully: MutableLiveData<String>? = MutableLiveData(" ")
+    var accountDeletedSuccessfully: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
@@ -441,19 +442,19 @@ class ProfileRepository {
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
 
-    fun deleteAccount(email: String): MutableLiveData<String> {
+    fun deleteAccount(email: String): MutableLiveData<Result<String>> {
         val call: Call<ResponseBody> = userService!!.deleteAccount(email)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    accountDeletedSuccessfully!!.value = "Account deleted"
+                    accountDeletedSuccessfully!!.value = Result.Success("Account deleted")
                 } else {
-                    accountDeletedSuccessfully!!.value = "delete account response unsuccessful"
+                    accountDeletedSuccessfully!!.value = Result.Error(IOException("delete account response unsuccessful"))
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                accountDeletedSuccessfully!!.value = "Error deleting user account. communication failure (no response)"
+                accountDeletedSuccessfully!!.value = Result.Error(IOException("Error deleting user account. communication failure (no response)"))
             }
         })
         return accountDeletedSuccessfully!!

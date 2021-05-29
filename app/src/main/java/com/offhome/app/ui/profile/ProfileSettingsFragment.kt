@@ -2,7 +2,6 @@ package com.offhome.app.ui.profile
 
 import android.annotation.SuppressLint
 import android.app.AlertDialog
-import android.app.ProgressDialog
 import android.content.Intent
 import android.graphics.Color
 import android.os.Bundle
@@ -21,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
@@ -130,7 +130,7 @@ class ProfileSettingsFragment: Fragment() {
             builder.setPositiveButton("Delete"){ _, _ ->
                 //val progress = ProgressDialog.show(context, "Loading", "Please wait...", true)
                 profileVM.deleteAccount().observe(viewLifecycleOwner, { sth ->
-                    if (sth.equals("Account deleted")) {
+                    if (sth is Result.Success) {
                         user.delete()
                             .addOnCompleteListener { task ->
                                 if (task.isSuccessful) {
@@ -148,8 +148,8 @@ class ProfileSettingsFragment: Fragment() {
                                     }
                                 }
                             }
-                    } else {
-                        Toast.makeText(context, sth, Toast.LENGTH_LONG).show()
+                    } else if (sth is Result.Error) {
+                        Toast.makeText(context, sth.exception.message, Toast.LENGTH_LONG).show()
                     }
                 })
             }

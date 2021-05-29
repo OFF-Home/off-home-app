@@ -49,7 +49,7 @@ class ProfileRepository {
 
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
-    var userInfo: MutableLiveData<UserInfo>? = null
+    var userInfo = MutableLiveData<Result<UserInfo>>()
     var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
@@ -340,25 +340,26 @@ class ProfileRepository {
     /**
      * obtains profile info of a user from a username
      */
-    fun getProfileInfoByUsername(newText: String): Result<MutableLiveData<UserInfo>> {
-        if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
+    fun getProfileInfoByUsername(newText: String): MutableLiveData<Result<UserInfo>> {
         val call: Call<UserInfo> = userService!!.getProfileInfoByUsername(newText)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
-                    userInfo!!.value = response.body()
+                    userInfo.value = Result.Success(response.body() as UserInfo)
                     Log.d("success response", "got a response indicating success")
                 } else {
+                    userInfo.value = Result.Error(IOException("Got a response indicating failure"))
                     Log.d("failure response", "got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                userInfo.value = Result.Error(IOException("Error getting topProfileInfo. communication failure (no response)"))
                 Log.d("GET", "Error getting topProfileInfo. communication failure (no response)")
             }
         })
 
-        return Result.Success(userInfo!!)
+        return userInfo
     }
 
     /**

@@ -40,7 +40,7 @@ class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
         sendMessageResult = chatRepo.sendGroupMessage(message)
     }
 
-    fun sendNotification(message: SendNotification): MutableLiveData<String> {
+    fun sendNotification(message: SendNotification): MutableLiveData<Result<String>> {
         return chatRepo.sendMissageNotification(message)
     }
 }

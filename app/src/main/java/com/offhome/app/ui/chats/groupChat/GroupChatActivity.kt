@@ -159,8 +159,13 @@ class GroupChatActivity : AppCompatActivity() {
                         arguments?.getString("titleAct").toString())
 
                     viewModel.sendNotification(messageNotif).observe(
-
-                    )
+                        this@GroupChatActivity,
+                        {
+                            if (it is Result.Success) {
+                                Toast.makeText(this@GroupChatActivity, it.data, Toast.LENGTH_LONG).show()
+                            }
+                            else if (it is Result.Error) Toast.makeText(this@GroupChatActivity, it.exception.message, Toast.LENGTH_LONG).show()
+                        })
                 }
             }
         }

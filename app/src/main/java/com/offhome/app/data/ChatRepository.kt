@@ -19,7 +19,7 @@ import retrofit2.Response
 class ChatRepository(private val chatsClient: ChatClient) {
     private var chatsService = chatsClient.getChatsService()
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
-    private var responseSendNotification: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseSendNotification: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     var listMessages = MutableLiveData<ArrayList<Message>>()
     var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
     // lateinit var mSocket: Socket
@@ -157,21 +157,21 @@ class ChatRepository(private val chatsClient: ChatClient) {
         return responseSendMessage as MutableLiveData<String>
     }
 
-    fun sendMissageNotification(message: SendNotification): MutableLiveData<String>{
+    fun sendMissageNotification(message: SendNotification): MutableLiveData<Result<String>>{
         val call = chatsService?.sendMissageNotification(message)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    responseSendNotification?.value = "Notification sent!"
+                    responseSendNotification?.value = Result.Success("Notification sent!")
                 } else responseSendNotification?.value =
-                    "It has been an error and the notification cannot be sent"
+                    Result.Error(IOException("It has been an error and the notification cannot be sent"))
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 responseSendNotification?.value =
-                    "It has been an error and the notification cannot be sent"
+                    Result.Error(IOException("It has been an error and the notification cannot be sent"))
             }
         })
-        return responseSendMessage as MutableLiveData<String>
+        return responseSendMessage as MutableLiveData<Result<String>>
     }
 }
 

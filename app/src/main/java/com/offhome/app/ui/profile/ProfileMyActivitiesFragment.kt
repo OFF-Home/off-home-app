@@ -2,11 +2,13 @@ package com.offhome.app.ui.profile
 
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,6 +16,10 @@ import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import com.offhome.app.ui.oldandliked.LikedActivities
+import com.offhome.app.ui.oldandliked.OldActivities
+import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * Class *ProfileMyActivitiesFragment*
@@ -35,6 +41,8 @@ class ProfileMyActivitiesFragment : Fragment() {
     private lateinit var profileVM: ProfileFragmentViewModel
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
+    lateinit var buttonold: Button
+    lateinit var buttonliked: Button
 
     /**
      * Override the onCreateView method
@@ -58,6 +66,20 @@ class ProfileMyActivitiesFragment : Fragment() {
         val view = inflater.inflate(R.layout.profile_my_activities_fragment, container, false)
 
         rotateArrowDrawables()
+
+        buttonold = view.findViewById<Button>(R.id.buttonOlderActivities)
+        buttonliked = view.findViewById<Button>(R.id.buttonLikedActivities)
+
+        // nos lleva a la pantalla con las actividades viejas
+        buttonold.setOnClickListener {
+            val intent = Intent(context, OldActivities::class.java)
+            context?.startActivity(intent)
+        }
+
+        // nos lleva a la pantalla con las actividades viejas
+        buttonliked.setOnClickListener {
+            val intent = Intent(context, LikedActivities::class.java)
+        }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList
         activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)

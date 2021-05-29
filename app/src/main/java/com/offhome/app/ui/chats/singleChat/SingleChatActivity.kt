@@ -62,7 +62,7 @@ class SingleChatActivity : AppCompatActivity() {
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
         messagesList = findViewById(R.id.recyclerViewMessages)
-        messagesAdapter = MyChatRecyclerViewAdapter()
+        messagesAdapter = MyChatRecyclerViewAdapter(this@SingleChatActivity)
         with(messagesList) {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
@@ -78,7 +78,6 @@ class SingleChatActivity : AppCompatActivity() {
                 myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val listMessages = ArrayList<Message>()
-                        numMessages = dataSnapshot.childrenCount.toInt()
                         val iterator = dataSnapshot.children.iterator()
                         while (iterator.hasNext()) {
                             listMessages.add(iterator.next().getValue(Message::class.java) as Message)
@@ -147,7 +146,40 @@ class SingleChatActivity : AppCompatActivity() {
             SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
             System.currentTimeMillis()
         )
-        myRef.child("m$numMessages").setValue(message)
+        myRef.push().setValue(message)
         editTextNewMessage.text.clear()
+    }
+
+    /**
+     * Function called to delete a message of the chat
+     * @param usidEnviador uid of the user that has sent the message
+     * @param timestamp time of the message to delete
+     */
+    fun deleteMessage(usidEnviador: String, timestamp: Long) {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                myRef
+                    .orderByChild("timestamp")
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val iterator = snapshot.children.iterator()
+                            while (iterator.hasNext()) {
+                                val next = iterator.next()
+                                val message = next.getValue(Message::class.java) as Message
+                                if (message.timestamp == timestamp && message.usid_enviador == usidEnviador)
+                                    next.ref.removeValue()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

@@ -67,7 +67,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         myRef = database.getReference("xatsGrupals/${userUid}_$data_ini")
 
-        messagesAdapter = MyGroupChatRecyclerViewAdapter()
+        messagesAdapter = MyGroupChatRecyclerViewAdapter(this@GroupChatActivity)
         with(messagesList) {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
@@ -210,5 +210,38 @@ class GroupChatActivity : AppCompatActivity() {
             logout_dialog.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Function called to delete a message of the chat
+     * @param usidEnviador uid of the user that has sent the message
+     * @param timestamp time of the message to delete
+     */
+    fun deleteMessage(usidEnviador: String, timestamp: Long) {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                myRef
+                    .orderByChild("timestamp")
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val iterator = snapshot.children.iterator()
+                            while (iterator.hasNext()) {
+                                val next = iterator.next()
+                                val message = next.getValue(GroupMessage::class.java) as GroupMessage
+                                if (message.timestamp == timestamp && message.userSender == usidEnviador)
+                                    next.ref.removeValue()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

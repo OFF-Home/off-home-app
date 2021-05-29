@@ -9,6 +9,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
+import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -24,6 +25,7 @@ import retrofit2.Response
  */
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
+    private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
@@ -32,7 +34,13 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private var singleActivity: MutableLiveData<ActivityFromList>? = null
 
+    /**
+     * This function calls the [activitiesService] in order to get all the activities in a category
+     * @param categoryName is the category that we want to get the activities of
+     * @return the result with a live data list of the data class ActivityFromList
+     */
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
         val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
@@ -45,10 +53,33 @@ class ActivitiesRepository {
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Erro getting info")
+                Log.d("GET", "Error getting activities")
             }
         })
         return activities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the old activities that a user has joined
+     * @param userEmail is the email of the user
+     * @return the result with a live data list of the data class ActivityFromList
+     */
+    fun getOldAct(userEmail: String): MutableLiveData<List<ActivityFromList>> {
+        if (oldActivities == null) oldActivities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getOldActivities(userEmail)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    oldActivities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting old activities")
+            }
+        })
+        return oldActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     /**
@@ -268,15 +299,84 @@ class ActivitiesRepository {
         if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
         val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByDate()
         call.enqueue(object : Callback<List<ActivityFromList>> {
-            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+            override fun onResponse(
+                call: Call<List<ActivityFromList>>,
+                response: Response<List<ActivityFromList>>
+            ) {
                 if (response.isSuccessful) {
                     listSorted.value = response.body()
                 }
             }
+
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 Log.d("GET", "Error getting list of activities by date")
             }
         })
         return listSorted
+    }
+
+    fun getActivityResult(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
+        val result = MutableLiveData<Result<ActivityFromList>>()
+        // val activityCreator = "agnesmgomez@gmail.com"; val activityDateTime = "2021-5-29 23:59:00"
+        Log.d("making dynLink call", "activityCreator = " + activityCreator + " activityDateTime = " + activityDateTime)
+
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                if (response.isSuccessful) {
+                    Log.d("repo::getActivityResult", "response.code() == " + response.code())
+                    if (response.code() == 200) {
+                        if (response.body() == null)
+                            Log.d("repo::getActivityResult", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
+
+                        Log.d("response", "getActivityResult response: is successful")
+                        result.value = Result.Success(response.body()!!)
+                    }
+                } else {
+                    Log.d("response", "getActivityResult response: unsuccessful")
+                    result.value = Result.Error(IOException("getActivityResult Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivityResult no response")
+                result.value = Result.Error(IOException("getActivityResult Error: failure", t))
+            }
+        })
+
+        return result
+    }
+
+    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
+        // val activityCreator = "AAAAagnesmgomez@gmail.com"; val activityDateTime = "2022-5-1 9:0:00"
+        Log.d("making dynLink call", "activityCreator = " + activityCreator + " activityDateTime = " + activityDateTime)
+        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(
+                call: Call<ActivityFromList>,
+                response: Response<ActivityFromList>
+            ) {
+                if (response.isSuccessful) {
+                    Log.d("repo::getActivity", "response.code() == " + response.code())
+                    if (response.code() == 200) {
+                        if (response.body() == null)
+                            Log.d("repo::getActivity", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
+
+                        Log.d("response", "getActivity response: is successful")
+                        singleActivity!!.value = response.body()
+                    }
+                } else {
+                    Log.d("response", "getActivity response: unsuccessful")
+                    // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivity no response")
+                // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
+            }
+        })
+        return singleActivity as MutableLiveData<ActivityFromList>
     }
 }

@@ -28,38 +28,54 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
+        <activity android:name=".ui.oldandliked.OldActivities"></activity>
         <activity
-            android:name="com.offhome.app.ui.chats.singleChat.SingleChatActivity"
+            android:name=".ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity" />
-
         <activity
             android:name=".ui.inviteChoosePerson.InviteActivity"
-            android:label="@string/title_activity_invite"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
-        <activity android:name=".ui.otherprofile.OtherProfileActivity"/>
+        <activity android:name=".ui.otherprofile.OtherProfileActivity" />
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
-
-    <!--
+        <!--
          The API key for Google Maps-based APIs is defined as a string resource.
          (See the file "res/values/google_maps_api.xml").
          Note that the API key is linked to the encryption key used to sign the APK.
          You need a different API key for each encryption key, including the release key that is used to
          sign the APK for publishing.
          You can define the keys for the debug and release targets in src/debug/ and src/release/.
-    -->
+        -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
         <activity
             android:name=".ui.infoactivity.InfoActivity"
-            android:label="@string/title_activity_info"
-            android:parentActivityName=".ui.activitieslist.Activities" />
+            android:parentActivityName=".ui.activitieslist.Activities">
+
+            <!-- intent filter per als dynamic links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- poso de tot persiaca: -->
+                <data android:host="offhome.page.link"
+                    android:scheme="https"/>
+                <data android:host="offhome.es"
+                    android:scheme="https"/>
+                <data android:host="offhome.page.link"
+                    android:scheme="http"/>
+                <data android:host="offhome.es"
+                    android:scheme="http"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.activitieslist.Activities"
             android:launchMode="singleTop"
@@ -73,8 +89,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.updatePassword.UpdatePasswordActivity"
-            android:label="Update password" />
+            android:name=".ui.updatePassword.UpdatePasswordActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">
@@ -83,10 +98,12 @@
 
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
+
             <meta-data
                 android:name="android.app.searchable"
                 android:resource="@xml/search" />
         </activity>
+
         <service
             android:name=".ui.notifications.MyFirebaseMessaging"
             android:exported="false">
@@ -94,9 +111,10 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <meta-data
             android:name="com.google.messaging.default.notification_icon"
-            android:resource="@drawable/ic_launcher_foreground"/>
+            android:resource="@drawable/ic_launcher_foreground" />
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/design_default_color_primary" />

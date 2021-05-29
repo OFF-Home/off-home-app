@@ -3,7 +3,9 @@ package com.offhome.app.ui.inviteChoosePerson
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.SearchView
@@ -32,6 +34,8 @@ import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.Message
 import com.offhome.app.data.model.UserInfo
 import com.offhome.app.data.model.UserSummaryInfo
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 class InviteActivity : AppCompatActivity() {
@@ -49,13 +53,13 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var textRecipientList: TextView
     private var selectedRecipientList: List<UserSummaryInfo> = ArrayList()
 
-    // 3r intent
     private var tracker: SelectionTracker<Long>? = null
 
     // chat messages
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
     private var currentUID: String = String() //
+    private var exists = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -81,8 +85,7 @@ class InviteActivity : AppCompatActivity() {
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
 
-        // currentUID = "102"
-        currentUID = viewModel.getCurrentUID()
+        currentUID = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -96,8 +99,6 @@ class InviteActivity : AppCompatActivity() {
             this,
             Observer {
 
-                // usersList = it
-
                 usersListFullInfo = it
                 for (user in usersListFullInfo) {
                     usersList.add(UserSummaryInfo(username = user.username, email = user.email, uid = user.uid))
@@ -108,13 +109,11 @@ class InviteActivity : AppCompatActivity() {
             }
         )
 
-        // stub
+        // stub, per que per ara no segueixo a ningú. pero treient aquest stub hauria de funcionar
         usersList =
-            listOf(UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"),)
+            listOf(UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"))
                 as MutableList<UserSummaryInfo>
         usersListAdapter.setData(usersList)
-
-        // 3r intent
 
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",
@@ -218,44 +217,46 @@ class InviteActivity : AppCompatActivity() {
         val userUid = recipientUID // oi?
         var numMessages: Int = 0
 
-        myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
-        myRef.addValueEventListener(object : ValueEventListener {
+        Log.d("mssg", "sender UID = " + currentUID + ". recipient UID = " + userUid)
+        if (currentUID < userUid) myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+        else myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
-                    myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+                    exists = false
                 }
-                myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        var listMessages = ArrayList<Message>()
-                        numMessages = dataSnapshot.childrenCount.toInt()
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        // TODO Not yet implemented
-                        Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                if (!exists) {
+                    val referenceUser1 = database.getReference("usuaris/$userUid")
+                    val referenceUser2 = database.getReference("usuaris/$currentUID")
+                    referenceUser1.push().setValue(currentUID)
+                    referenceUser2.push().setValue(userUid)
+                    exists = true
+                }
+                val linkGenerator = AuxGenerateDynamicLink()
+                val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(activityInfo)
+                ++numMessages
+                val message = Message(
+                    getString(
+                        R.string.share_activity_message,
+                        /*activityInfo.titol + "\n" +
+                            "Category: " + activityInfo.categoria + "\n" +
+                            "description: " + activityInfo.descripcio + "\n" +
+                            "Created by: " + activityInfo.usuariCreador + "\n" +
+                            "at: " + activityInfo.dataHoraIni*/
+                        dynamicLinkUri
+                    ),
+                    currentUID,
+                    System.currentTimeMillis()
+                )
+                // aixo envia el message basically
+                if (currentUID < userUid) myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+                else myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
+                myRef.child("m$numMessages").setValue(message)
             }
             override fun onCancelled(error: DatabaseError) {
-                // TODO Not yet implemented
                 Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
             }
         })
-
-        ++numMessages
-        val message = Message(
-            getString(
-                R.string.share_activity_message,
-                activityInfo.titol + "\n" +
-                    "Category: " + activityInfo.categoria + "\n" +
-                    "description: " + activityInfo.descripcio + "\n" +
-                    "Created by: " + activityInfo.usuariCreador + "\n" +
-                    "at: " + activityInfo.dataHoraIni
-            ), // TODO el URL        //TODO extreure string
-            currentUID,
-            System.currentTimeMillis()
-        )
-        // aixo envia el message basically
-        myRef.child("m$numMessages").setValue(message)
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -268,7 +269,7 @@ class InviteActivity : AppCompatActivity() {
      * @param menu provided
      * @return true
      */
-    // doing: el buscador
+    // a mitjes i blocked: el buscador. no crec que l'acabi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_button, menu)
 

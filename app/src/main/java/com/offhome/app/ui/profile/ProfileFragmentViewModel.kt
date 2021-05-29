@@ -40,8 +40,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var repository = ProfileRepository()
     private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
-    private var _profileInfo = MutableLiveData<UserInfo>()
-    var profileInfo: LiveData<UserInfo> = _profileInfo
+    private var _profileInfo = MutableLiveData<Result<UserInfo>>()
+    var profileInfo: LiveData<Result<UserInfo>> = _profileInfo
 
     private var _tags = MutableLiveData< List<TagData> >()
     var tags: LiveData<List<TagData>> = _tags
@@ -59,6 +59,8 @@ class ProfileFragmentViewModel : ViewModel() {
     var tagAddedSuccessfully: LiveData<ResponseBody> = _tagAddedSuccessfully
     private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully
+
+    var descriptionSetSuccessfully2 = MutableLiveData<Result<String>>()
 
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
@@ -107,7 +109,12 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param newDescription string to change the description to
      */
     fun descriptionChangedByUser(newDescription: Editable) {
-        descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
+        // descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
+        descriptionChangedByUser2(newDescription)
+    }
+
+    fun descriptionChangedByUser2(newDescription: Editable) {
+        descriptionSetSuccessfully2 = repository.setDescription2(loggedUserEmail, newDescription.toString())
     }
 
     /**

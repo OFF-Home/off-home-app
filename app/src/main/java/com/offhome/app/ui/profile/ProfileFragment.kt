@@ -37,6 +37,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
@@ -116,11 +117,12 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
+                if (it is Result.Success) {
+                    textViewUsername.text = it.data.username
+                    estrelles.rating = it.data.estrelles.toFloat()
+                    // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                }
 
-                textViewUsername.text = profileInfoVM.username
-                estrelles.rating = profileInfoVM.estrelles.toFloat()
-                // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
             }
         )
 

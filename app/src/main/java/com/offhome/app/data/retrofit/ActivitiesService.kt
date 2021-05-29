@@ -20,6 +20,12 @@ interface ActivitiesService {
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
 
     /**
+     * This call is to get the old activities
+     */
+    @GET("activitats/acabades/{userEmail}")
+    fun getOldActivities(@Path("userEmail") userEmail: String): Call<List<ActivityFromList>>
+
+    /**
      * This call is for joining an activity
      */
     @POST("/activitats/insertusuari")
@@ -70,4 +76,8 @@ interface ActivitiesService {
 
     @GET("activitats/orderByDate")
     fun getActivitiesByDate(): Call<List<ActivityFromList>>
+
+    // gets a single activity identified by its creator and date
+    @GET("/activitats/{username}/{datahora}")
+    fun getActivity(@Path("username") activityCreator: String, @Path("datahora") activityDateTime: String): Call<ActivityFromList>
 }

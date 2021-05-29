@@ -20,9 +20,6 @@ class InviteViewModel : ViewModel() {
     private var _allUsers = MutableLiveData<List<UserInfo>>()
     var allUsers: LiveData<List<UserInfo>> = _allUsers
 
-    /*private var _participants = MutableLiveData<List<UserInfo>>()
-    var participants: LiveData<List<UserInfo>> =_participants*/
-
     private var currentUID: String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
     private var nSelectedRecipients: Int = 0
@@ -35,8 +32,4 @@ class InviteViewModel : ViewModel() {
         // allUsers = profileRepository.getAllUsers()
     }
     fun getCurrentUID(): String = currentUID
-
-    /*fun getParticipants() {
-        participants = activitiesRepository.getParticipants
-    }*/
 }

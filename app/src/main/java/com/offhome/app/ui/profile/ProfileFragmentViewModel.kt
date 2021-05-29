@@ -52,6 +52,8 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _usernameSetSuccessfully = MutableLiveData<ResponseBody>()
     var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
 
+    var usernameSetSuccessfullyResult= MutableLiveData<Result<String>>()
+
     private var _descriptionSetSuccessfully = MutableLiveData<ResponseBody>()
     var descriptionSetSuccessfully: LiveData<ResponseBody> = _descriptionSetSuccessfully
 
@@ -97,7 +99,8 @@ class ProfileFragmentViewModel : ViewModel() {
      */
     fun usernameChangedByUser(newUsername: Editable) {
         // repository.setUsername(loggedUserEmail, newUsername.toString())
-        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
+        //usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())!!
+        usernameSetSuccessfullyResult = repository.setUsernameResult(loggedUserEmail, newUsername.toString())
     }
 
     /**

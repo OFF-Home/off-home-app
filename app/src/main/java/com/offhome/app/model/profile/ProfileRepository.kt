@@ -224,6 +224,38 @@ class ProfileRepository {
         return usernameSetSuccessfully as MutableLiveData<ResponseBody>
     }
 
+    fun setUsernameResult(email: String, newUsername: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    // la crida retorna 200 encara que sigui user not found.
+                    Log.d("repo::setUsernameResult", "response.code() == " + response.code())
+                    if (response.code() == 200) {
+                        if (response.body() == null)
+                            Log.d("repo::setUsernameResult", "response.body() == null.")
+                        Log.d("response", "setUsernameResult response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+
+                } else { // si rebem resposta de la BD pero ens informa d'un error
+                    Log.d("response", "setUsername response: unsuccessful")
+                    result.value = Result.Error(IOException("getUserTagsResult Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                Log.d("no response", "setUsername no response")
+                t.printStackTrace()
+                Log.w("no response", "setUsername no response", t.cause)
+                result.value = Result.Error(IOException("getUserTagsResult Error: unsuccessful"))
+            }
+        })
+        return result
+    }
+
     // funciona sense tot el rollo de nulls
     /**
      * Propagates the setDescription process to the lower level

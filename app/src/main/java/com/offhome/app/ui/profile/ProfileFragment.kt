@@ -179,19 +179,19 @@ class ProfileFragment : Fragment() {
         // inutil, intentant que salti el observer de setUsernameSuccessfully
         // fragmentViewModel.simularResposta()
 
-        fragmentViewModel.usernameSetSuccessfully.observe( // observer no salta. no sé perquè.
+        fragmentViewModel.usernameSetSuccessfullyResult.observe( // observer no salta. no sé perquè.
             viewLifecycleOwner,
             Observer {
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
                 val resultVM = it ?: return@Observer
+                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
 
-                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
-
-                Log.d("resultVM.string", resultVM.string())
-                if (resultVM.string() == "User has been updated") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
                 fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }

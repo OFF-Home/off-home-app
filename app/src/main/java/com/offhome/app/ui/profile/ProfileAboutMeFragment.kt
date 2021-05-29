@@ -158,24 +158,7 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniDescriptionSetListener() {
-        /*profileVM.descriptionSetSuccessfully.observe(
-            viewLifecycleOwner,
-            Observer {
-                Log.d("setDescription", "salta el observer del fragment1")
-                val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment2")
-                if (resultVM.string() == "User has been updated") {
-                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
-                }
-                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
-            }
-        )*/
-
-        profileVM.descriptionSetSuccessfully2.observe(
+        profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
                 Log.d("setDescription", "salta el observer del fragment1")

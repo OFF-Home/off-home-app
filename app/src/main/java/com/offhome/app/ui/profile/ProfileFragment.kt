@@ -174,17 +174,14 @@ class ProfileFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniUsernameSetListener() {
-        Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
-
-        // inutil, intentant que salti el observer de setUsernameSuccessfully
-        // fragmentViewModel.simularResposta()
+        //Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
         fragmentViewModel.usernameSetSuccessfullyResult.observe( // observer no salta. no sé perquè.
             viewLifecycleOwner,
             Observer {
-                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
                 val resultVM = it ?: return@Observer
-                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
 
                 if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG).show()
@@ -193,7 +190,7 @@ class ProfileFragment : Fragment() {
                 }
 
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+                fragmentViewModel.usernameSetSuccessfullyResult.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }

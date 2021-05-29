@@ -197,33 +197,6 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email: String, newUsername: String): MutableLiveData<ResponseBody> {
-        if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername)) // o algo tipo updateUser()
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                usernameSetSuccessfully!!.value = response.body()
-                if (response.isSuccessful) {
-                    // la crida retorna 200 encara que sigui user not found.
-                    Log.d("response", "setUsername response: is successful")
-                    // usernameSetSuccessfully!!.value = true
-                } else { // si rebem resposta de la BD pero ens informa d'un error
-                    Log.d("response", "setUsername response: unsuccessful")
-                    // usernameSetSuccessfully!!.value = false
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "setUsername no response")
-                t.printStackTrace()
-                Log.w("no response", "setUsername no response", t.cause)
-                usernameSetSuccessfully!!.value = ResponseBody.create(null, "no response")
-            }
-        })
-
-        return usernameSetSuccessfully as MutableLiveData<ResponseBody>
-    }
-
     fun setUsernameResult(email: String, newUsername: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
@@ -266,29 +239,7 @@ class ProfileRepository {
      * @param newDescription description to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setDescription(email: String, newDescription: String): MutableLiveData<ResponseBody> {
-        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                descriptionSetSuccessfully.value = response.body()
-                descriptionSetSuccessfully.postValue(response.body())
-                if (response.isSuccessful) {
-                    Log.d("response", "setDescription response: is successful")
-                } else {
-                    Log.d("response", "setDescription response: unsuccessful")
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "setDescription no response")
-                t.printStackTrace()
-                Log.w("no response", "setDescription no response", t.cause)
-                descriptionSetSuccessfully.value = ResponseBody.create(null, "no response")
-            }
-        })
-        return descriptionSetSuccessfully
-    }
-    fun setDescription2(email: String, newDescription: String): MutableLiveData<Result<String>> {
+    fun setDescription(email: String, newDescription: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
         val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))

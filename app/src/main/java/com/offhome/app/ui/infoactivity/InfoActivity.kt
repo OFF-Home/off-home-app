@@ -18,6 +18,7 @@ import android.view.MenuItem
 import android.view.View
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -41,6 +42,7 @@ import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.ActivityFromList
@@ -50,8 +52,6 @@ import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat
 import java.util.*
-import androidx.lifecycle.Observer
-import com.offhome.app.data.Result
 
 /**
  * Class *InfoActivity*
@@ -85,13 +85,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
 
-    private lateinit var btnJoin:Button
+    private lateinit var btnJoin: Button
     private lateinit var datahora: TextView
     private lateinit var creator: TextView
     private lateinit var capacity: TextView
     private lateinit var description: TextView
-    private lateinit var layout:View
-
+    private lateinit var layout: View
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -122,7 +121,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         comment = findViewById<EditText>(R.id.yourcomment)
         btnsubmit = findViewById<Button>(R.id.submitcomment)
         layout = findViewById<View>(R.id.content)
-        
+
         estrelles = findViewById<RatingBar>(R.id.ratingStars)
         comment = findViewById<EditText>(R.id.yourcomment)
         btnsubmit = findViewById<Button>(R.id.submitcomment)
@@ -136,9 +135,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter = reviewsAdapter
         }
 
-        //ara procedim a obtenir les dades de la activitat per a poder mostrar algo
+        // ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
-        if (intent.extras != null && intent.extras!!.getString("activity")!=null) {    //si tenim intent.extras (és a dir, venim d'una altra activity de la app)
+        if (intent.extras != null && intent.extras!!.getString("activity") != null) { // si tenim intent.extras (és a dir, venim d'una altra activity de la app)
             Log.w("intent.extras", "is not null")
             // recibir actividad seleccionada de la otra pantalla
             val arguments = intent.extras
@@ -146,15 +145,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
             activity = GsonBuilder().create().fromJson(activityString, ActivityFromList::class.java)
 
-            //Ferran
+            // Ferran
             iniMostrarActivitat()
-        }
-        else {                          //si extras nulls, potser hem vingut a aquesta activity a través d'un dynamic link
-            checkForDynamicLinks()      //aquesta funció obté la PK d'una activitat a través del dynamic link, fa GET per obtenir-ne totes les dades, i LLAVORS crida a iniMostrarActivitat()
+        } else { // si extras nulls, potser hem vingut a aquesta activity a través d'un dynamic link
+            checkForDynamicLinks() // aquesta funció obté la PK d'una activitat a través del dynamic link, fa GET per obtenir-ne totes les dades, i LLAVORS crida a iniMostrarActivitat()
         }
     }
 
-    //Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
+    // Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
     private fun iniMostrarActivitat() {
         Log.w("iniMostrarActivitat", "entro a iniMostrarActivitat")
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
@@ -172,7 +170,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
                     // aquest observer salta?
                     Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
-                    
+
                     nRemainingParticipants = activity.maxParticipant - it.size
                     Log.d(
                         "getParticipants",
@@ -260,7 +258,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             }
         }
-
 
         viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -489,8 +486,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, "Share To:"))
-            }
-            else {
+            } else {
                 Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
             }
         } else if (item.itemId == R.id.share_in_app_btn) {
@@ -517,8 +513,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             )
             startActivity(intentCanviAChat)
-        }
-        else {
+        } else {
             Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
         }
     }
@@ -564,13 +559,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun checkForDynamicLinks() {
         Log.d("dynamic links", "we check for dynamic links")
-        //al video (de fa 1any i mig) ho fa una mica diferent
-        //el seu segur q habilita analytics
+        // al video (de fa 1any i mig) ho fa una mica diferent
+        // el seu segur q habilita analytics
         Firebase.dynamicLinks
             .getDynamicLink(intent)
             .addOnSuccessListener(this) { pendingDynamicLinkData ->
                 Log.w("dynamicLink", "getDynamicLink:onSuccess")
-                //ara tenim el dynamic link. let's extract the deeplink url
+                // ara tenim el dynamic link. let's extract the deeplink url
 
                 // Get deep link from result (may be null if no link is found)
                 var deepLink: Uri? = null
@@ -582,39 +577,39 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 // content, or apply promotional credit to the user's
                 // account.
                 // ...
-                val activityCreator = deepLink?.getQueryParameter("creator")   //params de query ("? = ")  que puc posar al deeplink
-                val activityDateTime =deepLink?.getQueryParameter("dataHora")
+                val activityCreator = deepLink?.getQueryParameter("creator") // params de query ("? = ")  que puc posar al deeplink
+                val activityDateTime = deepLink?.getQueryParameter("dataHora")
 
-                if (activityCreator!=null && activityDateTime !=null) {
-                    //hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
+                if (activityCreator != null && activityDateTime != null) {
+                    // hem obtingut la PK de la activitat. fem GET de backend i la mostrarem
                     Log.w("dynamicLink", "getInfoActivitatIMostrar")
                     getInfoActivitatIMostrar(activityCreator, activityDateTime)
-                }
-                else {
-                    //no hauria d'arribar aquí. ja faré tractat de l'error per si a cas I guess
+                } else {
+                    // no hauria d'arribar aquí. ja faré tractat de l'error per si a cas I guess
                     Log.w("deep link query params", "getDynamicLink: deep link query params are null")
                 }
             }
-            .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e)}
+            .addOnFailureListener(this) { e -> Log.w("dynamicLink", "getDynamicLink:onFailure", e) }
     }
 
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
 
         viewModel.getActivityResult(activityCreator, activityDateTime)
-        viewModel.infoActivitatResult.observe(     //aquesta not bad
+        viewModel.infoActivitatResult.observe( // aquesta not bad
             this@InfoActivity,
             Observer {
                 Log.w("getInfoActivitatIMostr3", "salta l'observer1")
                 if (it is Result.Success) {
                     Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
-                    //activity = it.data
+                    // activity = it.data
                     activity = it.data
-                    //i ja puc mostrar la info
+                    // i ja puc mostrar la info
                     iniMostrarActivitat()
                 } else {
-                    Toast.makeText(this,R.string.couldnt_retrieve_link_activity,Toast.LENGTH_LONG).show()
+                    Toast.makeText(this, R.string.couldnt_retrieve_link_activity, Toast.LENGTH_LONG).show()
                 }
-            })
+            }
+        )
 //        viewModel.getActivity(activityCreator, activityDateTime)
 //        viewModel.infoActivitat.observe(
 //            this, Observer/*@*/{

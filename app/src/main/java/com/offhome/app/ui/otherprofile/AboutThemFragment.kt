@@ -130,7 +130,7 @@ class AboutThemFragment : Fragment() {
             addTagToChipGroup(tagData.nomTag)
         }
         if (tagList.isEmpty()) {
-            //TODO treure
+            // TODO treure
             Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
         }
     }

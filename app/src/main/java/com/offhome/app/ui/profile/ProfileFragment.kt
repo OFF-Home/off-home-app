@@ -33,13 +33,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.ui.login.LoginActivity
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Class *ProfileFragment*
@@ -122,7 +120,6 @@ class ProfileFragment : Fragment() {
                     estrelles.rating = it.data.estrelles.toFloat()
                     // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
                 }
-
             }
         )
 

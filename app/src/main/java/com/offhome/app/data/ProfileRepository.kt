@@ -9,16 +9,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.data.model.FollowingUser
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.UserClient
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
-import io.socket.client.IO
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -511,5 +510,4 @@ class ProfileRepository {
         })
         return accountDeletedSuccessfully!!
     }
-
 }

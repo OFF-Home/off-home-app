@@ -1,5 +1,7 @@
 package com.offhome.app.ui.infoactivity
 
+
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
@@ -8,10 +10,10 @@ import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.model.Rating
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.profilejson.UserUsername
 
 /**
  * View Model for InfoActivity

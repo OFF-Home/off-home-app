@@ -43,10 +43,10 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
+import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -173,10 +173,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     @SuppressLint("SetTextI18n")
-    private fun setInfoUsuariCreador(){
+    private fun setInfoUsuariCreador() {
         viewModel.getProfileInfo(activity.usuariCreador)
         viewModel.profileInfo.observe(
-            this, Observer@{
+            this,
+            Observer@{
                 if (it is Result.Success) {
                     userUID = it.data.uid
                     username = it.data.username
@@ -186,7 +187,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         )
     }
-
 
     // Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
     fun iniMostrarActivitat() {
@@ -306,10 +306,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         groupChat.setOnClickListener {
             displayChatGroup()
         }
-
     }
 
-    private fun uploadParticipants(){
+    private fun uploadParticipants() {
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -336,8 +335,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-
-    private fun valoracioUsuari(){
+    private fun valoracioUsuari() {
         datahora.text = activity.dataHoraIni
         creator.text = getString(R.string.created_by) + activity.usuariCreador
         capacity.text = activity.maxParticipant.toString()
@@ -418,8 +416,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-
-    private fun showReviews(){
+    private fun showReviews() {
         // mostrar todas las reviews de la activity
         reviewsAdapter = ReviewsRecyclerViewAdapter()
         layoutReviews = findViewById(R.id.listComments)
@@ -440,7 +437,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         )
     }
 
-    private fun addToCalendar(){
+    private fun addToCalendar() {
         btnAddCalendar.setOnClickListener {
             Dexter.withContext(this)
                 .withPermissions(
@@ -496,7 +493,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }).check()
         }
     }
-
 
     /**
      * Manipulates the map once available.

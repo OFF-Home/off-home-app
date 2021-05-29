@@ -96,14 +96,14 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         hour = cal.get(Calendar.MINUTE)
         minute = cal.get(Calendar.MINUTE)
 
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, day)
+        cal.set(Calendar.YEAR, year)
 
         startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
         endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
 
-      //  dateFinishPicker.setText(datePicker.getText().toString())
+        //  dateFinishPicker.setText(datePicker.getText().toString())
     }
 
     private lateinit var viewModel: CreateActivityViewModel
@@ -150,7 +150,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     var start_dateListener: OnDateSetListener? = null
     var end_dateListener: OnDateSetListener? = null
 
-
     /**
      * This function let the user pick a date where the activity created will take place
      */
@@ -168,7 +167,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             dialogDate2.show()
             dialogDate2.datePicker.minDate = System.currentTimeMillis()
         }
-
     }
 
     override fun onCreateDialog(id: Int): Dialog? {
@@ -205,7 +203,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
 
         // when dialog box is closed, below method will be called.
         savedDay = dayOfMonth
-        savedMonth = month+1
+        savedMonth = month + 1
         savedYear = year
 
         TimePickerDialog(this, this, hour, minute, true).show()
@@ -223,8 +221,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             // set selected date into textview
             startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
             dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
-        }
-        else {
+        } else {
             endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
             dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
         }

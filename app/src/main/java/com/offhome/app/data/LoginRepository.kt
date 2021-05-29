@@ -64,7 +64,6 @@ class LoginRepository(val dataSource: LoginDataSource) {
         return dataSource.recoverPassword(email)
     }
 
-    fun deleteAccount(){
-
+    fun deleteAccount() {
     }
 }

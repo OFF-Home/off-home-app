@@ -4,8 +4,8 @@ package com.offhome.app.ui.explore
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.offhome.app.data.Result
 import com.offhome.app.data.ProfileRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.UserInfo
 
 /**

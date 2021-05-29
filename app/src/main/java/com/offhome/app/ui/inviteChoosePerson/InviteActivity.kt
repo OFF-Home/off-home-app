@@ -30,12 +30,12 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.Message
 import com.offhome.app.data.model.UserInfo
 import com.offhome.app.data.model.UserSummaryInfo
-import com.offhome.app.common.Constants
-import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 class InviteActivity : AppCompatActivity() {
@@ -43,8 +43,8 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var viewModel: InviteViewModel
     private lateinit var fab: FloatingActionButton
     private var usersListFullInfo: List<UserInfo> = ArrayList()
-    //private var usersList: List<UserSummaryInfo> = ArrayList()
-    private var usersList: MutableList<UserSummaryInfo> = ArrayList()   //potser acabara sent userInfo i ya.
+    // private var usersList: List<UserSummaryInfo> = ArrayList()
+    private var usersList: MutableList<UserSummaryInfo> = ArrayList() // potser acabara sent userInfo i ya.
     private lateinit var usersListAdapter: UsersListRecyclerViewAdapter
     private var nMaxRecipients: Int = 999
     private lateinit var activityInfo: ActivityDataForInvite

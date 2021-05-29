@@ -14,6 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.Activities
@@ -78,6 +79,7 @@ class ProfileMyActivitiesFragment : Fragment() {
         //nos lleva a la pantalla con las actividades viejas
         buttonold.setOnClickListener {
             val intent = Intent(context, OldActivities::class.java)
+            context?.startActivity(intent)
         }
 
         //nos lleva a la pantalla con las actividades viejas

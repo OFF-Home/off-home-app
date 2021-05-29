@@ -65,28 +65,29 @@ class ProfileRepository {
      * @param email email of the user whose data is to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getProfileInfo(email: String): MutableLiveData<UserInfo> {
+    fun getProfileInfo(email: String): MutableLiveData<Result<UserInfo>> {
 
-        if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
+        val userInfo = MutableLiveData<Result<UserInfo>>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
         // accés a Backend
         val call: Call<UserInfo> = userService!!.getProfileInfo(email)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
-                    userInfo!!.value = response.body()
+                    userInfo.value = Result.Success(response.body() as UserInfo)
                     Log.d("success response", "got a response indicating success")
                 } else {
+                    userInfo!!.value = Result.Error(IOException(response.errorBody().toString()))
                     Log.d("failure response", "got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                userInfo.value = Result.Error(IOException(t.message))
                 Log.d("GET", "Error getting ProfileInfo. communication failure (no response)")
             }
         })
-
-        return userInfo as MutableLiveData<UserInfo>
+        return userInfo
     }
 
     /**
@@ -437,5 +438,9 @@ class ProfileRepository {
         })
 
         return followedUsers as MutableLiveData<List<UserInfo>>
+    }
+
+    fun deleteAccount() {
+        // delete account
     }
 }

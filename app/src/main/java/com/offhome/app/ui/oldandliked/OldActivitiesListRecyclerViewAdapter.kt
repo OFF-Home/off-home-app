@@ -21,14 +21,11 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Adpter for the recycler view of the activities list
+ * Adpter for the recycler view of the old activities list
  * @param context is the context of the activity
- * @property activitiesList is the list of activities
+ * @property oldActivitiesList is the list of old activities
  */
 class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<OldActivitiesListRecyclerViewAdapter.ViewHolder>() {
-
-    private var tempListAct: List<ActivityFromList> = ArrayList()
-    private var listActivitiesFull: List<ActivityFromList> = ArrayList()
 
     /**
      * Onclick to item.
@@ -39,7 +36,7 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
         intent.putExtra("activity", GsonBuilder().create().toJson(item))
         context?.startActivity(intent)
     }
-    private var activitiesList: List<ActivityFromList> = ArrayList()
+    private var oldActivitiesList: List<ActivityFromList> = ArrayList()
 
     /**
      * it inflates the view of each activity and seves the ViewHolder of the view
@@ -49,7 +46,7 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
      */
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context)
-            .inflate(R.layout.fragment_activity, parent, false)
+            .inflate(R.layout.activity_oldact, parent, false)
         return ViewHolder(view)
     }
 
@@ -59,14 +56,14 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
      * @param position is the position of the view to render
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val item = activitiesList[position]
+        val item = oldActivitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
         //holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
         holder.textViewCapacity.text = item.maxParticipant.toString()
+        holder.stars.setRating((item.valoracio.toFloat()))
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
-        //holder.stars.numStars = item.valoracio
 
         with(holder.background) {
             tag = item
@@ -78,14 +75,14 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
      * gets the number of views
      * @return the number of views
      */
-    override fun getItemCount(): Int = activitiesList.size
+    override fun getItemCount(): Int = oldActivitiesList.size
 
     /**
      * sets the new data and notifies to the adapter to refresh if necessary
-     * @param activitiesList is the new list of activites to set
+     * @param oldActivitiesList is the new list of activites to set
      */
-    fun setData(activitiesList: List<ActivityFromList>?) {
-        this.activitiesList = activitiesList!!
+    fun setData(oldActivitiesList: List<ActivityFromList>?) {
+        this.oldActivitiesList = oldActivitiesList!!
         notifyDataSetChanged()
     }
 
@@ -116,24 +113,4 @@ class OldActivitiesListRecyclerViewAdapter(private val context: Context?) : Recy
             return super.toString()
         }
     }
-
-    /* no se si cal
-    fun performFiltering(constraint: CharSequence?) {
-        if (tempListAct.isNotEmpty()) activitiesList = tempListAct
-
-        tempListAct = ArrayList(activitiesList)
-        this.listActivitiesFull = ArrayList(activitiesList)
-
-        val charSearch = constraint.toString()
-        listActivitiesFull = if (charSearch.isEmpty()) tempListAct
-        else {
-            val resultList = ArrayList<ActivityFromList>()
-            for (row in activitiesList) {
-                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
-            }
-            resultList
-        }
-        activitiesList = listActivitiesFull
-        notifyDataSetChanged()
-    }*/
 }

@@ -44,6 +44,7 @@ class OldActivities : AppCompatActivity() {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
 
+
         oldActivitiesViewModel.getOldActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             this, Observer {
                 oldActivitiesList = it as MutableList<ActivityFromList>

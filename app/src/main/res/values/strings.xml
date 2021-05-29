@@ -250,4 +250,7 @@
     <string name="error_username">Username has already been chosen</string>
     <string name="set_username">Username</string>
     <string name="set_username_description">Please, set your username</string>
+    <string name="dialog_delete_message_title">Delete message</string>
+    <string name="dialog_delete_message_message">Are you sure to delete message?</string>
+    <string name="yes">Yes</string>
 </resources>

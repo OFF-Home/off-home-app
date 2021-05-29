@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.offhome.app">
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -18,9 +17,7 @@
         android:required="true" />
 
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-        tools:ignore="ScopedStorage" />
-
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:name=".common.MyApp"
@@ -30,9 +27,14 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.OFFHome"
-        tools:targetApi="n"
-        android:fullBackupContent="@xml/backup_descriptor">
+        android:theme="@style/Theme.OFFHome">
+        <activity android:name=".ui.oldandliked.OldActivities"></activity>
+        <activity
+            android:name=".ui.chats.singleChat.SingleChatActivity"
+            android:parentActivityName=".MainActivity" />
+        <activity
+            android:name=".ui.inviteChoosePerson.InviteActivity"
+            android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
@@ -41,52 +43,69 @@
             android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <!--
-             The API key for Google Maps-based APIs is defined as a string resource.
-             (See the file "res/values/google_maps_api.xml").
-             Note that the API key is linked to the encryption key used to sign the APK.
-             You need a different API key for each encryption key, including the release key that is used to
-             sign the APK for publishing.
-             You can define the keys for the debug and release targets in src/debug/ and src/release/.
+         The API key for Google Maps-based APIs is defined as a string resource.
+         (See the file "res/values/google_maps_api.xml").
+         Note that the API key is linked to the encryption key used to sign the APK.
+         You need a different API key for each encryption key, including the release key that is used to
+         sign the APK for publishing.
+         You can define the keys for the debug and release targets in src/debug/ and src/release/.
         -->
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+
         <activity
             android:name=".ui.infoactivity.InfoActivity"
-            android:label="@string/title_activity_info"
-            android:parentActivityName="com.offhome.app.ui.activitieslist.Activities"/>
+            android:parentActivityName=".ui.activitieslist.Activities">
+
+            <!-- intent filter per als dynamic links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- poso de tot persiaca: -->
+                <data android:host="offhome.page.link"
+                    android:scheme="https"/>
+                <data android:host="offhome.es"
+                    android:scheme="https"/>
+                <data android:host="offhome.page.link"
+                    android:scheme="http"/>
+                <data android:host="offhome.es"
+                    android:scheme="http"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.activitieslist.Activities"
-            android:parentActivityName="com.offhome.app.MainActivity"
-            android:launchMode="singleTop"/>
-        <activity
-            android:name=".ui.login.LoginActivity"
-            android:label="@string/title_activity_login" >
+            android:launchMode="singleTop"
+            android:parentActivityName=".MainActivity" />
+        <activity android:name=".ui.login.LoginActivity"
+            android:theme="@style/SplashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.updatePassword.UpdatePasswordActivity"
-            android:label="Update password" >
-
-        </activity>
-        <activity
-            android:name=".ui.signup.SignUpActivity"
-            android:label="@string/title_activity_sign_up" />
+            android:name=".ui.updatePassword.UpdatePasswordActivity" />
+        <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <category android:name="android.intent.category.LAUNCHER" />
+
                 <action android:name="android.intent.action.SEARCH" />
             </intent-filter>
 
-            <meta-data android:name="android.app.searchable"
-                android:resource="@xml/search"/>
+            <meta-data
+                android:name="android.app.searchable"
+                android:resource="@xml/search" />
         </activity>
+
         <service
-            android:name=".MyFirebaseMessagingService"
+            android:name=".ui.notifications.MyFirebaseMessaging"
             android:exported="false">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />

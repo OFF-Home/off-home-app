@@ -30,6 +30,8 @@ import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.ActivityDataForInvite
 import com.offhome.app.model.Message
 import com.offhome.app.model.profile.UserInfo
@@ -57,6 +59,7 @@ class InviteActivity : AppCompatActivity() {
     val database = Firebase.database
     private lateinit var myRef: DatabaseReference
     private var currentUID: String = String() //
+    private var exists = true
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,7 +85,7 @@ class InviteActivity : AppCompatActivity() {
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
 
-        currentUID = viewModel.getCurrentUID()
+        currentUID = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
         // en procés
         usersListAdapter = UsersListRecyclerViewAdapter(this)
@@ -215,48 +218,45 @@ class InviteActivity : AppCompatActivity() {
         var numMessages: Int = 0
 
         Log.d("mssg", "sender UID = " + currentUID + ". recipient UID = " + userUid)
-        myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
-        myRef.addValueEventListener(object : ValueEventListener {
+        if (currentUID < userUid) myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+        else myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
+        myRef.addListenerForSingleValueEvent(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
-                    myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+                    exists = false
                 }
-                myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
-                    override fun onDataChange(dataSnapshot: DataSnapshot) {
-                        var listMessages = ArrayList<Message>()
-                        numMessages = dataSnapshot.childrenCount.toInt()
-                    }
-                    override fun onCancelled(error: DatabaseError) {
-                        // TODO Not yet implemented
-                        Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
-                    }
-                })
+                if (!exists) {
+                    val referenceUser1 = database.getReference("usuaris/$userUid")
+                    val referenceUser2 = database.getReference("usuaris/$currentUID")
+                    referenceUser1.push().setValue(currentUID)
+                    referenceUser2.push().setValue(userUid)
+                    exists = true
+                }
+                val linkGenerator = AuxGenerateDynamicLink()
+                val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(activityInfo)
+                ++numMessages
+                val message = Message(
+                    getString(
+                        R.string.share_activity_message,
+                        /*activityInfo.titol + "\n" +
+                            "Category: " + activityInfo.categoria + "\n" +
+                            "description: " + activityInfo.descripcio + "\n" +
+                            "Created by: " + activityInfo.usuariCreador + "\n" +
+                            "at: " + activityInfo.dataHoraIni*/
+                        dynamicLinkUri
+                    ),
+                    currentUID,
+                    System.currentTimeMillis()
+                )
+                // aixo envia el message basically
+                if (currentUID < userUid) myRef = database.getReference("xatsIndividuals/${currentUID}_$userUid")
+                else myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
+                myRef.child("m$numMessages").setValue(message)
             }
             override fun onCancelled(error: DatabaseError) {
-                // TODO Not yet implemented
                 Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
             }
         })
-
-        val linkGenerator = AuxGenerateDynamicLink()
-        val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(activityInfo)
-
-        ++numMessages
-        val message = Message(
-            getString(
-                R.string.share_activity_message,
-                /*activityInfo.titol + "\n" +
-                    "Category: " + activityInfo.categoria + "\n" +
-                    "description: " + activityInfo.descripcio + "\n" +
-                    "Created by: " + activityInfo.usuariCreador + "\n" +
-                    "at: " + activityInfo.dataHoraIni*/
-                dynamicLinkUri
-            ),
-            currentUID,
-            System.currentTimeMillis()
-        )
-        // aixo envia el message basically
-        myRef.child("m$numMessages").setValue(message)
     }
 
     /*override fun onCreateOptionsMenu(menu: Menu?): Boolean {

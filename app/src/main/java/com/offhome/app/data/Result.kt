@@ -15,4 +15,12 @@ sealed class Result<out T : Any> {
             is Error -> "Error[exception=$exception]"
         }
     }
+
+    //ferran
+    fun getDataOrNull(): Any? {
+        return when (this) {
+            is Success<*> -> data
+            is Error -> null
+        }
+    }
 }

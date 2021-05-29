@@ -68,4 +68,8 @@ interface ActivitiesService {
         @Query("usuariCreador") usuariCreador: String,
         @Query("dataHoraIni") dataHoraIni: String
     ): Call<List<ReviewOfParticipant>>
+
+    //gets a single activity identified by its creator and date
+    @GET("/activitats/{username}/{datahora}")
+    fun getActivity(@Path("username") activityCreator: String, @Path("datahora") activityDateTime: String): Call<ActivityFromList>
 }

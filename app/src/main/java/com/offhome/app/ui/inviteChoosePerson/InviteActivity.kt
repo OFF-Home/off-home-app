@@ -3,7 +3,9 @@ package com.offhome.app.ui.inviteChoosePerson
 
 
 import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.View
 import android.widget.SearchView
@@ -24,6 +26,11 @@ import com.google.firebase.database.DatabaseError
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.ValueEventListener
 import com.google.firebase.database.ktx.database
+import com.google.firebase.dynamiclinks.DynamicLink
+import com.google.firebase.dynamiclinks.ktx.androidParameters
+import com.google.firebase.dynamiclinks.ktx.dynamicLink
+import com.google.firebase.dynamiclinks.ktx.dynamicLinks
+import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
 import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
@@ -49,7 +56,6 @@ class InviteActivity : AppCompatActivity() {
     private lateinit var textRecipientList: TextView
     private var selectedRecipientList: List<UserSummaryInfo> = ArrayList()
 
-    // 3r intent
     private var tracker: SelectionTracker<Long>? = null
 
     // chat messages
@@ -81,7 +87,6 @@ class InviteActivity : AppCompatActivity() {
         textRecipientList = findViewById(R.id.text_recipient_ist)
         textRecipientList.text = ""
 
-        // currentUID = "102"
         currentUID = viewModel.getCurrentUID()
 
         // en procés
@@ -96,8 +101,6 @@ class InviteActivity : AppCompatActivity() {
             this,
             Observer {
 
-                // usersList = it
-
                 usersListFullInfo = it
                 for (user in usersListFullInfo) {
                     usersList.add(UserSummaryInfo(username = user.username, email = user.email, uid = user.uid))
@@ -108,13 +111,11 @@ class InviteActivity : AppCompatActivity() {
             }
         )
 
-        // stub
+        // stub, per que per ara no segueixo a ningú. pero treient aquest stub hauria de funcionar
         usersList =
-            listOf(UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"), UserSummaryInfo(email = "victorfer@gmai.com", username = "victor", uid = "101"), UserSummaryInfo(email = "aaaaaaaaaa@yes.true", username = "ferri", uid = "101"),)
+            listOf(UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"),UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"))
                 as MutableList<UserSummaryInfo>
         usersListAdapter.setData(usersList)
-
-        // 3r intent
 
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",
@@ -218,6 +219,7 @@ class InviteActivity : AppCompatActivity() {
         val userUid = recipientUID // oi?
         var numMessages: Int = 0
 
+        Log.d("mssg", "sender UID = "+currentUID+". recipient UID = "+userUid)
         myRef = database.getReference("xatsIndividuals/${userUid}_$currentUID")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
@@ -241,16 +243,20 @@ class InviteActivity : AppCompatActivity() {
             }
         })
 
+        val linkGenerator = AuxGenerateDynamicLink()
+        val dynamicLinkUri:Uri=linkGenerator.generateDynamicLink(activityInfo)
+
         ++numMessages
         val message = Message(
             getString(
                 R.string.share_activity_message,
-                activityInfo.titol + "\n" +
+                /*activityInfo.titol + "\n" +
                     "Category: " + activityInfo.categoria + "\n" +
                     "description: " + activityInfo.descripcio + "\n" +
                     "Created by: " + activityInfo.usuariCreador + "\n" +
-                    "at: " + activityInfo.dataHoraIni
-            ), // TODO el URL        //TODO extreure string
+                    "at: " + activityInfo.dataHoraIni*/
+            dynamicLinkUri
+            ),
             currentUID,
             System.currentTimeMillis()
         )
@@ -268,7 +274,7 @@ class InviteActivity : AppCompatActivity() {
      * @param menu provided
      * @return true
      */
-    // doing: el buscador
+    // a mitjes i blocked: el buscador. no crec que l'acabi
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         menuInflater.inflate(R.menu.search_button, menu)
 

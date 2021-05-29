@@ -26,7 +26,6 @@ data class UserInfo(
     val following: Int,
     val darkmode: Int, // a backend no els funcionava el boolean
     val notifications: Int,
-    val estrelles: Int, // TODO hauria de ser float?
-    val tags: String, // TODO crec que s'ha de treure d'aquí. Els tags els obtenim per una altra banda
+    val estrelles: Double, // TODO hauria de ser float?
     val language: String
 )

@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.model.ActivityFromList
 import com.offhome.app.model.Rating
 import com.offhome.app.model.ReviewOfParticipant
 
@@ -20,6 +22,9 @@ class InfoActivityViewModel : ViewModel() {
     var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
+
+    var infoActivitatResult = MutableLiveData<Result<ActivityFromList>>()
+    var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -76,5 +81,14 @@ class InfoActivityViewModel : ViewModel() {
     fun getReviews(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<ReviewOfParticipant>> {
         reviews = repository.getCommentsParticipants(usuariCreador, dataHoraIni)
         return reviews
+    }
+
+    //gets a single activity identified by its creator and date
+    fun getActivityResult(activityCreator: String, activityDateTime: String) {
+        infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
+    }
+
+    fun getActivity (activityCreator: String, activityDateTime: String) {
+        infoActivitat = repository.getActivity(activityCreator, activityDateTime)
     }
 }

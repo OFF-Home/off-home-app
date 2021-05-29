@@ -24,10 +24,8 @@ class ExploreViewModel : ViewModel() {
     private var repository = ProfileRepository()
     private var activitiesRepo = ActivitiesRepository()
     private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
-    private var _suggestedActivities = MutableLiveData<List<ActivityFromList>>()
-    private var _friendsActivities = MutableLiveData<List<ActivityFromList>>()
-    var suggestedActivities: LiveData<List<ActivityFromList>> = _suggestedActivities
-    var friendsActivities: LiveData<List<ActivityFromList>> = _friendsActivities
+    var suggestedActivities = MutableLiveData<Result<List<ActivityFromList>>>()
+    var friendsActivities = MutableLiveData<Result<List<ActivityFromList>>>()
     var profileInfo: MutableLiveData<UserInfo> = MutableLiveData<UserInfo>()
 
     /**
@@ -42,10 +40,10 @@ class ExploreViewModel : ViewModel() {
     }
 
     fun getSuggestedActivities() {
-        suggestedActivities = activitiesRepo.getSuggestedActivities(loggedUserEmail)!!
+        suggestedActivities = activitiesRepo.getSuggestedActivities(loggedUserEmail)
     }
 
     fun getFriendsActivities() {
-        friendsActivities = activitiesRepo.getFriendsActivities(loggedUserEmail)!!
+        friendsActivities = activitiesRepo.getFriendsActivities(loggedUserEmail)
     }
 }

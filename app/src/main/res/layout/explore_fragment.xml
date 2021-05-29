@@ -44,48 +44,30 @@
         android:textSize="17dp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/HorizontalScroll" />
+        app:layout_constraintTop_toBottomOf="@+id/RecyclerViewExploreFriendActivities" />
 
-    <androidx.core.widget.NestedScrollView
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewExploreSuggested"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView3"
+        tools:listitem="@layout/fragment_activity">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/RecyclerViewExploreFriendActivities"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_marginTop="16dp"
+        android:orientation="horizontal"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textView3"
-        tools:context=".ui.inviteChoosePerson.InviteActivity"
-        tools:showIn="@layout/explore_fragment">
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewExploreSuggested"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView3"
-            tools:listitem="@layout/fragment_activity">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </androidx.core.widget.NestedScrollView>
-
-    <HorizontalScrollView
-        android:id="@+id/HorizontalScroll"
-        android:layout_width="409dp"
-        android:layout_height="41dp"
-        app:layout_constraintBottom_toTopOf="@+id/textView3"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textView2"
-        app:layout_constraintVertical_bias="0.523"
-        tools:ignore="MissingConstraints">
+        tools:listitem="@layout/fragment_activity_friends">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/RecyclerViewExploreFriendActivities"
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView2"
-            tools:listitem="@layout/fragment_activity">
-
-        </androidx.recyclerview.widget.RecyclerView>
-    </HorizontalScrollView>
+    </androidx.recyclerview.widget.RecyclerView>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

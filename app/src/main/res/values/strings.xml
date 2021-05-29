@@ -204,4 +204,5 @@
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share">btn_share</string>
     <string name="what_is_everyone_doing">What is everyone doing?</string>
+    <string name="no_activities_friends_found">No activities from friends found!</string>
 </resources>

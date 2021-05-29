@@ -8,6 +8,8 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.model.ActivityData
 import com.offhome.app.model.ActivityFromList
+import com.offhome.app.ui.explore.NoActivitiesException
+import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -27,8 +29,8 @@ class ActivitiesRepository {
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
-    private var suggestedactivities: MutableLiveData<List<ActivityFromList>> = MutableLiveData<List<ActivityFromList>>()
-    private var friendsactivities: MutableLiveData<List<ActivityFromList>> = MutableLiveData<List<ActivityFromList>>()
+    private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
+    private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
 
     fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
         if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
@@ -127,18 +129,20 @@ class ActivitiesRepository {
         return responseJoin as MutableLiveData<String>
     }
 
-    fun getSuggestedActivities(loggedUserEmail: String): LiveData<List<ActivityFromList>> {
+    fun getSuggestedActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         val call: Call<List<ActivityFromList>> = activitiesService?.getSuggestedActivities(loggedUserEmail)!!
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    suggestedactivities.value =response.body()
+                    suggestedactivities.value = Result.Success(response.body() as List<ActivityFromList>)
                     Log.d("response", "getSuggestedActivities response: is successful")
                 } else {
+                    suggestedactivities.value = Result.Error(IOException("getSuggestedActivities response: unsuccessful"))
                     Log.d("response", "getSuggestedActivities response: unsuccessful")
                 }
             }
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                suggestedactivities.value = Result.Error(IOException("Error getting getSuggestedActivities. communication failure (no response)"))
                 Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
             }
         })
@@ -146,21 +150,29 @@ class ActivitiesRepository {
 
     }
 
-    fun getFriendsActivities(loggedUserEmail: String): LiveData<List<ActivityFromList>> {
+    fun getFriendsActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        return MutableLiveData(Result.Success(listOf(ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"), ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"), ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"))))
+        /*
         val call: Call<List<ActivityFromList>> = activitiesService?.getFriendsActivities(loggedUserEmail)!!
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    friendsactivities.value =response.body()
-                    Log.d("response", "getSuggestedActivities response: is successful")
+                    if (response.code() == 200) {
+                        friendsactivities.value = Result.Success(response.body() as List<ActivityFromList>)
+                        Log.d("response", "getSuggestedActivities response: is successful")
+                    } else {
+                        friendsactivities.value = Result.Error(NoActivitiesException())
+                    }
                 } else {
+                    friendsactivities.value = Result.Error(IOException("getSuggestedActivities response: unsuccessful"))
                     Log.d("response", "getSuggestedActivities response: unsuccessful")
                 }
             }
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                friendsactivities.value = Result.Error(IOException("Error getting getSuggestedActivities. communication failure (no response)"))
                 Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
             }
         })
-        return friendsactivities
+        return friendsactivities*/
     }
 }

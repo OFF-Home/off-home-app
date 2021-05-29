@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
@@ -24,16 +25,19 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  */
 class ExploreFragment : Fragment() {
     private lateinit var viewModel: ExploreViewModel
-    private lateinit var recyclerView:  RecyclerView
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewFriends: RecyclerView
     private var activitiesList: List<ActivityFromList> = ArrayList()
+    private var activitiesListFriends: List<ActivityFromList> = ArrayList()
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
+    private lateinit var activitiesListFiendsAdapter: ActivitiesFriendsListRecyclerViewAdapter
+
     /**
      * It has gets the instance of the fragment
      */
     companion object {
         fun newInstance() = ExploreFragment()
     }
-
 
 
     /**
@@ -46,25 +50,40 @@ class ExploreFragment : Fragment() {
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.explore_fragment, container, false)
         activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
-        val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewExploreSuggested)
+        recyclerView = view.findViewById(R.id.RecyclerViewExploreSuggested)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter
+
+        activitiesListFiendsAdapter = ActivitiesFriendsListRecyclerViewAdapter(context)
+        recyclerViewFriends = view.findViewById(R.id.RecyclerViewExploreFriendActivities)
+        recyclerViewFriends.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewFriends.adapter = activitiesListFiendsAdapter
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
+
         viewModel.getSuggestedActivities()
         viewModel.suggestedActivities.observe(
             viewLifecycleOwner,
             Observer {
-                activitiesList = it
-                activitiesListAdapter.setData(activitiesList)
+                if (it is Result.Success) {
+                    activitiesList = it.data
+                    activitiesListAdapter.setData(activitiesList)
+                }
+
             })
-        /*
+
+        viewModel.getFriendsActivities()
         viewModel.friendsActivities.observe(
             viewLifecycleOwner,
             Observer {
-                activitiesList = it
-                activitiesListAdapter.setData(activitiesList)
+                if (it is Result.Success) {
+                    activitiesListFriends = it.data
+                    activitiesListFiendsAdapter.setData(activitiesListFriends)
+                } else if (it is Result.Error) {
+                    if (it.exception is NoActivitiesException) {
+                        Toast.makeText(context, getString(R.string.no_activities_friends_found), Toast.LENGTH_LONG).show()
+                    }
+                }
             })
-            */
 
         return view
     }
@@ -115,3 +134,4 @@ class ExploreFragment : Fragment() {
     }
 
 }
+

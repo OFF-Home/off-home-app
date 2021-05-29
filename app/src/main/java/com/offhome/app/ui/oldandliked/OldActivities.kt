@@ -20,13 +20,7 @@ class OldActivities : AppCompatActivity() {
         setContentView(R.layout.activity_old_activities)
 
         oldActivitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
-        /*oldActivitiesListAdapter = OldActivitiesListRecyclerViewAdapter(context as Activities)
 
-        val layout = findViewById<RecyclerView>(R.id.listActivities)
-        layout.layoutManager = LinearLayoutManager(context)
-        layout.adapter = oldActivitiesListAdapter
-
-        setHasOptionsMenu(true)*/
 
 
 

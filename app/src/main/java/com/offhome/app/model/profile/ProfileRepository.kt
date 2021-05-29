@@ -153,12 +153,15 @@ class ProfileRepository {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {
                     Log.d("repo::getUserTagsResult", "response.code() == " + response.code())
-                    if (response.code() == 200) {
+                    if (response.code() == 200 || response.code() == 201) {
                         if (response.body() == null)
                             Log.d("repo::getUserTagsResult", "response.body() == null.")
 
                         Log.d("response", "getUserTagsResult response: is successful")
                         result.value = Result.Success(response.body()!!)
+                    }
+                    else {
+                        Log.d("repo::getUserTagsResult", "response code not in (200, 201)")
                     }
                 } else {
                     Log.d("response", "getUserTagsResult response: unsuccessful")
@@ -206,24 +209,27 @@ class ProfileRepository {
                 if (response.isSuccessful) {
                     // la crida retorna 200 encara que sigui user not found.
                     Log.d("repo::setUsernameResult", "response.code() == " + response.code())
-                    if (response.code() == 200) {
+                    if (response.code() == 200 || response.code() == 201) {
                         if (response.body() == null)
                             Log.d("repo::setUsernameResult", "response.body() == null.")
                         Log.d("response", "setUsernameResult response: is successful")
                         result.value = Result.Success(response.body().toString())
                     }
+                    else {
+                        Log.d("repo::setUsernameResult", "response code not in (200, 201)")
+                    }
 
                 } else { // si rebem resposta de la BD pero ens informa d'un error
-                    Log.d("response", "setUsername response: unsuccessful")
-                    result.value = Result.Error(IOException("getUserTagsResult Error: unsuccessful"))
+                    Log.d("response", "setUsernameResult response: unsuccessful")
+                    result.value = Result.Error(IOException("setUsernameResult Error: unsuccessful"))
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "setUsername no response")
+                Log.d("no response", "setUsernameResult no response")
                 t.printStackTrace()
-                Log.w("no response", "setUsername no response", t.cause)
-                result.value = Result.Error(IOException("getUserTagsResult Error: unsuccessful"))
+                Log.w("no response", "setUsernameResult no response", t.cause)
+                result.value = Result.Error(IOException("setUsernameResult Error: unsuccessful"))
             }
         })
         return result
@@ -300,24 +306,35 @@ class ProfileRepository {
      * @param tag tag to add
      * @return mutable live data which will be updated with the result of the call
      */
-    fun addTag(email: String, tag: String): MutableLiveData<ResponseBody> {
+    fun addTag(email: String, tag: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                tagAddedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
-                    Log.d("response", "addTag response: is successful")
-                } else {
+                    Log.d("repo::addTag", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() == 201) {
+                        if (response.body() == null)
+                            Log.d("repo::addTag", "response.body() == null.")
+                        Log.d("response", "addTag response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+                    else {
+                        Log.d("repo::addTag", "response code not in (200, 201)")
+                    }
+
+                } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "addTag response: unsuccessful")
+                    result.value = Result.Error(IOException("addTag Error: unsuccessful"))
                 }
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "addTag no response")
-                tagAddedSuccessfully.value = ResponseBody.create(null, "no response")
+                result.value = Result.Error(IOException("addTag Error: unsuccessful"))
             }
         })
-        return tagAddedSuccessfully
+        return result
     }
 
     /**

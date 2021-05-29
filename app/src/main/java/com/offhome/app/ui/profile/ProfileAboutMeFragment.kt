@@ -205,17 +205,24 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagAdditionListener() {
-        profileVM.tagAddedSuccessfully.observe(
+        profileVM.tagAddedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Insert tag al usuario") {
-                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
-                        .show()
+
+                if (resultVM is Result.Success) {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagAddedSuccessfully.removeObservers(viewLifecycleOwner)
+
+                /*if (resultVM.string() == "Insert tag al usuario") {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
+                }*/
+
+                profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }

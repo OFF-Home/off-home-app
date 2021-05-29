@@ -273,12 +273,15 @@ class ActivitiesRepository {
             override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
                 if (response.isSuccessful) {
                     Log.d("repo::getActivityResult", "response.code() == " + response.code())
-                    if (response.code() == 200) {
+                    if (response.code() == 200 || response.code() ==201) {
                         if (response.body() == null)
                             Log.d("repo::getActivityResult", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
 
                         Log.d("response", "getActivityResult response: is successful")
                         result.value = Result.Success(response.body()!!)
+                    }
+                    else {
+                        Log.d("repo::getActivityResult", "response code not in (200, 201)")
                     }
                 } else {
                     Log.d("response", "getActivityResult response: unsuccessful")

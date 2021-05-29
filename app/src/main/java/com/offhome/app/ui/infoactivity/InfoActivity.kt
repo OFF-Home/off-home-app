@@ -51,6 +51,7 @@ import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.lifecycle.Observer
+import com.offhome.app.data.Result
 
 /**
  * Class *InfoActivity*
@@ -599,41 +600,32 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private fun getInfoActivitatIMostrar(activityCreator: String, activityDateTime: String) {
 
-        /*viewModel.getActivityResult(activityCreator, activityDateTime)
+        viewModel.getActivityResult(activityCreator, activityDateTime)
         viewModel.infoActivitatResult.observe(     //aquesta not bad
             this@InfoActivity,
             Observer {
                 Log.w("getInfoActivitatIMostr3", "salta l'observer1")
-                if (it == null)
-                    Log.w("getInfoActivitatIMostr3", "it is null")
-                else {
-                    Log.w("getInfoActivitatIMostr3", "it is not null")
-
-                    if (it.toString().contains("unsuccessful"))
-                        Toast.makeText(this,R.string.couldnt_retrieve_link_activity,Toast.LENGTH_LONG).show()
-                    else if (it.toString().contains("failure"))
-                        Toast.makeText(this,R.string.couldnt_reach_the_server, Toast.LENGTH_LONG).show()
-                    else {
-                        Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
-                        //activity = it.data
-                        activity = it.getDataOrNull() as ActivityFromList
-                        //i ja puc mostrar la info
-                        iniMostrarActivitat()
-                    }
+                if (it is Result.Success) {
+                    Log.w("getInfoActivitatIMostr3", "we got an actual activity!!!!!")
+                    //activity = it.data
+                    activity = it.data
+                    //i ja puc mostrar la info
+                    iniMostrarActivitat()
+                } else {
+                    Toast.makeText(this,R.string.couldnt_retrieve_link_activity,Toast.LENGTH_LONG).show()
                 }
-
-            })*/
-        viewModel.getActivity(activityCreator, activityDateTime)
-        viewModel.infoActivitat.observe(
-            this, Observer/*@*/{
-                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. 1")
-                val infoVM = it ?: return@Observer
-                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. NO ES null")
-                activity = infoVM
-                //i ja puc mostrar la info
-                iniMostrarActivitat()
-            }
-        )
+            })
+//        viewModel.getActivity(activityCreator, activityDateTime)
+//        viewModel.infoActivitat.observe(
+//            this, Observer/*@*/{
+//                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. 1")
+//                val infoVM = it ?: return@Observer
+//                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. NO ES null")
+//                activity = infoVM
+//                //i ja puc mostrar la info
+//                iniMostrarActivitat()
+//            }
+//        )
     }
     private fun getCalendarId(): Long? {
         val projection = arrayOf(CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)

@@ -2,6 +2,8 @@ package com.offhome.app.ui.chats.groupChat
 
 
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,12 +17,13 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.model.GroupMessage
+import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**
  * Adpter for the recycler view of messages of a group chat
  * @property listGroupMessages is the list of Messages
  */
-class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyGroupChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listGroupMessages: List<GroupMessage> = ArrayList()
 
@@ -56,7 +59,16 @@ class MyGroupChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHol
         (holder as ViewHolderGroupMessage).textViewMessage.text = item.message
         (holder as ViewHolderGroupMessage).textViewMessage.setOnLongClickListener {
             // Delete message
-            Toast.makeText(MyApp.getContext(), "Long press", Toast.LENGTH_LONG).show()
+            val delete_dialog = AlertDialog.Builder(context)
+            delete_dialog.setTitle(R.string.dialog_delete_message_title)
+            delete_dialog.setMessage(R.string.dialog_delete_message_message)
+            delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
+                (context as SingleChatActivity).deleteMessage(item.userSender, item.timestamp)
+            }
+            delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                dialog.dismiss()
+            }
+            delete_dialog.show()
             return@setOnLongClickListener true
         }
         (holder as ViewHolderGroupMessage).nameViewPerson.text = item.userNameSender

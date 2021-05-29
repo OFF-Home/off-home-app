@@ -166,7 +166,7 @@ class ProfileRepository {
                 }
             }
             override fun onFailure(call: Call< List<TagData> >, t: Throwable) {
-                Log.d("GET", "Error getting getUserTagsResult. communication failure (no response)")
+                Log.d("GET", "Error getting getUserTagsResult. communication failure (no response)", t)
                 result.value = Result.Error(IOException("getUserTagsResult Error: failure", t))
             }
         })

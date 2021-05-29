@@ -61,4 +61,13 @@ interface ActivitiesService {
         @Query("usuariCreador") usuariCreador: String,
         @Query("dataHoraIni") dataHoraIni: String
     ): Call<List<ReviewOfParticipant>>
+
+    @GET("activitats/orderByNameDesc")
+    fun getActivitiesByDescTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByName")
+    fun getActivitiesByAscTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByDate")
+    fun getActivitiesByDate(): Call<List<ActivityFromList>>
 }

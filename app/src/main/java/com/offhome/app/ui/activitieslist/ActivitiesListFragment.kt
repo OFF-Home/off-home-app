@@ -154,6 +154,7 @@ class ActivitiesListFragment : Fragment() {
      * This Function handles the dialog where the activities can be sorted. The opcions are: by ascending, by descending and by date
      */
     private fun sortActivities() {
+        val currentTime = Calendar.getInstance().time
         val builder = AlertDialog.Builder(context)
         builder.setTitle("                    Sort")
             .setItems(arrayOf("Ascending", "Descending", "By date")) { dialogInterface, i ->
@@ -161,20 +162,95 @@ class ActivitiesListFragment : Fragment() {
                     0 -> {
                         // ascending clicked
                         dialogInterface.dismiss()
-                        activitiesList.sortedBy { it.titol }
-                        activitiesListAdapter.setData(activitiesList)
+                        activitiesViewModel.getActivitiesByAscTitle().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                     1 -> {
                         // descending clicked
                         dialogInterface.dismiss()
-                        activitiesList.sortedByDescending { it.titol }
-                        activitiesListAdapter.setData(activitiesList)
+                        activitiesViewModel.getActivitiesByDescTitle().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date!! > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                     2 -> {
                         // sorted by date
                         dialogInterface.dismiss()
-                        activitiesList.sortedBy { it.dataHoraIni }
-                        activitiesListAdapter.setData(activitiesList)
+                        activitiesViewModel.getActivitiesByDate().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date!! > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                 }
             }.show()

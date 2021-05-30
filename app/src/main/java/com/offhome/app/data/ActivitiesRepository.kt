@@ -28,6 +28,7 @@ import retrofit2.Response
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
     private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
+    private var likedActivities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
@@ -81,6 +82,29 @@ class ActivitiesRepository {
             }
         })
         return oldActivities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the old activities that a user has joined
+     * @param userEmail is the email of the user
+     * @return the result with a live data list of the data class ActivityFromList
+     */
+    fun getLikedAct(email: String): MutableLiveData<List<ActivityFromList>> {
+        if (likedActivities == null) likedActivities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getLikedActivities(email)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    likedActivities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting liked activities")
+            }
+        })
+        return likedActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     /**

@@ -29,6 +29,7 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
         <activity android:name=".ui.oldandliked.OldActivities"></activity>
+        <activity android:name=".ui.oldandliked.LikedActivities"></activity>
         <activity
             android:name=".ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity" />

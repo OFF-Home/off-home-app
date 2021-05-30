@@ -23,6 +23,9 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.ui.infopolitiques.CovidPolicyActivity
+import com.offhome.app.ui.infopolitiques.InfoOFFHomeActivity
+import com.offhome.app.ui.infopolitiques.PolicyActivity
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
@@ -43,6 +46,9 @@ class ProfileSettingsFragment : Fragment() {
     lateinit var deleteAccount: TextView
     lateinit var btnChangePwd: TextView
     lateinit var btnNotifications: ImageView
+    lateinit var btnInfoOFFHOME: TextView
+    lateinit var btnPrivacyPolicy: TextView
+    lateinit var btnCovidPolicy: TextView
 
     private lateinit var firebaseAuth: FirebaseAuth
 
@@ -88,6 +94,9 @@ class ProfileSettingsFragment : Fragment() {
         deleteAccount = view.findViewById(R.id.deleteAccount)
         btnChangePwd = view.findViewById(R.id.changePsw)
         btnNotifications = view.findViewById(R.id.imageViewIconNot)
+        btnInfoOFFHOME = view.findViewById(R.id.aboutOFFHome)
+        btnPrivacyPolicy = view.findViewById(R.id.privacyPolicy)
+        btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
 
         manageUserInfo()
 
@@ -96,6 +105,30 @@ class ProfileSettingsFragment : Fragment() {
         changePassword()
 
         manageNotifications()
+
+        infoOFFHOME()
+
+        privacyPolicy()
+
+        covidPolicy()
+    }
+
+    private fun covidPolicy() {
+        btnCovidPolicy.setOnClickListener {
+            startActivity(Intent(activity, CovidPolicyActivity::class.java))
+        }
+    }
+
+    private fun privacyPolicy() {
+        btnPrivacyPolicy.setOnClickListener {
+            startActivity(Intent(activity, PolicyActivity::class.java))
+        }
+    }
+
+    private fun infoOFFHOME() {
+        btnInfoOFFHOME.setOnClickListener {
+            startActivity(Intent(activity, InfoOFFHomeActivity::class.java))
+        }
     }
 
     /**

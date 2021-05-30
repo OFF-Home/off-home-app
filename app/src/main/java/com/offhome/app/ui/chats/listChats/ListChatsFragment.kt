@@ -6,9 +6,12 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.MyApp
+import com.offhome.app.data.Result
 import com.offhome.app.model.ChatInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
@@ -50,8 +53,12 @@ class ListChatsFragment : Fragment() {
         recycler.adapter = adapter
 
         viewModel.getChats(viewLifecycleOwner).observe(viewLifecycleOwner, {
-            chats = it as ArrayList<ChatInfo>
-            adapter.setData(chats)
+            if (it is Result.Success) {
+                chats = it.data as ArrayList<ChatInfo>
+                adapter.setData(chats)
+            } else {
+                Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error_getting_chats), Toast.LENGTH_LONG).show()
+            }
         })
     }
 

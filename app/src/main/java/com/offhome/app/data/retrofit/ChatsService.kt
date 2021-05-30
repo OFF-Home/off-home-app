@@ -36,5 +36,5 @@ interface ChatsService {
     fun addChatGroup(@Body chat: ChatGroupIdentification): Call<ResponseBody>
 
     @GET("xats/{user}")
-    fun getChats(@Path("user") userUid: String): Call<List<ChatInfo>>
+    fun getChats(@Path("user") userUid: String): Call<List<String>>
 }

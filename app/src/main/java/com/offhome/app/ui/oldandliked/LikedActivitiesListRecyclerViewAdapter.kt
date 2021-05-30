@@ -20,9 +20,9 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 /**
- * Adpter for the recycler view of the activities list
+ * Adpter for the recycler view of the liked activities list
  * @param context is the context of the activity
- * @property activitiesList is the list of activities
+ * @property activitiesList is the list of liked activities
  */
 class LikedActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<LikedActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
@@ -70,6 +70,7 @@ class LikedActivitiesListRecyclerViewAdapter(private val context: Context?) : Re
             tag = item
             setOnClickListener(mOnClickListener)
         }
+        /* aquí no se puede quitar o poner like ya
         var clicked = true
 
         holder.iconLikeImage.setOnClickListener {
@@ -79,7 +80,7 @@ class LikedActivitiesListRecyclerViewAdapter(private val context: Context?) : Re
             } else {
                 Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
             }
-        }
+        }*/
     }
 
     /**

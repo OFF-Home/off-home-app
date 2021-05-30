@@ -148,4 +148,7 @@
     <string name="error_username">El nom d\'usuari ja existeix</string>
     <string name="set_username">Nom d\'usuari</string>
     <string name="set_username_description">Introduïu el vostre nom d\'usuari</string>
+    <string name="dialog_delete_message_title">Eliminar missatge</string>
+    <string name="dialog_delete_message_message">Estàs segur que vols eliminar el missatge?</string>
+    <string name="yes">Sí</string>
 </resources>

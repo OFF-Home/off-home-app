@@ -23,6 +23,17 @@
     <string name="choose_dateFi">Data fi</string>
     <string name="invite_friends">Convidar a amics</string>
     <string name="select_category">Seleccionar categoria:</string>
+    <string-array name="select_category">
+        <item>Córrer</item>
+        <item>Caminar</item>
+        <item>Patinar</item>
+        <item>Bicicleta</item>
+        <item>Meditació</item>
+        <item>Cultural</item>
+        <item>Voluntariat</item>
+        <item>Gastronomia</item>
+        <item>Esports aquàtics</item>
+    </string-array>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contrasenya</string>
     <string name="action_sign_in">Entrar o registrar-se</string>

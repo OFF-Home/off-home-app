@@ -76,9 +76,11 @@ class ProfileMyActivitiesFragment : Fragment() {
             context?.startActivity(intent)
         }
 
-        // nos lleva a la pantalla con las actividades viejas
+
+        //nos lleva a la pantalla con las actividades guardadas
         buttonliked.setOnClickListener {
             val intent = Intent(context, LikedActivities::class.java)
+            context?.startActivity(intent)
         }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList

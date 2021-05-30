@@ -68,7 +68,7 @@ class InviteActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false) // todo algun dia arreglar lo de que el upButton fa que peti
 
-        title = "Invite to activity:"
+        title = getString(R.string.title_activity_invite)
 
         viewModel = ViewModelProvider(this).get(InviteViewModel::class.java)
 
@@ -240,11 +240,6 @@ class InviteActivity : AppCompatActivity() {
                 val message = Message(
                     getString(
                         R.string.share_activity_message,
-                        /*activityInfo.titol + "\n" +
-                            "Category: " + activityInfo.categoria + "\n" +
-                            "description: " + activityInfo.descripcio + "\n" +
-                            "Created by: " + activityInfo.usuariCreador + "\n" +
-                            "at: " + activityInfo.dataHoraIni*/
                         dynamicLinkUri
                     ),
                     currentUID,
@@ -256,7 +251,7 @@ class InviteActivity : AppCompatActivity() {
                 myRef.child("m$numMessages").setValue(message)
             }
             override fun onCancelled(error: DatabaseError) {
-                Toast.makeText(applicationContext, "something was cancelled", Toast.LENGTH_SHORT).show()
+                Toast.makeText(applicationContext, getString(R.string.something_was_cancelled), Toast.LENGTH_SHORT).show()
             }
         })
     }

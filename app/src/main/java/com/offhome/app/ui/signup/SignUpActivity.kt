@@ -244,7 +244,6 @@ class SignUpActivity : AppCompatActivity() {
         // ensenyar missatge de welcome a baix
         Toast.makeText(
             applicationContext,
-            // "$emailConfirmationMessage $displayName",
             emailConfirmationMessage,
             Toast.LENGTH_LONG
         ).show()

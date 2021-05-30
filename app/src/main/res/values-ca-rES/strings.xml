@@ -17,13 +17,14 @@
     <string name="insert_text">Inseriu un text</string>
     <string name="date">Data</string>
     <string name="choose_location">Escollir ubicació</string>
-    <string name="set_address1">Inseriu el nom del carrer</string>
+    <string name="set_address1">Nom del carrer</string>
     <string name="set_address2">Núm.</string>
     <string name="choose_date">Data d\'inici</string>
     <string name="choose_dateFi">Data fi</string>
     <string name="invite_friends">Convidar a amics</string>
     <string name="select_category">Seleccionar categoria:</string>
     <string-array name="select_category">
+        <item>Selecciona una categoria</item>
         <item>Córrer</item>
         <item>Caminar</item>
         <item>Patinar</item>
@@ -138,7 +139,6 @@
     <string name="privacy_policy">Política de privacitat</string>
     <string name="covid_policy">Política COVID</string>
     <string name="dark_theme">Mode fosc</string>
-    <string name="sync_with_google_calendar">Sincronitzar amb Google Calendar</string>
     <string name="delete_my_account">Eliminar el meu compte</string>
     <string name="email">"e-mail: "</string>
     <string name="username">"nom d'usuari: "</string>

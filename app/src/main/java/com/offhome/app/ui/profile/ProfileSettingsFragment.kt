@@ -5,6 +5,7 @@ package com.offhome.app.ui.profile
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -15,6 +16,7 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatDelegate.*
 import androidx.fragment.app.Fragment
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
@@ -49,7 +51,9 @@ class ProfileSettingsFragment : Fragment() {
     lateinit var btnInfoOFFHOME: TextView
     lateinit var btnPrivacyPolicy: TextView
     lateinit var btnCovidPolicy: TextView
+    lateinit var btnDarkMode: ImageView
 
+    private var dark_mode: Boolean = false
     private lateinit var firebaseAuth: FirebaseAuth
 
     private lateinit var profileVM: ProfileFragmentViewModel
@@ -94,6 +98,9 @@ class ProfileSettingsFragment : Fragment() {
         deleteAccount = view.findViewById(R.id.deleteAccount)
         btnChangePwd = view.findViewById(R.id.changePsw)
         btnNotifications = view.findViewById(R.id.imageViewIconNot)
+        btnDarkMode = view.findViewById(R.id.imageViewIconDark)
+
+        dark_mode = SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE.toString())
         btnInfoOFFHOME = view.findViewById(R.id.aboutOFFHome)
         btnPrivacyPolicy = view.findViewById(R.id.privacyPolicy)
         btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
@@ -111,6 +118,8 @@ class ProfileSettingsFragment : Fragment() {
         privacyPolicy()
 
         covidPolicy()
+
+        changeToDarkMode()
     }
 
     private fun covidPolicy() {
@@ -232,6 +241,17 @@ class ProfileSettingsFragment : Fragment() {
                 Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
                 // crida a Back
             }
+        }
+    }
+
+    /**
+     * This function let the user change the theme of the app to dark or to the default by the system
+     */
+    private fun changeToDarkMode(){
+        btnDarkMode.setOnClickListener{
+            if (dark_mode) setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+            else setDefaultNightMode(MODE_NIGHT_YES)
+            dark_mode = !dark_mode
         }
     }
 }

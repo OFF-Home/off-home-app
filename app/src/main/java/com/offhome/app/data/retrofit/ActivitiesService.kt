@@ -26,6 +26,12 @@ interface ActivitiesService {
     fun getOldActivities(@Path("userEmail") userEmail: String): Call<List<ActivityFromList>>
 
     /**
+     * This call is to get the liked activities
+     */
+    @GET("activitats/likedActivities/{email}")
+    fun getLikedActivities(@Path("email") email: String): Call<List<ActivityFromList>>
+
+    /**
      * This call is for joining an activity
      */
     @POST("/activitats/insertusuari")

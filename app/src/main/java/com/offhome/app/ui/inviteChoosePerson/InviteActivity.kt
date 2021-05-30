@@ -68,6 +68,8 @@ class InviteActivity : AppCompatActivity() {
 
         supportActionBar?.setDisplayHomeAsUpEnabled(false) // todo algun dia arreglar lo de que el upButton fa que peti
 
+        title = "Invite to activity:"
+
         viewModel = ViewModelProvider(this).get(InviteViewModel::class.java)
 
         val arguments = intent.extras

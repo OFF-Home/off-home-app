@@ -25,6 +25,9 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.ui.infopolitiques.CovidPolicyActivity
+import com.offhome.app.ui.infopolitiques.InfoOFFHomeActivity
+import com.offhome.app.ui.infopolitiques.PolicyActivity
 import com.offhome.app.ui.login.LoginActivity
 import com.offhome.app.ui.updatePassword.UpdatePasswordActivity
 
@@ -45,6 +48,9 @@ class ProfileSettingsFragment : Fragment() {
     lateinit var deleteAccount: TextView
     lateinit var btnChangePwd: TextView
     lateinit var btnNotifications: ImageView
+    lateinit var btnInfoOFFHOME: TextView
+    lateinit var btnPrivacyPolicy: TextView
+    lateinit var btnCovidPolicy: TextView
     lateinit var btnDarkMode: ImageView
 
     private var dark_mode: Boolean = false
@@ -95,6 +101,9 @@ class ProfileSettingsFragment : Fragment() {
         btnDarkMode = view.findViewById(R.id.imageViewIconDark)
 
         dark_mode = SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE.toString())
+        btnInfoOFFHOME = view.findViewById(R.id.aboutOFFHome)
+        btnPrivacyPolicy = view.findViewById(R.id.privacyPolicy)
+        btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
 
         manageUserInfo()
 
@@ -104,7 +113,31 @@ class ProfileSettingsFragment : Fragment() {
 
         manageNotifications()
 
+        infoOFFHOME()
+
+        privacyPolicy()
+
+        covidPolicy()
+
         changeToDarkMode()
+    }
+
+    private fun covidPolicy() {
+        btnCovidPolicy.setOnClickListener {
+            startActivity(Intent(activity, CovidPolicyActivity::class.java))
+        }
+    }
+
+    private fun privacyPolicy() {
+        btnPrivacyPolicy.setOnClickListener {
+            startActivity(Intent(activity, PolicyActivity::class.java))
+        }
+    }
+
+    private fun infoOFFHOME() {
+        btnInfoOFFHOME.setOnClickListener {
+            startActivity(Intent(activity, InfoOFFHomeActivity::class.java))
+        }
     }
 
     /**

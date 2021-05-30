@@ -684,17 +684,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 }
             }
         )
-//        viewModel.getActivity(activityCreator, activityDateTime)
-//        viewModel.infoActivitat.observe(
-//            this, Observer/*@*/{
-//                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. 1")
-//                val infoVM = it ?: return@Observer
-//                Log.w("getInfoActivitatIMostr", "salta l'observer de InfoActivitat a la view. NO ES null")
-//                activity = infoVM
-//                //i ja puc mostrar la info
-//                iniMostrarActivitat()
-//            }
-//        )
     }
     private fun getCalendarId(): Long? {
         val projection = arrayOf(CalendarContract.Calendars._ID, CalendarContract.Calendars.CALENDAR_DISPLAY_NAME)

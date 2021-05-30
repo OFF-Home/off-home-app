@@ -49,18 +49,11 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _myActivities = MutableLiveData<List<ActivityFromList>>()
     var myActivities: LiveData<List<ActivityFromList>> = _myActivities
 
-    private var _usernameSetSuccessfully = MutableLiveData<ResponseBody>()
-    var usernameSetSuccessfully: LiveData<ResponseBody> = _usernameSetSuccessfully
+    var usernameSetSuccessfullyResult= MutableLiveData<Result<String>>()
 
-    private var _descriptionSetSuccessfully = MutableLiveData<ResponseBody>()
-    var descriptionSetSuccessfully: LiveData<ResponseBody> = _descriptionSetSuccessfully
-
-    private var _tagAddedSuccessfully = MutableLiveData<ResponseBody>()
-    var tagAddedSuccessfully: LiveData<ResponseBody> = _tagAddedSuccessfully
-    private var _tagDeletedSuccessfully = MutableLiveData<ResponseBody>()
-    var tagDeletedSuccessfully: LiveData<ResponseBody> = _tagDeletedSuccessfully
-
-    var descriptionSetSuccessfully2 = MutableLiveData<Result<String>>()
+    var descriptionSetSuccessfully = MutableLiveData<Result<String>>()
+    var tagAddedSuccessfullyResult =  MutableLiveData<Result<String>>()
+    var tagDeletedSuccessfullyResult =  MutableLiveData<Result<String>>()
 
     /**
      * obtains ProfileInfo from the lower level and places it on the live data
@@ -97,8 +90,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param newUsername string to change the username to
      */
     fun usernameChangedByUser(newUsername: Editable) {
-        // repository.setUsername(loggedUserEmail, newUsername.toString())
-        usernameSetSuccessfully = repository.setUsername(loggedUserEmail, newUsername.toString())
+        usernameSetSuccessfullyResult = repository.setUsernameResult(loggedUserEmail, newUsername.toString())
     }
 
     /**
@@ -109,12 +101,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param newDescription string to change the description to
      */
     fun descriptionChangedByUser(newDescription: Editable) {
-        // descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
-        descriptionChangedByUser2(newDescription)
-    }
-
-    fun descriptionChangedByUser2(newDescription: Editable) {
-        descriptionSetSuccessfully2 = repository.setDescription2(loggedUserEmail, newDescription.toString())
+        descriptionSetSuccessfully = repository.setDescription(loggedUserEmail, newDescription.toString())
     }
 
     /**
@@ -125,7 +112,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param tag tag to be deleted
      */
     fun tagDeletedByUser(tag: String) {
-        tagDeletedSuccessfully = repository.deleteTag(loggedUserEmail, tag)
+        tagDeletedSuccessfullyResult = repository.deleteTag(loggedUserEmail, tag)
     }
 
     /**
@@ -136,7 +123,7 @@ class ProfileFragmentViewModel : ViewModel() {
      * @param tag tag to be added
      */
     fun tagAddedByUser(tag: String) {
-        tagAddedSuccessfully = repository.addTag(loggedUserEmail, tag)
+        tagAddedSuccessfullyResult = repository.addTag(loggedUserEmail, tag)
     }
 
     /**

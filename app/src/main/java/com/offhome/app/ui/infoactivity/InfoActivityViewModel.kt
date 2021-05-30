@@ -28,7 +28,6 @@ class InfoActivityViewModel : ViewModel() {
     var profileInfo = MutableLiveData<Result<UserInfo>>()
     private var repositoryProfile: ProfileRepository = ProfileRepository()
     var infoActivitatResult = MutableLiveData<Result<ActivityFromList>>()
-    var infoActivitat: MutableLiveData<ActivityFromList> = MutableLiveData<ActivityFromList>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -93,9 +92,5 @@ class InfoActivityViewModel : ViewModel() {
     // gets a single activity identified by its creator and date
     fun getActivityResult(activityCreator: String, activityDateTime: String) {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
-    }
-
-    fun getActivity(activityCreator: String, activityDateTime: String) {
-        infoActivitat = repository.getActivity(activityCreator, activityDateTime)
     }
 }

@@ -26,6 +26,7 @@ import retrofit2.Response
 class ActivitiesRepository {
     private var activities: MutableLiveData<List<ActivityFromList>>? = null
     private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
+    private var likedActivities: MutableLiveData<List<ActivityFromList>>? = null
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
@@ -80,6 +81,29 @@ class ActivitiesRepository {
             }
         })
         return oldActivities as MutableLiveData<List<ActivityFromList>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get all the old activities that a user has joined
+     * @param userEmail is the email of the user
+     * @return the result with a live data list of the data class ActivityFromList
+     */
+    fun getLikedAct(email: String): MutableLiveData<List<ActivityFromList>> {
+        if (likedActivities == null) likedActivities = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getLikedActivities(email)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    likedActivities!!.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                Log.d("GET", "Error getting liked activities")
+            }
+        })
+        return likedActivities as MutableLiveData<List<ActivityFromList>>
     }
 
     /**
@@ -325,12 +349,15 @@ class ActivitiesRepository {
             override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
                 if (response.isSuccessful) {
                     Log.d("repo::getActivityResult", "response.code() == " + response.code())
-                    if (response.code() == 200) {
+                    if (response.code() == 200 || response.code() ==201) {
                         if (response.body() == null)
                             Log.d("repo::getActivityResult", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
 
                         Log.d("response", "getActivityResult response: is successful")
                         result.value = Result.Success(response.body()!!)
+                    }
+                    else {
+                        Log.d("repo::getActivityResult", "response code not in (200, 201)")
                     }
                 } else {
                     Log.d("response", "getActivityResult response: unsuccessful")
@@ -345,38 +372,5 @@ class ActivitiesRepository {
         })
 
         return result
-    }
-
-    fun getActivity(activityCreator: String, activityDateTime: String): MutableLiveData<ActivityFromList> {
-        // val activityCreator = "AAAAagnesmgomez@gmail.com"; val activityDateTime = "2022-5-1 9:0:00"
-        Log.d("making dynLink call", "activityCreator = " + activityCreator + " activityDateTime = " + activityDateTime)
-        if (singleActivity == null) singleActivity = MutableLiveData<ActivityFromList>()
-        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
-        call.enqueue(object : Callback<ActivityFromList> {
-            override fun onResponse(
-                call: Call<ActivityFromList>,
-                response: Response<ActivityFromList>
-            ) {
-                if (response.isSuccessful) {
-                    Log.d("repo::getActivity", "response.code() == " + response.code())
-                    if (response.code() == 200) {
-                        if (response.body() == null)
-                            Log.d("repo::getActivity", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
-
-                        Log.d("response", "getActivity response: is successful")
-                        singleActivity!!.value = response.body()
-                    }
-                } else {
-                    Log.d("response", "getActivity response: unsuccessful")
-                    // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
-                }
-            }
-
-            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
-                Log.d("no response", "getActivity no response")
-                // singleActivity!!.value = ActivityFromList(usuariCreador = "-", nomCarrer = "-", numCarrer=0, dataHoraIni="-",categoria="-", maxParticipant = 0, titol="", descripcio="-", dataHoraFi="-")
-            }
-        })
-        return singleActivity as MutableLiveData<ActivityFromList>
     }
 }

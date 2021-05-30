@@ -52,8 +52,8 @@ class OtherProfileViewModel : ViewModel() {
     // els tags van separats de userInfo; per tant no els passen des de l'activitat anterior, ja que cap activitat anterior haurà necessitat els tags.
     // per tant faig GET dels tags de back. Per tant és probable que l'atribut userTags sobri.
     fun setUserTags(tags: List<TagData>) {
-        userTags = tags
     }
+
     fun getUserTags()/*: List<TagData>*/ {
         // return userTags
         userTagsFromBack = repository.getUserTagsResult(userInfo.email)

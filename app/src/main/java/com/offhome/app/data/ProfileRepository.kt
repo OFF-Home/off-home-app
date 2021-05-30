@@ -153,12 +153,15 @@ class ProfileRepository {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {
                     Log.d("repo::getUserTagsResult", "response.code() == " + response.code())
-                    if (response.code() == 200) {
+                    if (response.code() == 200 || response.code() == 201) {
                         if (response.body() == null)
                             Log.d("repo::getUserTagsResult", "response.body() == null.")
 
                         Log.d("response", "getUserTagsResult response: is successful")
                         result.value = Result.Success(response.body()!!)
+                    }
+                    else {
+                        Log.d("repo::getUserTagsResult", "response code not in (200, 201)")
                     }
                 } else {
                     Log.d("response", "getUserTagsResult response: unsuccessful")
@@ -197,31 +200,39 @@ class ProfileRepository {
      * @param newUsername username to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setUsername(email: String, newUsername: String): MutableLiveData<ResponseBody> {
-        if (usernameSetSuccessfully == null) usernameSetSuccessfully = MutableLiveData<ResponseBody>() // linea afegida perque no peti.
-        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername)) // o algo tipo updateUser()
+    fun setUsernameResult(email: String, newUsername: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
+        val call: Call<ResponseBody> = userService!!.setUsername(email = email, username = UserUsername(username = newUsername))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                usernameSetSuccessfully!!.value = response.body()
                 if (response.isSuccessful) {
                     // la crida retorna 200 encara que sigui user not found.
-                    Log.d("response", "setUsername response: is successful")
-                    // usernameSetSuccessfully!!.value = true
+                    Log.d("repo::setUsernameResult", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() == 201) {
+                        if (response.body() == null)
+                            Log.d("repo::setUsernameResult", "response.body() == null.")
+                        Log.d("response", "setUsernameResult response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+                    else {
+                        Log.d("repo::setUsernameResult", "response code not in (200, 201)")
+                    }
+
                 } else { // si rebem resposta de la BD pero ens informa d'un error
-                    Log.d("response", "setUsername response: unsuccessful")
-                    // usernameSetSuccessfully!!.value = false
+                    Log.d("response", "setUsernameResult response: unsuccessful")
+                    result.value = Result.Error(IOException("setUsernameResult Error: unsuccessful"))
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "setUsername no response")
+                Log.d("no response", "setUsernameResult no response")
                 t.printStackTrace()
-                Log.w("no response", "setUsername no response", t.cause)
-                usernameSetSuccessfully!!.value = ResponseBody.create(null, "no response")
+                Log.w("no response", "setUsernameResult no response", t.cause)
+                result.value = Result.Error(IOException("setUsernameResult Error: unsuccessful"))
             }
         })
-
-        return usernameSetSuccessfully as MutableLiveData<ResponseBody>
+        return result
     }
 
     // funciona sense tot el rollo de nulls
@@ -234,29 +245,7 @@ class ProfileRepository {
      * @param newDescription description to set
      * @return mutable live data which will be updated with the result of the call
      */
-    fun setDescription(email: String, newDescription: String): MutableLiveData<ResponseBody> {
-        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
-        call.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                descriptionSetSuccessfully.value = response.body()
-                descriptionSetSuccessfully.postValue(response.body())
-                if (response.isSuccessful) {
-                    Log.d("response", "setDescription response: is successful")
-                } else {
-                    Log.d("response", "setDescription response: unsuccessful")
-                }
-            }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("no response", "setDescription no response")
-                t.printStackTrace()
-                Log.w("no response", "setDescription no response", t.cause)
-                descriptionSetSuccessfully.value = ResponseBody.create(null, "no response")
-            }
-        })
-        return descriptionSetSuccessfully
-    }
-    fun setDescription2(email: String, newDescription: String): MutableLiveData<Result<String>> {
+    fun setDescription(email: String, newDescription: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
         val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
@@ -288,24 +277,35 @@ class ProfileRepository {
      * @param tag tag to delete
      * @return mutable live data which will be updated with the result of the call
      */
-    fun deleteTag(email: String, tag: String): MutableLiveData<ResponseBody> {
+    fun deleteTag(email: String, tag: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
         val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                tagDeletedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
-                    Log.d("response", "deleteTag response: is successful")
-                } else {
+                    Log.d("repo::deleteTag", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() == 201) {
+                        if (response.body() == null)
+                            Log.d("repo::deleteTag", "response.body() == null.")
+                        Log.d("response", "deleteTag response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+                    else {
+                        Log.d("repo::deleteTag", "response code not in (200, 201)")
+                    }
+
+                } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "deleteTag response: unsuccessful")
+                    result.value = Result.Error(IOException("deleteTag Error: unsuccessful"))
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "deleteTag no response")
-                tagDeletedSuccessfully.value = ResponseBody.create(null, "no response")
+                result.value = Result.Error(IOException("deleteTag Error: unsuccessful"))
             }
         })
-        return tagDeletedSuccessfully
+        return result
     }
 
     /**
@@ -317,24 +317,35 @@ class ProfileRepository {
      * @param tag tag to add
      * @return mutable live data which will be updated with the result of the call
      */
-    fun addTag(email: String, tag: String): MutableLiveData<ResponseBody> {
+    fun addTag(email: String, tag: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
         val call: Call<ResponseBody> = userService!!.addTag(email, NomTag(nomTag = tag))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                tagAddedSuccessfully.value = response.body()
                 if (response.isSuccessful) {
-                    Log.d("response", "addTag response: is successful")
-                } else {
+                    Log.d("repo::addTag", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() == 201) {
+                        if (response.body() == null)
+                            Log.d("repo::addTag", "response.body() == null.")
+                        Log.d("response", "addTag response: is successful")
+                        result.value = Result.Success(response.body().toString())
+                    }
+                    else {
+                        Log.d("repo::addTag", "response code not in (200, 201)")
+                    }
+
+                } else { // si rebem resposta de la BD pero ens informa d'un error
                     Log.d("response", "addTag response: unsuccessful")
+                    result.value = Result.Error(IOException("addTag Error: unsuccessful"))
                 }
             }
-
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 Log.d("no response", "addTag no response")
-                tagAddedSuccessfully.value = ResponseBody.create(null, "no response")
+                result.value = Result.Error(IOException("addTag Error: unsuccessful"))
             }
         })
-        return tagAddedSuccessfully
+        return result
     }
 
     /**

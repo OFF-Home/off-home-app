@@ -19,7 +19,7 @@
         android:layout_marginTop="20dp"
         android:layout_marginEnd="16dp"
         android:background="@drawable/background_edit_text"
-        android:hint="@string/hint_birth_date"
+        android:hint="@string/birth_date"
         android:inputType="date"
         android:padding="15dp"
         android:selectAllOnFocus="true"

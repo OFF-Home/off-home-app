@@ -206,8 +206,8 @@
 
     <NumberPicker
         android:id="@+id/pick_availability"
-        android:layout_width="58dp"
-        android:layout_height="34dp"
+        android:layout_width="42dp"
+        android:layout_height="32dp"
         android:layout_marginTop="24dp"
         android:layout_marginBottom="24dp"
         android:textColor="@color/black"

@@ -244,6 +244,9 @@ class ProfileSettingsFragment : Fragment() {
         }
     }
 
+    /**
+     * This function let the user change the theme of the app to dark or to the default by the system
+     */
     private fun changeToDarkMode(){
         btnDarkMode.setOnClickListener{
             if (dark_mode) setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)

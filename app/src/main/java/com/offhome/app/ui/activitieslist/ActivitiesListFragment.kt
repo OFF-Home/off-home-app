@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.ActivityFromList
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -37,6 +39,8 @@ class ActivitiesListFragment : Fragment() {
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private var activitiesList: MutableList<ActivityFromList> = ArrayList()
+    private var likedList: MutableList<Boolean> = ArrayList()
+    private var likedActivitiesList: MutableList<ActivityFromList> = ArrayList()
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
 
     /**
@@ -73,6 +77,14 @@ class ActivitiesListFragment : Fragment() {
         // get the current date
         val currentTime = Calendar.getInstance().time
 
+        //obtener actividades a las que el usuario ha dado like
+        activitiesViewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
+            viewLifecycleOwner,
+            Observer {
+                likedActivitiesList = it as MutableList<ActivityFromList>
+            }
+        )
+
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
@@ -95,10 +107,17 @@ class ActivitiesListFragment : Fragment() {
                             }
                         }
                     }
+                    for (item in activitiesList) {
+                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                        likedActivitiesList.forEachIndexed { index, element ->
+                            if (item == element) likedList[index] = true
+                            else likedList[index] = false
+                        }
+                    }
                     // stub ferran
                     // activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
                 }
-                activitiesListAdapter.setData(activitiesList)
+                activitiesListAdapter.setData(activitiesList, likedList)
             }
         )
     }
@@ -187,8 +206,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }
@@ -218,8 +244,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }
@@ -249,8 +282,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }

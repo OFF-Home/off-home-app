@@ -38,7 +38,9 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         intent.putExtra("activity", GsonBuilder().create().toJson(item))
         context?.startActivity(intent)
     }
+
     private var activitiesList: List<ActivityFromList> = ArrayList()
+    private var likedList: List<Boolean> = ArrayList()
 
     /**
      * it inflates the view of each activity and seves the ViewHolder of the view
@@ -65,7 +67,8 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         holder.textViewCapacity.text = item.maxParticipant.toString()
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
+        if (likedList[position] == true) Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
+        else Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
 
         with(holder.background) {
             tag = item
@@ -93,8 +96,9 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
      * sets the new data and notifies to the adapter to refresh if necessary
      * @param activitiesList is the new list of activites to set
      */
-    fun setData(activitiesList: List<ActivityFromList>?) {
+    fun setData(activitiesList: List<ActivityFromList>?, likedList: List<Boolean>?) {
         this.activitiesList = activitiesList!!
+        this.likedList = likedList!!
         notifyDataSetChanged()
     }
 

@@ -37,6 +37,7 @@
             android:background="@drawable/background_edit_text_new_message"
             android:ems="10"
             android:hint="@string/new_message"
+            android:textColorHint="@color/black"
             android:inputType="textCapSentences|text|textAutoCorrect"
             android:padding="15dp"
             android:selectAllOnFocus="true" />

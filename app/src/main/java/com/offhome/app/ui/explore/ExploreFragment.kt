@@ -58,7 +58,7 @@ class ExploreFragment : Fragment() {
      * @param inflater it inflates the menu and adds items
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_and_sort_buttons, menu)
+        inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView

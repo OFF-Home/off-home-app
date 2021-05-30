@@ -12,7 +12,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
-import com.offhome.app.model.Category
+import com.offhome.app.data.model.Category
 import com.offhome.app.ui.activitieslist.Activities
 import java.util.*
 import kotlin.collections.ArrayList

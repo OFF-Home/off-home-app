@@ -28,7 +28,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
-import com.offhome.app.model.GroupMessage
+import com.offhome.app.data.model.GroupMessage
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
@@ -53,8 +53,7 @@ class GroupChatActivity : AppCompatActivity() {
         setContentView(R.layout.activity_group_chat)
 
         val arguments = intent.extras
-        // this.title = arguments?.getString("titleAct").toString()
-        this.title = "Correr"
+        title = arguments?.getString("titleAct").toString()
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         userUid = arguments?.getString("usuariCreador").toString()
@@ -68,7 +67,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         myRef = database.getReference("xatsGrupals/${userUid}_$data_ini")
 
-        messagesAdapter = MyGroupChatRecyclerViewAdapter()
+        messagesAdapter = MyGroupChatRecyclerViewAdapter(this@GroupChatActivity)
         with(messagesList) {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
@@ -147,7 +146,7 @@ class GroupChatActivity : AppCompatActivity() {
                             userUid.toString(),
                             it1,
                             uid_user.toString(),
-                            data_ini.toString(),
+                            data_ini,
                             System.currentTimeMillis()
                         )
                     }
@@ -211,5 +210,38 @@ class GroupChatActivity : AppCompatActivity() {
             logout_dialog.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    /**
+     * Function called to delete a message of the chat
+     * @param usidEnviador uid of the user that has sent the message
+     * @param timestamp time of the message to delete
+     */
+    fun deleteMessage(usidEnviador: String, timestamp: Long) {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                myRef
+                    .orderByChild("timestamp")
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val iterator = snapshot.children.iterator()
+                            while (iterator.hasNext()) {
+                                val next = iterator.next()
+                                val message = next.getValue(GroupMessage::class.java) as GroupMessage
+                                if (message.timestamp == timestamp && message.userSender == usidEnviador)
+                                    next.ref.removeValue()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

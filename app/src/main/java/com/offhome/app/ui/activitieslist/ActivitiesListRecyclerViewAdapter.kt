@@ -14,7 +14,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
 import kotlin.collections.ArrayList

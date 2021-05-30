@@ -264,7 +264,6 @@ class SignUpActivity : AppCompatActivity() {
      * Changes to the log-in screen
      */
     private fun canviALogInActivity() {
-        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 

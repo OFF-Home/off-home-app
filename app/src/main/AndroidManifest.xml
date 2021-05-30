@@ -35,7 +35,6 @@
             android:parentActivityName=".MainActivity" />
         <activity
             android:name=".ui.inviteChoosePerson.InviteActivity"
-            android:label="@string/title_activity_invite"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
@@ -58,8 +57,26 @@
 
         <activity
             android:name=".ui.infoactivity.InfoActivity"
-            android:label="@string/title_activity_info"
-            android:parentActivityName=".ui.activitieslist.Activities" />
+            android:parentActivityName=".ui.activitieslist.Activities">
+
+            <!-- intent filter per als dynamic links -->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+
+                <!-- poso de tot persiaca: -->
+                <data android:host="offhome.page.link"
+                    android:scheme="https"/>
+                <data android:host="offhome.es"
+                    android:scheme="https"/>
+                <data android:host="offhome.page.link"
+                    android:scheme="http"/>
+                <data android:host="offhome.es"
+                    android:scheme="http"/>
+            </intent-filter>
+
+        </activity>
         <activity
             android:name=".ui.activitieslist.Activities"
             android:launchMode="singleTop"
@@ -73,8 +90,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".ui.updatePassword.UpdatePasswordActivity"
-            android:label="Update password" />
+            android:name=".ui.updatePassword.UpdatePasswordActivity" />
         <activity android:name=".ui.signup.SignUpActivity" />
         <activity android:name=".ui.createactivity.CreateActivity" />
         <activity android:name=".MainActivity">

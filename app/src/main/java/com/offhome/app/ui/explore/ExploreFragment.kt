@@ -11,6 +11,7 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -49,19 +50,6 @@ class ExploreFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
-        viewModel.profileInfo.observe(
-            viewLifecycleOwner,
-            {
-                if (it != null) {
-                    val intent = Intent(activity, OtherProfileActivity::class.java)
-                    val userInfoJSON = GsonBuilder().create().toJson(it)
-                    intent.putExtra("user_info", userInfoJSON)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
-                }
-            }
-        )
     }
 
     /**
@@ -80,7 +68,19 @@ class ExploreFragment : Fragment() {
                 if (query.isNullOrBlank())
                     Toast.makeText(context, getString(R.string.error_search_user), Toast.LENGTH_LONG).show()
                 else
-                    viewModel.searchUser(query)
+                    viewModel.searchUser(query).observe(
+                        viewLifecycleOwner,
+                        {
+                            if (it is Result.Success) {
+                                val intent = Intent(activity, OtherProfileActivity::class.java)
+                                val userInfoJSON = GsonBuilder().create().toJson(it.data)
+                                intent.putExtra("user_info", userInfoJSON)
+                                startActivity(intent)
+                            } else if (it is Result.Error) {
+                                Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    )
                 return true
             }
 

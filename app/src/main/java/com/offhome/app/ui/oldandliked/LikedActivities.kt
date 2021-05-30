@@ -1,17 +1,17 @@
 package com.offhome.app.ui.oldandliked
 
-import androidx.appcompat.app.AppCompatActivity
+
+
 import android.os.Bundle
 import androidx.lifecycle.Observer
+import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.ui.activitieslist.Activities
-import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import java.util.ArrayList
 
@@ -53,5 +53,6 @@ class LikedActivities : AppCompatActivity() {
                 likedActivitiesListAdapter.setData(likedActivitiesList)
             }
         )
+
     }
 }

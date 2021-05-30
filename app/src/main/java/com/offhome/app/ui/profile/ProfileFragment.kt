@@ -115,10 +115,9 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-                if (profileInfoVM is Result.Success) {
-                    textViewUsername.text = profileInfoVM.data.username
-                    estrelles.rating = profileInfoVM.data.estrelles.toFloat()
+                if (it is Result.Success) {
+                    textViewUsername.text = it.data.username
+                    estrelles.rating = it.data.estrelles.toFloat()
                     // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
                 }
             }
@@ -174,26 +173,23 @@ class ProfileFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniUsernameSetListener() {
-        Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
+        //Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
-        // inutil, intentant que salti el observer de setUsernameSuccessfully
-        // fragmentViewModel.simularResposta()
-
-        fragmentViewModel.usernameSetSuccessfully.observe( // observer no salta. no sé perquè.
+        fragmentViewModel.usernameSetSuccessfullyResult.observe( // observer no salta. no sé perquè.
             viewLifecycleOwner,
             Observer {
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
                 val resultVM = it ?: return@Observer
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
 
-                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
-
-                Log.d("resultVM.string", resultVM.string())
-                if (resultVM.string() == "User has been updated") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+                fragmentViewModel.usernameSetSuccessfullyResult.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }

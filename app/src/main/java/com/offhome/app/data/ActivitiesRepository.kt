@@ -6,12 +6,10 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
-import com.offhome.app.model.*
-import com.offhome.app.model.ActivityData
-import com.offhome.app.model.ActivityFromList
+import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -37,6 +35,7 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private var singleActivity: MutableLiveData<ActivityFromList>? = null
 
     /**
      * This function calls the [activitiesService] in order to get all the activities in a category
@@ -283,5 +282,95 @@ class ActivitiesRepository {
             }
         })
         return reviews as MutableLiveData<List<ReviewOfParticipant>>
+    }
+
+    fun getActivitiesByDescTitle(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByDescTitle()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities in descending order")
+            }
+        })
+        return listSorted
+    }
+
+    fun getActivitiesByAscTitle(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByAscTitle()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities in ascending order")
+            }
+        })
+        return listSorted
+    }
+
+    fun getActivitiesByDate(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByDate()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(
+                call: Call<List<ActivityFromList>>,
+                response: Response<List<ActivityFromList>>
+            ) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities by date")
+            }
+        })
+        return listSorted
+    }
+
+    fun getActivityResult(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {
+        val result = MutableLiveData<Result<ActivityFromList>>()
+        // val activityCreator = "agnesmgomez@gmail.com"; val activityDateTime = "2021-5-29 23:59:00"
+        Log.d("making dynLink call", "activityCreator = " + activityCreator + " activityDateTime = " + activityDateTime)
+
+        val call: Call<ActivityFromList> = activitiesService!!.getActivity(activityCreator, activityDateTime)
+        call.enqueue(object : Callback<ActivityFromList> {
+            override fun onResponse(call: Call<ActivityFromList>, response: Response<ActivityFromList>) {
+                if (response.isSuccessful) {
+                    Log.d("repo::getActivityResult", "response.code() == " + response.code())
+                    if (response.code() == 200 || response.code() ==201) {
+                        if (response.body() == null)
+                            Log.d("repo::getActivityResult", "response.body() == null. (a back retornen 204). no hauria d'arribar aqui")
+
+                        Log.d("response", "getActivityResult response: is successful")
+                        result.value = Result.Success(response.body()!!)
+                    }
+                    else {
+                        Log.d("repo::getActivityResult", "response code not in (200, 201)")
+                    }
+                } else {
+                    Log.d("response", "getActivityResult response: unsuccessful")
+                    result.value = Result.Error(IOException("getActivityResult Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<ActivityFromList>, t: Throwable) {
+                Log.d("no response", "getActivityResult no response")
+                result.value = Result.Error(IOException("getActivityResult Error: failure", t))
+            }
+        })
+
+        return result
     }
 }

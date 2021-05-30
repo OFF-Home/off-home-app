@@ -4,6 +4,7 @@ package com.offhome.app.ui.otherprofile
 
 import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import android.widget.ImageView
 import android.widget.RatingBar
@@ -17,7 +18,7 @@ import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.UserInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**
@@ -87,6 +88,7 @@ class OtherProfileActivity : AppCompatActivity() {
         }
 
         btnChat = findViewById(R.id.floatingActionButton)
+        if (otherUser.uid == SharedPreferenceManager.getStringValue(Constants().PREF_UID)) btnChat.visibility = View.GONE
 
         btnChat.setOnClickListener {
             val intent = Intent(this, SingleChatActivity::class.java)

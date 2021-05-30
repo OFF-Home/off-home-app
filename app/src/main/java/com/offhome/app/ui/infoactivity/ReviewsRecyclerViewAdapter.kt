@@ -8,7 +8,7 @@ import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.ReviewOfParticipant
+import com.offhome.app.data.model.ReviewOfParticipant
 
 /**
  * Adpter for the recycler view of the activities list

@@ -3,9 +3,9 @@ package com.offhome.app.data.retrofit
 
 
 import com.offhome.app.data.model.ChatGroupIdentification
+import com.offhome.app.data.model.GroupMessage
+import com.offhome.app.data.model.Message
 import com.offhome.app.data.model.SendMessage
-import com.offhome.app.model.GroupMessage
-import com.offhome.app.model.Message
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*

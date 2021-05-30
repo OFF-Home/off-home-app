@@ -3,7 +3,7 @@ package com.offhome.app.singleChat
 
 
 import android.content.Context
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.Message
 import org.mockito.Mock
 import org.mockito.Mockito.*
 

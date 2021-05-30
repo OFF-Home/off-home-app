@@ -23,7 +23,8 @@ import com.google.android.material.chip.ChipGroup
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.data.Result
-import com.offhome.app.model.profile.TagData
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
@@ -110,13 +111,12 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-                // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                if (profileInfoVM is Result.Success) {
-                    textViewProfileDescription.text = profileInfoVM.data.description
-                    textViewBirthDate.text = profileInfoVM.data.birthDate
-                    textViewFollowerCount.text = profileInfoVM.data.followers.toString()
-                    textViewFollowingCount.text = profileInfoVM.data.following.toString()
+                if (it is Result.Success) {
+                    // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
+                    textViewProfileDescription.text = it.data.description
+                    textViewBirthDate.text = it.data.birthDate
+                    textViewFollowerCount.text = it.data.followers.toString()
+                    textViewFollowingCount.text = it.data.following.toString()
                 }
             }
         )
@@ -161,14 +161,18 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
+                Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment")
-                if (resultVM.string() == "User has been updated") {
-                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
-                        .show()
+                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
+
+                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
+
+                if (!resultVM.toString().contains("Error")) {
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
                 profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
@@ -181,16 +185,16 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagDeletionListener() {
-        profileVM.tagDeletedSuccessfully.observe(
+        profileVM.tagDeletedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Delete tag al usuario") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagDeletedSuccessfully.removeObservers(viewLifecycleOwner)
+                profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -201,17 +205,24 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagAdditionListener() {
-        profileVM.tagAddedSuccessfully.observe(
+        profileVM.tagAddedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Insert tag al usuario") {
-                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
-                        .show()
+
+                if (resultVM is Result.Success) {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagAddedSuccessfully.removeObservers(viewLifecycleOwner)
+
+                /*if (resultVM.string() == "Insert tag al usuario") {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
+                }*/
+
+                profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -509,10 +520,10 @@ class ProfileAboutMeFragment : Fragment() {
     private fun canviAOtherProfile() {
 
         // stub
-        val userInfo = com.offhome.app.model.profile.UserInfo(
+        val userInfo = UserInfo(
             email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
             description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp"
         )
 
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }

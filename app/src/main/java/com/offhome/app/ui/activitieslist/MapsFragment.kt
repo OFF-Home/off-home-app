@@ -20,7 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.text.ParseException
 import java.text.SimpleDateFormat

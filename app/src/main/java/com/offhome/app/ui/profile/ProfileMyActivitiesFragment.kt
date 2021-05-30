@@ -14,7 +14,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.oldandliked.LikedActivities
 import com.offhome.app.ui.oldandliked.OldActivities

@@ -6,12 +6,9 @@ import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
-import com.offhome.app.model.*
-import com.offhome.app.model.ActivityData
-import com.offhome.app.model.ActivityFromList
 import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -261,6 +258,61 @@ class ActivitiesRepository {
             }
         })
         return reviews as MutableLiveData<List<ReviewOfParticipant>>
+    }
+
+    fun getActivitiesByDescTitle(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByDescTitle()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities in descending order")
+            }
+        })
+        return listSorted
+    }
+
+    fun getActivitiesByAscTitle(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByAscTitle()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities in ascending order")
+            }
+        })
+        return listSorted
+    }
+
+    fun getActivitiesByDate(): MutableLiveData<List<ActivityFromList>> {
+        var listSorted: MutableLiveData<List<ActivityFromList>>? = null
+        if (listSorted == null) listSorted = MutableLiveData<List<ActivityFromList>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByDate()
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(
+                call: Call<List<ActivityFromList>>,
+                response: Response<List<ActivityFromList>>
+            ) {
+                if (response.isSuccessful) {
+                    listSorted.value = response.body()
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                Log.d("GET", "Error getting list of activities by date")
+            }
+        })
+        return listSorted
     }
 
     fun getActivityResult(activityCreator: String, activityDateTime: String): MutableLiveData<Result<ActivityFromList>> {

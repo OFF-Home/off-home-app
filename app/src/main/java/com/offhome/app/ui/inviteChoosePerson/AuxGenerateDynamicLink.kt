@@ -8,7 +8,7 @@ import com.google.firebase.dynamiclinks.ktx.dynamicLink
 import com.google.firebase.dynamiclinks.ktx.dynamicLinks
 import com.google.firebase.dynamiclinks.ktx.socialMetaTagParameters
 import com.google.firebase.ktx.Firebase
-import com.offhome.app.model.ActivityDataForInvite
+import com.offhome.app.data.model.ActivityDataForInvite
 
 /**
  * Creada per ferran, per a no repetir codi a dues activitats.

@@ -43,10 +43,10 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.ActivityDataForInvite
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.ActivityDataForInvite
-import com.offhome.app.model.ActivityFromList
-import com.offhome.app.model.ReviewOfParticipant
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -82,6 +82,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private var reviewsList: MutableList<ReviewOfParticipant> = ArrayList()
     private lateinit var btnAddCalendar: Button
 
+    private lateinit var userUID: String
+    private lateinit var username: String
+
     private lateinit var groupChat: FloatingActionButton
     private var nRemainingParticipants: Int = 12
 
@@ -96,7 +99,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
      * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
-    @SuppressLint("SimpleDateFormat")
+    @SuppressLint("SimpleDateFormat", "SetTextI18n")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_info)
@@ -104,14 +107,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         viewModel = ViewModelProvider(this).get(InfoActivityViewModel::class.java)
-
         participantsAdapter = ParticipantsRecyclerViewAdapter()
+
+        btnJoin = findViewById(R.id.btn_join)
+        creator = findViewById(R.id.textViewCreator)
         layoutParticipants = findViewById(R.id.listParticipants)
+
         with(layoutParticipants) {
             layoutManager = LinearLayoutManager(context)
             adapter = participantsAdapter
         }
 
+        Log.w("iniMostrarActivitat", "entro a iniMostrarActivitat")
         btnJoin = findViewById<Button>(R.id.btn_join)
         datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         creator = findViewById<TextView>(R.id.textViewCreator)
@@ -152,38 +159,53 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         }
     }
 
-    // Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
-    private fun iniMostrarActivitat() {
-        Log.w("iniMostrarActivitat", "entro a iniMostrarActivitat")
-        // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
-        viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
+    /**
+     * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
+     */
+    private fun displayChatGroup() {
+        // go to GroupChatActivity only if the user has joined the activity
+        val intent = Intent(this, GroupChatActivity::class.java)
+        intent.putExtra("usuariCreador", userUID)
+        intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
+        intent.putExtra("titleAct", activity.titol)
+        startActivity(intent)
+        finish()
+    }
+
+    @SuppressLint("SetTextI18n")
+    private fun setInfoUsuariCreador() {
+        viewModel.getProfileInfo(activity.usuariCreador)
+        viewModel.profileInfo.observe(
             this,
-            {
-                if (it != null) {
-                    participantsAdapter.setData(it)
-                    for (item in it) {
-                        // if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
-                        if (item.username == "emma") joined = true
-                    }
-                    // mirar si el usario ya es participante de la actividad
-                    if (joined) btnJoin.text = "JOINED"
+            Observer@{
+                if (it is Result.Success) {
+                    userUID = it.data.uid
+                    username = it.data.username
 
-                    // aquest observer salta?
-                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
-
-                    nRemainingParticipants = activity.maxParticipant - it.size
-                    Log.d(
-                        "getParticipants",
-                        "nRemainingParticipants = " + nRemainingParticipants.toString()
-                    )
+                    creator.text = getString(R.string.created_by) + " " + username
                 }
             }
         )
+    }
 
+    // Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
+    fun iniMostrarActivitat() {
+        setInfoUsuariCreador()
+        uploadParticipants()
+
+        val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
-        creator.text = getString(R.string.created_by) + activity.usuariCreador
+
+        val capacity = findViewById<TextView>(R.id.textViewCapacity)
         capacity.text = activity.maxParticipant.toString()
+
+        val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
+
+        estrelles = findViewById(R.id.ratingStars)
+        comment = findViewById(R.id.yourcomment)
+        btnsubmit = findViewById(R.id.submitcomment)
+        btnAddCalendar = findViewById(R.id.btnAddToCalendar)
 
         // get the current date
         val currentTime = Calendar.getInstance().time
@@ -192,84 +214,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
         if (date != null) {
-            if (!joined or (date > currentTime)) {
-                cantreview()
-            }
+            if (!joined or (date > currentTime)) cantreview()
         }
 
-        viewModel.getValoracioUsuari(
-            activity.usuariCreador, activity.dataHoraIni,
-            SharedPreferenceManager.getStringValue(
-                Constants().PREF_EMAIL
-            ).toString()
-        ).observe(
-            this,
-            {
-                // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
-                if (it.valoracio != 0) {
-                    estrelles.setRating(it.valoracio.toFloat())
-                    estrelles.invalidate()
-                    estrelles.isFocusable = false
-                    estrelles.setIsIndicator(true)
-                }
-                // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
-                if (it.review != " ") {
-                    comment.setHint(R.string.reviewnotpossible)
-                    comment.isFocusable = false
-                    btnsubmit.setEnabled(false)
-                }
-            }
-        )
+        valoracioUsuari()
 
-        // al clicar a submit, envía valoracion a back
-        btnsubmit.setOnClickListener {
-            // si no hay estrellas, muestra mensaje pidiendolas
-            if (estrelles.numStars == 0) {
-                val snackbar: Snackbar = Snackbar
-                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
-                snackbar.show()
-            }
-            // si las hay, enviar datos a back
-            else {
-                viewModel.putValoracio(
-                    SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
-                    activity.usuariCreador,
-                    activity.dataHoraIni,
-                    estrelles.numStars,
-                    comment.text.toString()
-                ).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "Your rating has been saved") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
-                                snackbar.show()
-
-                                // cambiar estrellas y edit text a que ya no pueda añadir nada
-                                estrelles.isFocusable = false
-                                estrelles.setIsIndicator(true)
-                                comment.setHint(R.string.reviewnotpossible)
-                                comment.isFocusable = false
-                                btnsubmit.setEnabled(false)
-                            }
-                        }
-                    }
-                )
-            }
-        }
-
-        viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
-            this,
-            {
-                if (it != null) {
-                    for (item in it) {
-                        if (item.review != null) reviewsList.add(item)
-                    }
-                }
-                reviewsAdapter.setData(reviewsList)
-            }
-        )
+        showReviews()
 
         btnJoin.setOnClickListener {
             joined = !joined
@@ -285,18 +235,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 val snackbar: Snackbar = Snackbar
                                     .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
-                                        val intent = Intent(this, GroupChatActivity::class.java)
-                                        intent.putExtra(
-                                            "usuariCreador",
-                                            "xNuDwnUek5Q4mcceIAwGKO3lY5k2"
-                                        )
-                                        intent.putExtra(
-                                            "dataHI",
-                                            activity.dataHoraIni.split(".")[0]
-                                        )
-                                        intent.putExtra("titleAct", activity.titol)
-                                        startActivity(intent)
-                                        finish()
+                                        displayChatGroup()
                                     }
                                 snackbar.show()
                                 val participants = ArrayList<UserUsername>()
@@ -340,10 +279,171 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
             }
         }
+        addToCalendar()
 
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        mapFragment.getMapAsync(this)
+
+        // asignar título actividad como título de la pantalla
+        title = activity.titol
+
+        // canviar like al clicar
+        var clicked = false
+
+        imageLike = findViewById(R.id.imageViewIconLike)
+        imageLike.setOnClickListener {
+            clicked = !clicked
+            if (clicked) {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_24)
+            } else {
+                imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
+            }
+        }
+
+        groupChat = findViewById(R.id.joinGroupChat)
+        groupChat.setOnClickListener {
+            displayChatGroup()
+        }
+    }
+
+    private fun uploadParticipants() {
+        // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
+        viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+            {
+                if (it != null) {
+                    participantsAdapter.setData(it)
+                    for (item in it) {
+                        // if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
+                        if (item.username == "emma") joined = true
+                    }
+                    // mirar si el usario ya es participante de la actividad
+                    if (joined) btnJoin.text = "JOINED"
+
+                    // aquest observer salta?
+                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
+
+                    nRemainingParticipants = activity.maxParticipant - it.size
+                    Log.d(
+                        "getParticipants",
+                        "nRemainingParticipants = " + nRemainingParticipants.toString()
+                    )
+                }
+            }
+        )
+    }
+
+    private fun valoracioUsuari() {
+        datahora.text = activity.dataHoraIni
+        creator.text = getString(R.string.created_by) + activity.usuariCreador
+        capacity.text = activity.maxParticipant.toString()
+        description.text = activity.descripcio
+
+        // get the current date
+        val currentTime = Calendar.getInstance().time
+        // change final date format
+        var date = changeDateFormat()
+
+        // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
+        if (date != null) {
+            if (!joined or (date > currentTime)) {
+                cantreview()
+            }
+        }
+        viewModel.getValoracioUsuari(
+            activity.usuariCreador, activity.dataHoraIni,
+            SharedPreferenceManager.getStringValue(
+                Constants().PREF_EMAIL
+            ).toString()
+        ).observe(
+            this,
+            {
+                // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
+                if (it.valoracio != 0) {
+                    estrelles.setRating(it.valoracio.toFloat())
+                    estrelles.invalidate()
+                    estrelles.isFocusable = false
+                    estrelles.setIsIndicator(true)
+                }
+                // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
+                if (it.review != " ") {
+                    comment.setHint(R.string.reviewnotpossible)
+                    comment.isFocusable = false
+                    btnsubmit.setEnabled(false)
+                }
+            }
+        )
+        layout = findViewById(R.id.content)
+
+        // al clicar a submit, envía valoracion a back
+        btnsubmit.setOnClickListener {
+            // si no hay estrellas, muestra mensaje pidiendolas
+            if (estrelles.numStars == 0) {
+                val snackbar: Snackbar = Snackbar
+                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
+                snackbar.show()
+            }
+            // si las hay, enviar datos a back
+            else {
+                viewModel.putValoracio(
+                    SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
+                    activity.usuariCreador,
+                    activity.dataHoraIni,
+                    estrelles.numStars,
+                    comment.text.toString()
+                ).observe(
+                    this,
+                    {
+                        if (it != " ") {
+                            if (it == "Your rating has been saved") {
+                                val snackbar: Snackbar = Snackbar
+                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                                snackbar.show()
+
+                                // cambiar estrellas y edit text a que ya no pueda añadir nada
+                                estrelles.isFocusable = false
+                                estrelles.setIsIndicator(true)
+                                comment.setHint(R.string.reviewnotpossible)
+                                comment.isFocusable = false
+                                btnsubmit.setEnabled(false)
+                            }
+                        }
+                    }
+                )
+            }
+        }
+    }
+
+    private fun showReviews() {
+        // mostrar todas las reviews de la activity
+        reviewsAdapter = ReviewsRecyclerViewAdapter()
+        layoutReviews = findViewById(R.id.listComments)
+        with(layoutReviews) {
+            layoutManager = LinearLayoutManager(context)
+            adapter = reviewsAdapter
+        }
+        viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
+            this,
+            {
+                if (it != null) {
+                    for (item in it) {
+                        if (item.review != null) reviewsList.add(item)
+                    }
+                }
+                reviewsAdapter.setData(reviewsList)
+            }
+        )
+    }
+
+    private fun addToCalendar() {
         btnAddCalendar.setOnClickListener {
             Dexter.withContext(this)
-                .withPermissions(Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR)
+                .withPermissions(
+                    Manifest.permission.READ_CALENDAR,
+                    Manifest.permission.WRITE_CALENDAR
+                )
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport?) {
                         report?.let {
@@ -365,10 +465,21 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 values.put(CalendarContract.Events.TITLE, activity.titol)
                                 values.put(CalendarContract.Events.DESCRIPTION, activity.descripcio)
                                 values.put(CalendarContract.Events.CALENDAR_ID, getCalendarId())
-                                values.put(CalendarContract.Events.ORGANIZER, activity.usuariCreador)
-                                values.put(CalendarContract.Events.EVENT_TIMEZONE, TimeZone.getDefault().id)
-                                val uri: Uri? = cr.insert(CalendarContract.Events.CONTENT_URI, values)
-                                Toast.makeText(applicationContext, getString(R.string.saved_to_calendar), Toast.LENGTH_LONG).show()
+                                values.put(
+                                    CalendarContract.Events.ORGANIZER,
+                                    activity.usuariCreador
+                                )
+                                values.put(
+                                    CalendarContract.Events.EVENT_TIMEZONE,
+                                    TimeZone.getDefault().id
+                                )
+                                val uri: Uri? =
+                                    cr.insert(CalendarContract.Events.CONTENT_URI, values)
+                                Toast.makeText(
+                                    applicationContext,
+                                    getString(R.string.saved_to_calendar),
+                                    Toast.LENGTH_LONG
+                                ).show()
                             }
                         }
                     }
@@ -380,43 +491,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         token?.continuePermissionRequest()
                     }
                 }).check()
-        }
-
-        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        val mapFragment = supportFragmentManager
-            .findFragmentById(R.id.map) as SupportMapFragment
-        mapFragment.getMapAsync(this)
-
-        // asignar título actividad como título de la pantalla
-        title = activity.titol
-
-        // canviar like al clicar
-        var clicked = false
-
-        imageLike = findViewById<ImageView>(R.id.imageViewIconLike)
-        imageLike.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                imageLike.setImageResource(R.drawable.ic_baseline_favorite_24)
-            } else {
-                imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
-            }
-        }
-        displayChatGroup()
-    }
-
-    /**
-     * It displays the button where the user can go straight to the group chat of that activity, if he/she is a member of it
-     */
-    private fun displayChatGroup() {
-        groupChat = findViewById(R.id.joinGroupChat)
-        groupChat.setOnClickListener {
-            // go to GroupChatActivity only if the user has joined the activity
-            val intent = Intent(this, GroupChatActivity::class.java)
-            intent.putExtra("usuariCreador", "xNuDwnUek5Q4mcceIAwGKO3lY5k2")
-            intent.putExtra("dataHI", activity.dataHoraIni.split(".")[0])
-            startActivity(intent)
-            finish()
         }
     }
 

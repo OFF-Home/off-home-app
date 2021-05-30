@@ -1,4 +1,4 @@
-package com.offhome.app.model.profile
+package com.offhome.app.data
 
 
 
@@ -9,14 +9,15 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.Result
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.FollowUnfollow
 import com.offhome.app.data.model.FollowingUser
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.UserClient
-import com.offhome.app.model.ActivityFromList
 import java.io.File
 import java.io.IOException
 import java.io.InputStream
@@ -49,11 +50,12 @@ class ProfileRepository {
 
     private val userClient = UserClient()
     private var userService = userClient.getUserService()
-    var userInfo: MutableLiveData<UserInfo>? = null
+    var userInfo = MutableLiveData<Result<UserInfo>>()
     var usernameSetSuccessfully: MutableLiveData<ResponseBody>? = null
     var descriptionSetSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
+    var accountDeletedSuccessfully: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
@@ -66,8 +68,6 @@ class ProfileRepository {
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
     fun getProfileInfo(email: String): MutableLiveData<Result<UserInfo>> {
-
-        val userInfo = MutableLiveData<Result<UserInfo>>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
 
         // accés a Backend
         val call: Call<UserInfo> = userService!!.getProfileInfo(email)
@@ -83,10 +83,10 @@ class ProfileRepository {
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
-                userInfo.value = Result.Error(IOException(t.message))
                 Log.d("GET", "Error getting ProfileInfo. communication failure (no response)")
             }
         })
+
         return userInfo
     }
 
@@ -351,25 +351,26 @@ class ProfileRepository {
     /**
      * obtains profile info of a user from a username
      */
-    fun getProfileInfoByUsername(newText: String): Result<MutableLiveData<UserInfo>> {
-        if (userInfo == null) userInfo = MutableLiveData<UserInfo>() // linea afegida perque no peti. la he copiat de ActivitiesRepository
+    fun getProfileInfoByUsername(newText: String): MutableLiveData<Result<UserInfo>> {
         val call: Call<UserInfo> = userService!!.getProfileInfoByUsername(newText)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
-                    userInfo!!.value = response.body()
+                    userInfo.value = Result.Success(response.body() as UserInfo)
                     Log.d("success response", "got a response indicating success")
                 } else {
+                    userInfo.value = Result.Error(IOException("Got a response indicating failure"))
                     Log.d("failure response", "got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<UserInfo>, t: Throwable) {
+                userInfo.value = Result.Error(IOException("Error getting topProfileInfo. communication failure (no response)"))
                 Log.d("GET", "Error getting topProfileInfo. communication failure (no response)")
             }
         })
 
-        return Result.Success(userInfo!!)
+        return userInfo
     }
 
     /**
@@ -503,7 +504,21 @@ class ProfileRepository {
         return followedUsers as MutableLiveData<List<UserInfo>>
     }
 
-    fun deleteAccount() {
-        // delete account
+    fun deleteAccount(email: String): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.deleteAccount(email)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    accountDeletedSuccessfully!!.value = Result.Success("Account deleted")
+                } else {
+                    accountDeletedSuccessfully!!.value = Result.Error(IOException("delete account response unsuccessful"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                accountDeletedSuccessfully!!.value = Result.Error(IOException("Error deleting user account. communication failure (no response)"))
+            }
+        })
+        return accountDeletedSuccessfully!!
     }
 }

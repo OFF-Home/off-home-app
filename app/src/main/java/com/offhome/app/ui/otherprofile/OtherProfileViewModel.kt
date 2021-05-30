@@ -6,11 +6,11 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 
 /**
  * Class *OtherProfileViewModel*

@@ -63,4 +63,7 @@ class LoginRepository(val dataSource: LoginDataSource) {
     fun recoverPassword(email: String): LiveData<String> {
         return dataSource.recoverPassword(email)
     }
+
+    fun deleteAccount() {
+    }
 }

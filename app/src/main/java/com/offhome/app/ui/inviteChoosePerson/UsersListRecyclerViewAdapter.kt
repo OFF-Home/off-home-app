@@ -15,7 +15,7 @@ import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.R
-import com.offhome.app.model.profile.UserSummaryInfo
+import com.offhome.app.data.model.UserSummaryInfo
 import java.util.*
 import kotlin.collections.ArrayList
 

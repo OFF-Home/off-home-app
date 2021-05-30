@@ -16,7 +16,7 @@ import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import java.util.*
 
 /**
- * Class that defines the fragment to show the List of Activities
+ * Class that defines the fragment to show the List of Old Activities
  * @author Emma Pereira
  * @property oldActivitiesViewModel references the viewmodel of the old activities
  * @property oldActivitiesListAdapter references the adapter for the RecyclerView of the old activities

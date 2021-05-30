@@ -426,4 +426,11 @@ If you have any questions about this Privacy Policy, You can contact us:
 
     </string>
     <string name="text_view_covid_policy" translatable="false">This company policy includes the measures we are actively taking to mitigate the spread of coronavirus. You are kindly requested to follow all these rules diligently, to sustain a healthy and safe workplace in this unique environment. It’s important that we all respond responsibly and transparently to these health precautions. We assure you that we will always treat your private health and personal data with high confidentiality and sensitivity.\n This coronavirus (COVID-19) company policy is susceptible to changes with the introduction of additional governmental guidelines. If so, we will update you as soon as possible by email.\n Scope \n This coronavirus policy applies to all of our employees who physically work in our office(s). We strongly recommend to our remote working personnel to read through this action plan as well, to ensure we collectively and uniformly respond to this challenge.\n Policy elements\n Here, we outline the required actions employees should take to protect themselves and their co-workers from a potential coronavirus infection.\n Sick leave arrangements:\n -If you have cold symptoms, such as cough/sneezing/fever, or feel poorly, request sick leave or work from home.\n -If you have a positive COVID-19 diagnosis, you can return to the office only after you’ve fully recovered, with a doctor’s note confirming your recovery.</string>
+    <string name="add_a_tag">Add a tag</string>
+    <string name="add">Add</string>
+    <string name="delete_tag_confirmation_title">Delete tag "%1$s"?</string>
+    <string name="delete">Delete</string>
+    <string name="something_was_cancelled">Something was cancelled</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
 </resources>

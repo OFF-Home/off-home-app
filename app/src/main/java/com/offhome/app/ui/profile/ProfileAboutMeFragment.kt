@@ -264,14 +264,14 @@ class ProfileAboutMeFragment : Fragment() {
         chipGroupTags.addView(chip)
         chip.setOnCloseIconClickListener {
             val alertDialogBuilder = AlertDialog.Builder(context)
-                .setMessage("Delete tag \"$tag\"?")
-                .setPositiveButton("Delete") { dialog, which ->
+                .setMessage(getString(R.string.delete_tag_confirmation_title, tag))//        "Delete tag \"$tag\"?")
+                .setPositiveButton(getString(R.string.delete)) { dialog, which ->
                     profileVM.tagDeletedByUser(chip.text as String)
                     iniTagDeletionListener()
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
-                    "Cancel"
+                    getString(R.string.cancel)
                 ) { dialog, which -> dialog.cancel() }
 
             val alertDialog = alertDialogBuilder.show()
@@ -488,9 +488,9 @@ class ProfileAboutMeFragment : Fragment() {
         textInput.setHint(R.string.tag)
 
         val alertDialogBuilder = AlertDialog.Builder(context)
-            .setTitle("Add a tag")
+            .setTitle(getString(R.string.add_a_tag))
             .setView(textInputLayout)
-            .setPositiveButton("Add") { dialog, which ->
+            .setPositiveButton(getString(R.string.add)) { dialog, which ->
                 val tag = textInput.text.toString()
                 if (tag.isEmpty()) {
                     Toast.makeText(context, R.string.tags_cant_be_empty_toast, Toast.LENGTH_LONG).show()
@@ -499,7 +499,7 @@ class ProfileAboutMeFragment : Fragment() {
                     addTag(tag)
             }
             .setNegativeButton(
-                "Cancel"
+                getString(R.string.cancel)
             ) { dialog, which -> dialog.cancel() }
 
         val alertDialog = alertDialogBuilder.show()

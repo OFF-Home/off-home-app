@@ -99,7 +99,7 @@ interface UserService {
      */
     // estem a la espera
     @Headers("Content-Type: application/json")
-    @POST("users/{username}/update")
+    @PUT("users/{username}/update")
     fun setUsername(@Path("username") email: String, @Body username: UserUsername): Call<ResponseBody>
 
     /**
@@ -110,8 +110,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @POST("users/{username}/update")
-    fun setDescription(@Path("username") email: String, @Body description: UserDescription): Call<ResponseBody>
+    @PUT("users/{username}/update")
+    fun setDescription(@Path("username") email: String, @Body description: UserDescription): Call<ResponseBody> //potser caldra utilitzar UserDescripcioCat
 
     @GET("/users/{username}")
     fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>

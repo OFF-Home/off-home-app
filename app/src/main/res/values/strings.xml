@@ -250,7 +250,7 @@
     <string name="set_username">Username</string>
     <string name="set_username_description">Please, set your username</string>
     <string name="dialog_delete_message_title">Delete message</string>
-    <string name="dialog_delete_message_message">Are you sure to delete message?</string>
+    <string name="dialog_delete_message_message">Are you sure you want to delete this message?</string>
     <string name="yes">Yes</string>
     <string name="textView_OffHome_info" translatable="false">El projecte OFF-Home es basa en el desenvolupament d’una aplicació que tindrà com a principal funcionalitat portar un seguiment de la quantitat de persones que hi ha realitzant una activitat concreta a l’aire lliure. Els usuaris de l’aplicació podran consultar aquestes dades i també apuntar-se ells mateixos com a participants de les activitats.
 

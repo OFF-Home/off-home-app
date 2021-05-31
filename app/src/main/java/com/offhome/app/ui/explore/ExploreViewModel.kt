@@ -39,10 +39,16 @@ class ExploreViewModel : ViewModel() {
         }
     }
 
+    /**
+     * It calls the repository to get the suggested activities
+     */
     fun getSuggestedActivities() {
         suggestedActivities = activitiesRepo.getSuggestedActivities(loggedUserEmail)
     }
 
+    /**
+     * It calls the repository to get activities from friends
+     */
     fun getFriendsActivities() {
         friendsActivities = activitiesRepo.getFriendsActivities(loggedUserEmail)
     }

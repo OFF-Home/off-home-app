@@ -129,6 +129,11 @@ class ActivitiesRepository {
         return responseJoin as MutableLiveData<String>
     }
 
+    /**
+     * This function calls the [activitiesService] in order to get suggested activities
+     * @param loggedUserEmail is email of the logged user
+     * @return the result the list of activities
+     */
     fun getSuggestedActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         val call: Call<List<ActivityFromList>> = activitiesService?.getSuggestedActivities(loggedUserEmail)!!
         call.enqueue(object : Callback<List<ActivityFromList>> {
@@ -150,9 +155,12 @@ class ActivitiesRepository {
 
     }
 
+    /**
+     * This function calls the [activitiesService] in order to get activities created by followed people
+     * @param loggedUserEmail is email of the logged user
+     * @return the result the list of activities
+     */
     fun getFriendsActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
-        //return MutableLiveData(Result.Success(listOf(ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"), ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"), ActivityFromList("pau.cuesta@gmail.com", "Claris", 1, "2021-06-26 18:00:00.000", "Running", 15, "Running per Montserrat", "Anirem a correr fins a Montserrat des de Barcelona", "2021-06-26 21:00:00.000"))))
-
         val call: Call<List<ActivityFromList>> = activitiesService?.getFriendsActivities(loggedUserEmail)!!
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {

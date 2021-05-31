@@ -1,6 +1,5 @@
 package com.offhome.app.ui.chats.listChats
 
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
@@ -8,7 +7,6 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
-import com.offhome.app.model.ChatInfo
 import com.offhome.app.model.profile.ProfileRepository
 import com.offhome.app.model.profile.UserInfo
 

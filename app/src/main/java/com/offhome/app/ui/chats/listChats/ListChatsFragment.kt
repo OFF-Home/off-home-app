@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.Result
-import com.offhome.app.model.ChatInfo
+import com.offhome.app.data.model.ChatInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 /**

@@ -57,7 +57,8 @@ class ListChatsFragment : Fragment() {
         viewModel.getChats().observe(viewLifecycleOwner, {
             if (it is Result.Success) {
                 stringChats = it.data as ArrayList<String>
-                for (chat in stringChats) {
+                for ((index, chat) in stringChats.withIndex()) {
+                    chats.add(ChatInfo(chat, "",  ""))
                     if (chat.contains("_")) {
                         getInfoChatGrupal(chat)
                     } else {
@@ -74,7 +75,7 @@ class ListChatsFragment : Fragment() {
     private fun getInfoUser(uid: String) {
         viewModel.getInfoUser(uid).observe(viewLifecycleOwner, {
             if (it is Result.Success) {
-
+                //chats.
             }
         })
     }

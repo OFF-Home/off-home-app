@@ -40,6 +40,6 @@ interface ActivitiesService {
     /**
      * This call is to get friends activities
      */
-    @GET ("/activitats/offriends/{email}")
+    @GET ("/activitats/amics/{email}")
     fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
 }

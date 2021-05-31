@@ -129,8 +129,8 @@ class ProfileFragmentViewModel : ViewModel() {
      * This function calls the Repository to manage the photo uploading of the user profile
      * @param photoPath The path of the photo desired
      */
-    fun uploadPhoto(photoPath: String) {
-        repository.uploadPhoto(loggedUserEmail, photoPath)
+    fun uploadPhoto(photoPath: String): MutableLiveData<Result<String>> {
+        return repository.uploadPhoto(loggedUserEmail, photoPath)
     }
 
     fun deleteAccount(): MutableLiveData<Result<String>> {

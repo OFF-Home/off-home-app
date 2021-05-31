@@ -5,7 +5,6 @@ package com.offhome.app.ui.profile
 import android.annotation.SuppressLint
 import android.app.AlertDialog
 import android.content.Intent
-import android.content.res.Resources
 import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
@@ -53,8 +52,9 @@ class ProfileSettingsFragment : Fragment() {
     lateinit var btnCovidPolicy: TextView
     lateinit var btnDarkMode: ImageView
 
-    private var dark_mode: Boolean = false
     private lateinit var firebaseAuth: FirebaseAuth
+
+    private lateinit var name_us: String
 
     private lateinit var profileVM: ProfileFragmentViewModel
 
@@ -100,10 +100,11 @@ class ProfileSettingsFragment : Fragment() {
         btnNotifications = view.findViewById(R.id.imageViewIconNot)
         btnDarkMode = view.findViewById(R.id.imageViewIconDark)
 
-        dark_mode = SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE.toString())
         btnInfoOFFHOME = view.findViewById(R.id.aboutOFFHome)
         btnPrivacyPolicy = view.findViewById(R.id.privacyPolicy)
         btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
+
+        name_us = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString()
 
         manageUserInfo()
 
@@ -147,7 +148,7 @@ class ProfileSettingsFragment : Fragment() {
         emailTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
         emailTV.setTextColor(Color.LTGRAY)
 
-        usernameTV.text = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)
+        usernameTV.text = name_us
         usernameTV.setTextColor(Color.LTGRAY)
     }
 
@@ -192,6 +193,11 @@ class ProfileSettingsFragment : Fragment() {
                                             finish()
                                         }
                                     }
+                                    else Toast.makeText(
+                                        context,
+                                        "User account deletion failed on Firebase",
+                                        Toast.LENGTH_LONG
+                                    ).show()
                                 }
                         } else if (sth is Result.Error) {
                             Toast.makeText(context, sth.exception.message, Toast.LENGTH_LONG).show()
@@ -250,9 +256,27 @@ class ProfileSettingsFragment : Fragment() {
      */
     private fun changeToDarkMode(){
         btnDarkMode.setOnClickListener{
-            if (dark_mode) setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
-            else setDefaultNightMode(MODE_NIGHT_YES)
-            dark_mode = !dark_mode
+            profileVM.updateDarkMode(name_us, SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)).observe(
+                viewLifecycleOwner,
+                { res ->
+                    if (res is Result.Success) {
+                        if (!SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
+                            setDefaultNightMode(MODE_NIGHT_YES)
+                            Toast.makeText(context, "Dark mode ON", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, true)
+                        }
+                        else {
+                            setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
+                            Toast.makeText(context, "Dark mode OFF", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, false)
+                        }
+                    }
+                    else if (res is Result.Error) {
+                        Toast.makeText(context, res.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
         }
     }
+
 }

@@ -7,5 +7,5 @@ package com.offhome.app.data.profilejson
  * @property username a string
  */
 data class UserUsername(
-    val username:String
+    val username: String
 )

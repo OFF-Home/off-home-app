@@ -6,37 +6,42 @@
     <string name="title_profile">Profile</string>
     <string name="title_activity_info">Map</string>
     <string name="join">JOIN</string>
+    <string name="submit">SUBMIT</string>
     <string name="participants">Participants:</string>
     <string name="about_the_activity">About the activity:</string>
     <string name="created_by">Created by </string>
-    <string name="category_name">EXTRA_CATEGORY_NAME</string>
+    <string name="category_name" translatable="false">EXTRA_CATEGORY_NAME</string>
     <string name="title_of_the_activity">Title of the activity</string>
     <string name="create">CREATE</string>
     <string name="insert_title">Insert title</string>
     <string name="insert_text">Insert text</string>
     <string name="date">Date</string>
     <string name="choose_location">Choose location</string>
-    <string name="set_location">Set location</string>
-    <string name="choose_date">Choose date</string>
+    <string name="set_address1">Insert street name</string>
+    <string name="set_address2">Num</string>
+    <string name="choose_date">Start time</string>
+    <string name="choose_dateFi">Finish time</string>
     <string name="invite_friends">Invite friends</string>
     <string name="select_category">Select category:</string>
     <string-array name="select_category">
-        <item>Sports</item>
-        <item>Bicycling</item>
-        <item>Cultural</item>
-        <item>Dancing</item>
-        <item>Volunteering</item>
+        <item>Select a category</item>
+        <item>Running</item>
         <item>Walking</item>
-        <item>Self care</item>
-        <item>Gardering</item>
+        <item>Skating</item>
+        <item>Cycling</item>
+        <item>Meditation</item>
+        <item>Cultural</item>
+        <item>Volunteering</item>
+        <item>Gastronomic</item>
+        <item>WaterSports</item>
     </string-array>
-    <string name="title_activity_sign_up">SignUpActivity</string>
+    <string name="title_activity_sign_up" translatable="false">SignUpActivity</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
     <string name="action_sign_in">Sign in or register</string>
-    <string name="action_sign_in_short">Sign in</string>
-    <string name="welcome">"Welcome !"</string>
-    <string name="large_text">
+    <string name="action_sign_in_short" translatable="false">Sign in</string>
+    <string name="welcome">Welcome!</string>
+    <string name="large_text" translatable="false">
         "Material is the metaphor.\n\n"
 
         "A material metaphor is the unifying theory of a rationalized space and a system of motion."
@@ -133,7 +138,7 @@
     <string name="description">Description</string>
     <string name="birth_date">Birth date</string>
     <string name="tags">Tags</string>
-    <string name="tag" >Tag</string>
+    <string name="tag">Tag</string>
     <string name="followers">Followers</string>
     <string name="following">Following</string>
     <string name="title_activity_profile">Profile</string>
@@ -144,7 +149,6 @@
     <string name="invalid_password">Password must be >5 characters</string>
     <string name="login_failed">"Login failed"</string>
     <string name="hint_username">Username</string>
-    <string name="hint_birth_date">Birth date</string>
     <string name="button_sign_up">Sign up</string>
     <string name="have_an_account_already">"Have an account already? Log in "</string>
     <string name="button_here"><u>here</u></string>
@@ -157,10 +161,10 @@
     <string name="unknown_sign_up_error"> Sign up error: there was an unknown error </string>
     <string name="invalid_birth_date"> Not a valid birth date </string>
     <string name="sign_up_connection_error"> Sign up error: connection error. Could not reach the server </string>
-    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that the username is  or that the email is invalid </string>
+    <string name="sign_up_server_error"> Sign up error: Error in the server. Could mean that username is taken </string>
     <string name="sign_up_bad_email_format"> Sign up error: The e-mail address is badly formatted </string>
     <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
-    <string name="title_activity_login">LoginActivity</string>
+    <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="button_login">Log in</string>
     <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
     <string name="login_failed_email">Email not verified</string>
@@ -168,9 +172,9 @@
     <string name="off_home_logo">OFF Home logo</string>
     <string name="show_password_description">Show Password</string>
     <string name="max_participants">Max participants</string>
-    <string name="invalid_username">Username can\'t be blank</string>
+    <string name="invalid_username">Not a valid username</string>
     <string name="go_chat">Go chat!</string>
-    <string name="view_as_another_user">view as another user</string>
+    <string name="view_my_public_profile">View my public profile</string>
     <string name="btn_follow">Follow</string>
     <string name="btn_following">Following</string>
     <string name="error_follow">Error! Please try it again later</string>
@@ -179,30 +183,255 @@
     <string name="username_update_error_toast">Couldn\'t update username. Please try again later.</string>
     <string name="description_updated_toast">Description updated.</string>
     <string name="description_update_error_toast">Couldn\'t update description. Please try again later.</string>
-    <string name="Cancel">Cancel</string>
     <string name="tags_cant_be_empty_toast">tags can\'t be empty</string>
     <string name="title_activity_map_with_activities">Map</string>
-    <string name="search_title">search_title</string>
+    <string name="search_title" translatable="false">search_title</string>
     <string name="text_view_recover_password">Don\'t remember your password? Recover it </string>
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
-    <string name="search_hint">search_hint</string>
-    <string name="change_password">Change password</string>
-    <string name="Update_password">updatePassword</string>
+    <string name="search_hint" translatable="false">search_hint</string>
+    <string name="Update_password" translatable="false">updatePassword</string>
     <string name="new_password">new password</string>
     <string name="new_password_repeat">repeat new password</string>
     <string name="dialog_logout_message">Are you sure you want to log out?</string>
     <string name="dialog_logout_title">Log out</string>
-    <string name="ok">Ok</string>
+    <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="error_search_user">Please, type the username you want to search</string>
-    <string name="user_not_found">USer not found!</string>
+    <string name="user_not_found">User not found!</string>
     <string name="tag_added_toast">Tag added</string>
     <string name="couldnt_add_tag_toast">Couldn\'t add tag</string>
     <string name="tag_deleted_toast">Tag deleted</string>
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
-    <string name="btn_share">btn_share</string>
-    <string name="what_is_everyone_doing">What is everyone doing?</string>
-    <string name="no_activities_friends_found">No activities from friends found!</string>
+    <string name="btn_share" translatable="false">btn_share</string>
+    <string name="what_is_everyone_doing" translatable="false">What is everyone doing?</string>
+    <string name="no_activities_friends_found" translatable="false">No activities from friends found!</string>
+    <string name="valoracions">Add you rating and review</string>
+    <string name="comments">Reviews</string>
+    <string name="reviewnotpossible">You can\'t review this activity</string>
+    <string name="mustaddrating">You must rate the activity!</string>
+    <string name="savedrating">Your rating has been saved</string>
+    <string name="new_message">Message</string>
+    <string name="error">Something went wrong!</string>
+    <string name="error_empty_message">Please, write your message before sending</string>
+    <string name="addcomment">Add your review </string>
+    <string name="error_send_message">Something went wrong! Please, send the message again</string>
+    <string name="share_activity_title">Share this activity (invite a friend)</string>
+    <string name="share_activity_message"> Hey! Check out this great activity: %1$s</string>
+    <string name="share_in_app_title">Invite via DM</string>
+    <string name="share_outside_app_title">Invite through external app</string>
+    <string name="title_activity_invite">Invite to activity:</string>
+    <string name="action_settings" translatable="false">Settings</string>
+    <string name="max_recipients_banner">Select up to %1$s people</string>
+    <string name="n_recipients_banner" translatable="false">(%1$s/%2$s)</string>
+    <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
+    <string name="add_calendar">Add to Google Calendar</string>
+    <string name="error_no_calendar">No Calendar found on device!</string>
+    <string name="saved_to_calendar">Successfully saved into calendar!</string>
+    <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
+    <string name="couldnt_retrieve_link_activity">Couldn\'t retrieve that activity. Please make sure the link is correct</string>
+    <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
+    <string name="change_password">Change password</string>
+    <string name="language">Language</string>
+    <string name="notifications">Show notifications</string>
+    <string name="about_off_home">About OFF_HOME</string>
+    <string name="privacy_policy">Privacy policy</string>
+    <string name="covid_policy">COVID policy</string>
+    <string name="dark_theme">Dark theme</string>
+    <string name="delete_my_account">Delete my account</string>
+    <string name="email">email: </string>
+    <string name="username">username: </string>
+    <string name="icon" translatable="false">Icon</string>
+    <string name="datatime">DataTime</string>
+    <string name="places_available">Places available</string>
+    <string name="this_is_the_description_of_the_activity">This is the description of the activity.</string>
+    <string name="error_username">Username has already been chosen</string>
+    <string name="set_username">Username</string>
+    <string name="set_username_description">Please, set your username</string>
+    <string name="dialog_delete_message_title">Delete message</string>
+    <string name="dialog_delete_message_message">Are you sure to delete message?</string>
+    <string name="yes">Yes</string>
+    <string name="textView_OffHome_info" translatable="false">El projecte OFF-Home es basa en el desenvolupament d’una aplicació que tindrà com a principal funcionalitat portar un seguiment de la quantitat de persones que hi ha realitzant una activitat concreta a l’aire lliure. Els usuaris de l’aplicació podran consultar aquestes dades i també apuntar-se ells mateixos com a participants de les activitats.
+
+        OFF-Home també permetrà que hi hagi interacció entre els usuaris que realitzin una mateixa activitat mitjançant un xat, que puguin valorar les seves experiències un cop finalitzades i que, a més a més, obtinguin recomanacions per al futur.\n\n
+
+        L’aplicació es crea enfocada ara mateix a una situació de pandèmia, en la qual volem facilitar la realització d’activitats a l’exterior d’una manera atractiva i que permeti conèixer gent i compartir aficions (la salut mental és molt important!), però controlant en tot moment l’aforament i, per tant, l’acumulació de persones en un mateix espai, disminuint d’aquesta manera les possibilitats de contagi.\n\n
+
+        Però OFF-Home també es crea pensant en un futur post-pandèmia, en el qual, gràcies a la part més social de l’aplicació (comunicació entre usuaris, valoracions...) permetrà que aquesta també s’utilitzi per poder trobar gent nova a prop nostre fent activitats a l’aire lliure.</string>
+
+    <string name="textView_privacy_policy" translatable="false">Privacy Policy
+
+Last updated: May 30, 2021
+
+This Privacy Policy describes Our policies and procedures on the collection, use and disclosure of Your information when You use the Service and tells You about Your privacy rights and how the law protects You.
+
+We use Your Personal data to provide and improve the Service. By using the Service, You agree to the collection and use of information in accordance with this Privacy Policy. This Privacy Policy has been created with the help of the Privacy Policy Generator.
+Interpretation and Definitions
+Interpretation
+
+The words of which the initial letter is capitalized have meanings defined under the following conditions. The following definitions shall have the same meaning regardless of whether they appear in singular or in plural.
+Definitions
+
+For the purposes of this Privacy Policy:
+
+    Account means a unique account created for You to access our Service or parts of our Service.
+
+    Affiliate means an entity that controls, is controlled by or is under common control with a party, where "control" means ownership of 50%% or more of the shares, equity interest or other securities entitled to vote for election of directors or other managing authority.
+
+    Application means the software program provided by the Company downloaded by You on any electronic device, named OFF Home
+
+    Company (referred to as either "the Company", "We", "Us" or "Our" in this Agreement) refers to OFF Home.
+
+    Country refers to: Spain
+
+    Device means any device that can access the Service such as a computer, a cellphone or a digital tablet.
+
+    Personal Data is any information that relates to an identified or identifiable individual.
+
+    Service refers to the Application.
+
+    Service Provider means any natural or legal person who processes the data on behalf of the Company. It refers to third-party companies or individuals employed by the Company to facilitate the Service, to provide the Service on behalf of the Company, to perform services related to the Service or to assist the Company in analyzing how the Service is used.
+
+    Third-party Social Media Service refers to any website or any social network website through which a User can log in or create an account to use the Service.
+
+    Usage Data refers to data collected automatically, either generated by the use of the Service or from the Service infrastructure itself (for example, the duration of a page visit).
+
+    You means the individual accessing or using the Service, or the company, or other legal entity on behalf of which such individual is accessing or using the Service, as applicable.
+
+Collecting and Using Your Personal Data
+Types of Data Collected
+Personal Data
+
+While using Our Service, We may ask You to provide Us with certain personally identifiable information that can be used to contact or identify You. Personally identifiable information may include, but is not limited to:
+
+    Email address
+
+    Usage Data
+
+Usage Data
+
+Usage Data is collected automatically when using the Service.
+
+Usage Data may include information such as Your Device\'s Internet Protocol address (e.g. IP address), browser type, browser version, the pages of our Service that You visit, the time and date of Your visit, the time spent on those pages, unique device identifiers and other diagnostic data.
+
+When You access the Service by or through a mobile device, We may collect certain information automatically, including, but not limited to, the type of mobile device You use, Your mobile device unique ID, the IP address of Your mobile device, Your mobile operating system, the type of mobile Internet browser You use, unique device identifiers and other diagnostic data.
+
+We may also collect information that Your browser sends whenever You visit our Service or when You access the Service by or through a mobile device.
+Information from Third-Party Social Media Services
+
+The Company allows You to create an account and log in to use the Service through the following Third-party Social Media Services:
+
+    Google
+    Facebook
+    Twitter
+
+If You decide to register through or otherwise grant us access to a Third-Party Social Media Service, We may collect Personal data that is already associated with Your Third-Party Social Media Service\'s account, such as Your name, Your email address, Your activities or Your contact list associated with that account.
+
+You may also have the option of sharing additional information with the Company through Your Third-Party Social Media Service\'s account. If You choose to provide such information and Personal Data, during registration or otherwise, You are giving the Company permission to use, share, and store it in a manner consistent with this Privacy Policy.
+Information Collected while Using the Application
+
+While using Our Application, in order to provide features of Our Application, We may collect, with Your prior permission:
+
+    Information regarding your location
+
+    Pictures and other information from your Device\'s camera and photo library
+
+We use this information to provide features of Our Service, to improve and customize Our Service. The information may be uploaded to the Company\'s servers and/or a Service Provider\'s server or it may be simply stored on Your device.
+
+You can enable or disable access to this information at any time, through Your Device settings.
+Use of Your Personal Data
+
+The Company may use Personal Data for the following purposes:
+
+    To provide and maintain our Service, including to monitor the usage of our Service.
+
+    To manage Your Account: to manage Your registration as a user of the Service. The Personal Data You provide can give You access to different functionalities of the Service that are available to You as a registered user.
+
+    For the performance of a contract: the development, compliance and undertaking of the purchase contract for the products, items or services You have purchased or of any other contract with Us through the Service.
+
+    To contact You: To contact You by email, telephone calls, SMS, or other equivalent forms of electronic communication, such as a mobile application\'s push notifications regarding updates or informative communications related to the functionalities, products or contracted services, including the security updates, when necessary or reasonable for their implementation.
+
+    To provide You with news, special offers and general information about other goods, services and events which we offer that are similar to those that you have already purchased or enquired about unless You have opted not to receive such information.
+
+    To manage Your requests: To attend and manage Your requests to Us.
+
+    For business transfers: We may use Your information to evaluate or conduct a merger, divestiture, restructuring, reorganization, dissolution, or other sale or transfer of some or all of Our assets, whether as a going concern or as part of bankruptcy, liquidation, or similar proceeding, in which Personal Data held by Us about our Service users is among the assets transferred.
+
+    For other purposes: We may use Your information for other purposes, such as data analysis, identifying usage trends, determining the effectiveness of our promotional campaigns and to evaluate and improve our Service, products, services, marketing and your experience.
+
+We may share Your personal information in the following situations:
+
+    With Service Providers: We may share Your personal information with Service Providers to monitor and analyze the use of our Service, to contact You.
+    For business transfers: We may share or transfer Your personal information in connection with, or during negotiations of, any merger, sale of Company assets, financing, or acquisition of all or a portion of Our business to another company.
+    With Affiliates: We may share Your information with Our affiliates, in which case we will require those affiliates to honor this Privacy Policy. Affiliates include Our parent company and any other subsidiaries, joint venture partners or other companies that We control or that are under common control with Us.
+    With business partners: We may share Your information with Our business partners to offer You certain products, services or promotions.
+    With other users: when You share personal information or otherwise interact in the public areas with other users, such information may be viewed by all users and may be publicly distributed outside. If You interact with other users or register through a Third-Party Social Media Service, Your contacts on the Third-Party Social Media Service may see Your name, profile, pictures and description of Your activity. Similarly, other users will be able to view descriptions of Your activity, communicate with You and view Your profile.
+    With Your consent: We may disclose Your personal information for any other purpose with Your consent.
+
+Retention of Your Personal Data
+
+The Company will retain Your Personal Data only for as long as is necessary for the purposes set out in this Privacy Policy. We will retain and use Your Personal Data to the extent necessary to comply with our legal obligations (for example, if we are required to retain your data to comply with applicable laws), resolve disputes, and enforce our legal agreements and policies.
+
+The Company will also retain Usage Data for internal analysis purposes. Usage Data is generally retained for a shorter period of time, except when this data is used to strengthen the security or to improve the functionality of Our Service, or We are legally obligated to retain this data for longer time periods.
+Transfer of Your Personal Data
+
+Your information, including Personal Data, is processed at the Company\'s operating offices and in any other places where the parties involved in the processing are located. It means that this information may be transferred to — and maintained on — computers located outside of Your state, province, country or other governmental jurisdiction where the data protection laws may differ than those from Your jurisdiction.
+
+Your consent to this Privacy Policy followed by Your submission of such information represents Your agreement to that transfer.
+
+The Company will take all steps reasonably necessary to ensure that Your data is treated securely and in accordance with this Privacy Policy and no transfer of Your Personal Data will take place to an organization or a country unless there are adequate controls in place including the security of Your data and other personal information.
+Disclosure of Your Personal Data
+Business Transactions
+
+If the Company is involved in a merger, acquisition or asset sale, Your Personal Data may be transferred. We will provide notice before Your Personal Data is transferred and becomes subject to a different Privacy Policy.
+Law enforcement
+
+Under certain circumstances, the Company may be required to disclose Your Personal Data if required to do so by law or in response to valid requests by public authorities (e.g. a court or a government agency).
+Other legal requirements
+
+The Company may disclose Your Personal Data in the good faith belief that such action is necessary to:
+
+    Comply with a legal obligation
+    Protect and defend the rights or property of the Company
+    Prevent or investigate possible wrongdoing in connection with the Service
+    Protect the personal safety of Users of the Service or the public
+    Protect against legal liability
+
+Security of Your Personal Data
+
+The security of Your Personal Data is important to Us, but remember that no method of transmission over the Internet, or method of electronic storage is 100%% secure. While We strive to use commercially acceptable means to protect Your Personal Data, We cannot guarantee its absolute security.
+Children\'s Privacy
+
+Our Service does not address anyone under the age of 13. We do not knowingly collect personally identifiable information from anyone under the age of 13. If You are a parent or guardian and You are aware that Your child has provided Us with Personal Data, please contact Us. If We become aware that We have collected Personal Data from anyone under the age of 13 without verification of parental consent, We take steps to remove that information from Our servers.
+
+If We need to rely on consent as a legal basis for processing Your information and Your country requires consent from a parent, We may require Your parent\'s consent before We collect and use that information.
+Links to Other Websites
+
+Our Service may contain links to other websites that are not operated by Us. If You click on a third party link, You will be directed to that third party\'s site. We strongly advise You to review the Privacy Policy of every site You visit.
+
+We have no control over and assume no responsibility for the content, privacy policies or practices of any third party sites or services.
+Changes to this Privacy Policy
+
+We may update Our Privacy Policy from time to time. We will notify You of any changes by posting the new Privacy Policy on this page.
+
+We will let You know via email and/or a prominent notice on Our Service, prior to the change becoming effective and update the "Last updated" date at the top of this Privacy Policy.
+
+You are advised to review this Privacy Policy periodically for any changes. Changes to this Privacy Policy are effective when they are posted on this page.
+Contact Us
+
+If you have any questions about this Privacy Policy, You can contact us:
+
+    By email: contacto@offhome.es
+
+
+    </string>
+    <string name="text_view_covid_policy" translatable="false">This company policy includes the measures we are actively taking to mitigate the spread of coronavirus. You are kindly requested to follow all these rules diligently, to sustain a healthy and safe workplace in this unique environment. It’s important that we all respond responsibly and transparently to these health precautions. We assure you that we will always treat your private health and personal data with high confidentiality and sensitivity.\n This coronavirus (COVID-19) company policy is susceptible to changes with the introduction of additional governmental guidelines. If so, we will update you as soon as possible by email.\n Scope \n This coronavirus policy applies to all of our employees who physically work in our office(s). We strongly recommend to our remote working personnel to read through this action plan as well, to ensure we collectively and uniformly respond to this challenge.\n Policy elements\n Here, we outline the required actions employees should take to protect themselves and their co-workers from a potential coronavirus infection.\n Sick leave arrangements:\n -If you have cold symptoms, such as cough/sneezing/fever, or feel poorly, request sick leave or work from home.\n -If you have a positive COVID-19 diagnosis, you can return to the office only after you’ve fully recovered, with a doctor’s note confirming your recovery.</string>
+    <string name="add_a_tag">Add a tag</string>
+    <string name="add">Add</string>
+    <string name="delete_tag_confirmation_title">Delete tag "%1$s"?</string>
+    <string name="delete">Delete</string>
+    <string name="something_was_cancelled">Something was cancelled</string>
+    <string name="list">List</string>
+    <string name="map">Map</string>
 </resources>

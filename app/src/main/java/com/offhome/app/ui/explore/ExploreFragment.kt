@@ -1,9 +1,9 @@
 package com.offhome.app.ui.explore
 
+
+
 import android.content.Intent
-import androidx.lifecycle.ViewModelProvider
 import android.os.Bundle
-import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
@@ -14,8 +14,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.data.Result
-import com.offhome.app.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import androidx.lifecycle.ViewModelProvider
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -44,7 +45,8 @@ class ExploreFragment : Fragment() {
      * it is called when creating view
      */
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
@@ -113,17 +115,29 @@ class ExploreFragment : Fragment() {
      * @param inflater it inflates the menu and adds items
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_and_sort_buttons, menu)
+        inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 if (query.isNullOrBlank())
                     Toast.makeText(context, getString(R.string.error_search_user), Toast.LENGTH_LONG).show()
                 else
-                    viewModel.searchUser(query)
+                    viewModel.searchUser(query).observe(
+                        viewLifecycleOwner,
+                        {
+                            if (it is Result.Success) {
+                                val intent = Intent(activity, OtherProfileActivity::class.java)
+                                val userInfoJSON = GsonBuilder().create().toJson(it.data)
+                                intent.putExtra("user_info", userInfoJSON)
+                                startActivity(intent)
+                            } else if (it is Result.Error) {
+                                Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    )
                 return true
             }
 
@@ -132,6 +146,5 @@ class ExploreFragment : Fragment() {
             }
         })
     }
-
 }
 

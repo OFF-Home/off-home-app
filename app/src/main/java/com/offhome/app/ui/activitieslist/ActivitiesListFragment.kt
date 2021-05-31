@@ -1,5 +1,7 @@
 package com.offhome.app.ui.activitieslist
 
+
+
 import android.app.AlertDialog
 import android.os.Bundle
 import android.view.*
@@ -12,10 +14,11 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.ActivityFromList
+import com.offhome.app.data.model.ActivityFromList
+import java.text.ParseException
+import java.text.SimpleDateFormat
 import java.util.*
 import kotlin.collections.ArrayList
-
 
 /**
  * Class that defines the fragment to show the List of Activities
@@ -33,7 +36,7 @@ class ActivitiesListFragment : Fragment() {
 
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
-    private var activitiesList: List<ActivityFromList> = ArrayList()
+    private var activitiesList: MutableList<ActivityFromList> = ArrayList()
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
 
     /**
@@ -67,10 +70,34 @@ class ActivitiesListFragment : Fragment() {
 
         setHasOptionsMenu(true)
 
+        // get the current date
+        val currentTime = Calendar.getInstance().time
+
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
-                activitiesList = it
+                if (it != null) {
+                    for (item in it) {
+                        // transform dataHoraIni into date format
+                        val mydate = item.dataHoraFi
+                        var date: Date? = null
+                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                        try {
+                            date = format.parse(mydate)
+                        } catch (e: ParseException) {
+                            e.printStackTrace()
+                        }
+
+                        if (date != null) {
+                            if (date > currentTime) {
+                                activitiesList.add(item)
+                            }
+                        }
+                    }
+                    // stub ferran
+                    // activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
+                }
                 activitiesListAdapter.setData(activitiesList)
             }
         )
@@ -121,8 +148,6 @@ class ActivitiesListFragment : Fragment() {
         val id = item.itemId
         if (id == R.id.action_sort) {
             sortActivities()
-        } else if (id == R.id.action_sort_categories) {
-            sortActivitiesByCategory()
         }
         return super.onOptionsItemSelected(item)
     }
@@ -131,24 +156,103 @@ class ActivitiesListFragment : Fragment() {
      * This Function handles the dialog where the activities can be sorted. The opcions are: by ascending, by descending and by date
      */
     private fun sortActivities() {
+        val currentTime = Calendar.getInstance().time
         val builder = AlertDialog.Builder(context)
         builder.setTitle("                    Sort")
             .setItems(arrayOf("Ascending", "Descending", "By date")) { dialogInterface, i ->
                 when (i) {
                     0 -> {
-                        //ascending clicked
+                        // ascending clicked
                         dialogInterface.dismiss()
-                        activitiesList.sortedBy { it.titol }
+                        activitiesViewModel.getActivitiesByAscTitle().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                     1 -> {
-                        //descending clicked
+                        // descending clicked
                         dialogInterface.dismiss()
-                        activitiesList.sortedByDescending { it.titol }
+                        activitiesViewModel.getActivitiesByDescTitle().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date!! > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                     2 -> {
-                        //sorted by date
+                        // sorted by date
                         dialogInterface.dismiss()
-                        activitiesList.sortedBy { it.dataHoraIni }
+                        activitiesViewModel.getActivitiesByDate().observe(
+                            viewLifecycleOwner,
+                            Observer {
+                                if (it != null) {
+                                    activitiesList = ArrayList()
+                                    for (item in it) {
+                                        // transform dataHoraIni into date format
+                                        val mydate = item.dataHoraFi
+                                        var date: Date? = null
+                                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+
+                                        try {
+                                            date = format.parse(mydate)
+                                        } catch (e: ParseException) {
+                                            e.printStackTrace()
+                                        }
+
+                                        if (date != null) {
+                                            if (date!! > currentTime) {
+                                                activitiesList.add(item)
+                                            }
+                                        }
+                                    }
+                                }
+                                activitiesListAdapter.setData(activitiesList)
+                            }
+                        )
                     }
                 }
             }.show()
@@ -180,15 +284,14 @@ class ActivitiesListFragment : Fragment() {
             for (j in selectedList.indices) {
                 for (s in activitiesList) {
                     if (s.categoria == (categoriesOptions)[selectedList[j]])
-                    resultlist.add(s)
+                        resultlist.add(s)
                 }
             }
-            //activitiesList = resultlist
+            // activitiesList = resultlist
             Toast.makeText(context, "Filter applied", Toast.LENGTH_SHORT).show()
             dialog.dismiss()
         }
         dialog = builder.create()
         dialog.show()
     }
-
 }

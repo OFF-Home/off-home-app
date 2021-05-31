@@ -1,5 +1,7 @@
 package com.offhome.app.ui.signup
 
+
+
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
@@ -96,9 +98,8 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 if (signUpStateVM.birthDateError != null) {
                     birthDate.error = getString(signUpStateVM.birthDateError)
-                }
-                else {
-                    birthDate.error = null  //funciona xd
+                } else {
+                    birthDate.error = null // funciona xd
                 }
             }
         )
@@ -223,7 +224,7 @@ class SignUpActivity : AppCompatActivity() {
             canviALogInActivity()
         }
 
-        //yoink
+        // yoink
         showPasswordButton.setOnClickListener {
             password.inputType = if (password.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
                 InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
@@ -243,7 +244,6 @@ class SignUpActivity : AppCompatActivity() {
         // ensenyar missatge de welcome a baix
         Toast.makeText(
             applicationContext,
-            // "$emailConfirmationMessage $displayName",
             emailConfirmationMessage,
             Toast.LENGTH_LONG
         ).show()
@@ -263,7 +263,6 @@ class SignUpActivity : AppCompatActivity() {
      * Changes to the log-in screen
      */
     private fun canviALogInActivity() {
-        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 

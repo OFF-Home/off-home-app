@@ -1,16 +1,17 @@
 package com.offhome.app.data
 
+
+
 import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.offhome.app.common.Constants
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
-import com.offhome.app.ui.signup.SignUpActivity
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -36,7 +37,7 @@ class SignUpDataSource {
 
     private lateinit var firebaseAuth: FirebaseAuth
     private var retrofit: Retrofit =
-        Retrofit.Builder().baseUrl("http://ec2-100-25-149-77.compute-1.amazonaws.com:3000/").addConverterFactory(GsonConverterFactory.create()).build()
+        Retrofit.Builder().baseUrl(Constants().BASE_URL).addConverterFactory(GsonConverterFactory.create()).build()
     private var signUpService: SignUpService = retrofit.create(SignUpService::class.java)
 
     /**
@@ -54,7 +55,7 @@ class SignUpDataSource {
      * @param password
      * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity i toasts quan acabem de debugejar
+    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
 
         try {
             firebaseAuth = Firebase.auth
@@ -70,38 +71,26 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, username, password ?: "undefined", birthDate.toString())
+                    val signedUpUser = SignUpUserData(email, user.uid)
                     val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
 
                     call.enqueue(object : Callback<ResponseBody> {
                         override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                             if (response.isSuccessful) {
-                                Toast.makeText(
-                                    activity,
-                                    // "$emailConfirmationMessage $displayName",
-                                    "HTTP call success",
-                                    Toast.LENGTH_LONG
-                                ).show()
+                                Log.d("SignUp", "response:successful")
 
                                 _result.value = ResultSignUp(success = true)
                             } else { // si rebem resposta de la BD pero ens informa d'un error
-                                Toast.makeText(
-                                    activity,
-                                    // "$emailConfirmationMessage $displayName",
-                                    "HTTP call error",
-                                    Toast.LENGTH_LONG
-                                ).show()
+
+                                Log.d("SignUp", "response:error")
 
                                 _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
                             }
                         }
 
                         override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                            Toast.makeText(
-                                activity,
-                                "Connection error",
-                                Toast.LENGTH_LONG
-                            ).show()
+
+                            Log.d("SignUp", "no response: connection error")
                             t.printStackTrace()
                             Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
                             _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))

@@ -7,12 +7,25 @@
     android:layout_height="match_parent"
     tools:context=".ui.profile.ProfileAboutMeFragment">
 
+    <Button
+        android:id="@+id/viewAsOtherProfile"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="244dp"
+        android:backgroundTint="@color/primary_light"
+        android:text="@string/view_my_public_profile"
+        android:textColor="@color/primary_text"
+        android:textSize="12sp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <TextView
         android:id="@+id/textViewProfileDescriptionTitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="24dp"
         android:text="@string/description"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"

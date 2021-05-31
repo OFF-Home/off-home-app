@@ -1,5 +1,7 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
@@ -14,10 +16,10 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.provider.Settings
 import android.text.InputFilter
+import android.util.Log
 import android.view.*
 import android.widget.*
 import androidx.appcompat.app.AppCompatActivity
-import android.util.Log
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.core.content.ContextCompat
@@ -31,12 +33,11 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.ui.login.LoginActivity
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
  * Class *ProfileFragment*
@@ -69,10 +70,7 @@ class ProfileFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var editTextUsername: EditText
 
-    private lateinit var viewAsOtherProfile: Button
-
     private lateinit var firebaseAuth: FirebaseAuth
-
 
     /**
      * Override the onCreateView method
@@ -100,7 +98,6 @@ class ProfileFragment : Fragment() {
         textViewUsername = view.findViewById(R.id.textViewUsername)
         estrelles = view.findViewById(R.id.ratingBarEstrellesUsuari)
         constraintLayout1 = view.findViewById(R.id.profileConstraintLayoutDinsAppBarLO)
-        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         val sectionsPagerAdapter = SectionsPagerAdapter(inflater.context, childFragmentManager)
         val viewPager: ViewPager = view.findViewById(R.id.view_pager)
@@ -108,7 +105,7 @@ class ProfileFragment : Fragment() {
         val tabs: TabLayout = view.findViewById(R.id.tabs)
         tabs.setupWithViewPager(viewPager)
 
-        //cosas logout
+        // cosas logout
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         firebaseAuth = Firebase.auth
@@ -118,30 +115,26 @@ class ProfileFragment : Fragment() {
         fragmentViewModel.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-
-                textViewUsername.text = profileInfoVM.username
-                estrelles.rating = profileInfoVM.estrelles.toFloat()
-                // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                if (it is Result.Success) {
+                    textViewUsername.text = it.data.username
+                    estrelles.rating = it.data.estrelles.toFloat()
+                    // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                }
             }
         )
 
         iniEditElements()
-        iniUsernameSetListener() //TODO sobra?
-
-        viewAsOtherProfile.setOnClickListener{
-            canviAOtherProfile()
-        }
+        iniUsernameSetListener() // TODO sobra?
 
         imageViewProfilePic.setOnClickListener {
-            //takePictureIntent()
+            // takePictureIntent()
             val selectPhoto = Intent(
                 Intent.ACTION_PICK,
                 MediaStore.Images.Media.EXTERNAL_CONTENT_URI
             )
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context?.let { it1 ->
-                    ContextCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE)
-                }
+                ContextCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE)
+            }
                 != PackageManager.PERMISSION_GRANTED
             ) {
                 Intent(
@@ -151,10 +144,8 @@ class ProfileFragment : Fragment() {
             }
         }
 
-
         return view
     }
-
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
@@ -168,7 +159,7 @@ class ProfileFragment : Fragment() {
                     val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
                     val photoPath: String = cursor.getString(imageIndex)
                     fragmentViewModel.uploadPhoto(photoPath)
-                    //Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
+                    // Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
                     Glide.with(this).load(photoPath).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
                     cursor.close()
                 }
@@ -176,35 +167,29 @@ class ProfileFragment : Fragment() {
         }
     }
 
-
-
     /**
      * Initializes the listener that observes the call to backend made to edit the username
      *
      * the listener removes itself after one use
      */
     private fun iniUsernameSetListener() {
-        Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
+        //Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
 
-        //inutil, intentant que salti el observer de setUsernameSuccessfully
-        //fragmentViewModel.simularResposta()
-
-        fragmentViewModel.usernameSetSuccessfully.observe(  //observer no salta. no sé perquè.
+        fragmentViewModel.usernameSetSuccessfullyResult.observe( // observer no salta. no sé perquè.
             viewLifecycleOwner,
             Observer {
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
                 val resultVM = it ?: return@Observer
+                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
 
-                Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully")
+                if (resultVM is Result.Success) {
+                    Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                }
 
-                Log.d("resultVM.string", resultVM.string())
-                if (resultVM.string() == "User has been updated") {
-                    Toast.makeText(activity,R.string.username_updated_toast, Toast.LENGTH_LONG).show()
-                }
-                else {
-                    Toast.makeText(activity,R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
-                }
-                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                fragmentViewModel.usernameSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                fragmentViewModel.usernameSetSuccessfullyResult.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -295,7 +280,7 @@ class ProfileFragment : Fragment() {
 
         editTextUsername.visibility = View.GONE
 
-        //set the max chars
+        // set the max chars
         val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(50))
         editTextUsername.filters = filterArray
     }
@@ -309,14 +294,13 @@ class ProfileFragment : Fragment() {
         editUsernameButton.setImageDrawable(saveIconDrawable)
         editUsernameButton.setOnClickListener {
             val newUsername = editTextUsername.text
-            if(!newUsername.isEmpty()) {
+            if (!newUsername.isEmpty()) {
                 textViewUsername.text = newUsername
                 fragmentViewModel.usernameChangedByUser(newUsername)
                 iniUsernameSetListener()
                 changeUsernameToDisplay()
-            }
-            else {
-                Toast.makeText(activity,R.string.invalid_username, Toast.LENGTH_LONG).show()
+            } else {
+                Toast.makeText(activity, R.string.invalid_username, Toast.LENGTH_LONG).show()
             }
         }
         editTextUsername.setText(textViewUsername.text)
@@ -356,21 +340,6 @@ class ProfileFragment : Fragment() {
         editTextUsername.visibility = View.GONE
     }
 
-    // aixo es completament per a testejar
-    private fun canviAOtherProfile() {
-
-        // stub
-        val userInfo = com.offhome.app.model.profile.UserInfo(
-            email = "yesThisIsVictor@gmail.com", username = "victorfer", password = "1234", birthDate = "12-12-2012",
-            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3, tags = "a b c d e", language = "esp"
-        )
-
-        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
-        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
-        startActivity(intentCanviAOtherProfile)
-    }
-
     /**
      * Function to specify the options menu for an activity
      * @param menu provided
@@ -404,7 +373,6 @@ class ProfileFragment : Fragment() {
                 dialog.dismiss()
             }
             logout_dialog.show()
-
         }
         return super.onOptionsItemSelected(item)
     }

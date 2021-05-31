@@ -1,6 +1,7 @@
 package com.offhome.app.ui.otherprofile
 
-import android.app.AlertDialog
+
+
 import android.content.res.ColorStateList
 import android.os.Bundle
 import android.util.Log
@@ -8,15 +9,17 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 
 /**
  * Fragment for the "about them" part of the OtherProfile screen
@@ -92,11 +95,26 @@ class AboutThemFragment : Fragment() {
         textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
-        omplirTagGroup(uinfo.tags)  //TODO canviar per el de List <TagData>
+
+        viewModel.getUserTags()
+        viewModel.userTagsFromBack.observe(
+            viewLifecycleOwner,
+            Observer {
+                Log.d("tags", "tags arriben al aboutThemFragment1")
+                val tagsVM = it ?: return@Observer
+                Log.d("tags", "tags arriben al aboutThemFragment2")
+
+                if (tagsVM is Result.Success) {
+                    omplirTagGroup(tagsVM.data)
+                } else {
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
     }
 
-    //old
-    private fun omplirTagGroup(tagString: String) {
+    // old, stub.
+    private fun omplirTagGroup() {
         val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
         tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         tag1.chipStrokeWidth = 5F
@@ -107,9 +125,13 @@ class AboutThemFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
+        }
+        if (tagList.isEmpty()) {
+            // TODO treure
+            Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
         }
     }
 
@@ -119,7 +141,7 @@ class AboutThemFragment : Fragment() {
      * @param tag tag to initialize
      */
     private fun addTagToChipGroup(tag: String) {
-        val chip = Chip(context);
+        val chip = Chip(context)
         chip.text = tag
         chip.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         chip.chipStrokeWidth = 5F

@@ -89,7 +89,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
-    fun signUpBack(email: String, username: String, uid: String, activity: AppCompatActivity) {
+    fun signUpBack(email: String, username: String, uid: String, token: String, activity: AppCompatActivity) {
         signUpRepository.result.observe(
             activity,
             Observer {
@@ -127,7 +127,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 signUpRepository.result.removeObservers(activity)
             }
         )
-        signUpRepository.signUpBack(email, username, uid, activity)
+        signUpRepository.signUpBack(email, username, uid, token, activity)
     }
 
     /**

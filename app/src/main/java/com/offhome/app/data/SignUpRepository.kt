@@ -55,7 +55,7 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
         dataSource.signUp(email, username, password, birthDate, activity)
     }
 
-    fun signUpBack(email: String, username: String, uid: String, activity: AppCompatActivity) {
+    fun signUpBack(email: String, username: String, uid: String, token: String, activity: AppCompatActivity) {
         dataSource.result.observe(
             activity,
             Observer {
@@ -72,6 +72,6 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 dataSource.result.removeObservers(activity)
             }
         )
-        dataSource.signUpBack(username, SignUpUserData(email, uid))
+        dataSource.signUpBack(username, SignUpUserData(email, uid, token))
     }
 }

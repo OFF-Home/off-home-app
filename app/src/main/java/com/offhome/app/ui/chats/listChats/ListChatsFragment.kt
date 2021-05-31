@@ -13,6 +13,7 @@ import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.Result
 import com.offhome.app.model.ChatInfo
+import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 /**
@@ -30,6 +31,7 @@ class ListChatsFragment : Fragment() {
     private lateinit var viewModel: ListChatsViewModel
     private lateinit var adapter: ListChatsRecyclerViewAdapter
     private var chats = ArrayList<ChatInfo>()
+    private var stringChats = ArrayList<String>()
 
     /**
      * Called when view created
@@ -52,14 +54,33 @@ class ListChatsFragment : Fragment() {
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
 
-        viewModel.getChats(viewLifecycleOwner).observe(viewLifecycleOwner, {
+        viewModel.getChats().observe(viewLifecycleOwner, {
             if (it is Result.Success) {
-                chats = it.data as ArrayList<ChatInfo>
+                stringChats = it.data as ArrayList<String>
+                for (chat in stringChats) {
+                    if (chat.contains("_")) {
+                        getInfoChatGrupal(chat)
+                    } else {
+                        getInfoUser(chat)
+                    }
+                }
                 adapter.setData(chats)
             } else {
                 Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error_getting_chats), Toast.LENGTH_LONG).show()
             }
         })
+    }
+
+    private fun getInfoUser(uid: String) {
+        viewModel.getInfoUser(uid).observe(viewLifecycleOwner, {
+            if (it is Result.Success) {
+
+            }
+        })
+    }
+
+    private fun getInfoChatGrupal(chat: String) {
+        viewModel.getActivityInfo(chat.split("_")[0], chat.split("_")[1])
     }
 
 }

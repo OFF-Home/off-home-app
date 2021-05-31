@@ -158,4 +158,13 @@
     <string name="something_was_cancelled">Alguna cosa ha estat cancel·lada</string>
     <string name="list">Llista</string>
     <string name="map">Mapa</string>
+    <string name="plan_activities">PLANIFICA ACTIVITATS</string>
+    <string name="_join_hundreds_of_activities">O uneix-te a centenars d\'activitats a prop teu</string>
+    <string name="next_button">SEGÜENT</string>
+    <string name="talk_to_people_with_hobbies">Parla amb gent que té els mateixos interessos que tu</string>
+    <string name="back_button">ENRERE</string>
+    <string name="meet_people">CONEIX A GENT</string>
+    <string name="maintain_distance">Manté la distància mínima de seguretat amb altres participants</string>
+    <string name="covid_free">LLIURE DE COVID</string>
+    <string name="done_button">LLESTOS!</string>
 </resources>

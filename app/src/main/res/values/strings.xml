@@ -434,4 +434,14 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="something_was_cancelled">Something was cancelled</string>
     <string name="list">List</string>
     <string name="map">Map</string>
+    <string name="plan_activities">PLAN ACTIVITIES</string>
+    <string name="_join_hundreds_of_activities">Or join hundreds of activities near you</string>
+    <string name="next_button">NEXT</string>
+    <string name="talk_to_people_with_hobbies">Chat and talk to people with the same hobbies</string>
+    <string name="back_button">BACK</string>
+    <string name="meet_people">MEET PEOPLE</string>
+    <string name="maintain_distance">Maintain the minnimum safe distance with other participants</string>
+    <string name="covid_free">COVID FREE</string>
+    <string name="finish" translatable="false">FINISH</string>
+    <string name="done_button">DONE!</string>
 </resources>

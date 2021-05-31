@@ -28,5 +28,6 @@ data class UserInfo(
     val notifications: Int,
     val estrelles: Int, // TODO hauria de ser float?
     val tags: String, // TODO crec que s'ha de treure d'aquí. Els tags els obtenim per una altra banda
-    val language: String
+    val language: String,
+    val image: String
 )

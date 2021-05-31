@@ -13,7 +13,6 @@ import com.offhome.app.R
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.Result
 import com.offhome.app.model.ChatInfo
-import com.offhome.app.model.profile.UserInfo
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 /**
@@ -60,9 +59,9 @@ class ListChatsFragment : Fragment() {
                 for ((index, chat) in stringChats.withIndex()) {
                     chats.add(ChatInfo(chat, "",  ""))
                     if (chat.contains("_")) {
-                        getInfoChatGrupal(chat)
+                        getInfoChatGrupal(chat, index)
                     } else {
-                        getInfoUser(chat)
+                        getInfoUser(chat, index)
                     }
                 }
                 adapter.setData(chats)
@@ -72,15 +71,16 @@ class ListChatsFragment : Fragment() {
         })
     }
 
-    private fun getInfoUser(uid: String) {
+    private fun getInfoUser(uid: String, index: Int) {
         viewModel.getInfoUser(uid).observe(viewLifecycleOwner, {
             if (it is Result.Success) {
-                //chats.
+                chats[index].name = it.data.username
+                chats[index].image = it.data.image
             }
         })
     }
 
-    private fun getInfoChatGrupal(chat: String) {
+    private fun getInfoChatGrupal(chat: String, index: Int) {
         viewModel.getActivityInfo(chat.split("_")[0], chat.split("_")[1])
     }
 

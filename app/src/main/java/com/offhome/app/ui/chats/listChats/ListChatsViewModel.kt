@@ -21,7 +21,7 @@ class ListChatsViewModel(val repository: ChatRepository) : ViewModel() {
     }
 
     fun getActivityInfo(userCreator: String, dataHoraIni: String) {
-
+        return activitiesRepository
     }
 
     fun getInfoUser(uid: String): MutableLiveData<Result<UserInfo>> {

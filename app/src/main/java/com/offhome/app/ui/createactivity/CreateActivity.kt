@@ -10,6 +10,8 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.location.Address
+import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.widget.*
@@ -21,6 +23,7 @@ import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityData
 import java.util.*
 
@@ -33,7 +36,6 @@ import java.util.*
  * @property act_title references the EditText to input the title of the activity
  * @property btn_CREATED references the Button to create the activity
  * @property description references the EditText to input the description of the activity
- * @property location references the EditText to input the location where the activity will take place
  **/
 
 class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.OnTimeSetListener {
@@ -76,6 +78,9 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
+
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
 
     /**
      * This function represents the current time using current locale and timezone
@@ -277,14 +282,12 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                 )
 
                 viewModel.addActivity(activitydata).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            Toast.makeText(this, it, Toast.LENGTH_LONG).show()
-                            if (it == "Activity created") {
-                                startActivity(Intent(this, MainActivity::class.java))
-                            }
+                    this, Observer@{ it1 ->
+                        if (it1 is Result.Success) {
+                            Toast.makeText(this, it1.data, Toast.LENGTH_LONG).show()
+                            startActivity(Intent(this, MainActivity::class.java))
                         }
+                        else if (it1 is Result.Error) Toast.makeText(this, it1.exception.message, Toast.LENGTH_LONG).show()
                     }
                 )
             }
@@ -309,13 +312,35 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         } else if (endDate.text.toString() == "") {
             endDate.error = "End date should not be blank"
             return false
-        } else if (nameStreet.text.toString() == "") {
-            nameStreet.error = "Street number should not be blank"
-            return false
-        } else if (category_selected.selectedItemPosition <= 0) {
+        }
+        else if (category_selected.selectedItemPosition <= 0) {
             Toast.makeText(this, "You should choose a category for the activity", Toast.LENGTH_LONG).show()
             return false
         }
-        return true
+        else if (nameStreet.text.toString() == "") {
+            nameStreet.error = "Street name should not be blank"
+            return false
+        }
+        else if (numberStreet.text.toString() == "") {
+            numberStreet.error = "Street number should not be blank"
+            return false
+        }
+        else {
+            val geocoder = Geocoder(this, Locale.getDefault())
+            val addresses: List<Address>
+            addresses = geocoder.getFromLocationName(
+                nameStreet.text.toString() + " " + numberStreet.text.toString(),
+                1
+            )
+            if (addresses != null && addresses.size > 0) {
+                latitude = addresses[0].latitude
+                longitude = addresses[0].longitude
+                return true
+            }
+            else {
+                nameStreet.error = "Address couldn't be found"
+                return false
+            }
+        }
     }
 }

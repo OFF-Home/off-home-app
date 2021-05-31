@@ -14,6 +14,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "779181274869-j72rhioqd2vaqn1e07ud38sblei05k9v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.offhome.app",
+            "certificate_hash": "33a5e326b28f04eef527e1f8fdb35acb203b2b7e"
+          }
+        },
+        {
           "client_id": "779181274869-u6c0du7e71dst4igbnt1nlgscdpbd5g5.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

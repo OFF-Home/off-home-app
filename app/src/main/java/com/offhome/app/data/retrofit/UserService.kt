@@ -119,7 +119,7 @@ interface UserService {
     @GET("/users/{username}/following")
     fun getFollowedUsers(@Path("username") email: String): Call<List<UserInfo>>
 
-    @GET("/users/uid/{uid}")
+    @GET("/xats/traduir/{uid}")
     fun getProfileInfoByUID(@Path("uid") uid: String): Call<UserInfo>
 
     @DELETE("/users/delete/{email}")

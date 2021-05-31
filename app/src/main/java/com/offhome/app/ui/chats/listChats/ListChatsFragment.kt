@@ -48,7 +48,6 @@ class ListChatsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(ListChatsViewModel::class.java)
-        adapter = ListChatsRecyclerViewAdapter()
         val recycler = requireView().findViewById<RecyclerView>(R.id.listChats)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
@@ -76,12 +75,22 @@ class ListChatsFragment : Fragment() {
             if (it is Result.Success) {
                 chats[index].name = it.data.username
                 chats[index].image = it.data.image
+                adapter.setData(chats)
             }
         })
     }
 
     private fun getInfoChatGrupal(chat: String, index: Int) {
-        viewModel.getActivityInfo(chat.split("_")[0], chat.split("_")[1])
+        viewModel.getInfoUser(chat.split("_")[0]).observe(viewLifecycleOwner, {
+            if (it is Result.Success) {
+                viewModel.getActivityInfo(it.data.email, chat.split("_")[1]).observe(viewLifecycleOwner, { activityResult ->
+                    if (activityResult is Result.Success) {
+                        chats[index].name = activityResult.data.titol
+                        //chats[index].image = activityResult.data.
+                        adapter.setData(chats)
+                    }
+                })
+            }
+        })
     }
-
 }

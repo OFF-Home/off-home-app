@@ -13,8 +13,8 @@
     <string name="created_by">"Creada per "</string>
     <string name="title_of_the_activity">Títol de l\'activitat</string>
     <string name="create">CREAR</string>
-    <string name="insert_title">Inseriu un títol</string>
-    <string name="insert_text">Inseriu un text</string>
+    <string name="insert_title">Insereix un títol</string>
+    <string name="insert_text">Insereix un text</string>
     <string name="date">Data</string>
     <string name="choose_location">Escollir ubicació</string>
     <string name="set_address1">Nom del carrer</string>
@@ -81,7 +81,7 @@
     <string name="show_password_description">Ensenyar contrasenya</string>
     <string name="max_participants">Participants màxim</string>
     <string name="invalid_username">Nom d\'usuari no vàlid</string>
-    <string name="go_chat">A al xat</string>
+    <string name="go_chat">Anar al xat</string>
     <string name="view_my_public_profile">Veure el meu perfil públic</string>
     <string name="btn_follow">Seguir</string>
     <string name="btn_following">Seguint</string>
@@ -121,8 +121,8 @@
     <string name="error_send_message">Hi ha hagut algun error! Torneu a enviar el missatge</string>
     <string name="share_activity_title">Compartir aquesta activitat (convidar a un amic)</string>
     <string name="share_activity_message">Ei! Mira aquesta fantàstica activitat: %1$s</string>
-    <string name="share_in_app_title">Enviar via MD</string>
-    <string name="share_outside_app_title">Enviar via app externa</string>
+    <string name="share_in_app_title">Convidar via MD</string>
+    <string name="share_outside_app_title">Convidar via app externa</string>
     <string name="title_activity_invite">Convidar a l\'activitat:</string>
     <string name="max_recipients_banner">Sel·leccioneu fins a %1$s persones</string>
     <string name="sending_invitations_snackbar">"Enviant invitacions a %1$s "</string>

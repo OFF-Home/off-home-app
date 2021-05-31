@@ -29,6 +29,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.OFFHome">
+        <activity android:name=".ui.onboarding.OnboardingActivity" />
         <activity
             android:name=".ui.infopolitiques.CovidPolicyActivity"
             android:parentActivityName=".MainActivity" />
@@ -39,12 +40,12 @@
             android:name=".ui.infopolitiques.InfoOFFHomeActivity"
             android:parentActivityName=".MainActivity" />
         <activity android:name=".ui.oldandliked.OldActivities" />
-        <activity android:name=".ui.oldandliked.LikedActivities"></activity>
+        <activity android:name=".ui.oldandliked.LikedActivities" />
         <activity
             android:name=".ui.chats.singleChat.SingleChatActivity"
             android:parentActivityName=".MainActivity" />
         <activity
-                android:name=".ui.inviteChoosePerson.InviteActivity"
+            android:name=".ui.inviteChoosePerson.InviteActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"

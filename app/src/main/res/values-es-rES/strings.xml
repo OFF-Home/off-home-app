@@ -158,4 +158,15 @@
         <item>Gastronomía</item>
         <item>Deportes acuáticos</item>
     </string-array>
+    <string name="plan_activities">PLANIFICA ACTIVIDADES</string>
+    <string name="_join_hundreds_of_activities">O únete a cientos de actividades cerca de ti</string>
+    <string name="next_button">SIGUIENTE</string>
+    <string name="talk_to_people_with_hobbies">Habla con gente que tiene los mismos intereses que tú</string>
+    <string name="back_button">ATRÁS</string>
+    <string name="meet_people">CONOCE GENTE</string>
+    <string name="maintain_distance">Mantén la distancia mínima de seguridad con otros participantes.</string>
+    <string name="covid_free">LIBRE DE COVID</string>
+    <string name="done_button">LISTO!</string>
+    <string name="wear_mask">Lleva siempre la mascarilla cubriéndote la nariz y la boca</string>
+    <string name="wash_hands">Lávate las manos antes y después de cada actividad.</string>
 </resources>

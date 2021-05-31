@@ -364,6 +364,7 @@ class ProfileFragment : Fragment() {
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
                 firebaseAuth.signOut()
                 SharedPreferenceManager.deleteData()
+                SharedPreferenceManager.setBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP, true)
                 requireActivity().run {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()

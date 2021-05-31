@@ -2,11 +2,7 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.FollowUnfollow
-import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername

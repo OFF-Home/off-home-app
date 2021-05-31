@@ -43,6 +43,7 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.FilePhoto
 import com.offhome.app.ui.login.LoginActivity
 
 
@@ -459,6 +460,7 @@ class ProfileFragment : Fragment() {
             Dexter.withContext(context)
                 .withPermissions(
                     Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 )
                 .withListener(object : MultiplePermissionsListener {
                     override fun onPermissionsChecked(report: MultiplePermissionsReport) {

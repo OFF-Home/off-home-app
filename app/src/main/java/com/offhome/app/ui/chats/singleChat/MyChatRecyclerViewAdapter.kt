@@ -2,27 +2,32 @@ package com.offhome.app.ui.chats.singleChat
 
 
 
+import android.app.AlertDialog
+import android.content.Context
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
-import android.widget.Toast
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.Message
 
 /**
  * Adpter for the recycler view of messages of a chat
  * @property listMessages is the list of Messages
  */
-class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
+class MyChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     private var listMessages: List<Message> = ArrayList()
+
+    private val mOnClickListener: View.OnClickListener = View.OnClickListener { v ->
+        val item = v.tag as Message
+    }
 
     inner class ViewHolderMessage(mView: View) : RecyclerView.ViewHolder(mView) {
         val textViewMessage: TextView = mView.findViewById(R.id.textViewMessage)
@@ -55,7 +60,18 @@ class MyChatRecyclerViewAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(
         (holder as ViewHolderMessage).textViewMessage.text = item.message
         (holder as ViewHolderMessage).textViewMessage.setOnLongClickListener {
             // Delete message
-            Toast.makeText(MyApp.getContext(), "Long press", Toast.LENGTH_LONG).show()
+            if (item.usid_enviador == SharedPreferenceManager.getStringValue(Constants().PREF_UID)) {
+                val delete_dialog = AlertDialog.Builder(context)
+                delete_dialog.setTitle(R.string.dialog_delete_message_title)
+                delete_dialog.setMessage(R.string.dialog_delete_message_message)
+                delete_dialog.setPositiveButton(R.string.yes) { dialog, id ->
+                    (context as SingleChatActivity).deleteMessage(item.usid_enviador, item.timestamp)
+                }
+                delete_dialog.setNegativeButton(R.string.cancel) { dialog, id ->
+                    dialog.dismiss()
+                }
+                delete_dialog.show()
+            }
             return@setOnLongClickListener true
         }
         // TODO Load image of a user

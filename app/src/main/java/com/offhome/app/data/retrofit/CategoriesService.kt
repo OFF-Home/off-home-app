@@ -2,7 +2,7 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.model.Category
+import com.offhome.app.data.model.Category
 import retrofit2.Call
 import retrofit2.http.*
 

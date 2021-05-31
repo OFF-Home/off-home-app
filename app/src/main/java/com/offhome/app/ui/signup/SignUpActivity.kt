@@ -244,7 +244,6 @@ class SignUpActivity : AppCompatActivity() {
         // ensenyar missatge de welcome a baix
         Toast.makeText(
             applicationContext,
-            // "$emailConfirmationMessage $displayName",
             emailConfirmationMessage,
             Toast.LENGTH_LONG
         ).show()
@@ -264,7 +263,6 @@ class SignUpActivity : AppCompatActivity() {
      * Changes to the log-in screen
      */
     private fun canviALogInActivity() {
-        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
         val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 

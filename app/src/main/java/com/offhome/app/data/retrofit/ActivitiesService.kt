@@ -2,9 +2,8 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
-import com.offhome.app.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -15,10 +14,22 @@ interface ActivitiesService {
      * This call is for creating a new activity
      */
     @POST("activitats/create/{usuariCreador}")
-    fun createActivityByUser(@Path("usuariCreador") uidCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
+    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
 
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
+
+    /**
+     * This call is to get the old activities
+     */
+    @GET("activitats/acabades/{userEmail}")
+    fun getOldActivities(@Path("userEmail") userEmail: String): Call<List<ActivityFromList>>
+
+    /**
+     * This call is to get the liked activities
+     */
+    @GET("activitats/likedActivities/{email}")
+    fun getLikedActivities(@Path("email") email: String): Call<List<ActivityFromList>>
 
     /**
      * This call is for joining an activity
@@ -62,4 +73,29 @@ interface ActivitiesService {
         @Query("usuariCreador") usuariCreador: String,
         @Query("dataHoraIni") dataHoraIni: String
     ): Call<List<ReviewOfParticipant>>
+
+    @GET("activitats/orderByNameDesc")
+    fun getActivitiesByDescTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByName")
+    fun getActivitiesByAscTitle(): Call<List<ActivityFromList>>
+
+    @GET("activitats/orderByDate")
+    fun getActivitiesByDate(): Call<List<ActivityFromList>>
+
+    // gets a single activity identified by its creator and date
+    @GET("/activitats/{username}/{datahora}")
+    fun getActivity(@Path("username") activityCreator: String, @Path("datahora") activityDateTime: String): Call<ActivityFromList>
+
+    /**
+     * This call is to get suggested activities
+     */
+    @GET("/activitats/explore/{email}")
+    fun getSuggestedActivities(@Path("email") loggedUserEmail: String): Call<List<ActivityFromList>>
+
+    /**
+     * This call is to get friends activities
+     */
+    @GET ("/activitats/amics/{email}")
+    fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
 }

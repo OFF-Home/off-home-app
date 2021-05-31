@@ -8,9 +8,15 @@ import android.view.*
 import android.widget.SearchView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
+import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import androidx.lifecycle.ViewModelProvider
+import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -19,6 +25,13 @@ import com.offhome.app.ui.otherprofile.OtherProfileActivity
  * @author Pau Cuesta Arcos
  */
 class ExploreFragment : Fragment() {
+    private lateinit var viewModel: ExploreViewModel
+    private lateinit var recyclerView: RecyclerView
+    private lateinit var recyclerViewFriends: RecyclerView
+    private var activitiesList: List<ActivityFromList> = ArrayList()
+    private var activitiesListFriends: List<ActivityFromList> = ArrayList()
+    private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
+    private lateinit var activitiesListFiendsAdapter: ActivitiesFriendsListRecyclerViewAdapter
 
     /**
      * It has gets the instance of the fragment
@@ -27,7 +40,6 @@ class ExploreFragment : Fragment() {
         fun newInstance() = ExploreFragment()
     }
 
-    private lateinit var viewModel: ExploreViewModel
 
     /**
      * it is called when creating view
@@ -38,7 +50,44 @@ class ExploreFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         setHasOptionsMenu(true)
-        return inflater.inflate(R.layout.explore_fragment, container, false)
+        val view = inflater.inflate(R.layout.explore_fragment, container, false)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
+        recyclerView = view.findViewById(R.id.RecyclerViewExploreSuggested)
+        recyclerView.layoutManager = LinearLayoutManager(context)
+        recyclerView.adapter = activitiesListAdapter
+
+        activitiesListFiendsAdapter = ActivitiesFriendsListRecyclerViewAdapter(context)
+        recyclerViewFriends = view.findViewById(R.id.RecyclerViewExploreFriendActivities)
+        recyclerViewFriends.layoutManager = LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false)
+        recyclerViewFriends.adapter = activitiesListFiendsAdapter
+        viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
+
+        viewModel.getSuggestedActivities()
+        viewModel.suggestedActivities.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    activitiesList = it.data
+                    activitiesListAdapter.setData(activitiesList)
+                }
+
+            })
+
+        viewModel.getFriendsActivities()
+        viewModel.friendsActivities.observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    activitiesListFriends = it.data
+                    activitiesListFiendsAdapter.setData(activitiesListFriends)
+                } else if (it is Result.Error) {
+                    if (it.exception is NoActivitiesException) {
+                        Toast.makeText(context, getString(R.string.no_activities_friends_found), Toast.LENGTH_LONG).show()
+                    }
+                }
+            })
+
+        return view
     }
 
     /**
@@ -48,20 +97,16 @@ class ExploreFragment : Fragment() {
      */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
-        viewModel.profileInfo.observe(
-            viewLifecycleOwner,
-            {
-                if (it != null) {
-                    val intent = Intent(activity, OtherProfileActivity::class.java)
-                    val userInfoJSON = GsonBuilder().create().toJson(it)
-                    intent.putExtra("user_info", userInfoJSON)
-                    startActivity(intent)
-                } else {
-                    Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
-                }
+        viewModel.profileInfo.observe(viewLifecycleOwner, {
+            if (it != null) {
+                val intent = Intent(activity, OtherProfileActivity::class.java)
+                val userInfoJSON = GsonBuilder().create().toJson(it)
+                intent.putExtra("user_info", userInfoJSON)
+                startActivity(intent)
+            } else {
+                Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
             }
-        )
+        })
     }
 
     /**
@@ -70,7 +115,7 @@ class ExploreFragment : Fragment() {
      * @param inflater it inflates the menu and adds items
      */
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.search_and_sort_buttons, menu)
+        inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
@@ -80,7 +125,19 @@ class ExploreFragment : Fragment() {
                 if (query.isNullOrBlank())
                     Toast.makeText(context, getString(R.string.error_search_user), Toast.LENGTH_LONG).show()
                 else
-                    viewModel.searchUser(query)
+                    viewModel.searchUser(query).observe(
+                        viewLifecycleOwner,
+                        {
+                            if (it is Result.Success) {
+                                val intent = Intent(activity, OtherProfileActivity::class.java)
+                                val userInfoJSON = GsonBuilder().create().toJson(it.data)
+                                intent.putExtra("user_info", userInfoJSON)
+                                startActivity(intent)
+                            } else if (it is Result.Error) {
+                                Toast.makeText(context, getString(R.string.user_not_found), Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    )
                 return true
             }
 
@@ -90,3 +147,4 @@ class ExploreFragment : Fragment() {
         })
     }
 }
+

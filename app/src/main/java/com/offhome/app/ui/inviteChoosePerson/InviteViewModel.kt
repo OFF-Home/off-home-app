@@ -7,8 +7,8 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.ProfileRepository
+import com.offhome.app.data.model.UserInfo
 
 class InviteViewModel : ViewModel() {
     private var profileRepository: ProfileRepository = ProfileRepository()
@@ -19,9 +19,6 @@ class InviteViewModel : ViewModel() {
 
     private var _allUsers = MutableLiveData<List<UserInfo>>()
     var allUsers: LiveData<List<UserInfo>> = _allUsers
-
-    /*private var _participants = MutableLiveData<List<UserInfo>>()
-    var participants: LiveData<List<UserInfo>> =_participants*/
 
     private var currentUID: String = SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
 
@@ -35,8 +32,4 @@ class InviteViewModel : ViewModel() {
         // allUsers = profileRepository.getAllUsers()
     }
     fun getCurrentUID(): String = currentUID
-
-    /*fun getParticipants() {
-        participants = activitiesRepository.getParticipants
-    }*/
 }

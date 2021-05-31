@@ -6,7 +6,7 @@ import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.view.View.INVISIBLE
+import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
@@ -63,7 +63,7 @@ class UpdatePasswordActivity : AppCompatActivity() {
     @SuppressLint("SetTextI18n")
     private fun setLayout() {
         text = findViewById(R.id.textView)
-        text.visibility = INVISIBLE
+        text.visibility = View.GONE
         firstText = findViewById(R.id.editTextEmailToRecover)
         firstText.hint = "current password"
         firstText.transformationMethod = PasswordTransformationMethod()
@@ -85,8 +85,8 @@ class UpdatePasswordActivity : AppCompatActivity() {
         secondText.text.clear()
         thirdText.text.clear()
         firstText.transformationMethod = null
-        secondText.visibility = INVISIBLE
-        thirdText.visibility = INVISIBLE
+        secondText.visibility = View.GONE
+        thirdText.visibility = View.GONE
         text.visibility = VISIBLE
     }
 

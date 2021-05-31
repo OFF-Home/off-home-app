@@ -19,7 +19,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.offhome.app.MainActivity
 import com.offhome.app.R
-import com.offhome.app.model.ActivityData
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.model.ActivityData
 import java.util.*
 
 /**
@@ -54,14 +56,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     var day2 = 0
     var month2 = 0
     var year2 = 0
-    var hour2 = 0
-    var minute2 = 0
-
-    var savedDay2 = 0
-    var savedMonth2 = 0
-    var savedYear2 = 0
-    var savedHour2 = 0
-    var savedMinute2 = 0
 
     var current = 0
     var DATE_DIALOG_ID1 = 1
@@ -102,14 +96,14 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         hour = cal.get(Calendar.MINUTE)
         minute = cal.get(Calendar.MINUTE)
 
-        cal.set(Calendar.MONTH, month);
-        cal.set(Calendar.DAY_OF_MONTH, day);
-        cal.set(Calendar.YEAR, year);
+        cal.set(Calendar.MONTH, month)
+        cal.set(Calendar.DAY_OF_MONTH, day)
+        cal.set(Calendar.YEAR, year)
 
         startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
         endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
 
-      //  dateFinishPicker.setText(datePicker.getText().toString())
+        //  dateFinishPicker.setText(datePicker.getText().toString())
     }
 
     private lateinit var viewModel: CreateActivityViewModel
@@ -156,7 +150,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     var start_dateListener: OnDateSetListener? = null
     var end_dateListener: OnDateSetListener? = null
 
-
     /**
      * This function let the user pick a date where the activity created will take place
      */
@@ -174,7 +167,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             dialogDate2.show()
             dialogDate2.datePicker.minDate = System.currentTimeMillis()
         }
-
     }
 
     override fun onCreateDialog(id: Int): Dialog? {
@@ -211,7 +203,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
 
         // when dialog box is closed, below method will be called.
         savedDay = dayOfMonth
-        savedMonth = month
+        savedMonth = month + 1
         savedYear = year
 
         TimePickerDialog(this, this, hour, minute, true).show()
@@ -229,8 +221,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             // set selected date into textview
             startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
             dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
-        }
-        else {
+        } else {
             endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
             dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
         }
@@ -272,15 +263,17 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                     else "$oldVal"
                 }
 
+                val uidCreator = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
                     dataHoraIni,
-                    category_selected.toString(),
+                    category_selected.selectedItem.toString(),
                     pick_availability.value,
                     act_title.text.toString(),
                     description.text.toString(),
-                    dataHoraEnd
+                    dataHoraEnd,
+                    uidCreator.toString()
                 )
 
                 viewModel.addActivity(activitydata).observe(

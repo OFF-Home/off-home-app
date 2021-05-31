@@ -1,4 +1,4 @@
-package com.offhome.app.model
+package com.offhome.app.data.model
 
 data class ActivityDataForInvite(
     val maxParticipant: Int,

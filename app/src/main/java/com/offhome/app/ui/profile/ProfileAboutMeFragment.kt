@@ -3,6 +3,7 @@ package com.offhome.app.ui.profile
 
 
 import android.app.AlertDialog
+import android.content.Intent
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -12,18 +13,19 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
+import com.google.gson.GsonBuilder
 import com.offhome.app.R
-import com.offhome.app.model.profile.TagData
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
+import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
 
 /**
@@ -71,6 +73,7 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var addIconDrawable: Drawable
     private lateinit var editTextProfileDescription: EditText
+    private lateinit var viewAsOtherProfile: Button
 
     /**
      * Override the onCreateView method
@@ -99,6 +102,7 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout = view.findViewById(R.id.aboutMeConstraintLayout)
+        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
@@ -107,12 +111,13 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-                // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
+                if (it is Result.Success) {
+                    // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
+                    textViewProfileDescription.text = it.data.description
+                    textViewBirthDate.text = it.data.birthDate
+                    textViewFollowerCount.text = it.data.followers.toString()
+                    textViewFollowingCount.text = it.data.following.toString()
+                }
             }
         )
         profileVM.tags.observe(
@@ -123,6 +128,10 @@ class ProfileAboutMeFragment : Fragment() {
                 Log.d("tags", "tags arriben al fragment")
             }
         )
+
+        viewAsOtherProfile.setOnClickListener {
+            canviAOtherProfile()
+        }
 
         // testing
         // omplirTagGroupStub()
@@ -152,14 +161,18 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
+                Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment")
-                if (resultVM.string() == "User has been updated") {
-                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
-                        .show()
+                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
+
+                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
+
+                if (!resultVM.toString().contains("Error")) {
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
                 }
+
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
                 profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
@@ -172,16 +185,16 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagDeletionListener() {
-        profileVM.tagDeletedSuccessfully.observe(
+        profileVM.tagDeletedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Delete tag al usuario") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagDeletedSuccessfully.removeObservers(viewLifecycleOwner)
+                profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -192,17 +205,24 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagAdditionListener() {
-        profileVM.tagAddedSuccessfully.observe(
+        profileVM.tagAddedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Insert tag al usuario") {
-                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
-                        .show()
+
+                if (resultVM is Result.Success) {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
                 }
-                profileVM.tagAddedSuccessfully.removeObservers(viewLifecycleOwner)
+
+                /*if (resultVM.string() == "Insert tag al usuario") {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
+                }*/
+
+                profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -244,14 +264,14 @@ class ProfileAboutMeFragment : Fragment() {
         chipGroupTags.addView(chip)
         chip.setOnCloseIconClickListener {
             val alertDialogBuilder = AlertDialog.Builder(context)
-                .setMessage("Delete tag \"$tag\"?")
-                .setPositiveButton("Delete") { dialog, which ->
+                .setMessage(getString(R.string.delete_tag_confirmation_title, tag))//        "Delete tag \"$tag\"?")
+                .setPositiveButton(getString(R.string.delete)) { dialog, which ->
                     profileVM.tagDeletedByUser(chip.text as String)
                     iniTagDeletionListener()
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
-                    "Cancel"
+                    getString(R.string.cancel)
                 ) { dialog, which -> dialog.cancel() }
 
             val alertDialog = alertDialogBuilder.show()
@@ -468,9 +488,9 @@ class ProfileAboutMeFragment : Fragment() {
         textInput.setHint(R.string.tag)
 
         val alertDialogBuilder = AlertDialog.Builder(context)
-            .setTitle("Add a tag")
+            .setTitle(getString(R.string.add_a_tag))
             .setView(textInputLayout)
-            .setPositiveButton("Add") { dialog, which ->
+            .setPositiveButton(getString(R.string.add)) { dialog, which ->
                 val tag = textInput.text.toString()
                 if (tag.isEmpty()) {
                     Toast.makeText(context, R.string.tags_cant_be_empty_toast, Toast.LENGTH_LONG).show()
@@ -479,7 +499,7 @@ class ProfileAboutMeFragment : Fragment() {
                     addTag(tag)
             }
             .setNegativeButton(
-                "Cancel"
+                getString(R.string.cancel)
             ) { dialog, which -> dialog.cancel() }
 
         val alertDialog = alertDialogBuilder.show()
@@ -494,5 +514,20 @@ class ProfileAboutMeFragment : Fragment() {
         addTagToChipGroup(tag)
         profileVM.tagAddedByUser(tag)
         iniTagAdditionListener()
+    }
+
+    // aixo es completament per a testejar
+    private fun canviAOtherProfile() {
+
+        // stub
+        val userInfo = UserInfo(
+            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
+            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp"
+        )
+
+        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
+        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
+        startActivity(intentCanviAOtherProfile)
     }
 }

@@ -39,6 +39,7 @@
                 android:inputType="textCapSentences|text|textAutoCorrect"
                 android:background="@drawable/background_edit_text_new_message"
                 android:padding="15dp"
+                android:textColorHint="@color/black"
                 android:selectAllOnFocus="true"
                 android:autofillHints="@string/new_message" />
 

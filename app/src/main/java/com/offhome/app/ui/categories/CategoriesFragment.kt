@@ -11,7 +11,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.Category
+import com.offhome.app.data.model.Category
 
 /**
  * Class that defines the fragment to show the Categories

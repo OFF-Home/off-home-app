@@ -20,7 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.Message
+import com.offhome.app.data.model.Message
 
 /**
  * Ativity for a single activity
@@ -62,14 +62,14 @@ class SingleChatActivity : AppCompatActivity() {
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
         messagesList = findViewById(R.id.recyclerViewMessages)
-        messagesAdapter = MyChatRecyclerViewAdapter()
+        messagesAdapter = MyChatRecyclerViewAdapter(this@SingleChatActivity)
         with(messagesList) {
             layoutManager = LinearLayoutManager(context)
             adapter = messagesAdapter
         }
         title = userName
         myRef = if (userUid!! < SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!) database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
-                else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_${userUid}")
+        else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
@@ -78,7 +78,6 @@ class SingleChatActivity : AppCompatActivity() {
                 myRef.orderByChild("timestamp").addValueEventListener(object : ValueEventListener {
                     override fun onDataChange(dataSnapshot: DataSnapshot) {
                         val listMessages = ArrayList<Message>()
-                        numMessages = dataSnapshot.childrenCount.toInt()
                         val iterator = dataSnapshot.children.iterator()
                         while (iterator.hasNext()) {
                             listMessages.add(iterator.next().getValue(Message::class.java) as Message)
@@ -135,7 +134,7 @@ class SingleChatActivity : AppCompatActivity() {
 
     private fun sendMessage() {
         if (!exists) {
-            val referenceUser1 = database.getReference("usuaris/${userUid}")
+            val referenceUser1 = database.getReference("usuaris/$userUid")
             val referenceUser2 = database.getReference("usuaris/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
             referenceUser1.push().setValue(SharedPreferenceManager.getStringValue(Constants().PREF_UID))
             referenceUser2.push().setValue(userUid)
@@ -147,7 +146,40 @@ class SingleChatActivity : AppCompatActivity() {
             SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
             System.currentTimeMillis()
         )
-        myRef.child("m$numMessages").setValue(message)
+        myRef.push().setValue(message)
         editTextNewMessage.text.clear()
+    }
+
+    /**
+     * Function called to delete a message of the chat
+     * @param usidEnviador uid of the user that has sent the message
+     * @param timestamp time of the message to delete
+     */
+    fun deleteMessage(usidEnviador: String, timestamp: Long) {
+        myRef.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                myRef
+                    .orderByChild("timestamp")
+                    .equalTo(timestamp.toDouble()).addListenerForSingleValueEvent(object : ValueEventListener {
+                        override fun onDataChange(snapshot: DataSnapshot) {
+                            val iterator = snapshot.children.iterator()
+                            while (iterator.hasNext()) {
+                                val next = iterator.next()
+                                val message = next.getValue(Message::class.java) as Message
+                                if (message.timestamp == timestamp && message.usid_enviador == usidEnviador)
+                                    next.ref.removeValue()
+                            }
+                        }
+
+                        override fun onCancelled(error: DatabaseError) {
+                            TODO("Not yet implemented")
+                        }
+                    })
+            }
+
+            override fun onCancelled(error: DatabaseError) {
+                TODO("Not yet implemented")
+            }
+        })
     }
 }

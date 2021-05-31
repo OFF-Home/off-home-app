@@ -126,7 +126,7 @@ class ProfileFragment : Fragment() {
                 if (it is Result.Success) {
                     textViewUsername.text = it.data.username
                     estrelles.rating = it.data.estrelles.toFloat()
-                    // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).centerCrop().circleCrop().into(imageViewProfilePic)
                 }
             }
         )

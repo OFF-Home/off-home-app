@@ -130,8 +130,7 @@ class AboutThemFragment : Fragment() {
             addTagToChipGroup(tagData.nomTag)
         }
         if (tagList.isEmpty()) {
-            // TODO treure
-            Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
+            Log.d("tags otherprofile", "tags empty")
         }
     }
 

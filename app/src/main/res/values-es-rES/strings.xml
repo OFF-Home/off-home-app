@@ -139,4 +139,11 @@
     <string name="error_username">El nombre de usuario ya existe</string>
     <string name="set_username_description">Introduce tu nombre de usuario</string>
     <string name="dialog_delete_message_message">Seguro que quieres eliminar este mensaje?</string>
+    <string name="add_a_tag">Añadir una etiqueta</string>
+    <string name="add">Añadir</string>
+    <string name="delete_tag_confirmation_title">Eliminar la etiqueta %1$s?</string>
+    <string name="delete">Eliminar</string>
+    <string name="something_was_cancelled">Algo ha sido cancelado</string>
+    <string name="list">Lista</string>
+    <string name="map">Mapa</string>
 </resources>

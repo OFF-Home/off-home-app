@@ -89,6 +89,47 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
         signUpRepository.signUp(email, username, password, fecha, activity)
     }
 
+    fun signUpBack(email: String, username: String, uid: String, activity: AppCompatActivity) {
+        signUpRepository.result.observe(
+            activity,
+            Observer {
+                val resultRepo = it ?: return@Observer
+                if (resultRepo.error != null) {
+                    val msg: String = resultRepo.error.toString()
+
+                    when { // quan el backend implementi noves excepcions, haurem d'afegir entrades aqui
+                        msg == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."
+                        -> _signUpResult.value = SignUpResult(error = R.string.email_taken)
+                        msg == "com.google.firebase.auth.FirebaseAuthInvalidCredentialsException: The email address is badly formatted."
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_bad_email_format)
+                        msg == "com.google.firebase.FirebaseNetworkException: A network error (such as timeout, interrupted connection or unreachable host) has occurred."
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_fb_connection_error)
+                        msg == "cosa3"
+                        -> _signUpResult.value = SignUpResult(error = R.string.google_sign_up_error)
+
+                        (msg == "connection error. Server not reached" || msg == "java.lang.Exception: connection error. Server not reached") // crec q nomes serà el 2n.
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_connection_error)
+                        (msg == "response received. Error in the server" || msg == "java.lang.Exception: response received. Error in the server")
+                        -> _signUpResult.value = SignUpResult(error = R.string.sign_up_server_error)
+
+                        /*msg == "cosa1"
+                        -> _signUpResult.value = SignUpResult(error = R.string.username_taken)*/
+
+                        else
+                        -> _signUpResult.value = SignUpResult(error = R.string.unknown_sign_up_error)
+                    }
+                }
+                if (resultRepo.success != null) {
+                    _signUpResult.value = SignUpResult(success = resultRepo.success)
+                }
+                // aqui la activity fa mes coses q suposo q aqui no calen
+
+                signUpRepository.result.removeObservers(activity)
+            }
+        )
+        signUpRepository.signUpBack(email, username, uid, activity)
+    }
+
     /**
      * Updates the live data _signUpForm depending on whether the data in the parameters has the proper format
      *

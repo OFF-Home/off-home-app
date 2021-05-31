@@ -72,30 +72,7 @@ class SignUpDataSource {
 
                     // parlar amb el nostre client
                     val signedUpUser = SignUpUserData(email, user.uid)
-                    val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
-
-                    call.enqueue(object : Callback<ResponseBody> {
-                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                            if (response.isSuccessful) {
-                                Log.d("SignUp", "response:successful")
-
-                                _result.value = ResultSignUp(success = true)
-                            } else { // si rebem resposta de la BD pero ens informa d'un error
-
-                                Log.d("SignUp", "response:error")
-
-                                _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
-                            }
-                        }
-
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-
-                            Log.d("SignUp", "no response: connection error")
-                            t.printStackTrace()
-                            Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
-                            _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))
-                        }
-                    })
+                    signUpBack(username, signedUpUser)
                 } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 
@@ -105,5 +82,26 @@ class SignUpDataSource {
         } catch (e: Throwable) {
             _result.value = ResultSignUp(error = e as Exception) // cast!
         }
+    }
+
+    fun signUpBack(username: String, signedUpUser: SignUpUserData) {
+        val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    _result.value = ResultSignUp(success = true)
+                } else {
+
+                    _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+                Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
+                _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))
+            }
+        })
     }
 }

@@ -15,15 +15,15 @@ import com.offhome.app.data.model.ActivityFromList
  */
 class ActivitiesViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private lateinit var activitiesList: LiveData<List<ActivityFromList>>
+    private lateinit var activitiesList: MutableLiveData<List<ActivityFromList>>
     private lateinit var oldActivitiesList: LiveData<List<ActivityFromList>>
     private lateinit var likedActivitiesList: LiveData<List<ActivityFromList>>
 
     /**
      * gets the activities of a category from the repository
      */
-    fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
-        activitiesList = repository.getAll(categoryName)
+    fun getActivitiesList(categoryName: String): MutableLiveData<List<ActivityFromList>> {
+        activitiesList = repository.getAll(categoryName)!!
         return activitiesList
     }
 

@@ -86,4 +86,16 @@ interface ActivitiesService {
     // gets a single activity identified by its creator and date
     @GET("/activitats/{username}/{datahora}")
     fun getActivity(@Path("username") activityCreator: String, @Path("datahora") activityDateTime: String): Call<ActivityFromList>
+
+    /**
+     * This call is to get suggested activities
+     */
+    @GET("/activitats/explore/{email}")
+    fun getSuggestedActivities(@Path("email") loggedUserEmail: String): Call<List<ActivityFromList>>
+
+    /**
+     * This call is to get friends activities
+     */
+    @GET ("/activitats/amics/{email}")
+    fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
 }

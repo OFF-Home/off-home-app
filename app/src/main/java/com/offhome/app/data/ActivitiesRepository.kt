@@ -1,11 +1,11 @@
 package com.offhome.app.data
 
-
-
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.model.JoInActivity
+import com.offhome.app.ui.explore.NoActivitiesException
 import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
@@ -35,6 +35,8 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
+    private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var singleActivity: MutableLiveData<ActivityFromList>? = null
 
     /**
@@ -188,6 +190,71 @@ class ActivitiesRepository {
         return responseJoin as MutableLiveData<String>
     }
 
+    /**
+     * This function calls the [activitiesService] in order to get suggested activities
+     * @param loggedUserEmail is email of the logged user
+     * @return the result the list of activities
+     */
+    fun getSuggestedActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        val call: Call<List<ActivityFromList>> = activitiesService?.getSuggestedActivities(loggedUserEmail)!!
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    suggestedactivities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    Log.d("response", "getSuggestedActivities response: is successful")
+                } else {
+                    suggestedactivities.value = Result.Error(IOException("getSuggestedActivities response: unsuccessful"))
+                    Log.d("response", "getSuggestedActivities response: unsuccessful")
+                }
+            }
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                suggestedactivities.value = Result.Error(IOException("Error getting getSuggestedActivities. communication failure (no response)"))
+                Log.d("GET", "Error getting getSuggestedActivities. communication failure (no response)")
+            }
+        })
+        return suggestedactivities
+
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to get activities created by followed people
+     * @param loggedUserEmail is email of the logged user
+     * @return the result the list of activities
+     */
+    fun getFriendsActivities(loggedUserEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        val call: Call<List<ActivityFromList>> =
+            activitiesService?.getFriendsActivities(loggedUserEmail)!!
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(
+                call: Call<List<ActivityFromList>>,
+                response: Response<List<ActivityFromList>>
+            ) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) {
+                        friendsactivities.value =
+                            Result.Success(response.body() as List<ActivityFromList>)
+                        Log.d("response", "getSuggestedActivities response: is successful")
+                    } else {
+                        friendsactivities.value = Result.Error(NoActivitiesException())
+                    }
+                } else {
+                    friendsactivities.value =
+                        Result.Error(IOException("getSuggestedActivities response: unsuccessful"))
+                    Log.d("response", "getSuggestedActivities response: unsuccessful")
+                }
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                friendsactivities.value =
+                    Result.Error(IOException("Error getting getSuggestedActivities. communication failure (no response)"))
+                Log.d(
+                    "GET",
+                    "Error getting getSuggestedActivities. communication failure (no response)"
+                )
+            }
+        })
+        return friendsactivities
+    }
     /**
      * This function calls the [activitiesService] in order to get all the participants of an activity
      * @param dataHoraIni is the date and hour of the activity

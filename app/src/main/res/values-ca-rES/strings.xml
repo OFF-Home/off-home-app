@@ -81,7 +81,7 @@
     <string name="show_password_description">Ensenyar contrasenya</string>
     <string name="max_participants">Participants màxim</string>
     <string name="invalid_username">Nom d\'usuari no vàlid</string>
-    <string name="go_chat">Vés al xat</string>
+    <string name="go_chat">A al xat</string>
     <string name="view_my_public_profile">Veure el meu perfil públic</string>
     <string name="btn_follow">Seguir</string>
     <string name="btn_following">Seguint</string>

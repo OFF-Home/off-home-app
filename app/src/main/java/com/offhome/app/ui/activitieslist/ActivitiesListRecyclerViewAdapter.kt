@@ -9,11 +9,16 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.observe
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
@@ -24,10 +29,15 @@ import kotlin.collections.ArrayList
  * @param context is the context of the activity
  * @property activitiesList is the list of activities
  */
-class ActivitiesListRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
+class ActivitiesListRecyclerViewAdapter(
+    private val context: Context?,
+    private var activitiesViewModel: ActivitiesViewModel,
+    private val viewLifecycleOwner: LifecycleOwner
+) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private var tempListAct: List<ActivityFromList> = ArrayList()
     private var listActivitiesFull: List<ActivityFromList> = ArrayList()
+    private lateinit var layout: View
 
     /**
      * Onclick to item.
@@ -40,7 +50,7 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
     }
 
     private var activitiesList: List<ActivityFromList> = ArrayList()
-    private var likedList: List<Boolean> = ArrayList()
+    private var likedList = ArrayList<Boolean>()
 
     /**
      * it inflates the view of each activity and seves the ViewHolder of the view
@@ -74,17 +84,43 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
             tag = item
             setOnClickListener(mOnClickListener)
         }
-        var clicked = false
 
         holder.iconLikeImage.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
+            likedList[position] = !likedList[position]
+            if (likedList[position]) {
+                //post de donar like a una activitat
+                activitiesViewModel.likeActivity(item.usuariCreador, item.dataHoraIni).observe(
+                    (context as AppCompatActivity)
+                ) {
+                    if (it is Result.Success) {
+                        Glide.with(holder.mView.context)
+                            .load(R.drawable.ic_baseline_favorite_24).centerCrop()
+                            .into(holder.iconLikeImage)
+                        likedList[position] = true
+                    } else {
+                        val snackbar: Snackbar = Snackbar
+                            .make(layout, context.getString(R.string.couldnt_like_activity), Snackbar.LENGTH_LONG)
+                        snackbar.show()
+                    }
+                }
             } else {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
+                //del de donar dislike a una activitat
+                activitiesViewModel.dislikeActivity(item.usuariCreador, item.dataHoraIni).observe(
+                    (context as AppCompatActivity)
+                ) {
+                    if (it is Result.Success) {
+                        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
+                        likedList[position] = false
+                    } else {
+                        val snackbar: Snackbar = Snackbar
+                            .make(layout, context.getString(R.string.couldnt_like_activity), Snackbar.LENGTH_LONG)
+                        snackbar.show()
+                    }
+                }
             }
         }
     }
+
 
     /**
      * gets the number of views
@@ -96,7 +132,7 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
      * sets the new data and notifies to the adapter to refresh if necessary
      * @param activitiesList is the new list of activites to set
      */
-    fun setData(activitiesList: List<ActivityFromList>?, likedList: List<Boolean>?) {
+    fun setData(activitiesList: List<ActivityFromList>?, likedList: ArrayList<Boolean>?) {
         this.activitiesList = activitiesList!!
         this.likedList = likedList!!
         notifyDataSetChanged()

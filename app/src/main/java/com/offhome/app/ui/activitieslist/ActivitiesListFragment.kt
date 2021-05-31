@@ -39,8 +39,8 @@ class ActivitiesListFragment : Fragment() {
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private var activitiesList: MutableList<ActivityFromList> = ArrayList()
-    private var likedList: MutableList<Boolean> = ArrayList()
-    private var likedActivitiesList: MutableList<ActivityFromList> = ArrayList()
+    private var likedList = ArrayList<Boolean>()
+    private var likedActivitiesList: MutableList<ActivityFromList>? = ArrayList()
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
 
     /**
@@ -66,7 +66,7 @@ class ActivitiesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities, activitiesViewModel, viewLifecycleOwner)
 
         val layout = view.findViewById<RecyclerView>(R.id.listActivities)
         layout.layoutManager = LinearLayoutManager(context)
@@ -81,7 +81,9 @@ class ActivitiesListFragment : Fragment() {
         activitiesViewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             viewLifecycleOwner,
             Observer {
-                likedActivitiesList = it as MutableList<ActivityFromList>
+                if (it != null) {
+                    likedActivitiesList = it as MutableList<ActivityFromList>
+                }
             }
         )
 
@@ -109,7 +111,7 @@ class ActivitiesListFragment : Fragment() {
                     }
                     for (item in activitiesList) {
                         //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                        likedActivitiesList.forEachIndexed { index, element ->
+                        likedActivitiesList?.forEachIndexed { index, element ->
                             if (item == element) likedList[index] = true
                             else likedList[index] = false
                         }
@@ -208,7 +210,7 @@ class ActivitiesListFragment : Fragment() {
                                     }
                                     for (item in activitiesList) {
                                         //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList.forEachIndexed { index, element ->
+                                        likedActivitiesList?.forEachIndexed { index, element ->
                                             if (item == element) likedList[index] = true
                                             else likedList[index] = false
                                         }
@@ -246,7 +248,7 @@ class ActivitiesListFragment : Fragment() {
                                     }
                                     for (item in activitiesList) {
                                         //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList.forEachIndexed { index, element ->
+                                        likedActivitiesList?.forEachIndexed { index, element ->
                                             if (item == element) likedList[index] = true
                                             else likedList[index] = false
                                         }
@@ -284,7 +286,7 @@ class ActivitiesListFragment : Fragment() {
                                     }
                                     for (item in activitiesList) {
                                         //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList.forEachIndexed { index, element ->
+                                        likedActivitiesList?.forEachIndexed { index, element ->
                                             if (item == element) likedList[index] = true
                                             else likedList[index] = false
                                         }

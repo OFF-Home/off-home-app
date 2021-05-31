@@ -10,7 +10,7 @@
     <string name="submit">Enviar</string>
     <string name="participants">Participantes:</string>
     <string name="about_the_activity">Sobre esta actividad:</string>
-    <string name="created_by">"Creada por  "</string>
+    <string name="created_by">"Creada por "</string>
     <string name="title_of_the_activity">Título de la actividad</string>
     <string name="create">CREAR</string>
     <string name="insert_title">Inserta un título</string>
@@ -22,7 +22,7 @@
     <string name="choose_date">Fecha inicio</string>
     <string name="choose_dateFi">Fecha fin</string>
     <string name="invite_friends">Invitar a amigos</string>
-    <string name="select_category">Seleccionar categoria:</string>
+    <string name="select_category">Seleccionar categoría:</string>
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Contraseña</string>
     <string name="action_sign_in">Entrar o registrarse</string>
@@ -129,7 +129,7 @@
     <string name="share_in_app_title">Invitar por MD</string>
     <string name="share_activity_message">Ey! Mira esta fantástica actividad: %1$s</string>
     <string name="share_activity_title">Compartir esta actividad (invitar a un amigo)</string>
-    <string name="error_send_message">Ha habido algun error! Vuelve a enviar el mensaje</string>
+    <string name="error_send_message">Ha habido algún error! Vuelve a enviar el mensaje</string>
     <string name="max_recipients_banner">Selecciona hasta %1$s personas</string>
     <string name="error_no_calendar">No se ha encontrado Calendar en tu dispositivo!</string>
     <string name="couldnt_retrieve_link_activity">No se ha encontrado esa actividad. Comprueba si el enlace es correcto</string>
@@ -146,4 +146,16 @@
     <string name="something_was_cancelled">Algo ha sido cancelado</string>
     <string name="list">Lista</string>
     <string name="map">Mapa</string>
+    <string-array name="select_category">
+        <item>Selecciona una categoría</item>
+        <item>Correr</item>
+        <item>Caminar</item>
+        <item>Patinar</item>
+        <item>Bicicleta</item>
+        <item>Meditación</item>
+        <item>Cultural</item>
+        <item>Voluntariado</item>
+        <item>Gastronomía</item>
+        <item>Deportes acuáticos</item>
+    </string-array>
 </resources>

@@ -59,6 +59,7 @@ class ProfileRepository {
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
+    var updatedDarkMode: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
 
     /**
      * obtains ProfileInfo from the lower level
@@ -520,5 +521,23 @@ class ProfileRepository {
             }
         })
         return accountDeletedSuccessfully!!
+    }
+
+    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.deleteAccount(username)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    updatedDarkMode!!.value = Result.Success("Account theme updated")
+                } else {
+                    updatedDarkMode!!.value = Result.Error(IOException("updated account response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                updatedDarkMode!!.value = Result.Error(IOException("Error updating user account. communication failure (no response DB)"))
+            }
+        })
+        return updatedDarkMode!!
     }
 }

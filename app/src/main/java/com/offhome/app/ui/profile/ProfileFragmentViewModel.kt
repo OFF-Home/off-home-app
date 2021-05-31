@@ -11,7 +11,6 @@ import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.TagData
 import com.offhome.app.data.model.UserInfo
-import okhttp3.ResponseBody
 
 /**
  * Class *ProfileFragmentViewModel*
@@ -136,5 +135,9 @@ class ProfileFragmentViewModel : ViewModel() {
 
     fun deleteAccount(): MutableLiveData<Result<String>> {
         return repository.deleteAccount(loggedUserEmail)
+    }
+
+    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
+        return repository.updateDarkMode(username, dm)
     }
 }

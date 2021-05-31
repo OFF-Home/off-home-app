@@ -52,7 +52,6 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 if (resultRepo.error != null) {
                     val msg: String = resultRepo.error.toString()
                     // println("msg = $msg")
-                    // Toast.makeText(activity, "msg = $msg", Toast.LENGTH_LONG).show()
 
                     when { // quan el backend implementi noves excepcions, haurem d'afegir entrades aqui
                         msg == "com.google.firebase.auth.FirebaseAuthUserCollisionException: The email address is already in use by another account."

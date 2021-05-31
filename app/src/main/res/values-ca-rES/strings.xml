@@ -124,7 +124,7 @@
     <string name="share_in_app_title">Convidar via MD</string>
     <string name="share_outside_app_title">Convidar via app externa</string>
     <string name="title_activity_invite">Convidar a l\'activitat:</string>
-    <string name="max_recipients_banner">Sel·lecciona fins a %1$s persones</string>
+    <string name="max_recipients_banner">Selecciona fins a %1$s persones</string>
     <string name="sending_invitations_snackbar">"Enviant invitacions a %1$s "</string>
     <string name="add_calendar">Afegir a Google Calendar</string>
     <string name="error_no_calendar">No s\'ha trobat Calendar en el teu dispositiu!</string>
@@ -151,4 +151,11 @@
     <string name="dialog_delete_message_title">Eliminar missatge</string>
     <string name="dialog_delete_message_message">Estàs segur que vols eliminar aquest missatge?</string>
     <string name="yes">Sí</string>
+    <string name="add_a_tag">Afegir una etiqueta</string>
+    <string name="add">Afegir</string>
+    <string name="delete_tag_confirmation_title">Eliminar l\'etiqueta "%1$s"?</string>
+    <string name="delete">Eliminar</string>
+    <string name="something_was_cancelled">Alguna cosa ha estat cancel·lada</string>
+    <string name="list">Llista</string>
+    <string name="map">Mapa</string>
 </resources>

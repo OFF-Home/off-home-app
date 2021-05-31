@@ -164,7 +164,9 @@
     <string name="talk_to_people_with_hobbies">Parla amb gent que té els mateixos interessos que tu</string>
     <string name="back_button">ENRERE</string>
     <string name="meet_people">CONEIX A GENT</string>
-    <string name="maintain_distance">Manté la distància mínima de seguretat amb altres participants</string>
+    <string name="maintain_distance">Manté la distància mínima de seguretat amb altres participants.</string>
     <string name="covid_free">LLIURE DE COVID</string>
     <string name="done_button">LLESTOS!</string>
+    <string name="wear_mask">Porta sempre la mascareta cobrint-te el nas i la boca.</string>
+    <string name="wash_hands">renta\'t les mans abans i després de cada activitat.</string>
 </resources>

@@ -1,12 +1,15 @@
 package com.offhome.app.ui.onboarding
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.View
 import android.widget.Button
 import android.widget.TextView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.ui.login.LoginActivity
 
 class OnboardingActivity : AppCompatActivity() {
 
@@ -50,7 +53,10 @@ class OnboardingActivity : AppCompatActivity() {
             nextButton.text = getString(R.string.done_button)
         }
         else if (page == 3) {
-            //intent a login
+            SharedPreferenceManager.setBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP, true)
+            val intent = Intent(this, LoginActivity::class.java)
+            startActivity(intent)
+            finish()
         }
 
         //porsiaca

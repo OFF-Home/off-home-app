@@ -28,6 +28,7 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.ui.onboarding.OnboardingActivity
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
@@ -69,6 +70,15 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_OFFHome)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        Log.d("first time", "is_first_time = "+ SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP))
+
+        if (!SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP)) {
+            Log.d("first time2", "2 is_first_time = "+ SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP))
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)

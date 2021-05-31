@@ -15,5 +15,5 @@ data class Constants(
     val PICK_PHOTO_FOR_AVATAR: Int = 1,
     val SELECT_PHOTO_GALLERY: Int = 1,
     val REQUEST_IMAGE_CAPTURE: Int = 1,
-    val DARK_MODE: Boolean = false
+    val DARK_MODE: String = "DARK_MODE"
 )

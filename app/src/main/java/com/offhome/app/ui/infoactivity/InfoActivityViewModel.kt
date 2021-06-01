@@ -35,7 +35,7 @@ class InfoActivityViewModel : ViewModel() {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
+    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<String>> {
         return repository.joinActivity(
             usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()

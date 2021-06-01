@@ -231,33 +231,31 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
-                        if (it != " ") {
-                            if (it == "You have joined the activity!") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, getString(R.string.successfully_joined), Snackbar.LENGTH_LONG)
-                                    .setAction(getString(R.string.go_chat)) {
-                                        displayChatGroup()
-                                    }
-                                snackbar.show()
-                                val participants = ArrayList<UserUsername>()
-                                val actualParticipants = viewModel.participants.value
-                                for (item in actualParticipants!!) {
-                                    if (item.username != "emma") participants.add(item)
+                        if (it is Result.Success) {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, getString(R.string.successfully_joined), Snackbar.LENGTH_LONG)
+                                .setAction(getString(R.string.go_chat)) {
+                                    displayChatGroup()
                                 }
-                                participants.add(UserUsername("emma"))
-                                participantsAdapter.setData(participants)
-                                btnAddCalendar.visibility = View.VISIBLE
-
-                                //checkejar achievements i ensenyar (falta mirar el string)
-                                if (true) {
-                                   val snackAux=AuxShowAchievementSnackbar()
-                                    //stub string!
-                                   snackAux.showAchievementSnackbar(layout, applicationContext,"PLATINUM")
-                                }
-
-                            } else {
-                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
+                            snackbar.show()
+                            val participants = ArrayList<UserUsername>()
+                            val actualParticipants = viewModel.participants.value
+                            for (item in actualParticipants!!) {
+                                if (item.username != "emma") participants.add(item)
                             }
+                            participants.add(UserUsername("emma"))
+                            participantsAdapter.setData(participants)
+                            btnAddCalendar.visibility = View.VISIBLE
+
+                            //checkejar achievements i ensenyar (falta mirar el string)
+                            if (true) {
+                               val snackAux=AuxShowAchievementSnackbar()
+                                //stub string!
+                               snackAux.showAchievementSnackbar(layout, applicationContext,"PLATINUM")
+                            }
+                        }
+                        else {
+                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show()
                         }
                     }
                 )

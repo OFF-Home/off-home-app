@@ -145,23 +145,30 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+
         val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
         val call = activitiesService?.joinActivity(join)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    responseJoin?.value = "You have joined the activity!"
-                } else responseJoin?.value =
-                    "There has been an error and you haven't joined the activity!"
+                    Log.d("repo::joinActivity", "response.code() == " + response.code())
+                    //responseJoin?.value = "You have joined the activity!"
+                    result.value = Result.Success(response.body().toString())
+                } else {
+                    //responseJoin?.value ="There has been an error and you haven't joined the activity!"
+                    result.value = Result.Error(IOException("joinActivity Error: unsuccessful"))
+                }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseJoin?.value =
-                    "There has been an error and you haven't joined the activity!"
+                //responseJoin?.value = "There has been an error and you haven't joined the activity!"
+                result.value = Result.Error(IOException("joinActivity Error: failure", t))
             }
         })
-        return responseJoin as MutableLiveData<String>
+       // return responseJoin as MutableLiveData<String>
+        return result
     }
 
     /**

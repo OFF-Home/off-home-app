@@ -11,6 +11,7 @@ import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.data.retrofit.WeatherClient
 import java.io.IOException
+import java.util.ArrayList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -31,7 +32,7 @@ class ActivitiesRepository {
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
-    private var mutableLiveData: MutableLiveData<String>? = MutableLiveData(" ")
+    private var mutableLiveData: MutableLiveData<Result<String>>? = MutableLiveData()
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
@@ -127,7 +128,7 @@ class ActivitiesRepository {
      * @param newActivity is an instance of the data class [ActivityData]
      * @return the result with a live data string type
      */
-    fun addActivity(newActivity: ActivityData): MutableLiveData<String> {
+    fun addActivity(newActivity: ActivityData): MutableLiveData<Result<String>> {
         val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
             activitiesService?.createActivityByUser(
                 emailCreator = it,
@@ -136,20 +137,20 @@ class ActivitiesRepository {
         }
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
-                call: retrofit2.Call<ResponseBody>,
+                call: Call<ResponseBody>,
                 response: Response<ResponseBody>
             ) {
                 if (response.isSuccessful) {
-                    mutableLiveData?.value = "Activity created!"
+                    mutableLiveData?.value = Result.Success("Activity created!")
                 } else mutableLiveData?.value =
-                    "There has been an error and the activity cannot be created"
+                   Result.Error(IOException("There has been an error and the activity cannot be created"))
             }
-            override fun onFailure(call: retrofit2.Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
                 mutableLiveData?.value =
-                    "There has been an error and the activity cannot be created"
+                    Result.Error(IOException("Error: connection failure"))
             }
         })
-        return mutableLiveData as MutableLiveData<String>
+        return mutableLiveData as MutableLiveData<Result<String>>
     }
 
     /**
@@ -470,6 +471,36 @@ class ActivitiesRepository {
 
             override fun onFailure(call: Call<Tiempo>, t: Throwable) {
                 result.value = Result.Error(IOException("Error getting info"))
+            }
+        })
+                
+        return result
+    }
+    
+    /**
+     * It gets the activities by distance
+     */
+    fun getActivitiesByRadi(
+        categoryName: String,
+        latitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        val result = MutableLiveData<Result<List<ActivityFromList>>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByRadi(latitude, longitude, progress)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200)
+                        result.value = Result.Success(response.body() as List<ActivityFromList>)
+                    else result.value = Result.Success(ArrayList<ActivityFromList>())
+                } else result.value = Result.Error(IOException("Error getting activities"))
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                result.value = Result.Error(IOException("Error getting activities"))
+                Log.d("GET", "Error getting activities")
             }
         })
         return result

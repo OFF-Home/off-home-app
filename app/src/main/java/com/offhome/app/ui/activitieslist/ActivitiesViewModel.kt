@@ -55,4 +55,13 @@ class ActivitiesViewModel : ViewModel() {
         likedActivitiesList = repository.getLikedAct(userEmail)
         return likedActivitiesList
     }
+
+    fun getActivitiesByRadi(
+        categoryName: String,
+        altitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        return repository.getActivitiesByRadi(categoryName, altitude, longitude, progress)
+    }
 }

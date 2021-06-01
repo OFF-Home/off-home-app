@@ -250,8 +250,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
                                 //checkejar achievements i ensenyar (falta mirar el string)
                                 if (true) {
-                                    //stub string!
                                    val snackAux=AuxShowAchievementSnackbar()
+                                    //stub string!
                                    snackAux.showAchievementSnackbar(layout, applicationContext,"PLATINUM")
                                 }
 

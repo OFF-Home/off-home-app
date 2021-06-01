@@ -302,8 +302,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                             
                             //checkejar achievements i ensenyar (falta mirar el string)
                             if (true) {
-                                val auxSnack = AuxShowAchievementSnackbar()
                                 //stub string!
+                                val auxSnack = AuxShowAchievementSnackbar()
                                 auxSnack.showAchievementSnackbar(layout, this, "PLATINUM")
                             }
                             
@@ -365,35 +365,4 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
             }
         }
     }
-
-    /*private fun showAchievementSnackbar(passLayout: View, passContext: Context, string:String) {
-        val achievementSnackbar = Snackbar.make(
-            passLayout,
-            getString(R.string.achievement_first_activity),
-            Snackbar.LENGTH_LONG
-        )
-        val imageView = ImageView(passContext)
-        val drawable2:Drawable?
-        if (string.contains("PLATINUM", true)) {
-            drawable2 = ResourcesCompat.getDrawable(resources, R.drawable.trophy_gold, theme)
-        }
-        else /*if (string.contains("GOLD", true))*/ {
-            drawable2 = ResourcesCompat.getDrawable(resources, R.drawable.trophy_gold, theme)
-        }
-
-
-        //val bitmap: Bitmap = (drawable2 as BitmapDrawable).bitmap
-        // we scale it
-        //val smolDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 20, 20, true))
-
-        //imageView.setImageDrawable(drawable2)
-        imageView.setImageDrawable(drawable2)
-        imageView.id = R.id.trophy_one
-
-        val snackbarView = achievementSnackbar.view as Snackbar.SnackbarLayout//as TextView
-        snackbarView.addView(imageView)
-        snackbarView.findViewById<ImageView>(R.id.trophy_one).marginLeft      //.foregroundGravity = Gravity.END
-
-        achievementSnackbar.show()
-    }*/
 }

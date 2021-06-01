@@ -15,7 +15,7 @@ class AuxShowAchievementSnackbar {
     fun showAchievementSnackbar(passLayout: View, passContext: Context, string:String) {
         val achievementSnackbar = Snackbar.make(
             passLayout,
-            R.string.achievement_first_activity,
+            string,
             Snackbar.LENGTH_LONG
         )
         val imageView = ImageView(passContext)
@@ -30,16 +30,10 @@ class AuxShowAchievementSnackbar {
             drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_gold, passContext.theme)
         }
 
-
-        //val bitmap: Bitmap = (drawable2 as BitmapDrawable).bitmap
-        // we scale it
-        //val smolDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 20, 20, true))
-
-        //imageView.setImageDrawable(drawable2)
         imageView.setImageDrawable(drawable2)
         imageView.id = R.id.trophy_one
 
-        val snackbarView = achievementSnackbar.view as Snackbar.SnackbarLayout//as TextView
+        val snackbarView = achievementSnackbar.view as Snackbar.SnackbarLayout
         snackbarView.addView(imageView)
         snackbarView.findViewById<ImageView>(R.id.trophy_one).marginLeft      //.foregroundGravity = Gravity.END
 

@@ -29,11 +29,11 @@ class AuxShowAchievementSnackbar {
         else if (string.contains("GOLD", true)) {
             drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_gold, passContext.theme)
         }
-        /*else if (string.contains("SILVER", true)) {
-            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_gold, passContext.theme)
-        }*/
+        else if (string.contains("SILVER", true)) {
+            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_silver, passContext.theme)
+        }
         else {
-            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_diamond, passContext.theme)
+            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_bronze, passContext.theme)
         }
 
         imageView.setImageDrawable(drawable2)

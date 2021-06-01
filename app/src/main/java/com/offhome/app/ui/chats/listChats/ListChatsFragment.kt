@@ -46,6 +46,10 @@ class ListChatsFragment : Fragment() {
         return inflater.inflate(R.layout.list_chats_fragment, container, false)
     }
 
+    /**
+     * Called when activity created and get list of chats
+     * @param savedInstanceState is saved instance of the activity
+     */
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(ListChatsViewModel::class.java)
@@ -72,6 +76,11 @@ class ListChatsFragment : Fragment() {
         })
     }
 
+    /**
+     * Called to get the info of the user and assigns to the chat item
+     * @param uid is the uid of the user
+     * @param index is the index of the chat list to assign the info
+     */
     private fun getInfoUser(uid: String, index: Int) {
         viewModel.getInfoUser(uid).observe(viewLifecycleOwner, {
             if (it is Result.Success) {
@@ -82,6 +91,11 @@ class ListChatsFragment : Fragment() {
         })
     }
 
+    /**
+     * Called to get the info of the activity of the chat and assigns to the chat item
+     * @param chat is the chat id to set info
+     * @param index is the index of the chat list to assign the info
+     */
     private fun getInfoChatGrupal(chat: String, index: Int) {
         viewModel.getInfoUser(chat.split("_")[0]).observe(viewLifecycleOwner, {
             if (it is Result.Success) {

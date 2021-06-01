@@ -11,6 +11,13 @@ import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.UserInfo
 
+/**
+ * ViewModel for list of chats
+ * @param repository is the repository of the class
+ * @property activitiesRepository is the repository for getting the info of the activity
+ * @property userRepository is the repository for getting the info of the user
+ * @author Pau Cuesta
+ */
 class ListChatsViewModel(val repository: ChatRepository) : ViewModel() {
     val activitiesRepository = ActivitiesRepository()
     val userRepository = ProfileRepository()

@@ -23,6 +23,7 @@ import kotlin.collections.ArrayList
 /**
  * Adpter for the recycler view of the chat list
  * @property listChats is the list of activities
+ * @author Pau Cuesta
  */
 class ListChatsRecyclerViewAdapter(private val context: Context) : RecyclerView.Adapter<ListChatsRecyclerViewAdapter.ViewHolder>() {
 

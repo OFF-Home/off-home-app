@@ -10,6 +10,7 @@ import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
 import java.io.IOException
+import java.util.ArrayList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -438,6 +439,35 @@ class ActivitiesRepository {
             }
         })
 
+        return result
+    }
+
+    /**
+     * It gets the activities by distance
+     */
+    fun getActivitiesByRadi(
+        categoryName: String,
+        latitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        val result = MutableLiveData<Result<List<ActivityFromList>>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByRadi(latitude, longitude, progress)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200)
+                        result.value = Result.Success(response.body() as List<ActivityFromList>)
+                    else result.value = Result.Success(ArrayList<ActivityFromList>())
+                } else result.value = Result.Error(IOException("Error getting activities"))
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                result.value = Result.Error(IOException("Error getting activities"))
+                Log.d("GET", "Error getting activities")
+            }
+        })
         return result
     }
 }

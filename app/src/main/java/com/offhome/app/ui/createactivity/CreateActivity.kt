@@ -302,7 +302,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                             
                             //espero q si no és "OK" sigui un trophy
                             if (it1.data != "OK") {
-                                //stub string!
                                 val auxSnack = AuxShowAchievementSnackbar()
                                 auxSnack.showAchievementSnackbar(layout, this, it1.data)
                             }

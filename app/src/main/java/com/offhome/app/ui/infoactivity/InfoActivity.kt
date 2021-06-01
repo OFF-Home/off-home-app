@@ -247,11 +247,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             participantsAdapter.setData(participants)
                             btnAddCalendar.visibility = View.VISIBLE
 
-                            //checkejar achievements i ensenyar (falta mirar el string)
-                            if (true) {
+                            //espero q si no és "OK" sigui un trophy
+                            if (it.data != "OK") {
                                val snackAux=AuxShowAchievementSnackbar()
-                                //stub string!
-                               snackAux.showAchievementSnackbar(layout, applicationContext,"PLATINUM")
+                               snackAux.showAchievementSnackbar(layout, applicationContext,it.data)
                             }
                         }
                         else {

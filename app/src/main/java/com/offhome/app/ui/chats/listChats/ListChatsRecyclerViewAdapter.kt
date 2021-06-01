@@ -11,6 +11,7 @@ import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.data.model.ChatInfo
@@ -68,7 +69,14 @@ class ListChatsRecyclerViewAdapter(private val context: Context) : RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listChats[position]
         holder.textViewName.text = item.name
-        Glide.with(holder.mView.context).load(item.image).error(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewIcon)
+        Glide.with(holder.mView.context)
+            .load(item.image)
+            .placeholder(R.drawable.profile_pic_placeholder)
+            .centerCrop()
+            .circleCrop()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(holder.imageViewIcon)
 
         with(holder.chat) {
             tag = item

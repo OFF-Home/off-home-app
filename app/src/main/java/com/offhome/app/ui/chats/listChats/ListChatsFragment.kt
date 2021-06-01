@@ -69,7 +69,6 @@ class ListChatsFragment : Fragment() {
                         getInfoUser(chat, index)
                     }
                 }
-                adapter.setData(chats)
             } else {
                 Toast.makeText(MyApp.getContext(), MyApp.getContext().getString(R.string.error_getting_chats), Toast.LENGTH_LONG).show()
             }

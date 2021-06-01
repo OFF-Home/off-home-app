@@ -84,7 +84,7 @@ class ActivitiesListFragment : Fragment() {
                         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
                         try {
-                            date = format.parse(mydate)
+                            if (mydate != null) date = format.parse(mydate)
                         } catch (e: ParseException) {
                             e.printStackTrace()
                         }

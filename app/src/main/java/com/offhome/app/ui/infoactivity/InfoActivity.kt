@@ -47,6 +47,7 @@ import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -246,6 +247,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 participants.add(UserUsername("emma"))
                                 participantsAdapter.setData(participants)
                                 btnAddCalendar.visibility = View.VISIBLE
+
+                                //checkejar achievements i ensenyar (falta mirar el string)
+                                if (true) {
+                                    //stub string!
+                                   val snackAux=AuxShowAchievementSnackbar()
+                                   snackAux.showAchievementSnackbar(layout, applicationContext,"PLATINUM")
+                                }
+
                             } else {
                                 Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             }

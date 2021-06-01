@@ -9,17 +9,19 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
+import android.graphics.drawable.Drawable
 import android.os.Build
 import android.os.Bundle
+import android.text.Layout
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginLeft
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
@@ -28,6 +30,7 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.ActivityData
+import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import java.util.*
 
 /**
@@ -148,6 +151,9 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         inviteFriends()
 
         createTheActivity()
+
+        val auxSnack = AuxShowAchievementSnackbar()
+        auxSnack.showAchievementSnackbar(layout, this, "PLATINUM")
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -291,35 +297,11 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             if (it == "Activity created") {
 
-                                //checkejar trofeu i ensenyar (mirar el string)
+                                //checkejar achievements i ensenyar (falta mirar el string)
                                 if (true) {
-                                    val achievementSnackbar = Snackbar.make(
-                                        layout,
-                                        getString(R.string.achievement_first_activity),
-                                        Snackbar.LENGTH_LONG
-                                    )
-                                    val snackbarView = achievementSnackbar.view as LinearLayout//as TextView
-                                    //snackbarView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic__10_washing_hands, 0, 0, 0)
-                                    val imageView = ImageView(this)
-                                    val drawable2 = ResourcesCompat.getDrawable(resources,R.drawable.ic__10_washing_hands, theme)
-                                    //val bitmapDrawable = BitmapDrawable(resources, Bitmap.createBitmap(R.drawable.ic__10_washing_hands))
-                                    imageView.setImageDrawable(drawable2)
-
-
-                                    /*imageView.setImageDrawable(R.drawable.ic__10_washing_hands)
-                                    val drawable = BitmapDrawable(
-                                        resources,
-                                        Bitmap.createScaledBitmap(
-                                            resources.getDrawable(R.drawable.ic__10_washing_hands),
-                                            70,
-                                            70,
-                                            true
-                                        )
-                                    )*/
-                                    //snackbarView.addView(ImageView(this, drawable2))
-                                    snackbarView.addView(imageView)
-
-                                    achievementSnackbar.show()
+                                    //stub string!
+                                    val auxSnack = AuxShowAchievementSnackbar()
+                                    auxSnack.showAchievementSnackbar(layout, this, "PLATINUM")
                                 }
 
                                 startActivity(Intent(this, MainActivity::class.java))
@@ -358,4 +340,35 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         }
         return true
     }
+
+    /*private fun showAchievementSnackbar(passLayout: View, passContext: Context, string:String) {
+        val achievementSnackbar = Snackbar.make(
+            passLayout,
+            getString(R.string.achievement_first_activity),
+            Snackbar.LENGTH_LONG
+        )
+        val imageView = ImageView(passContext)
+        val drawable2:Drawable?
+        if (string.contains("PLATINUM", true)) {
+            drawable2 = ResourcesCompat.getDrawable(resources, R.drawable.trophy_gold, theme)
+        }
+        else /*if (string.contains("GOLD", true))*/ {
+            drawable2 = ResourcesCompat.getDrawable(resources, R.drawable.trophy_gold, theme)
+        }
+
+
+        //val bitmap: Bitmap = (drawable2 as BitmapDrawable).bitmap
+        // we scale it
+        //val smolDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 20, 20, true))
+
+        //imageView.setImageDrawable(drawable2)
+        imageView.setImageDrawable(drawable2)
+        imageView.id = R.id.trophy_one
+
+        val snackbarView = achievementSnackbar.view as Snackbar.SnackbarLayout//as TextView
+        snackbarView.addView(imageView)
+        snackbarView.findViewById<ImageView>(R.id.trophy_one).marginLeft      //.foregroundGravity = Gravity.END
+
+        achievementSnackbar.show()
+    }*/
 }

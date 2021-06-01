@@ -53,9 +53,8 @@ class SignUpDataSource {
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
 
         try {
             firebaseAuth = Firebase.auth

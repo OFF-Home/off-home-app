@@ -87,7 +87,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var username: String
 
     private lateinit var groupChat: FloatingActionButton
-    private var nRemainingParticipants: Int = 12
+    private var nRemainingParticipants: Int = 0
 
     private lateinit var btnJoin: Button
     private lateinit var datahora: TextView

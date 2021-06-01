@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 
 /**
@@ -53,5 +54,14 @@ class ActivitiesViewModel : ViewModel() {
     fun getLikedActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
         likedActivitiesList = repository.getLikedAct(userEmail)
         return likedActivitiesList
+    }
+
+    fun getActivitiesByRadi(
+        categoryName: String,
+        altitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        return repository.getActivitiesByRadi(categoryName, altitude, longitude, progress)
     }
 }

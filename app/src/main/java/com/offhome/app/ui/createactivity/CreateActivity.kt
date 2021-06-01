@@ -235,7 +235,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
     private fun pickAvailability() {
-        pick_availability.maxValue = 10
+        pick_availability.maxValue = 20
         pick_availability.minValue = 3
     }
 

@@ -72,7 +72,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var imageLike: ImageView
     private lateinit var weatherIcon: ImageView
     private lateinit var temperature: TextView
-    private var daysLeft: Int = 0
+    private var daysLeft: Int = 1000000
     private lateinit var dateWeather: Date
     private lateinit var hourWeather: String
     private lateinit var activity: ActivityFromList
@@ -233,11 +233,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             daysLeft = getDaysLeft(date, currentTime)!!
         }
 
-        //guardarnos la hora de la actividad
+        //guardarnos el dia y la hora de la actividad
         val day = DateFormat.format("dd", date) as String
         val hour = DateFormat.format("HH", date) as String
 
-
+        //si falta 5 o menos dias para la actividad, obtenemos el tiempo
         if (daysLeft <= 5) {
             viewModel.getWeather().observe(
                 this

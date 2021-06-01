@@ -3,10 +3,7 @@ package com.offhome.app.data
 
 
 import androidx.lifecycle.MutableLiveData
-import com.offhome.app.data.model.ChatGroupIdentification
-import com.offhome.app.data.model.GroupMessage
-import com.offhome.app.data.model.Message
-import com.offhome.app.data.model.SendMessage
+import com.offhome.app.data.model.*
 import com.offhome.app.data.retrofit.ChatClient
 import java.io.IOException
 import okhttp3.ResponseBody
@@ -14,12 +11,13 @@ import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 
-@Suppress("IMPLICIT_CAST_TO_ANY")
 class ChatRepository(private val chatsClient: ChatClient) {
     private var chatsService = chatsClient.getChatsService()
     private var responseSendMessage: MutableLiveData<String>? = MutableLiveData(" ")
     var listMessages = MutableLiveData<ArrayList<Message>>()
     var listMessagesGroup = MutableLiveData<ArrayList<GroupMessage>>()
+
+    private var responseSendNotification: MutableLiveData<Result<String>> = MutableLiveData()
     // lateinit var mSocket: Socket
     lateinit var userUid: String
     lateinit var dataHora: String
@@ -153,6 +151,23 @@ class ChatRepository(private val chatsClient: ChatClient) {
             }
         })
         return responseSendMessage as MutableLiveData<String>
+    }
+
+    fun sendMissageNotification(message: SendNotification): MutableLiveData<Result<String>>{
+        val call = chatsService?.sendMissageNotification(message)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseSendNotification.value = Result.Success("Notification sent!")
+                } else responseSendNotification.value =
+                    Result.Error(IOException("It has been an error and the notification cannot be sent"))
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseSendNotification.value =
+                    Result.Error(IOException("It has been an error and the notification cannot be sent"))
+            }
+        })
+        return responseSendMessage as MutableLiveData<Result<String>>
     }
 }
 

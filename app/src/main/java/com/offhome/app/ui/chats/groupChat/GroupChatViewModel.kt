@@ -11,6 +11,7 @@ import com.offhome.app.common.MyApp
 import com.offhome.app.data.ChatRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.GroupMessage
+import com.offhome.app.data.model.SendNotification
 
 class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
     var listMessages: MutableLiveData<List<GroupMessage>> = MutableLiveData<List<GroupMessage>>()
@@ -38,4 +39,9 @@ class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
     fun sendMessage(message: GroupMessage) {
         sendMessageResult = chatRepo.sendGroupMessage(message)
     }
+
+    fun sendNotification(message: SendNotification): MutableLiveData<Result<String>> {
+        return chatRepo.sendMissageNotification(message)
+    }
+
 }

@@ -29,6 +29,7 @@ import com.offhome.app.common.MyApp
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.GroupMessage
+import com.offhome.app.data.model.SendNotification
 import com.offhome.app.ui.chats.singleChat.SingleChatViewModelFactory
 
 class GroupChatActivity : AppCompatActivity() {
@@ -152,6 +153,20 @@ class GroupChatActivity : AppCompatActivity() {
                     }
                     myRef.child("m$numMessages").setValue(message)
                     editTextNewMessage.text.clear()
+                    val messageNotif = SendNotification(
+                        "NujR0SvhtLUICj9BmJPOeUoeqA33",
+                        editTextNewMessage.text.toString(),
+                        arguments?.getString("titleAct").toString())
+
+                    viewModel.sendNotification(messageNotif).observe(
+                        this@GroupChatActivity,
+                        {
+                            if (it is Result.Success) {
+                                Toast.makeText(this@GroupChatActivity, it.data, Toast.LENGTH_LONG).show()
+                            }
+                            else if (it is Result.Error) Toast.makeText(this@GroupChatActivity, it.exception.message, Toast.LENGTH_LONG).show()
+                        })
+
                 }
             }
         }

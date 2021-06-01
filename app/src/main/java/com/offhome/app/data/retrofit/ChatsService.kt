@@ -2,10 +2,7 @@ package com.offhome.app.data.retrofit
 
 
 
-import com.offhome.app.data.model.ChatGroupIdentification
-import com.offhome.app.data.model.GroupMessage
-import com.offhome.app.data.model.Message
-import com.offhome.app.data.model.SendMessage
+import com.offhome.app.data.model.*
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.http.*
@@ -33,4 +30,7 @@ interface ChatsService {
      */
     @HTTP(method = "POST", path = "xats/crearGrup", hasBody = true)
     fun addChatGroup(@Body chat: ChatGroupIdentification): Call<ResponseBody>
+
+    @POST("xats/sendmessage")
+    fun sendMissageNotification(@Body notification: SendNotification): Call<ResponseBody>
 }

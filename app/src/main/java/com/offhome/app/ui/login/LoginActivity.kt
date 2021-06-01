@@ -4,6 +4,7 @@ package com.offhome.app.ui.login
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -21,13 +22,16 @@ import androidx.lifecycle.observe
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.ui.onboarding.OnboardingActivity
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
@@ -374,12 +378,24 @@ class LoginActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK)
                 }
             )
-            signUpViewModel.signUpBack(
-                user.email,
-                view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
-                user.uid,
-                this
-            )
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                signUpViewModel.signUpBack(
+                    user.email,
+                    view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
+                    user.uid,
+                    token,
+                    this@LoginActivity
+                )
+            })
+
         }
         usernameDialog.setNegativeButton(R.string.cancel) { dialog, id ->
             dialog.dismiss()

@@ -56,9 +56,11 @@ class ProfileRepository {
     var tagDeletedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var tagAddedSuccessfully: MutableLiveData<ResponseBody> = MutableLiveData<ResponseBody>()
     var accountDeletedSuccessfully: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
+    var uploadPhotoSuccessfully: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
+    var updatedDarkMode: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
 
     /**
      * obtains ProfileInfo from the lower level
@@ -458,9 +460,10 @@ class ProfileRepository {
      * @param email The email of the user in order to be able to edit his profile
      * @param photoPath The path of the photo desired
      */
-    fun uploadPhoto(email: String, photoPath: String?) {
+    fun uploadPhoto(email: String, photoPath: String?): MutableLiveData<Result<String>> {
         val file = File(photoPath)
-        val requestBody: RequestBody = RequestBody.create(MediaType.parse("image/jpg"), file)
+        if (uploadPhotoSuccessfully == null) uploadPhotoSuccessfully = MutableLiveData<Result<String>>()
+        val requestBody: RequestBody = RequestBody.create(MediaType.parse(photoPath), file)
         val call: Call<ResponseBody> = userService!!.uploadProfilePhoto(email, requestBody)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(
@@ -470,15 +473,17 @@ class ProfileRepository {
                 if (response.isSuccessful) {
                     if (photoPath != null) {
                         SharedPreferenceManager.setStringValue(Constants().PREF_PHOTO, photoPath)
+                        uploadPhotoSuccessfully!!.value = Result.Success("Uploaded successfully")
                     }
                 } else {
-                    Log.d("GET", "Error uploading the image")
+                    uploadPhotoSuccessfully!!.value = Result.Error(IOException("There has been an error uploading the image"))
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                Log.d("GET", "Error uploading the image")
+                uploadPhotoSuccessfully!!.value = Result.Error(IOException("Error: communication failure (no response)"))
             }
         })
+        return uploadPhotoSuccessfully!!
     }
 
     fun getFollowedUsers(email: String): MutableLiveData<List<UserInfo>> {
@@ -520,5 +525,23 @@ class ProfileRepository {
             }
         })
         return accountDeletedSuccessfully!!
+    }
+
+    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.deleteAccount(username)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    updatedDarkMode!!.value = Result.Success("Account theme updated")
+                } else {
+                    updatedDarkMode!!.value = Result.Error(IOException("updated account response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                updatedDarkMode!!.value = Result.Error(IOException("Error updating user account. communication failure (no response DB)"))
+            }
+        })
+        return updatedDarkMode!!
     }
 }

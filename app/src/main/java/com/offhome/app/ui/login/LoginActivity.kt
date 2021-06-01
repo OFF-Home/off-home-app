@@ -4,6 +4,7 @@ package com.offhome.app.ui.login
 
 import android.app.Activity
 import android.app.AlertDialog
+import android.content.ContentValues
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
@@ -21,13 +22,17 @@ import androidx.lifecycle.observe
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.GoogleAuthProvider
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.SignUpUserData
+import com.offhome.app.ui.onboarding.OnboardingActivity
 import com.offhome.app.ui.recoverPassword.RecoverPasswordActivity
 import com.offhome.app.ui.signup.SignUpActivity
 import com.offhome.app.ui.signup.SignUpViewModel
@@ -69,6 +74,15 @@ class LoginActivity : AppCompatActivity() {
         setTheme(R.style.Theme_OFFHome)
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_login)
+
+        Log.d("first time", "is_first_time = "+ SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP))
+
+        if (!SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP)) {
+            Log.d("first time2", "2 is_first_time = "+ SharedPreferenceManager.getBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP))
+            val intent = Intent(this, OnboardingActivity::class.java)
+            startActivity(intent)
+            finish()
+        }
 
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)
@@ -165,10 +179,10 @@ class LoginActivity : AppCompatActivity() {
                 }
             } catch (e: ApiException) {
                 Log.w("LOGIN", "signInWithGoogle:failure", e.cause)
-                Toast.makeText(
+         /*       Toast.makeText(
                     baseContext, "Authentication google failed.",
                     Toast.LENGTH_SHORT
-                ).show()
+                ).show()*/
             }
         }
     }
@@ -209,10 +223,6 @@ class LoginActivity : AppCompatActivity() {
                     editTextEmail.setBackgroundResource(R.drawable.background_edit_text_wrong)
                     Toast.makeText(this, getString(loginState.emailError), Toast.LENGTH_LONG).show()
                 }
-                if (editTextPassword.text.isNotEmpty() && loginState.passwordError != null) {
-                    editTextPassword.setBackgroundResource(R.drawable.background_edit_text_wrong)
-                    Toast.makeText(this, getString(loginState.passwordError), Toast.LENGTH_LONG).show()
-                }
             }
         )
 
@@ -229,7 +239,6 @@ class LoginActivity : AppCompatActivity() {
                     updateUiWithUser(loginResult.success)
                 }
                 setResult(Activity.RESULT_OK)
-
                 // Complete and destroy login activity once successful
                 // finish()
             }
@@ -305,15 +314,23 @@ class LoginActivity : AppCompatActivity() {
                     it.errorLogin != null && it.errorLogin == R.string.login_failed_email -> Toast.makeText(applicationContext, getString(R.string.login_failed_email), Toast.LENGTH_LONG).show()
                     it.errorLogin != null && it.errorLogin == R.string.login_failed_login -> Toast.makeText(applicationContext, getString(R.string.login_failed_login), Toast.LENGTH_LONG).show()
                     else -> {
-                        val displayName = it.displayUsername
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        Toast.makeText(
-                            applicationContext,
-                            "$welcome $displayName",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                        loginViewModel.existsUser(editTextEmail.text.toString()).observe(
+                            this, {
+                                if (it is Result.Success){
+                                    val username = it.data.username
+                                    SharedPreferenceManager.setStringValue(Constants().PREF_USERNAME, username)
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "$welcome $username",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    finish()
+                                }
+                        }
+                        )
+
                     }
                 }
             }
@@ -361,12 +378,24 @@ class LoginActivity : AppCompatActivity() {
                     setResult(Activity.RESULT_OK)
                 }
             )
-            signUpViewModel.signUpBack(
-                user.email,
-                view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
-                user.uid,
-                this
-            )
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                if (!task.isSuccessful) {
+                    Log.w(ContentValues.TAG, "Fetching FCM registration token failed", task.exception)
+                    return@OnCompleteListener
+                }
+
+                // Get new FCM registration token
+                val token = task.result
+
+                signUpViewModel.signUpBack(
+                    user.email,
+                    view.findViewById<EditText>(R.id.editTextUsername).text.toString(),
+                    user.uid,
+                    token,
+                    this@LoginActivity
+                )
+            })
+
         }
         usernameDialog.setNegativeButton(R.string.cancel) { dialog, id ->
             dialog.dismiss()

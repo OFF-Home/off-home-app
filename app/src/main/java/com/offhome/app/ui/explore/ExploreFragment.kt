@@ -17,6 +17,7 @@ import com.offhome.app.data.Result
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import androidx.lifecycle.ViewModelProvider
 import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.ChatInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -79,6 +80,14 @@ class ExploreFragment : Fragment() {
             Observer {
                 if (it is Result.Success) {
                     activitiesListFriends = it.data
+                    for ((index, activity) in activitiesListFriends.withIndex()) {
+                        viewModel.getUserInfo(activity.usuariCreador).observe(requireActivity(), {
+                            if (it is Result.Success) {
+                                activity.usernameCreador = it.data.username
+                                activitiesListFiendsAdapter.setData(activitiesListFriends)
+                            }
+                        })
+                    }
                     activitiesListFiendsAdapter.setData(activitiesListFriends)
                 } else if (it is Result.Error) {
                     if (it.exception is NoActivitiesException) {

@@ -30,6 +30,10 @@ class ExploreViewModel : ViewModel() {
         return repository.getProfileInfoByUsername(newText)
     }
 
+    fun getUserInfo(email: String): MutableLiveData<Result<UserInfo>> {
+        return repository.getProfileInfo(email)
+    }
+
     /**
      * It calls the repository to get the suggested activities
      */

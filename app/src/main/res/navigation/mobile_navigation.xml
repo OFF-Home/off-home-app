@@ -19,9 +19,9 @@
 
     <fragment
         android:id="@+id/navigation_chats"
-        android:name="com.offhome.app.ui.notifications.NotificationsFragment"
+        android:name="com.offhome.app.ui.chats.listChats.ListChatsFragment"
         android:label="@string/title_chats"
-        tools:layout="@layout/fragment_notifications" />
+        tools:layout="@layout/list_chats_fragment" />
 
     <fragment
         android:id="@+id/navigation_profile"

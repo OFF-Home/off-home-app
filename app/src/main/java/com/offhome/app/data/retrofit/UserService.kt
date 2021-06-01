@@ -115,6 +115,9 @@ interface UserService {
     @GET("/users/{username}/following")
     fun getFollowedUsers(@Path("username") email: String): Call<List<UserInfo>>
 
+    @GET("/xats/traduir/{uid}")
+    fun getProfileInfoByUID(@Path("uid") uid: String): Call<UserInfo>
+
     @DELETE("/users/delete/{email}")
     fun deleteAccount(@Path("email") email: String): Call<ResponseBody>
 

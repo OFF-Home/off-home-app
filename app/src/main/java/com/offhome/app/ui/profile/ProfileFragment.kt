@@ -1,7 +1,6 @@
 package com.offhome.app.ui.profile
 
 
-
 import android.Manifest
 import android.app.AlertDialog
 import android.content.Intent
@@ -118,13 +117,14 @@ class ProfileFragment : Fragment() {
                 if (it is Result.Success) {
                     textViewUsername.text = it.data.username
                     estrelles.rating = it.data.estrelles.toFloat()
-                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
+                    Glide.with(requireContext())
+                        .load(Constants().BASE_URL + "upload/userimageget/" + it.data.username)
+                        .placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop()
+                        .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                        .into(imageViewProfilePic)
                 }
             }
         )
-
-        iniEditElements()
-        iniUsernameSetListener() // TODO sobra?
 
         updateProfilePic()
 
@@ -152,10 +152,13 @@ class ProfileFragment : Fragment() {
                         viewLifecycleOwner, { it ->
                             if (it is Result.Success) {
                                 // Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
-                                Glide.with(this).load(photoPath).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
+                                Glide.with(this).load(photoPath).centerCrop().circleCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+                                    .into(imageViewProfilePic)
                                 cursor.close()
                             } else if (it is Result.Error) {
-                                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG)
+                                    .show()
                             }
                         }
                     )
@@ -165,249 +168,12 @@ class ProfileFragment : Fragment() {
     }
 
     /**
-     * Initializes the listener that observes the call to backend made to edit the username
-     *
-     * the listener removes itself after one use
-     */
-    private fun iniUsernameSetListener() {
-        //Log.d("PiniEditionResultListe", "arribo al Profile::iniEditionResultListeners")
-
-        fragmentViewModel.usernameSetSuccessfullyResult.observe( // observer no salta. no sé perquè.
-            viewLifecycleOwner,
-            Observer {
-                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully1")
-                val resultVM = it ?: return@Observer
-                //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
-
-                if (resultVM is Result.Success) {
-                    Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG)
-                        .show()
-                } else {
-                    Toast.makeText(
-                        activity,
-                        R.string.username_update_error_toast,
-                        Toast.LENGTH_LONG
-                    ).show()
-                }
-
-                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                fragmentViewModel.usernameSetSuccessfullyResult.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
-            }
-        )
-    }
-
-    /**
      * ViewModel getter
      *
      * @return the profile fragment view model
      */
     fun getViewModel(): ProfileFragmentViewModel {
         return fragmentViewModel
-    }
-
-    /**
-     * Initializes the edition elements:
-     *
-     * Initializes the editUsernameButton. It also sets its drawable and listener
-     * Initializes the editTextUsername
-     */
-    private fun iniEditElements() {
-        iniEditUsernameButton()
-
-        // we set our new scaled drawable
-        editUsernameButton.setImageDrawable(editIconDrawable)
-
-        editUsernameButton.setOnClickListener {
-            changeUsernameToEdit()
-        }
-        iniEditTextUsername()
-
-        // fer iniEditProfilePicButton aquí
-    }
-
-    /**
-     * Initializes the editUsernameButton
-     *
-     * creates the object, sets id, initializes both drawables, inserts the View with its constraints in the constraint layout
-     */
-    private fun iniEditUsernameButton() {
-        editUsernameButton = ImageView(activity)
-        editUsernameButton.id = R.id.editUsernameButton
-
-        // TODO codi repetit de ProfileAboutMeFragment. fer algo?
-
-        // to resize the drawable, we create a local drawable here
-        val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
-        val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
-        // we scale it
-        editIconDrawable = BitmapDrawable(
-            resources,
-            Bitmap.createScaledBitmap(bitmap, 70, 70, true)
-        )
-        // we prepare the saveIconDrawable, resizing it
-        val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
-        val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
-        // we scale it
-        saveIconDrawable = BitmapDrawable(
-            resources, Bitmap.createScaledBitmap(
-                bitmap2,
-                70,
-                70,
-                true
-            )
-        )
-
-        constraintLayout1.addView(editUsernameButton)
-
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.LEFT,
-            R.id.textViewUsername,
-            ConstraintSet.RIGHT,
-            8
-        )
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.TOP,
-            R.id.textViewUsername,
-            ConstraintSet.TOP
-        )
-        constraintSet1.applyTo(constraintLayout1)
-    }
-
-    /**
-     * Initializes the username EditText
-     *
-     * creates the object, sets id, inserts the View with its constraints and size i the constraint layout
-     * initializes its visibility to gone
-     */
-    private fun iniEditTextUsername() {
-        editTextUsername = EditText(activity)
-        editTextUsername.id = R.id.editTextUsername2 // li he dit 2 perquè ja existia un editTextUsername aparentment
-
-        constraintLayout1.addView(editTextUsername)
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(
-            R.id.editTextUsername2,
-            ConstraintSet.LEFT,
-            R.id.profileConstraintLayoutDinsAppBarLO,
-            ConstraintSet.LEFT
-        )
-        constraintSet1.connect(
-            R.id.editTextUsername2,
-            ConstraintSet.RIGHT,
-            R.id.profileConstraintLayoutDinsAppBarLO,
-            ConstraintSet.RIGHT
-        )
-        constraintSet1.connect(
-            R.id.editTextUsername2,
-            ConstraintSet.TOP,
-            R.id.imageViewProfilePic,
-            ConstraintSet.BOTTOM
-        )
-        // falta clear?
-        constraintSet1.connect(
-            R.id.textViewUsername,
-            ConstraintSet.TOP,
-            R.id.editTextUsername2,
-            ConstraintSet.BOTTOM
-        )
-
-        constraintSet1.applyTo(constraintLayout1)
-
-        val editTextlayoutParams: ViewGroup.LayoutParams = editTextUsername.layoutParams
-        editTextlayoutParams.width = ViewGroup.LayoutParams.WRAP_CONTENT
-
-        editTextUsername.visibility = View.GONE
-
-        // set the max chars
-        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(50))
-        editTextUsername.filters = filterArray
-    }
-
-    /**
-     * Changes the "state" of the username to editing
-     *
-     * meaning it changes the drawable to the "save" one, changes the listener, and changes the Username textView for the EditText in the layout
-     */
-    private fun changeUsernameToEdit() {
-        editUsernameButton.setImageDrawable(saveIconDrawable)
-        editUsernameButton.setOnClickListener {
-            val newUsername = editTextUsername.text
-            if (!newUsername.isEmpty()) {
-                textViewUsername.text = newUsername
-                fragmentViewModel.usernameChangedByUser(newUsername)
-                iniUsernameSetListener()
-                changeUsernameToDisplay()
-            } else {
-                Toast.makeText(activity, R.string.invalid_username, Toast.LENGTH_LONG).show()
-            }
-        }
-        editTextUsername.setText(textViewUsername.text)
-        editTextUsername.setHint(R.string.hint_username)
-
-        editUsernameButton
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.LEFT,
-            R.id.editTextUsername2,
-            ConstraintSet.RIGHT,
-            8
-        )
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.TOP,
-            R.id.editTextUsername2,
-            ConstraintSet.TOP
-        )
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.BOTTOM,
-            R.id.editTextUsername2,
-            ConstraintSet.BOTTOM
-        )
-        constraintSet1.applyTo(constraintLayout1)
-
-        editTextUsername.visibility = View.VISIBLE
-        textViewUsername.visibility = View.GONE
-    }
-
-    /**
-     * Changes the "state" of the username to display
-     *
-     * meaning it changes the drawable to the "edit" one, changes the listener, and changes the Username EditText for the textView in the layout
-     */
-    private fun changeUsernameToDisplay() {
-        editUsernameButton.setImageDrawable(editIconDrawable)
-        editUsernameButton.setOnClickListener {
-            changeUsernameToEdit()
-        }
-
-        val constraintSet1 = ConstraintSet()
-        constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.LEFT,
-            R.id.textViewUsername,
-            ConstraintSet.RIGHT,
-            8
-        )
-        constraintSet1.connect(
-            R.id.editUsernameButton,
-            ConstraintSet.TOP,
-            R.id.textViewUsername,
-            ConstraintSet.TOP
-        )
-        constraintSet1.clear(R.id.editUsernameButton, ConstraintSet.BOTTOM)
-        constraintSet1.applyTo(constraintLayout1)
-
-        textViewUsername.visibility = View.VISIBLE
-        editTextUsername.visibility = View.GONE
     }
 
     /**
@@ -434,7 +200,10 @@ class ProfileFragment : Fragment() {
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
                 firebaseAuth.signOut()
                 SharedPreferenceManager.deleteData()
-                SharedPreferenceManager.setBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP, true)
+                SharedPreferenceManager.setBooleanValue(
+                    Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP,
+                    true
+                )
                 requireActivity().run {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
@@ -448,7 +217,7 @@ class ProfileFragment : Fragment() {
         return super.onOptionsItemSelected(item)
     }
 
-    private fun updateProfilePic(){
+    private fun updateProfilePic() {
         imageViewProfilePic.setOnClickListener {
             Dexter.withContext(context)
                 .withPermissions(

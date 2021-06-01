@@ -40,10 +40,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: String?, activity: AppCompatActivity) {
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) {
         // can be launched in a separate asynchronous job
         signUpRepository.result.observe(
             activity,
@@ -84,12 +83,12 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
             }
         )
 
-        val fecha = birthDate?.let { getDateFromString(it) }
+       // val fecha = birthDate?.let { getDateFromString(it) }
 
-        signUpRepository.signUp(email, username, password, fecha, activity)
+        signUpRepository.signUp(email, username, password, activity)
     }
 
-    fun signUpBack(email: String, username: String, uid: String, activity: AppCompatActivity) {
+    fun signUpBack(email: String, username: String, uid: String, token: String, activity: AppCompatActivity) {
         signUpRepository.result.observe(
             activity,
             Observer {
@@ -127,7 +126,7 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
                 signUpRepository.result.removeObservers(activity)
             }
         )
-        signUpRepository.signUpBack(email, username, uid, activity)
+        signUpRepository.signUpBack(email, username, uid, token, activity)
     }
 
     /**
@@ -136,17 +135,14 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param email email field string
      * @param username username field string
      * @param password password field string
-     * @param birthDate birth date field string
      */
-    fun signupDataChanged(email: String, username: String, password: String, birthDate: String) {
+    fun signupDataChanged(email: String, username: String, password: String) {
         if (!isEmailValid(email)) {
             _signUpForm.value = SignUpFormState(emailError = R.string.invalid_email)
         } else if (!isUserNameValid(username)) {
             _signUpForm.value = SignUpFormState(usernameError = R.string.invalid_username)
         } else if (!isPasswordValid(password)) {
             _signUpForm.value = SignUpFormState(passwordError = R.string.invalid_password)
-        } else if (!isBirthDateValid(birthDate)) {
-            _signUpForm.value = SignUpFormState(birthDateError = R.string.invalid_birth_date)
         } else {
             _signUpForm.value = SignUpFormState(isDataValid = true)
         }
@@ -189,9 +185,9 @@ class SignUpViewModel(private val signUpRepository: SignUpRepository) : ViewMode
      * @param birthDate birthDate field string
      * @return Returns true <=> the birthDate string is not empty (its format correctness is guaranteed by the UI)
      */
-    private fun isBirthDateValid(birthDate: String): Boolean {
+  /*  private fun isBirthDateValid(birthDate: String): Boolean {
         return birthDate.isNotBlank()
-    }
+    }*/
 
     /**
      * Returns the Date object corresponding to the input string

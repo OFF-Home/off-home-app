@@ -20,6 +20,7 @@ import com.google.firebase.ktx.Firebase
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.Message
 
 /**
@@ -144,7 +145,8 @@ class SingleChatActivity : AppCompatActivity() {
         val message = Message(
             editTextNewMessage.text.toString(),
             SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
-            System.currentTimeMillis()
+            System.currentTimeMillis(),
+            SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString()
         )
         myRef.push().setValue(message)
         editTextNewMessage.text.clear()

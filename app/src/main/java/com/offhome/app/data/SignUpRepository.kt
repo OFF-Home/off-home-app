@@ -32,10 +32,9 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) {
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) {
         dataSource.result.observe(
             activity,
             Observer {
@@ -52,10 +51,10 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 dataSource.result.removeObservers(activity)
             }
         )
-        dataSource.signUp(email, username, password, birthDate, activity)
+        dataSource.signUp(email, username, password, activity)
     }
 
-    fun signUpBack(email: String, username: String, uid: String, activity: AppCompatActivity) {
+    fun signUpBack(email: String, username: String, uid: String, token: String, activity: AppCompatActivity) {
         dataSource.result.observe(
             activity,
             Observer {
@@ -72,6 +71,6 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                 dataSource.result.removeObservers(activity)
             }
         )
-        dataSource.signUpBack(username, SignUpUserData(email, uid))
+        dataSource.signUpBack(username, SignUpUserData(email, uid, token))
     }
 }

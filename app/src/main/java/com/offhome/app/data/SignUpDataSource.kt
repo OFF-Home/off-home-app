@@ -2,13 +2,16 @@ package com.offhome.app.data
 
 
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.common.Constants
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
@@ -53,9 +56,8 @@ class SignUpDataSource {
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
 
         try {
             firebaseAuth = Firebase.auth
@@ -71,8 +73,18 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, user.uid)
-                    signUpBack(username, signedUpUser)
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
+                        }
+
+                        // Get new FCM registration token
+                        val token = task.result
+
+                        val signedUpUser = SignUpUserData(email, user.uid, token)
+                        signUpBack(username, signedUpUser)
+                    })
                 } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
 

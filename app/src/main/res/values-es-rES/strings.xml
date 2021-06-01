@@ -146,18 +146,6 @@
     <string name="something_was_cancelled">Algo ha sido cancelado</string>
     <string name="list">Lista</string>
     <string name="map">Mapa</string>
-    <string-array name="select_category">
-        <item>Selecciona una categoría</item>
-        <item>Correr</item>
-        <item>Caminar</item>
-        <item>Patinar</item>
-        <item>Bicicleta</item>
-        <item>Meditación</item>
-        <item>Cultural</item>
-        <item>Voluntariado</item>
-        <item>Gastronomía</item>
-        <item>Deportes acuáticos</item>
-    </string-array>
     <string name="plan_activities">PLANIFICA ACTIVIDADES</string>
     <string name="_join_hundreds_of_activities">O únete a cientos de actividades cerca de ti</string>
     <string name="next_button">SIGUIENTE</string>

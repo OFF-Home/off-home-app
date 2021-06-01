@@ -29,10 +29,8 @@ import java.util.*
  * @property email references the e-mail EditText
  * @property username references the username EditText
  * @property password references the password EditText
- * @property birthDate references the birth date EditText. This field will be filled using a DatePickerDialog
  * @property signUp references the sign-up Button
  * @property hereButton references the Button used to swap to the log-in screen
- * @property googleButton references the Button used to sign-up with google
  * @property loading references the ProgressBar shown while the sign-up is being processed
  * @property activity references this activity. It is used to pass the context to lower layers
  *
@@ -44,10 +42,8 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var username: EditText
     private lateinit var password: EditText
-    private lateinit var birthDate: EditText
     private lateinit var signUp: Button
     private lateinit var hereButton: TextView
-    private lateinit var googleButton: Button
     private lateinit var showPasswordButton: ImageView
     private lateinit var loading: ProgressBar
     private val activity: SignUpActivity = this
@@ -57,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
      *
      * Initializes the attributes
      * sets listeners to the form state and the text fields to check the correctness of the input data.
-     * sets listeners to the birthDate editText and the buttons.
+     * sets listeners to the buttons.
      * sets a listener to the result of the signUp call.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
@@ -71,10 +67,8 @@ class SignUpActivity : AppCompatActivity() {
         email = findViewById(R.id.editTextEmail)
         username = findViewById(R.id.editTextUsername)
         password = findViewById(R.id.editTextPassword)
-        birthDate = findViewById(R.id.editTextBirthDate)
         signUp = findViewById(R.id.ButtonSignUp)
         hereButton = findViewById(R.id.textViewHere)
-        googleButton = findViewById(R.id.buttonGoogleSignUp)
         showPasswordButton = findViewById(R.id.ImageViewShowPasswordSignUp)
         loading = findViewById(R.id.loading)
 
@@ -95,11 +89,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 if (signUpStateVM.passwordError != null) {
                     password.error = getString(signUpStateVM.passwordError)
-                }
-                if (signUpStateVM.birthDateError != null) {
-                    birthDate.error = getString(signUpStateVM.birthDateError)
-                } else {
-                    birthDate.error = null // funciona xd
                 }
             }
         )
@@ -134,7 +123,6 @@ class SignUpActivity : AppCompatActivity() {
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
-                birthDate.text.toString()
             )
         }
 
@@ -143,16 +131,6 @@ class SignUpActivity : AppCompatActivity() {
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
-                birthDate.text.toString()
-            )
-        }
-
-        birthDate.afterTextChanged {
-            signUpViewModel.signupDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString(),
-                birthDate.text.toString()
             )
         }
 
@@ -162,7 +140,6 @@ class SignUpActivity : AppCompatActivity() {
                     email.text.toString(),
                     username.text.toString(),
                     password.text.toString(),
-                    birthDate.text.toString()
                 )
             }
 
@@ -174,7 +151,6 @@ class SignUpActivity : AppCompatActivity() {
                             email.text.toString(),
                             username.text.toString(),
                             password.text.toString(),
-                            birthDate.text.toString(),
                             activity
                         )
                 }
@@ -190,14 +166,13 @@ class SignUpActivity : AppCompatActivity() {
                     email.text.toString(),
                     username.text.toString(),
                     password.text.toString(),
-                    birthDate.text.toString(),
                     activity
                 )
             }
         }
 
         // mostrar el fragment que permet escollir la birth date.
-        birthDate.setOnClickListener {
+      /*  birthDate.setOnClickListener {
             val cal: Calendar = Calendar.getInstance()
             val year: Int = cal.get(Calendar.YEAR)
             val month: Int = cal.get(Calendar.MONTH)
@@ -218,7 +193,7 @@ class SignUpActivity : AppCompatActivity() {
                 year, month, day
             )
             datePicker.show()
-        }
+        }*/
 
         hereButton.setOnClickListener {
             canviALogInActivity()

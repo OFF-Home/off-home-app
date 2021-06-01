@@ -38,7 +38,6 @@ import java.util.*
  * @property profileVM reference to the ViewModel object of the entire Profile.
  * @property constraintLayout reference to the layout's ConstraintLayout
  * @property textViewProfileDescription reference to description TextView
- * @property textViewBirthDate reference to birth date TextView
  * @property textViewFollowerCount reference to follower count TextView
  * @property textViewFollowingCount reference to following count TextView
  * @property chipGroupTags reference to the tags ChipGroup
@@ -62,7 +61,6 @@ class ProfileAboutMeFragment : Fragment() {
 
     private lateinit var constraintLayout: ConstraintLayout
     private lateinit var textViewProfileDescription: TextView
-    private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
@@ -97,7 +95,6 @@ class ProfileAboutMeFragment : Fragment() {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
-        textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
@@ -114,7 +111,6 @@ class ProfileAboutMeFragment : Fragment() {
                 if (it is Result.Success) {
                     // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
                     textViewProfileDescription.text = it.data.description
-                    textViewBirthDate.text = it.data.birthDate
                     textViewFollowerCount.text = it.data.followers.toString()
                     textViewFollowingCount.text = it.data.following.toString()
                 }
@@ -137,7 +133,7 @@ class ProfileAboutMeFragment : Fragment() {
         // omplirTagGroupStub()
 
         iniEditElements()
-        iniEditionResultListeners() // TODO sobra?
+        iniEditionResultListeners()
 
         return view
     }
@@ -521,9 +517,9 @@ class ProfileAboutMeFragment : Fragment() {
 
         // stub
         val userInfo = UserInfo(
-            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102", birthDate = "12-12-2012",
+            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102",
             description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp"
+            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp", image = ""
         )
 
         val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }

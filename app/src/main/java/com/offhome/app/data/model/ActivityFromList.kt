@@ -16,4 +16,5 @@ data class ActivityFromList(
     val dataHoraFi: String,
     val acabada: Int,
     val valoracio: Int,
+    var usernameCreador: String = ""
 )

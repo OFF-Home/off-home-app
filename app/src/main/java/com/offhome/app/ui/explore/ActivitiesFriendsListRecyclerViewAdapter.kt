@@ -58,7 +58,7 @@ class ActivitiesFriendsListRecyclerViewAdapter(private val context: Context?) : 
         val item = activitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
-        holder.textViewCreated.text = context!!.getString(R.string.created_by) + " " + item.usuariCreador
+        holder.textViewCreated.text = context!!.getString(R.string.created_by) + " " + item.usernameCreador
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_face_24).centerCrop().into(holder.createdImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)

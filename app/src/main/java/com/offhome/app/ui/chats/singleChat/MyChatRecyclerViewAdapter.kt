@@ -74,7 +74,7 @@ class MyChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Ad
             }
             return@setOnLongClickListener true
         }
-        Glide.with(MyApp.getContext()).load(Constants().BASE_URL + "upload/userimageget/" + item.usid_enviador).centerCrop().circleCrop().into(holder.imageViewPerson)
+        Glide.with(MyApp.getContext()).load(Constants().BASE_URL + "upload/userimageget/" + item.username_enviador).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
     }
 
     /**

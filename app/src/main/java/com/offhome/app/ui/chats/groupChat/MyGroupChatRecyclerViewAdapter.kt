@@ -73,7 +73,7 @@ class MyGroupChatRecyclerViewAdapter(private val context: Context?) : RecyclerVi
         }
         (holder as ViewHolderGroupMessage).nameViewPerson.text = item.userNameSender
         // TODO Load image of a user
-        Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
+        Glide.with(MyApp.getContext()).load(Constants().BASE_URL + "upload/userimageget/" + item.userNameSender).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
     }
 
     /**

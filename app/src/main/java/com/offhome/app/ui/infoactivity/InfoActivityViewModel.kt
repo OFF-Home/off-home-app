@@ -9,10 +9,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.Rating
-import com.offhome.app.data.model.ReviewOfParticipant
-import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 
 /**
@@ -92,5 +89,12 @@ class InfoActivityViewModel : ViewModel() {
     // gets a single activity identified by its creator and date
     fun getActivityResult(activityCreator: String, activityDateTime: String) {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
+    }
+
+    /**
+     * gets the weather
+     */
+    fun getWeather(): MutableLiveData<Result<Tiempo>> {
+        return repository.getWeather()
     }
 }

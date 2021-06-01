@@ -98,4 +98,6 @@ interface ActivitiesService {
      */
     @GET ("/activitats/amics/{email}")
     fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
+
+
 }

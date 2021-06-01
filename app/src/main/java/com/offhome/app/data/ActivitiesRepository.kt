@@ -9,6 +9,7 @@ import com.offhome.app.ui.explore.NoActivitiesException
 import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
+import com.offhome.app.data.retrofit.WeatherClient
 import java.io.IOException
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -35,6 +36,8 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private val weatherClient = WeatherClient()
+    private var weatherService = weatherClient.getWeatherService()
     private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var singleActivity: MutableLiveData<ActivityFromList>? = null
@@ -438,6 +441,26 @@ class ActivitiesRepository {
             }
         })
 
+        return result
+    }
+
+    fun getWeather(): MutableLiveData<Result<Tiempo>> {
+        val result = MutableLiveData<Result<Tiempo>>()
+        val call: Call<Tiempo> = weatherService!!.getWeather()
+        call.enqueue(object : Callback<Tiempo> {
+            override fun onResponse(call: Call<Tiempo>, response: Response<Tiempo>) {
+                if (response.isSuccessful) {
+                    result.value = Result.Success(response.body() as Tiempo)
+                }
+                else {
+                    result.value = Result.Error(IOException("Error getting info"))
+                }
+            }
+
+            override fun onFailure(call: Call<Tiempo>, t: Throwable) {
+                result.value = Result.Error(IOException("Error getting info"))
+            }
+        })
         return result
     }
 }

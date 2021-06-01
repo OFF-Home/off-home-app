@@ -164,12 +164,36 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/listParticipants"
-                android:layout_width="match_parent"
+                android:layout_width="200dp"
                 android:layout_height="match_parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/imageViewWeather"
+                app:layout_constraintStart_toStartOf="bo"
                 app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
                 tools:listitem="@layout/fragment_participant" />
+
+            <ImageView
+                android:id="@+id/imageViewWeather"
+                android:layout_width="210dp"
+                android:layout_height="137dp"
+                android:padding="6dp"
+                app:layout_constraintStart_toEndOf="@id/listParticipants"
+                app:layout_constraintTop_toBottomOf="@+id/textViewParticipants"
+                app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+
+            <TextView
+                android:id="@+id/textViewTemperature"
+                android:layout_width="210dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:fontFamily="sans-serif"
+                android:padding="6dp"
+                android:text="20 graditos"
+                android:textAlignment="center"
+                android:textSize="22sp"
+                android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="@+id/imageViewWeather"
+                app:layout_constraintStart_toStartOf="@+id/imageViewWeather"
+                app:layout_constraintTop_toBottomOf="@id/imageViewWeather" />
 
             <TextView
                 android:id="@+id/textViewValoracio"

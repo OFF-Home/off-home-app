@@ -50,6 +50,7 @@ import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
+import android.text.format.DateFormat;
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -67,6 +68,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var imageLike: ImageView
+    private lateinit var weatherIcon: ImageView
+    private lateinit var temperature: TextView
     private lateinit var activity: ActivityFromList
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -202,6 +205,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
+        weatherIcon = findViewById<ImageView>(R.id.imageViewWeather)
+        temperature = findViewById<TextView>(R.id.textViewTemperature)
+
         estrelles = findViewById(R.id.ratingStars)
         comment = findViewById(R.id.yourcomment)
         btnsubmit = findViewById(R.id.submitcomment)
@@ -216,6 +222,33 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         if (date != null) {
             if (!joined or (date > currentTime)) cantreview()
         }
+
+        //si quedan menos de cinco dias para la activity
+        var diff: Long = date.getTime() - currentTime.getTime()
+
+        val segundos = diff / 1000
+        val minutos = segundos / 60
+        val horas = minutos / 60
+        val dias: Long = horas / 24
+
+        val diasTranscurridos: Long = diff / dias
+
+        /*
+        val day = DateFormat.format("dd", date) as String
+        val hour = DateFormat.format("HH", date) as String
+
+
+        if (diasTranscurridos > 4) {
+            viewModel.getWeather().observe(
+                this, {
+                    if (it is Result.Success) {
+                        for((index, item) in it.data.list.withIndex()) {
+                            if (hour < "12")
+                        }
+                    }
+                }
+            )
+        }*/
 
         valoracioUsuari()
 

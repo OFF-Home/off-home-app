@@ -58,7 +58,7 @@ class GroupChatActivity : AppCompatActivity() {
 
         userUid = arguments?.getString("usuariCreador").toString()
         data_ini = arguments?.getString("dataHI").toString()
-        val user_name = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)
+        val user_name = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)
         val uid_user = SharedPreferenceManager.getStringValue(Constants().PREF_UID)
 
         messagesList = findViewById(R.id.messages_view)

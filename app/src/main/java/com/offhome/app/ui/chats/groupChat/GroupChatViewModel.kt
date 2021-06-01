@@ -19,6 +19,7 @@ class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
     /**
      * It calls the repository to get the messages of a group chat
      */
+    /*
     fun getMessages(uid_creator: String, data_hora_ini: String, activity: AppCompatActivity) {
         (chatRepo.getMessagesGroup(uid_creator, data_hora_ini)).observe(
             activity,
@@ -30,12 +31,12 @@ class GroupChatViewModel(val chatRepo: ChatRepository) : ViewModel() {
                 }
             }
         )
-    }
+    }*/
 
     /**
      * It calls the repository to send the messages of a group chat
-     */
+     *//*
     fun sendMessage(message: GroupMessage) {
         sendMessageResult = chatRepo.sendGroupMessage(message)
-    }
+    }*/
 }

@@ -7,6 +7,8 @@ package com.offhome.app.data.model
 data class ActivityData(
     val nomCarrer: String,
     val carrerNum: Int,
+    val latitud: Double,
+    val longitud: Double,
     val dataHoraIni: String,
     val categoria: String,
     val maxParticipants: Int,

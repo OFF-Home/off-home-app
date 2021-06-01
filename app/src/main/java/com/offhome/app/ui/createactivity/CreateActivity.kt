@@ -272,6 +272,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
+                    latitude,
+                    longitude,
                     dataHoraIni,
                     category_selected.selectedItem.toString(),
                     pick_availability.value,

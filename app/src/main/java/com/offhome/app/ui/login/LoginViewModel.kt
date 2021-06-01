@@ -10,7 +10,9 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.LoginRepository
+import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.UserInfo
 
 /**
  * View Model for Login activity
@@ -22,6 +24,7 @@ import com.offhome.app.data.Result
  * @property loginResult is the public live data for the result of the login
  * */
 class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel() {
+    val profileRepository = ProfileRepository()
     private val _loginForm = MutableLiveData<LoginFormState>()
     val loginFormState: LiveData<LoginFormState> = _loginForm
 
@@ -47,6 +50,11 @@ class LoginViewModel(private val loginRepository: LoginRepository) : ViewModel()
                 _loginResult.value = LoginResult(error = R.string.login_failed)
             }
         }
+    }
+
+
+    fun existsUser(email: String): MutableLiveData<Result<UserInfo>> {
+        return profileRepository.getProfileInfo(email)
     }
 
     /**

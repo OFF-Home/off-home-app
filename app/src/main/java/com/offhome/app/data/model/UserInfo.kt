@@ -20,7 +20,6 @@ data class UserInfo(
     val email: String,
     val username: String,
     val uid: String,
-    val birthDate: String,
     val description: String,
     var followers: Int,
     val following: Int,

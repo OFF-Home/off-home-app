@@ -2,13 +2,16 @@ package com.offhome.app.data
 
 
 
+import android.content.ContentValues.TAG
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.offhome.app.common.Constants
 import com.offhome.app.data.model.SignUpUserData
 import com.offhome.app.data.retrofit.SignUpService
@@ -53,9 +56,8 @@ class SignUpDataSource {
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) { // TODO treure activity quan arregli observers (no passarà mai)
 
         try {
             firebaseAuth = Firebase.auth
@@ -71,30 +73,17 @@ class SignUpDataSource {
                     }
 
                     // parlar amb el nostre client
-                    val signedUpUser = SignUpUserData(email, user.uid)
-                    val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
-
-                    call.enqueue(object : Callback<ResponseBody> {
-                        override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
-                            if (response.isSuccessful) {
-                                Log.d("SignUp", "response:successful")
-
-                                _result.value = ResultSignUp(success = true)
-                            } else { // si rebem resposta de la BD pero ens informa d'un error
-
-                                Log.d("SignUp", "response:error")
-
-                                _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
-                            }
+                    FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
+                        if (!task.isSuccessful) {
+                            Log.w(TAG, "Fetching FCM registration token failed", task.exception)
+                            return@OnCompleteListener
                         }
 
-                        override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                        // Get new FCM registration token
+                        val token = task.result
 
-                            Log.d("SignUp", "no response: connection error")
-                            t.printStackTrace()
-                            Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
-                            _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))
-                        }
+                        val signedUpUser = SignUpUserData(email, user.uid, token)
+                        signUpBack(username, signedUpUser)
                     })
                 } else { // error a Firebase
                     Log.w("Sign-up", "createUserWithEmail:failure", task.exception)
@@ -105,5 +94,26 @@ class SignUpDataSource {
         } catch (e: Throwable) {
             _result.value = ResultSignUp(error = e as Exception) // cast!
         }
+    }
+
+    fun signUpBack(username: String, signedUpUser: SignUpUserData) {
+        val call: Call<ResponseBody> = signUpService.createProfile(username, signedUpUser)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    _result.value = ResultSignUp(success = true)
+                } else {
+
+                    _result.value = ResultSignUp(error = Exception("response received. Error in the server"))
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                t.printStackTrace()
+                Log.w("Sign-up-back", "createUserWithEmail:failure", t.cause)
+                _result.value = ResultSignUp(error = Exception("connection error. Server not reached"))
+            }
+        })
     }
 }

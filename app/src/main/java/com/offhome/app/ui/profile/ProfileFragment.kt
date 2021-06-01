@@ -26,6 +26,7 @@ import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.ViewTreeLifecycleOwner
 import androidx.viewpager.widget.ViewPager
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
@@ -33,11 +34,18 @@ import com.google.android.material.tabs.TabLayout
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import com.karumi.dexter.Dexter
+import com.karumi.dexter.MultiplePermissionsReport
+import com.karumi.dexter.PermissionToken
+import com.karumi.dexter.listener.PermissionRequest
+import com.karumi.dexter.listener.multi.MultiplePermissionsListener
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.FilePhoto
 import com.offhome.app.ui.login.LoginActivity
+
 
 /**
  * Class *ProfileFragment*
@@ -118,7 +126,7 @@ class ProfileFragment : Fragment() {
                 if (it is Result.Success) {
                     textViewUsername.text = it.data.username
                     estrelles.rating = it.data.estrelles.toFloat()
-                    // imageViewProfilePic.setImageDrawable(/**/) // TODO la foto
+                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
                 }
             }
         )
@@ -126,23 +134,7 @@ class ProfileFragment : Fragment() {
         iniEditElements()
         iniUsernameSetListener() // TODO sobra?
 
-        imageViewProfilePic.setOnClickListener {
-            // takePictureIntent()
-            val selectPhoto = Intent(
-                Intent.ACTION_PICK,
-                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
-            )
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && context?.let { it1 ->
-                ContextCompat.checkSelfPermission(it1, Manifest.permission.READ_EXTERNAL_STORAGE)
-            }
-                != PackageManager.PERMISSION_GRANTED
-            ) {
-                Intent(
-                    Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:" + requireContext().packageName)
-                )
-                startActivityForResult(selectPhoto, Constants().SELECT_PHOTO_GALLERY)
-            }
-        }
+        updateProfilePic()
 
         return view
     }
@@ -153,15 +145,28 @@ class ProfileFragment : Fragment() {
             if (data != null) {
                 val imageSelected = data.data
                 val filepathColumn = arrayOf(MediaStore.Images.Media.DATA)
-                val cursor: Cursor? = requireContext().contentResolver.query(imageSelected!!, filepathColumn, null, null, null)
+                val cursor: Cursor? = requireContext().contentResolver.query(
+                    imageSelected!!,
+                    filepathColumn,
+                    null,
+                    null,
+                    null
+                )
                 if (cursor != null) {
                     cursor.moveToFirst()
                     val imageIndex: Int = cursor.getColumnIndex(filepathColumn[0])
                     val photoPath: String = cursor.getString(imageIndex)
-                    fragmentViewModel.uploadPhoto(photoPath)
-                    // Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
-                    Glide.with(this).load(photoPath).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
-                    cursor.close()
+                    fragmentViewModel.uploadPhoto(photoPath).observe(
+                        viewLifecycleOwner, { it ->
+                            if (it is Result.Success) {
+                                // Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
+                                Glide.with(this).load(photoPath).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
+                                cursor.close()
+                            } else if (it is Result.Error) {
+                                Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()
+                            }
+                        }
+                    )
                 }
             }
         }
@@ -183,9 +188,14 @@ class ProfileFragment : Fragment() {
                 //Log.d("observer", "arribo al observer de fragmentViewModel.setUsernameSuccessfully2")
 
                 if (resultVM is Result.Success) {
-                    Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.username_updated_toast, Toast.LENGTH_LONG)
+                        .show()
                 } else {
-                    Toast.makeText(activity, R.string.username_update_error_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.username_update_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
@@ -238,19 +248,40 @@ class ProfileFragment : Fragment() {
         val dr: Drawable = resources.getDrawable(android.R.drawable.ic_menu_edit)
         val bitmap: Bitmap = (dr as BitmapDrawable).bitmap
         // we scale it
-        editIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap, 70, 70, true))
+        editIconDrawable = BitmapDrawable(
+            resources,
+            Bitmap.createScaledBitmap(bitmap, 70, 70, true)
+        )
         // we prepare the saveIconDrawable, resizing it
         val dr2: Drawable = resources.getDrawable(android.R.drawable.ic_menu_save)
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
-        saveIconDrawable = BitmapDrawable(resources, Bitmap.createScaledBitmap(bitmap2, 70, 70, true))
+        saveIconDrawable = BitmapDrawable(
+            resources, Bitmap.createScaledBitmap(
+                bitmap2,
+                70,
+                70,
+                true
+            )
+        )
 
         constraintLayout1.addView(editUsernameButton)
 
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.textViewUsername, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.textViewUsername, ConstraintSet.TOP)
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.LEFT,
+            R.id.textViewUsername,
+            ConstraintSet.RIGHT,
+            8
+        )
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.TOP,
+            R.id.textViewUsername,
+            ConstraintSet.TOP
+        )
         constraintSet1.applyTo(constraintLayout1)
     }
 
@@ -267,11 +298,31 @@ class ProfileFragment : Fragment() {
         constraintLayout1.addView(editTextUsername)
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.LEFT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.LEFT)
-        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.RIGHT, R.id.profileConstraintLayoutDinsAppBarLO, ConstraintSet.RIGHT)
-        constraintSet1.connect(R.id.editTextUsername2, ConstraintSet.TOP, R.id.imageViewProfilePic, ConstraintSet.BOTTOM)
+        constraintSet1.connect(
+            R.id.editTextUsername2,
+            ConstraintSet.LEFT,
+            R.id.profileConstraintLayoutDinsAppBarLO,
+            ConstraintSet.LEFT
+        )
+        constraintSet1.connect(
+            R.id.editTextUsername2,
+            ConstraintSet.RIGHT,
+            R.id.profileConstraintLayoutDinsAppBarLO,
+            ConstraintSet.RIGHT
+        )
+        constraintSet1.connect(
+            R.id.editTextUsername2,
+            ConstraintSet.TOP,
+            R.id.imageViewProfilePic,
+            ConstraintSet.BOTTOM
+        )
         // falta clear?
-        constraintSet1.connect(R.id.textViewUsername, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.BOTTOM)
+        constraintSet1.connect(
+            R.id.textViewUsername,
+            ConstraintSet.TOP,
+            R.id.editTextUsername2,
+            ConstraintSet.BOTTOM
+        )
 
         constraintSet1.applyTo(constraintLayout1)
 
@@ -309,9 +360,25 @@ class ProfileFragment : Fragment() {
         editUsernameButton
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.editTextUsername2, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.editTextUsername2, ConstraintSet.TOP)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.BOTTOM, R.id.editTextUsername2, ConstraintSet.BOTTOM)
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.LEFT,
+            R.id.editTextUsername2,
+            ConstraintSet.RIGHT,
+            8
+        )
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.TOP,
+            R.id.editTextUsername2,
+            ConstraintSet.TOP
+        )
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.BOTTOM,
+            R.id.editTextUsername2,
+            ConstraintSet.BOTTOM
+        )
         constraintSet1.applyTo(constraintLayout1)
 
         editTextUsername.visibility = View.VISIBLE
@@ -331,8 +398,19 @@ class ProfileFragment : Fragment() {
 
         val constraintSet1 = ConstraintSet()
         constraintSet1.clone(constraintLayout1)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.LEFT, R.id.textViewUsername, ConstraintSet.RIGHT, 8)
-        constraintSet1.connect(R.id.editUsernameButton, ConstraintSet.TOP, R.id.textViewUsername, ConstraintSet.TOP)
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.LEFT,
+            R.id.textViewUsername,
+            ConstraintSet.RIGHT,
+            8
+        )
+        constraintSet1.connect(
+            R.id.editUsernameButton,
+            ConstraintSet.TOP,
+            R.id.textViewUsername,
+            ConstraintSet.TOP
+        )
         constraintSet1.clear(R.id.editUsernameButton, ConstraintSet.BOTTOM)
         constraintSet1.applyTo(constraintLayout1)
 
@@ -364,6 +442,7 @@ class ProfileFragment : Fragment() {
             logout_dialog.setPositiveButton(R.string.ok) { dialog, id ->
                 firebaseAuth.signOut()
                 SharedPreferenceManager.deleteData()
+                SharedPreferenceManager.setBooleanValue(Constants().PREF_IS_NOT_FIRST_TIME_OPENING_APP, true)
                 requireActivity().run {
                     startActivity(Intent(this, LoginActivity::class.java))
                     finish()
@@ -375,5 +454,40 @@ class ProfileFragment : Fragment() {
             logout_dialog.show()
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun updateProfilePic(){
+        imageViewProfilePic.setOnClickListener {
+            Dexter.withContext(context)
+                .withPermissions(
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                )
+                .withListener(object : MultiplePermissionsListener {
+                    override fun onPermissionsChecked(report: MultiplePermissionsReport) {
+                        // check if all permissions are granted
+                        if (report.areAllPermissionsGranted()) {
+                            val pickPhoto = Intent(
+                                Intent.ACTION_PICK,
+                                MediaStore.Images.Media.EXTERNAL_CONTENT_URI
+                            )
+                            startActivityForResult(pickPhoto, Constants().SELECT_PHOTO_GALLERY)
+                        }
+                        // check for permanent denial of any permission
+                        if (report.isAnyPermissionPermanentlyDenied) {
+                            // permission is denied permenantly, navigate user to app settings
+                        }
+                    }
+
+                    override fun onPermissionRationaleShouldBeShown(
+                        permissions: List<PermissionRequest>,
+                        token: PermissionToken
+                    ) {
+                        token.continuePermissionRequest()
+                    }
+                })
+                .onSameThread()
+                .check()
+        }
     }
 }

@@ -2,6 +2,7 @@
   <dictionary name="maria">
     <words>
       <w>activitylist</w>
+      <w>geocoder</w>
     </words>
   </dictionary>
 </component>

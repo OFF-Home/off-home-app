@@ -10,7 +10,9 @@ import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.bumptech.glide.Glide
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
@@ -18,6 +20,7 @@ import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Adpter for the recycler view of the activities list
@@ -63,9 +66,15 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         holder.textViewDataTime.text = item.dataHoraIni
         // holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
         holder.textViewCapacity.text = item.maxParticipant.toString()
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(
+            holder.dataTimeImage
+        )
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(
+            holder.capacityImage
+        )
+        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(
+            holder.iconLikeImage
+        )
 
         with(holder.background) {
             tag = item
@@ -76,13 +85,33 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         holder.iconLikeImage.setOnClickListener {
             clicked = !clicked
             if (clicked) {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(
+                    holder.iconLikeImage
+                )
             } else {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
+                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(
+                    holder.iconLikeImage
+                )
             }
         }
     }
 
+/*    mRecyclerViewAdapter.registerAdapterDataObserver(myObserver);
+
+
+    protected fun setupRecyclerView() {
+        mAdapter = MyAdapter(listActivitiesFull)
+        mAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkAdapterIsEmpty()
+            }
+        })
+        mRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.setAdapter(mAdapter)
+        checkAdapterIsEmpty()
+    }*/
     /**
      * gets the number of views
      * @return the number of views
@@ -137,7 +166,9 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         else {
             val resultList = ArrayList<ActivityFromList>()
             for (row in activitiesList) {
-                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
+                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(
+                    row
+                )
             }
             resultList
         }

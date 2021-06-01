@@ -126,7 +126,7 @@ class ProfileFragment : Fragment() {
                 if (it is Result.Success) {
                     textViewUsername.text = it.data.username
                     estrelles.rating = it.data.estrelles.toFloat()
-                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(imageViewProfilePic)
+                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
                 }
             }
         )
@@ -160,7 +160,7 @@ class ProfileFragment : Fragment() {
                         viewLifecycleOwner, { it ->
                             if (it is Result.Success) {
                                 // Glide.with(this).load(photoPath).centerCrop().into(imageViewProfilePic)
-                                Glide.with(this).load(photoPath).diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
+                                Glide.with(this).load(photoPath).centerCrop().circleCrop().diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true).into(imageViewProfilePic)
                                 cursor.close()
                             } else if (it is Result.Error) {
                                 Toast.makeText(context, it.exception.message, Toast.LENGTH_LONG).show()

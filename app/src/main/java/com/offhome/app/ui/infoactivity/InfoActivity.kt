@@ -233,7 +233,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         if (it != " ") {
                             if (it == "You have joined the activity!") {
                                 val snackbar: Snackbar = Snackbar
-                                    .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                    .make(layout, getString(R.string.successfully_joined), Snackbar.LENGTH_LONG)
                                     .setAction(getString(R.string.go_chat)) {
                                         displayChatGroup()
                                     }

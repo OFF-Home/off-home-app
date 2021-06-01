@@ -10,13 +10,19 @@ import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
 import android.content.Intent
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Build
 import android.os.Bundle
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
@@ -76,6 +82,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
+    private lateinit var layout:ConstraintLayout
 
     /**
      * This function represents the current time using current locale and timezone
@@ -131,6 +138,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         act_title = findViewById(R.id.activity_title)
         category_selected = findViewById(R.id.sp_choose_category)
         pick_availability = findViewById(R.id.pick_availability)
+        layout = findViewById(R.id.create_activity_constr_layout)
 
         setCurrentDateOnView()
         addListenerOnButton()
@@ -282,6 +290,38 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                         if (it != " ") {
                             Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             if (it == "Activity created") {
+
+                                //checkejar trofeu i ensenyar (mirar el string)
+                                if (true) {
+                                    val achievementSnackbar = Snackbar.make(
+                                        layout,
+                                        getString(R.string.achievement_first_activity),
+                                        Snackbar.LENGTH_LONG
+                                    )
+                                    val snackbarView = achievementSnackbar.view as LinearLayout//as TextView
+                                    //snackbarView.setCompoundDrawablesRelativeWithIntrinsicBounds(R.drawable.ic__10_washing_hands, 0, 0, 0)
+                                    val imageView = ImageView(this)
+                                    val drawable2 = ResourcesCompat.getDrawable(resources,R.drawable.ic__10_washing_hands, theme)
+                                    //val bitmapDrawable = BitmapDrawable(resources, Bitmap.createBitmap(R.drawable.ic__10_washing_hands))
+                                    imageView.setImageDrawable(drawable2)
+
+
+                                    /*imageView.setImageDrawable(R.drawable.ic__10_washing_hands)
+                                    val drawable = BitmapDrawable(
+                                        resources,
+                                        Bitmap.createScaledBitmap(
+                                            resources.getDrawable(R.drawable.ic__10_washing_hands),
+                                            70,
+                                            70,
+                                            true
+                                        )
+                                    )*/
+                                    //snackbarView.addView(ImageView(this, drawable2))
+                                    snackbarView.addView(imageView)
+
+                                    achievementSnackbar.show()
+                                }
+
                                 startActivity(Intent(this, MainActivity::class.java))
                             }
                         }

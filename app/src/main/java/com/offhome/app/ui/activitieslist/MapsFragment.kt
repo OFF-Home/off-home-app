@@ -20,6 +20,7 @@ import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.maps.model.MarkerOptions
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.text.ParseException
@@ -121,8 +122,8 @@ class MapsFragment : Fragment() {
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
-                if (it != null) {
-                    for (item in it) {
+                if (it is Result.Success) {
+                    for (item in it.data) {
                         // transform dataHoraIni into date format
                         val mydate = item.dataHoraFi
                         var date: Date? = null

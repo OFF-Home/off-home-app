@@ -6,6 +6,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 
 /**
@@ -15,14 +16,14 @@ import com.offhome.app.data.model.ActivityFromList
  */
 class ActivitiesViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private lateinit var activitiesList: MutableLiveData<List<ActivityFromList>>
-    private lateinit var oldActivitiesList: LiveData<List<ActivityFromList>>
-    private lateinit var likedActivitiesList: LiveData<List<ActivityFromList>>
+    private lateinit var activitiesList: MutableLiveData<Result<List<ActivityFromList>>>
+    private lateinit var oldActivitiesList: MutableLiveData<Result<List<ActivityFromList>>>
+    private lateinit var likedActivitiesList: MutableLiveData<Result<List<ActivityFromList>>>
 
     /**
      * gets the activities of a category from the repository
      */
-    fun getActivitiesList(categoryName: String): MutableLiveData<List<ActivityFromList>> {
+    fun getActivitiesList(categoryName: String): MutableLiveData<Result<List<ActivityFromList>>> {
         activitiesList = repository.getAll(categoryName)!!
         return activitiesList
     }
@@ -42,7 +43,7 @@ class ActivitiesViewModel : ViewModel() {
     /**
      * gets the old activities a user has joined from the repository
      */
-    fun getOldActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
+    fun getOldActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         oldActivitiesList = repository.getOldAct(userEmail)
         return oldActivitiesList
     }
@@ -50,7 +51,7 @@ class ActivitiesViewModel : ViewModel() {
     /**
      * gets the old activities a user has joined from the repository
      */
-    fun getLikedActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
+    fun getLikedActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         likedActivitiesList = repository.getLikedAct(userEmail)
         return likedActivitiesList
     }

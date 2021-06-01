@@ -52,6 +52,7 @@ import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import android.text.format.DateFormat;
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import java.text.SimpleDateFormat
 import java.util.*
 import java.util.function.LongToIntFunction
@@ -253,12 +254,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     for((index, item) in it.data.list.withIndex()) {
                         dateWeather = changeDateFormat(item.dt_txt)
                         val dayDateWeather = DateFormat.format("dd", dateWeather) as String
-                        val hourDateWeather = DateFormat.format("dd", dateWeather) as String
+                        val hourDateWeather = DateFormat.format("HH:mm:ss", dateWeather) as String
 
                         //si coincide el dia y la hora, ya puedo cargar esa temperatura
                         if (day == dayDateWeather) {
-                            if (hour == hourDateWeather) {
-                                Glide.with(this).load("http://openweathermap.org/img/wn/${item.weather.get(0).icon}@2x.png").into(weatherIcon)
+                            if (hourWeather == hourDateWeather) {
+                                Glide.with(this).load("http://openweathermap.org/img/wn/${item.weather.get(0).icon}@2x.png").centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true).into(weatherIcon)
                                 temperature.text = item.main.temp.toString() + "ºC"
                             }
                         }
@@ -779,10 +782,10 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         var diff: Long = date.getTime() - currentTime.getTime()
 
         //pasar la diferencia a dias
-        val segundos = diff / 1000
-        val minutos = segundos / 60
-        val horas = minutos / 60
-        val dias: Long = horas / 24
+        val segundos: Long =  1000
+        val minutos: Long = segundos * 60
+        val horas: Long = minutos * 60
+        val dias: Long = horas * 24
 
         val diasTranscurridos: Long = diff / dias
         var days: Int = diasTranscurridos.toInt()

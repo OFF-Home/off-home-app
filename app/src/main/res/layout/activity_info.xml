@@ -166,6 +166,7 @@
                 android:id="@+id/listParticipants"
                 android:layout_width="200dp"
                 android:layout_height="match_parent"
+                android:paddingBottom="20dp"
                 app:layout_constraintEnd_toStartOf="@id/imageViewWeather"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/textViewParticipants"
@@ -174,22 +175,21 @@
             <ImageView
                 android:id="@+id/imageViewWeather"
                 android:layout_width="210dp"
-                android:layout_height="137dp"
+                android:layout_height="60dp"
                 android:padding="6dp"
                 app:layout_constraintStart_toEndOf="@id/listParticipants"
-                app:layout_constraintTop_toBottomOf="@+id/textViewParticipants"
-                app:srcCompat="@drawable/ic_baseline_wb_sunny_24" />
+                app:layout_constraintTop_toBottomOf="@+id/textViewParticipants" />
 
             <TextView
                 android:id="@+id/textViewTemperature"
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="2dp"
                 android:fontFamily="sans-serif"
-                android:padding="6dp"
+                android:padding="0dp"
                 android:text="20 graditos"
                 android:textAlignment="center"
-                android:textSize="22sp"
+                android:textSize="16dp"
                 android:textStyle="bold"
                 app:layout_constraintEnd_toEndOf="@+id/imageViewWeather"
                 app:layout_constraintStart_toStartOf="@+id/imageViewWeather"

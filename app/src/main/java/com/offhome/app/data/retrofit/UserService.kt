@@ -123,4 +123,7 @@ interface UserService {
 
     @POST("/users/{username}/update")
     fun updateDarkMode(@Path("username") username: String, @Body dm: DarkModeUpdate): Call<ResponseBody>
+
+    @POST("/xats/sendmessage")
+    fun sendNotification(@Body notification: SendNotification): Call<ResponseBody>
 }

@@ -3,6 +3,7 @@ package com.offhome.app.ui.chats.singleChat
 
 
 import android.os.Bundle
+import android.util.Log
 import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import android.widget.ImageButton
@@ -22,6 +23,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.Message
+import com.offhome.app.data.model.SendNotification
 
 /**
  * Ativity for a single activity
@@ -49,6 +51,10 @@ class SingleChatActivity : AppCompatActivity() {
     private var exists = true
     private lateinit var userUid: String
 
+    private lateinit var userName: String
+
+    private lateinit var message: Message
+
     /**
      * It is called when creating the activity and has all the connection with database
      */
@@ -59,7 +65,7 @@ class SingleChatActivity : AppCompatActivity() {
 
         val arguments = intent.extras
         userUid = arguments?.getString("uid").toString()
-        val userName = arguments?.getString("username")
+        userName = arguments?.getString("username").toString()
         editTextNewMessage = findViewById(R.id.editTextNewMessage)
         btnSendMessage = findViewById(R.id.imageButtonSendMessage)
         messagesList = findViewById(R.id.recyclerViewMessages)
@@ -116,6 +122,7 @@ class SingleChatActivity : AppCompatActivity() {
                             ).show()
                         else {
                             sendMessage()
+                            manageNotifications()
                         }
                 }
                 false
@@ -128,6 +135,7 @@ class SingleChatActivity : AppCompatActivity() {
                     ).show()
                 else {
                     sendMessage()
+                    manageNotifications()
                 }
             }
         }
@@ -142,7 +150,7 @@ class SingleChatActivity : AppCompatActivity() {
             exists = true
         }
         ++numMessages
-        val message = Message(
+        message = Message(
             editTextNewMessage.text.toString(),
             SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
             System.currentTimeMillis(),
@@ -183,5 +191,19 @@ class SingleChatActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
+    }
+
+    fun manageNotifications(){
+        var email: String
+        viewModel.getProfileInfoByUsername(userName).observe(
+            this@SingleChatActivity,{
+                if (it is Result.Success) {
+                    email = it.data.email
+                    val notification = SendNotification(email, message.toString(), userName)
+                    viewModel.sendNotification(notification)
+                }
+                else if (it is Result.Error) Log.d("NOTIFICATION", "Notification cannot be sent")
+            }
+        )
     }
 }

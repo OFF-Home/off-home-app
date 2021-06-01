@@ -133,7 +133,7 @@ class ProfileAboutMeFragment : Fragment() {
         // omplirTagGroupStub()
 
         iniEditElements()
-        iniEditionResultListeners() // TODO sobra?
+        iniEditionResultListeners()
 
         return view
     }

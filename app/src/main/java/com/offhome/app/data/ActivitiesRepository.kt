@@ -126,7 +126,7 @@ class ActivitiesRepository {
                 response: Response<ResponseBody>
             ) {
                 if (response.isSuccessful) {
-                    mutableLiveData?.value = Result.Success("Activity created!")
+                    mutableLiveData?.value = Result.Success(/*"Activity created!"*/response.body().toString())
                 } else mutableLiveData?.value =
                    Result.Error(IOException("There has been an error and the activity cannot be created"))
             }

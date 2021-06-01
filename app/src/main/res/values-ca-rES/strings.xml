@@ -159,4 +159,5 @@
     <string name="wash_hands">renta\'t les mans abans i després de cada activitat.</string>
     <string name="successfully_joined">T\'hi has unit!</string>
     <string name="achievement_first_activity">Creador platí</string>
+    <string name ="activity_created">Activitat creada!</string>
 </resources>

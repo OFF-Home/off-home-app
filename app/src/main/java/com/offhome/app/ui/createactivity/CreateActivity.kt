@@ -158,7 +158,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         createTheActivity()
 
         val auxSnack = AuxShowAchievementSnackbar()
-        auxSnack.showAchievementSnackbar(layout, this, "PLATINUM")
+        auxSnack.showAchievementSnackbar(layout, this, "STUB PLATINUM!")
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -298,13 +298,13 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                 viewModel.addActivity(activitydata).observe(
                     this, Observer@{ it1 ->
                         if (it1 is Result.Success) {
-                            Toast.makeText(this, it1.data, Toast.LENGTH_LONG).show()
+                            Toast.makeText(this,/* it1.data*/ getString(R.string.activity_created), Toast.LENGTH_LONG).show()
                             
-                            //checkejar achievements i ensenyar (falta mirar el string)
-                            if (true) {
+                            //espero q si no és "OK" sigui un trophy
+                            if (it1.data != "OK") {
                                 //stub string!
                                 val auxSnack = AuxShowAchievementSnackbar()
-                                auxSnack.showAchievementSnackbar(layout, this, "PLATINUM")
+                                auxSnack.showAchievementSnackbar(layout, this, it1.data)
                             }
                             
                             startActivity(Intent(this, MainActivity::class.java))

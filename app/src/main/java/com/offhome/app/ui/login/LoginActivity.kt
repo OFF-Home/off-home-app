@@ -175,10 +175,10 @@ class LoginActivity : AppCompatActivity() {
                 }
             } catch (e: ApiException) {
                 Log.w("LOGIN", "signInWithGoogle:failure", e.cause)
-                Toast.makeText(
+         /*       Toast.makeText(
                     baseContext, "Authentication google failed.",
                     Toast.LENGTH_SHORT
-                ).show()
+                ).show()*/
             }
         }
     }
@@ -219,10 +219,6 @@ class LoginActivity : AppCompatActivity() {
                     editTextEmail.setBackgroundResource(R.drawable.background_edit_text_wrong)
                     Toast.makeText(this, getString(loginState.emailError), Toast.LENGTH_LONG).show()
                 }
-                if (editTextPassword.text.isNotEmpty() && loginState.passwordError != null) {
-                    editTextPassword.setBackgroundResource(R.drawable.background_edit_text_wrong)
-                    Toast.makeText(this, getString(loginState.passwordError), Toast.LENGTH_LONG).show()
-                }
             }
         )
 
@@ -239,7 +235,7 @@ class LoginActivity : AppCompatActivity() {
                     updateUiWithUser(loginResult.success)
                 }
                 setResult(Activity.RESULT_OK)
-
+                finish()
                 // Complete and destroy login activity once successful
                 // finish()
             }
@@ -315,15 +311,23 @@ class LoginActivity : AppCompatActivity() {
                     it.errorLogin != null && it.errorLogin == R.string.login_failed_email -> Toast.makeText(applicationContext, getString(R.string.login_failed_email), Toast.LENGTH_LONG).show()
                     it.errorLogin != null && it.errorLogin == R.string.login_failed_login -> Toast.makeText(applicationContext, getString(R.string.login_failed_login), Toast.LENGTH_LONG).show()
                     else -> {
-                        val displayName = it.displayUsername
-                        val intent = Intent(this, MainActivity::class.java)
-                        startActivity(intent)
-                        Toast.makeText(
-                            applicationContext,
-                            "$welcome $displayName",
-                            Toast.LENGTH_LONG
-                        ).show()
-                        finish()
+                        loginViewModel.existsUser(editTextEmail.text.toString()).observe(
+                            this, {
+                                if (it is Result.Success){
+                                    val username = it.data.username
+                                    SharedPreferenceManager.setStringValue(Constants().PREF_USERNAME, username)
+                                    val intent = Intent(this, MainActivity::class.java)
+                                    startActivity(intent)
+                                    Toast.makeText(
+                                        applicationContext,
+                                        "$welcome $username",
+                                        Toast.LENGTH_LONG
+                                    ).show()
+                                    finish()
+                                }
+                        }
+                        )
+
                     }
                 }
             }

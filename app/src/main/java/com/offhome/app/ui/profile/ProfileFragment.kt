@@ -126,7 +126,7 @@ class ProfileFragment : Fragment() {
                 if (it is Result.Success) {
                     textViewUsername.text = it.data.username
                     estrelles.rating = it.data.estrelles.toFloat()
-                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).centerCrop().circleCrop().into(imageViewProfilePic)
+                    Glide.with(requireContext()).load(Constants().BASE_URL + "upload/userimageget/" + it.data.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(imageViewProfilePic)
                 }
             }
         )

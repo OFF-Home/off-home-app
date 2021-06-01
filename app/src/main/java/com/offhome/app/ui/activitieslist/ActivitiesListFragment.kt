@@ -14,6 +14,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import java.text.ParseException
 import java.text.SimpleDateFormat
@@ -76,8 +77,8 @@ class ActivitiesListFragment : Fragment() {
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
-                if (it != null) {
-                    for (item in it) {
+                if (it is Result.Success) {
+                    for (item in it.data) {
                         // transform dataHoraIni into date format
                         val mydate = item.dataHoraFi
                         var date: Date? = null

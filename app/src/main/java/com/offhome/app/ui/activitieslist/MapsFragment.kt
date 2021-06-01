@@ -157,9 +157,9 @@ class MapsFragment : Fragment() {
                     activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
                         viewLifecycleOwner,
                         Observer {
-                            if (it != null) {
+                            if (it is Result.Success) {
                                 activitiesList.clear()
-                                for (item in it) {
+                                for (item in it.data) {
                                     // transform dataHoraIni into date format
                                     val mydate = item.dataHoraFi
                                     var date: Date? = null
@@ -266,8 +266,8 @@ class MapsFragment : Fragment() {
         activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
             viewLifecycleOwner,
             Observer {
-                if (it != null) {
-                    for (item in it) {
+                if (it is Result.Success) {
+                    for (item in it.data) {
                         // transform dataHoraIni into date format
                         val mydate = item.dataHoraFi
                         var date: Date? = null

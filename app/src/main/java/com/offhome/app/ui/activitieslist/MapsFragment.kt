@@ -58,7 +58,7 @@ class MapsFragment : Fragment() {
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
      */
-    private val callback = OnMapReadyCallback { googleMap ->
+        private val callback = OnMapReadyCallback { googleMap ->
 
         mMap = googleMap
         mMap.uiSettings.setZoomControlsEnabled(true)

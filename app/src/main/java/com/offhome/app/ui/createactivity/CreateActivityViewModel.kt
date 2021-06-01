@@ -5,6 +5,7 @@ package com.offhome.app.ui.createactivity
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityData
 
 /**
@@ -17,7 +18,7 @@ class CreateActivityViewModel : ViewModel() {
 
     // private var repositoryChat: ChatRepository = ChatRepository()
 
-    fun addActivity(activity: ActivityData): MutableLiveData<String> {
+    fun addActivity(activity: ActivityData): MutableLiveData<Result<String>> {
         return repository.addActivity(activity)
     }
 

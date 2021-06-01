@@ -20,14 +20,20 @@ class AuxShowAchievementSnackbar {
         )
         val imageView = ImageView(passContext)
         val drawable2: Drawable?
-        if (string.contains("PLATINUM", true)) {
+        if (string.contains("DIAMOND", true)) {
+            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_diamond, passContext.theme)
+        }
+        else if (string.contains("PLATINUM", true)) {
             drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_platinum, passContext.theme)
         }
         else if (string.contains("GOLD", true)) {
             drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_gold, passContext.theme)
         }
-        else /*if (string.contains("DIAMOND", true))*/ {
+        /*else if (string.contains("SILVER", true)) {
             drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_gold, passContext.theme)
+        }*/
+        else {
+            drawable2 = ResourcesCompat.getDrawable(passContext.resources, R.drawable.trophy_diamond, passContext.theme)
         }
 
         imageView.setImageDrawable(drawable2)

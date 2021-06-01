@@ -174,9 +174,9 @@
 
             <ImageView
                 android:id="@+id/imageViewWeather"
-                android:layout_width="210dp"
-                android:layout_height="60dp"
-                android:padding="6dp"
+                android:layout_width="150dp"
+                android:layout_height="150dp"
+                android:padding="1dp"
                 app:layout_constraintStart_toEndOf="@id/listParticipants"
                 app:layout_constraintTop_toBottomOf="@+id/textViewParticipants" />
 
@@ -184,7 +184,7 @@
                 android:id="@+id/textViewTemperature"
                 android:layout_width="210dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="2dp"
+                android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif"
                 android:padding="0dp"
                 android:text="20 graditos"
@@ -206,7 +206,7 @@
                 android:textSize="18sp"
                 android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="@id/box"
-                app:layout_constraintTop_toBottomOf="@id/listParticipants" />
+                app:layout_constraintTop_toBottomOf="@id/textViewTemperature" />
 
 
             <RatingBar

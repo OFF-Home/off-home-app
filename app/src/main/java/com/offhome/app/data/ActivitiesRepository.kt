@@ -116,7 +116,7 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun likeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
-        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val join = LikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
         val call = activitiesService?.likeActivity(join)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
@@ -142,7 +142,7 @@ class ActivitiesRepository {
      * @return the result with a live data string type
      */
     fun dislikeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
-        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val join = LikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
         val call = activitiesService?.dislikeActivity(join)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {

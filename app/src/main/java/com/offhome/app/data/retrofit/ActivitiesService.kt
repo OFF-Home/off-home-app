@@ -35,13 +35,13 @@ interface ActivitiesService {
      * This call is for liking an activity
      */
     @POST("/activitats/likedActivities")
-    fun likeActivity(@Body join: JoInActivity): Call<ResponseBody>
+    fun likeActivity(@Body join: LikeActivity): Call<ResponseBody>
 
     /**
      * This call is for diliking an activity
      */
     @DELETE("/activitats/likedActivities")
-    fun dislikeActivity(@Body join: JoInActivity): Call<ResponseBody>
+    fun dislikeActivity(@Body join: LikeActivity): Call<ResponseBody>
 
     /**
      * This call is for joining an activity

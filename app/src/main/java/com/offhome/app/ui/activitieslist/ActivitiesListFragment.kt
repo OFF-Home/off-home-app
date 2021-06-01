@@ -109,12 +109,12 @@ class ActivitiesListFragment : Fragment() {
                             }
                         }
                     }
+                    likedList.clear()
                     for (item in activitiesList) {
                         //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                        likedActivitiesList?.forEachIndexed { index, element ->
-                            if (item == element) likedList[index] = true
-                            else likedList[index] = false
-                        }
+                        val found = likedActivitiesList?.find { element -> element == item}
+                        if (found == item) likedList.add(true)
+                        else likedList.add(false)
                     }
                     // stub ferran
                     // activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))

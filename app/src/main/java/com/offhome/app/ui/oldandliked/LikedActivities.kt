@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import java.util.ArrayList
@@ -49,8 +50,10 @@ class LikedActivities : AppCompatActivity() {
 
         likedActivitiesViewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             this, Observer {
-                likedActivitiesList = it as MutableList<ActivityFromList>
-                likedActivitiesListAdapter.setData(likedActivitiesList)
+                if (it is Result.Success) {
+                    likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    likedActivitiesListAdapter.setData(likedActivitiesList)
+                }
             }
         )
 

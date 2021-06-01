@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import java.util.*
@@ -48,8 +49,10 @@ class OldActivities : AppCompatActivity() {
         oldActivitiesViewModel.getOldActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             this,
             Observer {
-                oldActivitiesList = it as MutableList<ActivityFromList>
-                oldActivitiesListAdapter.setData(oldActivitiesList)
+                if (it is Result.Success) {
+                    oldActivitiesList = it.data as MutableList<ActivityFromList>
+                    oldActivitiesListAdapter.setData(oldActivitiesList)
+                }
             }
         )
     }

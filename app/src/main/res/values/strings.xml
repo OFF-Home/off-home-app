@@ -448,4 +448,6 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="done_button">DONE!</string>
     <string name="wear_mask">Always wear your mask covering nose and mouth.</string>
     <string name="wash_hands">Wash your hands before and after an activity.</string>
+    <string name="suggested">Suggested</string>
+    <string name="all_activities">All</string>
 </resources>

@@ -47,7 +47,7 @@
         <activity android:name=".ui.oldandliked.LikedActivities" />
         <activity
             android:name=".ui.chats.singleChat.SingleChatActivity"
-            android:parentActivityName=".MainActivity" />
+            android:parentActivityName=".ui.infoactivity.InfoActivity" />
         <activity
             android:name=".ui.inviteChoosePerson.InviteActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />

@@ -14,8 +14,7 @@
         android:layout_marginStart="17dp"
         android:layout_marginTop="21dp"
         android:text="@string/what_is_everyone_doing"
-        android:textColor="@color/black"
-        android:textSize="17dp"
+        android:textSize="17sp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
@@ -39,9 +38,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="17dp"
-        android:text="Suggested"
-        android:textColor="@color/black"
-        android:textSize="17dp"
+        android:text="@string/suggested"
+        android:textSize="17sp"
         android:textStyle="italic"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/RecyclerViewExploreFriendActivities" />

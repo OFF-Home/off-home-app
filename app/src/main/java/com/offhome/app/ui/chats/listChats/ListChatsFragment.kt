@@ -10,6 +10,7 @@ import android.widget.Toast
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ChatInfo
@@ -48,6 +49,7 @@ class ListChatsFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this, SingleChatViewModelFactory()).get(ListChatsViewModel::class.java)
+        adapter = ListChatsRecyclerViewAdapter(requireActivity())
         val recycler = requireView().findViewById<RecyclerView>(R.id.listChats)
         recycler.layoutManager = LinearLayoutManager(context)
         recycler.adapter = adapter
@@ -74,7 +76,7 @@ class ListChatsFragment : Fragment() {
         viewModel.getInfoUser(uid).observe(viewLifecycleOwner, {
             if (it is Result.Success) {
                 chats[index].name = it.data.username
-                chats[index].image = it.data.image
+                chats[index].image = Constants().BASE_URL + "upload/userimageget/" + it.data.username
                 adapter.setData(chats)
             }
         })

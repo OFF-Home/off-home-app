@@ -67,7 +67,7 @@ class ListChatsRecyclerViewAdapter(private val context: Context) : RecyclerView.
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val item = listChats[position]
         holder.textViewName.text = item.name
-        Glide.with(holder.mView.context).load(item.image).centerCrop().into(holder.imageViewIcon)
+        Glide.with(holder.mView.context).load(item.image).error(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewIcon)
 
         with(holder.chat) {
             tag = item

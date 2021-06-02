@@ -4,8 +4,10 @@ package com.offhome.app
 
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.Category
 import com.offhome.app.data.retrofit.CategoriesClient
+import java.io.IOException
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,21 +28,22 @@ class CategoryRepository {
      * It gets all the categories
      * @return the mutable livedata list of categories
      */
-    fun getAll(): MutableLiveData<List<Category>> {
-        if (categories == null) categories = MutableLiveData<List<Category>>()
+    fun getAll(): MutableLiveData<Result<List<Category>>> {
+        val result = MutableLiveData<Result<List<Category>>>()
         val call: Call<List<Category>> = categoriesService!!.getAllCategories()
         call.enqueue(object : Callback<List<Category>> {
             override fun onResponse(call: Call<List<Category>>, response: Response<List<Category>>) {
                 if (response.isSuccessful) {
-                    categories!!.value = response.body()
-                }
+                    result.value = Result.Success(response.body() as List<Category>)
+                } else result.value = Result.Error(IOException("Error getting info"))
             }
 
             override fun onFailure(call: Call<List<Category>>, t: Throwable) {
                 // Error en la connexion
                 Log.d("GET", "Error getting info")
+                result.value = Result.Error(IOException("Error getting info"))
             }
         })
-        return categories as MutableLiveData<List<Category>>
+        return result
     }
 }

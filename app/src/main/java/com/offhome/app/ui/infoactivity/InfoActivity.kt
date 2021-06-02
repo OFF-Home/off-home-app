@@ -47,6 +47,7 @@ import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -99,7 +100,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var username: String
 
     private lateinit var groupChat: FloatingActionButton
-    private var nRemainingParticipants: Int = 12
+    private var nRemainingParticipants: Int = 0
 
     private lateinit var btnJoin: Button
     private lateinit var datahora: TextView
@@ -107,6 +108,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var capacity: TextView
     private lateinit var description: TextView
     private lateinit var layout: View
+
+    private var nInviteAchievements:Int? = null
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -269,61 +272,74 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
         btnJoin.setOnClickListener {
             joined = !joined
-            if (joined) {
-                btnJoin.text = "JOINED"
-                if (date < currentTime) reviewpossible()
-                else cantreview()
-                viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "You have joined the activity!") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
-                                    .setAction(getString(R.string.go_chat)) {
-                                        displayChatGroup()
+            viewModel.getCreatorInfo(activity.usuariCreador).observe(this, {
+                if (it is Result.Success) {
+                    if (joined) {
+                        btnJoin.text = getString(R.string.joined)
+                        if (date < currentTime) reviewpossible()
+                        else cantreview()
+                        viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni, it.data.uid).observe(
+                            this,
+                            {
+                                if (it is Result.Success) {
+                                    val snackbar: Snackbar = Snackbar
+                                        .make(layout, "Successfully joined!", Snackbar.LENGTH_LONG)
+                                        .setAction(getString(R.string.go_chat)) {
+                                            displayChatGroup()
+                                        }
+                                    snackbar.show()
+                                    val participants = ArrayList<UserUsername>()
+                                    val actualParticipants = viewModel.participants.value
+                                    if (actualParticipants is Result.Success) {
+                                        for (item in actualParticipants.data) {
+                                            if (item.username != SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) participants.add(item)
+                                        }
                                     }
-                                snackbar.show()
-                                val participants = ArrayList<UserUsername>()
-                                val actualParticipants = viewModel.participants.value
-                                for (item in actualParticipants!!) {
-                                    if (item.username != "emma") participants.add(item)
+                                    participants.add(UserUsername(SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)
+                                        .toString()))
+                                    participantsAdapter.setData(participants)
+                                    btnAddCalendar.visibility = View.VISIBLE
+                                    Log.d("join, response", "it.data = "+ it.data.toString())
+                                    Log.d("join, response", "it.data.result.size = "+ it.data.result.size)
+
+                                    if (it.data.result.isNotEmpty()) {
+                                        Log.d("join, response", "entro a isNotEmpty")
+                                        val auxSnack = AuxShowAchievementSnackbar()
+                                        auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
+                                    }
+                                }else if (it is Result.Error) {
+                                    Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                                 }
-                                participants.add(UserUsername("emma"))
-                                participantsAdapter.setData(participants)
-                                btnAddCalendar.visibility = View.VISIBLE
-                            } else {
-                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             }
-                        }
-                    }
-                )
-            } else {
-                btnJoin.text = "JOIN"
-                cantreview()
-                viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "You have left the activity :(") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
-                                snackbar.show()
-                                val participants = ArrayList<UserUsername>()
-                                val actualParticipants = viewModel.participants.value
-                                for (item in actualParticipants!!) {
-                                    participants.add(item)
+                        )
+                    } else {
+                        btnJoin.text = getString(R.string.join)
+                        cantreview()
+                        viewModel.deleteUsuari(activity.usuariCreador, activity.dataHoraIni, it.data.uid).observe(
+                            this,
+                            {
+                            if (it is Result.Success) {
+                                    val snackbar: Snackbar = Snackbar
+                                        .make(layout, "You left :( !", Snackbar.LENGTH_LONG)
+                                    snackbar.show()
+                                    val participants = ArrayList<UserUsername>()
+                                    val actualParticipants = viewModel.participants.value
+                                    if (actualParticipants is Result.Success) {
+                                        for (item in actualParticipants.data) {
+                                            if (item.username != SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) participants.add(item)
+                                        }
+                                    }
+                                    participants.remove(UserUsername("emma"))
+                                    participantsAdapter.setData(participants)
+                                    btnAddCalendar.visibility = View.GONE
+                                } else if (it is Result.Error) {
+                                    Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                                 }
-                                participants.remove(UserUsername("emma"))
-                                participantsAdapter.setData(participants)
-                                btnAddCalendar.visibility = View.GONE
-                            } else {
-                                Toast.makeText(this, it, Toast.LENGTH_LONG).show()
                             }
-                        }
+                        )
                     }
-                )
-            }
+                }
+            })
         }
         addToCalendar()
 
@@ -357,27 +373,25 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun uploadParticipants(date: Date, currentTime: Date) {
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
-            this
-        ) {
-            if (it != null) {
-                participantsAdapter.setData(it)
-                // mirar si el usario ya es participante de la actividad
-                for (item in it) {
-                    //if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
-                    if (item.username == "emma") joined = true
+            this,
+            {
+                if (it is Result.Success) {
+                    participantsAdapter.setData(it.data)
+                    for (item in it.data) {
+                        if (item.username == SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME)) joined = true
+                    }
+                    // mirar si el usario ya es participante de la actividad
+                    if (joined) btnJoin.text = getString(R.string.joined)
+
+                    // aquest observer salta?
+                    Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.data.size.toString())
+
+                    nRemainingParticipants = activity.maxParticipant - it.data.size
+                    Log.d(
+                        "getParticipants",
+                        "nRemainingParticipants = " + nRemainingParticipants.toString()
+                    )
                 }
-                //si lo es, cambiar el texto a joined
-                if (joined) btnJoin.text = "JOINED"
-
-                // aquest observer salta?
-                Log.d("getParticipants", "arribo al InfoActivity::getParticipants.observe i passo el setData. A més, it.size = " + it.size.toString())
-
-                nRemainingParticipants = activity.maxParticipant - it.size
-                Log.d(
-                    "getParticipants",
-                    "nRemainingParticipants = " + nRemainingParticipants.toString()
-                )
-                enableDisable(date, currentTime)
             }
         }
     }
@@ -459,10 +473,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     estrelles.getRating().toInt(),
                     comment.text.toString()
                 ).observe(
-                    this
-                ) {
-                    if (it != " ") {
-                        if (it == "Your rating has been saved") {
+                    this,
+                    {
+                        if (it is Result.Success) {
                             val snackbar: Snackbar = Snackbar
                                 .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
                             snackbar.show()
@@ -484,6 +497,14 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                     reviewsAdapter.setData(comentaris)
 
                                 }
+                            //achievements
+                            Log.d("rate, response", "it.data = "+ it.data.toString())
+                            Log.d("rate, response", "it.data.result.size = "+ it.data.result.size)
+
+                            if (it.data.result.isNotEmpty()) {
+                                Log.d("rate, response", "entro a isNotEmpty")
+                                val auxSnack = AuxShowAchievementSnackbar()
+                                auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
                         }
                     }
@@ -615,6 +636,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.share_outside_app_btn) {
             if (this::activity.isInitialized) {
+
+
                 val linkGenerator = AuxGenerateDynamicLink()
                 val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(
                     ActivityDataForInvite(

@@ -1,5 +1,5 @@
 package com.offhome.app.data.model
 
 data class DarkModeUpdate(
-    val darkmode: Boolean,
+    val darkmode: Int,
 )

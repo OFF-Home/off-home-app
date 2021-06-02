@@ -58,14 +58,14 @@ class CategoriesFragment : Fragment() {
             }
         }
         categoriesViewModel.getCategories().observe(
-            viewLifecycleOwner
-        ) {
-            if (it != null) {
-                categories = it
-                categoryAdapter.setData(categories)
+            viewLifecycleOwner,
+            {
+                if (it is Result.Success) {
+                    categories = it.data
+                    categoryAdapter.setData(categories)
+                }
             }
-        }
-
+        )
         return view
     }
 

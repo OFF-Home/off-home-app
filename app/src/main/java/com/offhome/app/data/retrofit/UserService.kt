@@ -40,8 +40,8 @@ interface UserService {
     @POST("/users/{username}/follow")
     fun follow(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
-    @HTTP(method = "DELETE", path = "/users/{username}/unfollow", hasBody = true)
-    fun stopFollowing(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
+    @DELETE("/users/{username}/unfollow")
+    fun stopFollowing(@Path("username") currentUser: String, @Query("followed") followed: String): Call<ResponseBody>
 
     // in progress
     // retornava nomes un. canviaran quna puguin a set
@@ -83,8 +83,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @POST("/tags/{email}/delete")
-    fun deleteTag(@Path("email") email: String, @Body nomTag: NomTag): Call<ResponseBody>
+    @DELETE("/tags/{username}/delete/{nomTag}")
+    fun deleteTag(@Path("username") email: String, @Path("nomTag") nomTag: String): Call<ResponseBody>
 
     /**
      * sets a user's username in the back-end database
@@ -106,8 +106,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @PUT("users/{username}/update")
-    fun setDescription(@Path("username") email: String, @Body description: UserDescription): Call<ResponseBody> //potser caldra utilitzar UserDescripcioCat
+    @PUT("users/{useremail}/update")
+    fun setDescription(@Path("useremail") email: String, @Body description: UserDescription): Call<ResponseBody> //potser caldra utilitzar UserDescripcioCat
 
     @GET("/users/{username}")
     fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>
@@ -123,4 +123,7 @@ interface UserService {
 
     @POST("/users/{username}/update")
     fun updateDarkMode(@Path("username") username: String, @Body dm: DarkModeUpdate): Call<ResponseBody>
+
+    @GET("/assoliments")
+    fun getAchievements(@Query("useremail") useremail: String): Call<List<AchievementData>>
 }

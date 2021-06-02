@@ -47,4 +47,8 @@ class ExploreViewModel : ViewModel() {
     fun getFriendsActivities() {
         friendsActivities = activitiesRepo.getFriendsActivities(loggedUserEmail)
     }
+
+    fun getLikedActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        return activitiesRepo.getLikedAct(userEmail)
+    }
 }

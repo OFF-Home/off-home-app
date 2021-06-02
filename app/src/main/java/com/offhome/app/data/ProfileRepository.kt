@@ -5,15 +5,10 @@ package com.offhome.app.data
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.FollowUnfollow
-import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
@@ -60,7 +55,8 @@ class ProfileRepository {
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
-    var updatedDarkMode: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
+    var updatedDarkMode = MutableLiveData<Result<String>>()
+    val achievementsSuccess = MutableLiveData<Result<List<AchievementData>>>()
 
     /**
      * obtains ProfileInfo from the lower level
@@ -99,24 +95,31 @@ class ProfileRepository {
      * @param email key of the user whose activities are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>> {
-        if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
+    fun getUserActivities(email: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        val result = MutableLiveData<Result<List<ActivityFromList>>>()
 
         val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities!!.value = response.body()
-                    Log.d("response", "getUserActivities response: is successful")
+                    if (response.code() == 200) {
+                        result.value = Result.Success(response.body() as List<ActivityFromList>)
+                        Log.d("response", "getUserActivities response: is successful")
+                    }
+                    else {
+                        result.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
                 } else {
+                    result.value = Result.Error(IOException("getUserActivities response: unsuccessful"))
                     Log.d("response", "getUserActivities response: unsuccessful")
                 }
             }
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                result.value = Result.Error(IOException("Error getting getUserActivities. communication failure (no response)"))
                 Log.d("GET", "Error getting getUserActivities. communication failure (no response)")
             }
         })
-        return activities as MutableLiveData<List<ActivityFromList>>
+        return result
     }
 
     /**
@@ -250,7 +253,7 @@ class ProfileRepository {
     fun setDescription(email: String, newDescription: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
-        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(descripcio = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -281,7 +284,7 @@ class ProfileRepository {
      */
     fun deleteTag(email: String, tag: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
-        val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
+        val call: Call<ResponseBody> = userService!!.deleteTag(email, /*NomTag(nomTag =*/ tag/*)*/)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -381,21 +384,23 @@ class ProfileRepository {
      * @param email is the email of the email the user to follow
      * @returns the MutableLiveData with the response
      */
-    fun follow(currentUser: String, email: String): LiveData<String> {
-        val result = MutableLiveData<String>()
+    fun follow(currentUser: String, email: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
 
         val call: Call<ResponseBody> = userService!!.follow(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()?.string()
+                    result.value = Result.Success("Followed")
                     Log.d("success response", "follow: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("follow: got a response indicating failure"))
                     Log.d("failure response", "follow: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                result.value = Result.Error(IOException("follow: got a response indicating failure"))
                 Log.d("GET", "follow: Error getting info. communication failure (no response)")
             }
         })
@@ -408,21 +413,23 @@ class ProfileRepository {
      * @param email is the email of the email the user to unfollow
      * @returns the MutableLiveData with the response
      */
-    fun stopFollowing(currentUser: String, email: String): LiveData<String> {
-        val result = MutableLiveData<String>()
+    fun stopFollowing(currentUser: String, email: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
 
-        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, FollowUnfollow(email))
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()?.string()
+                    result.value = Result.Success("Stop following")
                     Log.d("success response", "stopFollowing: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("stopFollowing: got a response indicating failure"))
                     Log.d("failure response", "stopFollowing: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                result.value = Result.Error(IOException("stopFollowing: got a response indicating failure"))
                 Log.d("GET", "stopFollowing: Error getting info. communication failure (no response)")
             }
         })
@@ -434,21 +441,23 @@ class ProfileRepository {
      * @param currentUser is the user we get the info of
      * @returns the MutableLiveData with the response
      */
-    fun following(currentUser: String): LiveData<List<FollowingUser>> {
-        val result = MutableLiveData<List<FollowingUser>>()
+    fun following(currentUser: String): MutableLiveData<Result<List<FollowingUser>>> {
+        val result = MutableLiveData<Result<List<FollowingUser>>>()
 
         val call: Call<List<FollowingUser>> = userService!!.following(currentUser)
         call.enqueue(object : Callback<List<FollowingUser>> {
             override fun onResponse(call: Call<List<FollowingUser>>, response: Response<List<FollowingUser>>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    result.value = Result.Success(response.body() as List<FollowingUser>)
                     Log.d("success response", "following: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("following: got a response indicating failure"))
                     Log.d("failure response", "following: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<List<FollowingUser>>, t: Throwable) {
+                result.value = Result.Error(IOException("following: got a response indicating failure"))
                 Log.d("GET", "following: Error getting info. communication failure (no response)")
             }
         })
@@ -553,13 +562,13 @@ class ProfileRepository {
         return accountDeletedSuccessfully!!
     }
 
-    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
-        val call: Call<ResponseBody> = userService!!.deleteAccount(username)
+    fun updateDarkMode(username: String, dm: DarkModeUpdate): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.updateDarkMode(username, dm)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    updatedDarkMode!!.value = Result.Success("Account theme updated")
+                    updatedDarkMode!!.value = Result.Success("Account theme updated successfully")
                 } else {
                     updatedDarkMode!!.value = Result.Error(IOException("updated account response unsuccessful with DB"))
                 }
@@ -570,4 +579,24 @@ class ProfileRepository {
         })
         return updatedDarkMode!!
     }
+
+    fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
+        val call: Call<List<AchievementData>> = userService!!.getAchievements(userEmail)
+
+        call.enqueue(object : Callback<List<AchievementData>> {
+            override fun onResponse(call: Call<List<AchievementData>>, response: Response<List<AchievementData>>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) achievementsSuccess.value = Result.Success(response.body()!!)
+                    else achievementsSuccess.value = Result.Success(ArrayList<AchievementData>())
+                } else {
+                    achievementsSuccess.value = Result.Error(IOException("get achievements response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<List<AchievementData>>, t: Throwable) {
+                achievementsSuccess.value = Result.Error(IOException("Error getting user achievements. communication failure (no response DB)"))
+            }
+        })
+        return achievementsSuccess
+    }
+
 }

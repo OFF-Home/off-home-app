@@ -205,8 +205,8 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share" translatable="false">btn_share</string>
-    <string name="what_is_everyone_doing" translatable="false">What is everyone doing?</string>
-    <string name="no_activities_friends_found" translatable="false">No activities from friends found!</string>
+    <string name="what_is_everyone_doing">What is everyone doing?</string>
+    <string name="no_activities_friends_found">No activities from friends found!</string>
     <string name="valoracions">Add you rating and review</string>
     <string name="comments">Reviews</string>
     <string name="reviewnotpossible">You can\'t review this activity</string>
@@ -230,7 +230,7 @@
     <string name="error_no_calendar">No Calendar found on device!</string>
     <string name="saved_to_calendar">Succesfully saved into calendar!</string>
     <string name="share_activity_message_details" translatable="false"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
-    <string name="error_getting_chats" translatable="false">Error getting chats!</string>
+    <string name="error_getting_chats">Error getting chats!</string>
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
     <string name="couldnt_retrieve_link_activity">Couldn\'t retrieve that activity. Please make sure the link is correct</string>
     <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
@@ -446,7 +446,7 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="meet_people">MEET PEOPLE</string>
     <string name="maintain_distance">Maintain the minnimum safe distance with other participants.</string>
     <string name="covid_free">COVID FREE</string>
-    <string name="finish" translatable="false">FINISH</string>
+    <string name="finish">FINISH</string>
     <string name="done_button">DONE!</string>
     <string name="wear_mask">Always wear your mask covering nose and mouth.</string>
     <string name="wash_hands">Wash your hands before and after an activity.</string>

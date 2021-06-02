@@ -165,4 +165,8 @@
     <string name="joined">¡APUNTADO!</string>
     <string name="couldnt_like_activity">Error al dar like a la actividad</string>
     <string name="couldnt_dislike_activity">Error al quitar like a la actividad</string>
+    <string name="what_is_everyone_doing">¿Qué hace la gente?</string>
+    <string name="no_activities_friends_found">Actividades de amigos no encontradas</string>
+    <string name="error_getting_chats">Error obteniendo chats</string>
+    <string name="finish">¡ACABAR!</string>
 </resources>

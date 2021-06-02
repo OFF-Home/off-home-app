@@ -199,7 +199,7 @@ class SingleChatActivity : AppCompatActivity() {
             this@SingleChatActivity,{
                 if (it is Result.Success) {
                     email = it.data.email
-                    val notification = SendNotification(email, message.toString(), userName)
+                    val notification = SendNotification(email, message.toString(), SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString())
                     viewModel.sendNotification(notification)
                 }
                 else if (it is Result.Error) Log.d("NOTIFICATION", "Notification cannot be sent")

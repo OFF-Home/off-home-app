@@ -2,28 +2,24 @@ package com.offhome.app.ui.notifications
 
 
 
-import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
-import android.media.RingtoneManager
-import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
-import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.data.model.Message
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
-import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**
  * Base class for receiving messages from Firebase Cloud Messaging.
  */
 class MyFirebaseMessaging : FirebaseMessagingService() {
-    private lateinit var titol: String
-    private lateinit var message: String
+    lateinit var titol: String
+    lateinit var message: String
     var CHANNEL_ID = "CHANNEL"
 
     private lateinit var manager: NotificationManager
@@ -34,7 +30,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
         titol = remotemessage.data.get("titol").toString()
-        message = remotemessage.data.get("message").toString()
+        message = (remotemessage.data.get("message") as Message).message
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -42,17 +38,10 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
     }
 
     /**
-     * Called when a new token for the default Firebase project is generated.
-     */
-    override fun onNewToken(p0: String) {
-        super.onNewToken(p0)
-    }
-
-    /**
      * Called when a notification is going to be send
      */
     private fun sendNotification() {
-        val intent = Intent(applicationContext, SingleChatActivity::class.java)
+        val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
         intent.putExtra("titol", titol)
         intent.putExtra("message", message)

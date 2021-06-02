@@ -16,13 +16,14 @@ import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
+import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**
  * Base class for receiving messages from Firebase Cloud Messaging.
  */
 class MyFirebaseMessaging : FirebaseMessagingService() {
-    lateinit var titol: String
-    lateinit var message: String
+    private lateinit var titol: String
+    private lateinit var message: String
     var CHANNEL_ID = "CHANNEL"
 
     private lateinit var manager: NotificationManager
@@ -32,12 +33,12 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
      */
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
-        titol = remotemessage.data.get("titol")!!
-        message = remotemessage.data.get("message")!!
+        titol = remotemessage.data.get("titol").toString()
+        message = remotemessage.data.get("message").toString()
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        //  sendNotification()
+        sendNotification()
     }
 
     /**
@@ -51,7 +52,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
      * Called when a notification is going to be send
      */
     private fun sendNotification() {
-        val intent = Intent(applicationContext, GroupChatActivity::class.java)
+        val intent = Intent(applicationContext, SingleChatActivity::class.java)
 
         intent.putExtra("titol", titol)
         intent.putExtra("message", message)

@@ -17,6 +17,7 @@ import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
 import android.text.Layout
+import android.util.Log
 import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
@@ -27,6 +28,7 @@ import androidx.core.view.marginLeft
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
 import com.google.android.material.snackbar.Snackbar
+import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
@@ -299,14 +301,20 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                     this, Observer@{ it1 ->
                         if (it1 is Result.Success) {
                             Toast.makeText(this,/* it1.data*/ getString(R.string.activity_created), Toast.LENGTH_LONG).show()
-                            
-                            //espero q si no és "OK" sigui un trophy
-                            if (it1.data != "OK") {
+
+                            Log.d("create, response", "it1.data = "+ it1.data.toString())
+                            Log.d("create, response", "it1.data.result.size = "+ it1.data.result.size)
+
+                            val intent = Intent(this, MainActivity::class.java)
+
+                            if (it1.data.result.isNotEmpty()) {
+                                Log.d("create, response", "entro a isNotEmpty")
                                 val auxSnack = AuxShowAchievementSnackbar()
-                                auxSnack.showAchievementSnackbar(layout, this, it1.data)
+                                auxSnack.showAchievementSnackbarObject(layout, this, it1.data.result)
+                                //chapuzilla pq els snackbars es queden en una activity. passo les dades a la seguent activity i ella ho mostra.
+                                intent.putExtra("achievement_list", GsonBuilder().create().toJson(it1.data))
                             }
-                            
-                            startActivity(Intent(this, MainActivity::class.java))
+                            startActivity(intent)
                         }
                         else if (it1 is Result.Error) Toast.makeText(this, it1.exception.message, Toast.LENGTH_LONG).show()
                     }

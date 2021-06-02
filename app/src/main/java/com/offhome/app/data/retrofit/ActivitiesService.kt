@@ -3,6 +3,7 @@ package com.offhome.app.data.retrofit
 
 
 import com.offhome.app.data.model.*
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -101,4 +102,7 @@ interface ActivitiesService {
 
     @GET ("")//TODO
     fun getInviteAchievements(email:String): Call<String>
+
+    @POST("activitats/create/{usuariCreador}")
+    fun addActivityFerran(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
 }

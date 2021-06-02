@@ -7,6 +7,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.ui.explore.NoActivitiesException
 import com.offhome.app.data.model.*
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
 import java.io.IOException
@@ -38,6 +39,8 @@ class ActivitiesRepository {
     private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var singleActivity: MutableLiveData<ActivityFromList>? = null
+
+    private var achievementSet = MutableLiveData<Result<AchievementList>>()
 
     /**
      * This function calls the [activitiesService] in order to get all the activities in a category
@@ -126,7 +129,7 @@ class ActivitiesRepository {
                 response: Response<ResponseBody>
             ) {
                 if (response.isSuccessful) {
-                    mutableLiveData?.value = Result.Success(/*"Activity created!"*/response.body().toString())
+                    mutableLiveData?.value = Result.Success(response.body().toString())
                 } else mutableLiveData?.value =
                    Result.Error(IOException("There has been an error and the activity cannot be created"))
             }
@@ -136,6 +139,40 @@ class ActivitiesRepository {
             }
         })
         return mutableLiveData as MutableLiveData<Result<String>>
+    }
+
+    fun addActivityFerran(newActivity: ActivityData): MutableLiveData<Result<AchievementList>> {
+        Log.d("addActivityFerran", "entrem")
+        val result = MutableLiveData<Result<AchievementList>>()
+
+        val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
+            activitiesService?.addActivityFerran(
+                emailCreator = it,
+                activitydata = newActivity
+            )
+        }
+        call!!.enqueue(object : Callback<AchievementList> {
+            override fun onResponse(
+                call: Call<AchievementList>,
+                response: Response<AchievementList>
+            ) {
+                Log.d("addActivityFerran", "we got a response")
+                if (response.isSuccessful) {
+                    Log.d("addActivityFerran", "response successful")
+                    result.value = Result.Success(response.body()!!)
+                } else {
+                    Log.d("addActivityFerran", "response unsuccessful")
+                    result.value = Result.Error(IOException("addActivityFerran Error: unsuccessful"))
+                }
+            }
+
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
+                Log.d("addActivityFerran", "no response!")
+                result.value = Result.Error(IOException("addActivityFerran Error: failure", t))
+            }
+        })
+        Log.d("addActivityFerran", "passo el call.enqueue")
+        return result
     }
 
     /**

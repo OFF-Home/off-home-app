@@ -413,7 +413,7 @@ class ProfileRepository {
     fun stopFollowing(currentUser: String, email: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
-        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, FollowUnfollow(email))
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

@@ -40,8 +40,8 @@ interface UserService {
     @POST("/users/{username}/follow")
     fun follow(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
 
-    @HTTP(method = "DELETE", path = "/users/{username}/unfollow", hasBody = true)
-    fun stopFollowing(@Path("username") currentUser: String, @Body followed: FollowUnfollow): Call<ResponseBody>
+    @DELETE("/users/{username}/unfollow")
+    fun stopFollowing(@Path("username") currentUser: String, @Query("followed") followed: String): Call<ResponseBody>
 
     // in progress
     // retornava nomes un. canviaran quna puguin a set

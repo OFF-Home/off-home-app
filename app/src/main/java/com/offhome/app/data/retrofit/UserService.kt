@@ -83,8 +83,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @DELETE("/tags/{username}/delete")
-    fun deleteTag(@Path("username") email: String, @Body nomTag: NomTag): Call<ResponseBody>
+    @DELETE("/tags/{username}/delete/{nomTag}")
+    fun deleteTag(@Path("username") email: String, @Path("nomTag") nomTag: String): Call<ResponseBody>
 
     /**
      * sets a user's username in the back-end database

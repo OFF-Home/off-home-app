@@ -284,7 +284,7 @@ class ProfileRepository {
      */
     fun deleteTag(email: String, tag: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
-        val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
+        val call: Call<ResponseBody> = userService!!.deleteTag(email, /*NomTag(nomTag =*/ tag/*)*/)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

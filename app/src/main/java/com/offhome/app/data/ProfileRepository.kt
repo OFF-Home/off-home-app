@@ -569,7 +569,7 @@ class ProfileRepository {
     }
 
     fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
-        val call: Call<List<AchievementData>> = userService!!.getAchievements("ferranib00@gmail.com")
+        val call: Call<List<AchievementData>> = userService!!.getAchievements(userEmail)
 
         call.enqueue(object : Callback<List<AchievementData>> {
             override fun onResponse(call: Call<List<AchievementData>>, response: Response<List<AchievementData>>) {

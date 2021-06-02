@@ -29,9 +29,9 @@ import com.offhome.app.data.model.UserInfo
 class OtherProfileViewModel : ViewModel() {
     private lateinit var userInfo: UserInfo
     private lateinit var userTags: List<TagData>
-    var listFollowing: MutableLiveData<List<FollowingUser>> = MutableLiveData()
-    var isFollowing: MutableLiveData<Boolean> = MutableLiveData(false)
-    var followResult: MutableLiveData<String> = MutableLiveData()
+    var listFollowing = MutableLiveData<Result<List<FollowingUser>>>()
+    var isFollowingValue = MutableLiveData(false)
+    var followResult = MutableLiveData<Result<String>>()
     private var repository = ProfileRepository()
     private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
@@ -43,6 +43,11 @@ class OtherProfileViewModel : ViewModel() {
     fun setUserInfo(uinfo: UserInfo) {
         userInfo = uinfo
     }
+
+    fun updateFollowers(num: Int) {
+        userInfo.followers += num
+    }
+
     /**
      * It gets the info of the user
      */
@@ -63,34 +68,30 @@ class OtherProfileViewModel : ViewModel() {
     /**
      * It calls the repository to get if one user follows the other
      */
-    fun isFollowing(): List<FollowingUser>? {
-        listFollowing = repository.following(userInfo.email) as MutableLiveData<List<FollowingUser>>
-        return listFollowing.value
+    fun isFollowing(): MutableLiveData<Result<List<FollowingUser>>> {
+        listFollowing = repository.following(userInfo.email)
+        return listFollowing
     }
 
     /**
      * It calls the repository to start following a new user
      */
-    fun follow() {
-        followResult.value = repository.follow(currentUser, userInfo.email).value
-        isFollowing.value = true
-        userInfo.followers += 1
+    fun follow(): MutableLiveData<Result<String>> {
+        return repository.follow(currentUser, userInfo.email)
     }
 
     /**
      * It calls the repository to stop following a user
      */
-    fun stopFollowing() {
-        followResult.value = repository.stopFollowing(currentUser, userInfo.email).value
-        isFollowing.value = false
-        userInfo.followers -= 1
+    fun stopFollowing(): MutableLiveData<Result<String>> {
+        return repository.stopFollowing(currentUser, userInfo.email)
     }
 
     /**
      * It sets if it is following or not
      */
     fun setFollowing(b: Boolean) {
-        isFollowing.value = b
+        isFollowingValue.value = b
     }
 
     fun getAchievements(): MutableLiveData<Result<List<AchievementData>>> {

@@ -13,8 +13,11 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.recyclerview.selection.ItemDetailsLookup
 import androidx.recyclerview.selection.SelectionTracker
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.data.model.UserSummaryInfo
 import java.util.*
 import kotlin.collections.ArrayList
@@ -77,6 +80,9 @@ class UsersListRecyclerViewAdapter(private val context: Context?) : RecyclerView
         fun bind(value: UserSummaryInfo, isActivated: Boolean = false) {
             textViewUsername.text = value.username
             textViewEmail.text = value.email
+            Glide.with(context!!).load(Constants().BASE_URL + "upload/userimageget/" + value.username).placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().diskCacheStrategy(
+                DiskCacheStrategy.NONE)
+                .skipMemoryCache(true).into(imageViewProfilePic)
             itemView.isActivated = isActivated // lol?
         }
     }

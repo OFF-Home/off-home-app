@@ -162,6 +162,7 @@
     <string name ="activity_created">¡Actividad creada!</string>
     <string name="suggested">Sugerido</string>
     <string name="all_activities">Todas</string>
+    <string name="joined">¡APUNTADO!</string>
     <string name="couldnt_like_activity">Error al dar like a la actividad</string>
     <string name="couldnt_dislike_activity">Error al quitar like a la actividad</string>
 </resources>

@@ -382,21 +382,23 @@ class ProfileRepository {
      * @param email is the email of the email the user to follow
      * @returns the MutableLiveData with the response
      */
-    fun follow(currentUser: String, email: String): LiveData<String> {
-        val result = MutableLiveData<String>()
+    fun follow(currentUser: String, email: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
 
         val call: Call<ResponseBody> = userService!!.follow(currentUser, FollowUnfollow(email))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()?.string()
+                    result.value = Result.Success("Followed")
                     Log.d("success response", "follow: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("follow: got a response indicating failure"))
                     Log.d("failure response", "follow: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                result.value = Result.Error(IOException("follow: got a response indicating failure"))
                 Log.d("GET", "follow: Error getting info. communication failure (no response)")
             }
         })
@@ -409,21 +411,23 @@ class ProfileRepository {
      * @param email is the email of the email the user to unfollow
      * @returns the MutableLiveData with the response
      */
-    fun stopFollowing(currentUser: String, email: String): LiveData<String> {
-        val result = MutableLiveData<String>()
+    fun stopFollowing(currentUser: String, email: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
 
-        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, FollowUnfollow(email))
+        val call: Call<ResponseBody> = userService!!.stopFollowing(currentUser, email)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()?.string()
+                    result.value = Result.Success("Stop following")
                     Log.d("success response", "stopFollowing: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("stopFollowing: got a response indicating failure"))
                     Log.d("failure response", "stopFollowing: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                result.value = Result.Error(IOException("stopFollowing: got a response indicating failure"))
                 Log.d("GET", "stopFollowing: Error getting info. communication failure (no response)")
             }
         })
@@ -435,21 +439,23 @@ class ProfileRepository {
      * @param currentUser is the user we get the info of
      * @returns the MutableLiveData with the response
      */
-    fun following(currentUser: String): LiveData<List<FollowingUser>> {
-        val result = MutableLiveData<List<FollowingUser>>()
+    fun following(currentUser: String): MutableLiveData<Result<List<FollowingUser>>> {
+        val result = MutableLiveData<Result<List<FollowingUser>>>()
 
         val call: Call<List<FollowingUser>> = userService!!.following(currentUser)
         call.enqueue(object : Callback<List<FollowingUser>> {
             override fun onResponse(call: Call<List<FollowingUser>>, response: Response<List<FollowingUser>>) {
                 if (response.isSuccessful) {
-                    result.value = response.body()
+                    result.value = Result.Success(response.body() as List<FollowingUser>)
                     Log.d("success response", "following: got a response indicating success")
                 } else {
+                    result.value = Result.Error(IOException("following: got a response indicating failure"))
                     Log.d("failure response", "following: got a response indicating failure")
                 }
             }
 
             override fun onFailure(call: Call<List<FollowingUser>>, t: Throwable) {
+                result.value = Result.Error(IOException("following: got a response indicating failure"))
                 Log.d("GET", "following: Error getting info. communication failure (no response)")
             }
         })

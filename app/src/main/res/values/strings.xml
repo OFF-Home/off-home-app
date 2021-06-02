@@ -455,4 +455,5 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name ="activity_created">Activity created!</string>
     <string name="suggested">Suggested</string>
     <string name="all_activities">All</string>
+    <string name="joined">JOINED!</string>
 </resources>

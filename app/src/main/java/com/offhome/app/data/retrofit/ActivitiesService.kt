@@ -15,7 +15,11 @@ interface ActivitiesService {
      * This call is for creating a new activity
      */
     @POST("activitats/create/{usuariCreador}")
+    fun addActivityFerran(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
+
+    @POST("activitats/create/{usuariCreador}")
     fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
+
 
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
@@ -103,6 +107,4 @@ interface ActivitiesService {
     @GET ("")//TODO
     fun getInviteAchievements(email:String): Call<String>
 
-    @POST("activitats/create/{usuariCreador}")
-    fun addActivityFerran(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
 }

@@ -76,13 +76,14 @@ class OtherProfileActivity : AppCompatActivity() {
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
         btnFollowFollowing = findViewById(R.id.buttonFollow)
+        imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
         fragment =
             supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
 
         Glide.with(applicationContext)
-            .load(Constants().BASE_URL + "upload/userimageget/" + otherUser)
+            .load(Constants().BASE_URL + "upload/userimageget/" + otherUser.username)
             .placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop()
             .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
             .into(imageViewProfilePic)

@@ -234,6 +234,8 @@
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
     <string name="couldnt_retrieve_link_activity">Couldn\'t retrieve that activity. Please make sure the link is correct</string>
     <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
+    <string name="couldnt_like_activity">Error liking the activity</string>
+    <string name="couldnt_dislike_activity">Error disliking the activity</string>
     <string name="change_password">Change password</string>
     <string name="language">Language</string>
     <string name="notifications">Show notifications</string>

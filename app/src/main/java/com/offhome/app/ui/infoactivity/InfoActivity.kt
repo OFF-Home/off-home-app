@@ -209,7 +209,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         datahora.text = activity.dataHoraIni
 
         val capacity = findViewById<TextView>(R.id.textViewCapacity)
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" + activity.maxParticipant.toString()
 
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
@@ -404,7 +404,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun valoracioUsuari() {
         datahora.text = activity.dataHoraIni
         creator.text = getString(R.string.created_by) + activity.usuariCreador
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" +  activity.maxParticipant.toString()
         description.text = activity.descripcio
 
         // get the current date

@@ -11,14 +11,15 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import com.offhome.app.ui.oldandliked.LikedActivities
 import com.offhome.app.ui.oldandliked.OldActivities
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -40,7 +41,9 @@ class ProfileMyActivitiesFragment : Fragment() {
 
     private lateinit var profileVM: ProfileFragmentViewModel
     private var activitiesList: List<ActivityFromList> = ArrayList()
+    private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
+    private var likedList = ArrayList<Boolean>()
     lateinit var buttonold: Button
     lateinit var buttonliked: Button
 
@@ -67,6 +70,8 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         rotateArrowDrawables()
 
+        activitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
+
         buttonold = view.findViewById<Button>(R.id.buttonOlderActivities)
         buttonliked = view.findViewById<Button>(R.id.buttonLikedActivities)
 
@@ -84,7 +89,7 @@ class ProfileMyActivitiesFragment : Fragment() {
         }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context, activitiesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter
@@ -99,7 +104,7 @@ class ProfileMyActivitiesFragment : Fragment() {
                 Log.d("MyActivities", "my activities got to the fragment")
                 activitiesList = myActivitiesVM
 
-                activitiesListAdapter.setData(activitiesList)
+                activitiesListAdapter.setData(activitiesList, likedList)
                 // com que això ho he copiat nose si se li assigna un listener...
             }
         )

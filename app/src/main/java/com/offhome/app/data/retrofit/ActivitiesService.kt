@@ -34,6 +34,20 @@ interface ActivitiesService {
     fun getLikedActivities(@Path("email") email: String): Call<List<ActivityFromList>>
 
     /**
+     * This call is for liking an activity
+     */
+    @POST("/activitats/likedActivities")
+    fun likeActivity(@Body join: LikeActivity): Call<ResponseBody>
+
+    /**
+     * This call is for diliking an activity
+     */
+    @DELETE("/activitats/likedActivities")
+    fun dislikeActivity(@Query("usuariCreador") usuariCreador: String,
+                        @Query("dataHoraIni") dataHoraIni: String,
+                        @Query("usuariGuardador") usuariParticipant: String): Call<ResponseBody>
+
+    /**
      * This call is for joining an activity
      */
     @POST("/activitats/insertusuari")

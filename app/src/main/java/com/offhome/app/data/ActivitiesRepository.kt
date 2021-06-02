@@ -35,6 +35,7 @@ class ActivitiesRepository {
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
     private var mutableLiveData: MutableLiveData<Result<String>>? = MutableLiveData()
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseLike: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
@@ -56,7 +57,12 @@ class ActivitiesRepository {
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    if (response.code() == 200) {
+                        activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    }
+                    else {
+                        activities.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
                 }
                 else {
                     activities.value = Result.Error(IOException("Error getting activities"))
@@ -126,6 +132,60 @@ class ActivitiesRepository {
         return likedActivities
     }
 
+
+    /**
+     * This function calls the [activitiesService] in order to like an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to like the activity
+     * @return the result with a live data string type
+     */
+    fun likeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
+        val join = LikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val call = activitiesService?.likeActivity(join)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseLike?.value = Result.Success("You have liked the activity!")
+                } else responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't liked the activity!"))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't liked the activity!"))
+            }
+        })
+        return responseLike as MutableLiveData<Result<String>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to dislike an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to dislike the activity
+     * @return the result with a live data string type
+     */
+    fun dislikeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
+        val call = activitiesService?.dislikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseLike?.value = Result.Success("You have disliked the activity!")
+                } else responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't disliked the activity!"))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't disliked the activity!"))
+            }
+        })
+        return responseLike as MutableLiveData<Result<String>>
+    }
+
+
+
     /**
      * This function calls the [activitiesService] in order to create the activity and set the MutableLiveData with the result
      * @param newActivity is an instance of the data class [ActivityData]
@@ -166,7 +226,7 @@ class ActivitiesRepository {
     }
 
     /**
-     * This function calls the [activitiesService] in order to join to an activity
+     * This function calls the [activitiesService] in order to join an activity
      * @param usuariCreador is the creator of the activity
      * @param dataHoraIni is the date and hour of the activity
      * @param usuariParticipant is the user that wants to join the activity

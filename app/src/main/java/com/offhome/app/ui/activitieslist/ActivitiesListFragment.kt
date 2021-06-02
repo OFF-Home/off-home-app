@@ -14,6 +14,8 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import java.text.ParseException
@@ -38,6 +40,8 @@ class ActivitiesListFragment : Fragment() {
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private var activitiesList: MutableList<ActivityFromList> = ArrayList()
+    private var likedList = ArrayList<Boolean>()
+    private var likedActivitiesList: MutableList<ActivityFromList>? = ArrayList()
     private val spinnerDialog = view?.findViewById<Spinner>(R.id.spinnerCategories)
 
     /**
@@ -63,7 +67,7 @@ class ActivitiesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities, activitiesViewModel)
 
         val layout = view.findViewById<RecyclerView>(R.id.listActivities)
         layout.layoutManager = LinearLayoutManager(context)
@@ -74,34 +78,50 @@ class ActivitiesListFragment : Fragment() {
         // get the current date
         val currentTime = Calendar.getInstance().time
 
-        activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
+        //obtener actividades a las que el usuario ha dado like
+        activitiesViewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             viewLifecycleOwner,
             Observer {
                 if (it is Result.Success) {
-                    for (item in it.data) {
-                        // transform dataHoraIni into date format
-                        val mydate = item.dataHoraFi
-                        var date: Date? = null
-                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (it is Result.Success) {
+                                for (item in it.data) {
+                                    // transform dataHoraIni into date format
+                                    val mydate = item.dataHoraFi
+                                    var date: Date? = null
+                                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-                        try {
-                            date = format.parse(mydate)
-                        } catch (e: ParseException) {
-                            e.printStackTrace()
-                        }
+                                    try {
+                                        date = format.parse(mydate)
+                                    } catch (e: ParseException) {
+                                        e.printStackTrace()
+                                    }
 
-                        if (date != null) {
-                            if (date > currentTime) {
-                                activitiesList.add(item)
+                                    if (date != null) {
+                                        if (date > currentTime) {
+                                            activitiesList.add(item)
+                                        }
+                                    }
+                                }
+                                likedList.clear()
+                                for (item in activitiesList) {
+                                    val found = likedActivitiesList?.find { element -> element == item }
+                                    if (found == item) likedList.add(true)
+                                    else likedList.add(false)
+                                }
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
+
                         }
-                    }
-                    // stub ferran
-                    // activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
+                    )
                 }
-                activitiesListAdapter.setData(activitiesList)
             }
         )
+
+
     }
 
     /**
@@ -188,8 +208,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList?.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }
@@ -219,8 +246,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList?.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }
@@ -250,8 +284,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    for (item in activitiesList) {
+                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                        likedActivitiesList?.forEachIndexed { index, element ->
+                                            if (item == element) likedList[index] = true
+                                            else likedList[index] = false
+                                        }
+                                    }
                                 }
-                                activitiesListAdapter.setData(activitiesList)
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
                         )
                     }

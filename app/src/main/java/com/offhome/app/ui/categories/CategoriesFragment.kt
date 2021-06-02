@@ -11,6 +11,7 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.Category
 
 /**
@@ -57,12 +58,13 @@ class CategoriesFragment : Fragment() {
             }
         }
         categoriesViewModel.getCategories().observe(
-            viewLifecycleOwner,
-            {
+            viewLifecycleOwner
+        ) {
+            if (it != null) {
                 categories = it
                 categoryAdapter.setData(categories)
             }
-        )
+        }
 
         return view
     }

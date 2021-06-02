@@ -146,6 +146,8 @@
     <string name="something_was_cancelled">Alguna cosa ha estat cancel·lada</string>
     <string name="list">Llista</string>
     <string name="map">Mapa</string>
+    <string name="couldnt_like_activity">Error donant like a l\'activitat</string>
+    <string name="couldnt_dislike_activity">Error treient el like a l\'activitat</string>
     <string name="plan_activities">PLANIFICA ACTIVITATS</string>
     <string name="_join_hundreds_of_activities">O uneix-te a centenars d\'activitats a prop teu</string>
     <string name="next_button">SEGÜENT</string>

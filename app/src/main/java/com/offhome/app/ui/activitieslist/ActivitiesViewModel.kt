@@ -5,6 +5,8 @@ package com.offhome.app.ui.activitieslist
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
@@ -54,6 +56,33 @@ class ActivitiesViewModel : ViewModel() {
     fun getLikedActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         likedActivitiesList = repository.getLikedAct(userEmail)
         return likedActivitiesList
+    }
+
+
+    /**
+     * This function calls the [ActivitiesRepository] in order to like an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data string type
+     */
+    fun likeActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<String>>  {
+        return repository.likeActivity(
+            usuariCreador, dataHoraIni,
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        )
+    }
+
+    /**
+     * This function calls the [ActivitiesRepository] in order to dislike an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @return the result with a live data string type
+     */
+    fun dislikeActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<String>> {
+        return repository.dislikeActivity(
+            usuariCreador, dataHoraIni,
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        )
     }
 
     fun getActivitiesByRadi(

@@ -13,6 +13,8 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.observe
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
@@ -78,6 +80,12 @@ class OtherProfileActivity : AppCompatActivity() {
             supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
+
+        Glide.with(applicationContext)
+            .load(Constants().BASE_URL + "upload/userimageget/" + otherUser)
+            .placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop()
+            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+            .into(imageViewProfilePic)
 
         viewModel.setUserInfo(otherUser)
         viewModel.isFollowing()

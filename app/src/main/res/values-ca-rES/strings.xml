@@ -10,7 +10,7 @@
     <string name="submit">Enviar</string>
     <string name="participants">Participants:</string>
     <string name="about_the_activity">Sobre aquesta activitat:</string>
-    <string name="created_by">"Creada per "</string>
+    <string name="created_by">"Creada per"</string>
     <string name="title_of_the_activity">Títol de l\'activitat</string>
     <string name="create">CREAR</string>
     <string name="insert_title">Insereix un títol</string>
@@ -159,6 +159,9 @@
     <string name="done_button">LLESTOS!</string>
     <string name="wear_mask">Porta sempre la mascareta cobrint-te el nas i la boca.</string>
     <string name="wash_hands">renta\'t les mans abans i després de cada activitat.</string>
+    <string name="successfully_joined">T\'hi has unit!</string>
+    <string name="achievement_first_activity">Creador platí</string>
+    <string name ="activity_created">Activitat creada!</string>
     <string name="suggested">Suggerit</string>
     <string name="all_activities">Totes</string>
 </resources>

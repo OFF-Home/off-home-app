@@ -9,22 +9,33 @@ import android.app.DatePickerDialog
 import android.app.DatePickerDialog.OnDateSetListener
 import android.app.Dialog
 import android.app.TimePickerDialog
+import android.content.Context
 import android.content.Intent
+import android.graphics.drawable.Drawable
 import android.location.Address
 import android.location.Geocoder
 import android.os.Build
 import android.os.Bundle
+import android.text.Layout
+import android.util.Log
+import android.view.View
 import android.widget.*
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
+import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.content.res.ResourcesCompat
+import androidx.core.view.marginLeft
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.observe
+import com.google.android.material.snackbar.Snackbar
+import com.google.gson.GsonBuilder
 import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityData
+import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import java.util.*
 
 /**
@@ -78,6 +89,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private lateinit var nameStreet: EditText
     private lateinit var numberStreet: EditText
     private lateinit var category_selected: Spinner
+    private lateinit var layout:ConstraintLayout
 
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -136,6 +148,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         act_title = findViewById(R.id.activity_title)
         category_selected = findViewById(R.id.sp_choose_category)
         pick_availability = findViewById(R.id.pick_availability)
+        layout = findViewById(R.id.create_activity_constr_layout)
 
         setCurrentDateOnView()
         addListenerOnButton()
@@ -286,8 +299,20 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                 viewModel.addActivity(activitydata).observe(
                     this, Observer@{ it1 ->
                         if (it1 is Result.Success) {
-                            Toast.makeText(this, it1.data, Toast.LENGTH_LONG).show()
-                            startActivity(Intent(this, MainActivity::class.java))
+                            Toast.makeText(this,/* it1.data*/ getString(R.string.activity_created), Toast.LENGTH_LONG).show()
+
+                            Log.d("create, response", "it1.data = "+ it1.data.toString())
+                            Log.d("create, response", "it1.data.result.size = "+ it1.data.result.size)
+
+                            val intent = Intent(this, MainActivity::class.java)
+
+                            //achievements
+                            if (it1.data.result.isNotEmpty()) {
+                                Log.d("create, response", "entro a isNotEmpty")
+                                //chapuzilla pq els snackbars es queden en una activity. passo les dades a la seguent activity i ella ho mostra.
+                                intent.putExtra("achievement_list", GsonBuilder().create().toJson(it1.data))
+                            }
+                            startActivity(intent)
                         }
                         else if (it1 is Result.Error) Toast.makeText(this, it1.exception.message, Toast.LENGTH_LONG).show()
                     }

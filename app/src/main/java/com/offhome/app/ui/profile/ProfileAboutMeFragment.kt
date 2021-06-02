@@ -3,7 +3,7 @@ package com.offhome.app.ui.profile
 
 
 import android.app.AlertDialog
-import android.content.Intent
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -12,21 +12,24 @@ import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
 import java.util.*
+
 
 /**
  * Class *ProfileAboutMeFragment*
@@ -71,7 +74,7 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var addIconDrawable: Drawable
     private lateinit var editTextProfileDescription: EditText
-    private lateinit var viewAsOtherProfile: Button
+    private lateinit var gridLayout: GridLayout
 
     /**
      * Override the onCreateView method
@@ -99,7 +102,6 @@ class ProfileAboutMeFragment : Fragment() {
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
         constraintLayout = view.findViewById(R.id.aboutMeConstraintLayout)
-        viewAsOtherProfile = view.findViewById(R.id.viewAsOtherProfile)
 
         // obtenir les dades de perfil del repo de ProfileFragment, aprofitant l'accés que aquest ha fet a backend
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
@@ -125,15 +127,11 @@ class ProfileAboutMeFragment : Fragment() {
             }
         )
 
-        viewAsOtherProfile.setOnClickListener {
-            canviAOtherProfile()
-        }
-
-        // testing
-        // omplirTagGroupStub()
-
         iniEditElements()
         iniEditionResultListeners()
+
+        gridLayout = view.findViewById(R.id.gridLayout)
+        getAchievements()
 
         return view
     }
@@ -159,14 +157,25 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
+                Log.d(
+                    "setDescription",
+                    "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString()
+                )
 
-                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
+                Log.d(
+                    "setDescription",
+                    "resultVM.toString().length = " + resultVM.toString().length
+                )
 
                 if (!resultVM.toString().contains("Error")) {
-                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
+                        .show()
                 } else {
-                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.description_update_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
@@ -188,7 +197,8 @@ class ProfileAboutMeFragment : Fragment() {
                 if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG)
+                        .show()
                 }
                 profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
@@ -209,7 +219,8 @@ class ProfileAboutMeFragment : Fragment() {
                 if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 /*if (resultVM.string() == "Insert tag al usuario") {
@@ -221,10 +232,6 @@ class ProfileAboutMeFragment : Fragment() {
                 profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     /**
@@ -423,7 +430,13 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
-        constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8) // a ver
+        constraintSet1.connect(
+            R.id.textViewProfileDescription,
+            ConstraintSet.TOP,
+            R.id.editTextProfileDescription,
+            ConstraintSet.BOTTOM,
+            8
+        ) // a ver
 
         constraintSet1.applyTo(constraintLayout)
 
@@ -479,7 +492,11 @@ class ProfileAboutMeFragment : Fragment() {
      * It checks whether the introduced text is empty. If it isn't, it adds the tag
      */
     private fun addTagPressed() {
-        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogs, view as ViewGroup, false)
+        val textInputLayout = LayoutInflater.from(context).inflate(
+            R.layout.text_input_for_dialogs,
+            view as ViewGroup,
+            false
+        )
         val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
         textInput.setHint(R.string.tag)
 
@@ -512,18 +529,63 @@ class ProfileAboutMeFragment : Fragment() {
         iniTagAdditionListener()
     }
 
-    // aixo es completament per a testejar
-    private fun canviAOtherProfile() {
 
-        // stub
-        val userInfo = UserInfo(
-            email = "yesThisIsVictor@gmail.com", username = "victorfer", uid = "102",
-            description = "Lou Spence (1917–1950) was a fighter pilot and squadron commander in the Royal Australian Air Force during World War II and the Korean War. In 1941 he was posted to North Africa with No. 3 Squadron, which operated P-40 Tomahawks and Kittyhawks; he was credited with shooting down two German aircraft and earned the Distinguished Flying Cross (DFC). He commanded No. 452 Squadron in ",
-            followers = 200, following = 90, darkmode = 0, notifications = 0, estrelles = 3.0, language = "esp", image = ""
-        )
-
-        val intentCanviAOtherProfile = Intent(context, OtherProfileActivity::class.java) // .apply {        }
-        intentCanviAOtherProfile.putExtra("user_info", GsonBuilder().create().toJson(userInfo))
-        startActivity(intentCanviAOtherProfile)
+    private fun getAchievements() {
+        profileVM.getAchievements(
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        ).observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    for ((index, x) in it.data.withIndex()) {
+                        val imageView = ImageView(requireContext())
+                        var drawable2: Drawable?
+                        if (x.nom.contains("DIAMOND", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_diamond_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("PLATINUM", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_platinum_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("BRONZE", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_bronze_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("SILVER", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_silver_small,
+                                requireContext().theme
+                            )
+                        } else {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_gold_small,
+                                requireContext().theme
+                            )
+                        }
+                        imageView.setImageDrawable(drawable2)
+                        gridLayout.addView(imageView)
+                        imageView.setOnClickListener {
+                            Toast.makeText(context, x.descripcio, Toast.LENGTH_SHORT).show()
+                        }
+                        }
+                          /*  val progress = ProgressDialog(context)
+                            progress.setTitle(x.descripcio)
+                            progress.setCancelable(true)
+                            progress.show()*/
+                     //       Toast.makeText(context, x.descripcio, Toast.LENGTH_LONG).show()
+                } else if (it is Result.Error) {
+                    Log.d("GET", it.exception.message.toString())
+                }
+            })
     }
+
 }

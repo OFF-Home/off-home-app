@@ -9,6 +9,11 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.ActivityFromList
+import com.offhome.app.data.model.Rating
+import com.offhome.app.data.model.ReviewOfParticipant
+import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 
@@ -25,6 +30,7 @@ class InfoActivityViewModel : ViewModel() {
     var profileInfo = MutableLiveData<Result<UserInfo>>()
     private var repositoryProfile: ProfileRepository = ProfileRepository()
     var infoActivitatResult = MutableLiveData<Result<ActivityFromList>>()
+    var inviteAchievements = MutableLiveData<Result<String>>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -32,7 +38,7 @@ class InfoActivityViewModel : ViewModel() {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
+    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<AchievementList>> {
         return repository.joinActivity(
             usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
@@ -71,7 +77,7 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the user's rating of the activity from the repository
      */
-    fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+    fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<Result<AchievementList>> {
         return repository.valorarActivitat(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
     }
 

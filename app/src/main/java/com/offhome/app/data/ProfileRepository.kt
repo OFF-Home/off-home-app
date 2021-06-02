@@ -9,11 +9,7 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.FollowUnfollow
-import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.NomTag
 import com.offhome.app.data.profilejson.UserDescription
 import com.offhome.app.data.profilejson.UserUsername
@@ -60,7 +56,8 @@ class ProfileRepository {
     var activities: MutableLiveData<List<ActivityFromList>>? = null
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
-    var updatedDarkMode: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
+    var updatedDarkMode = MutableLiveData<Result<String>>()
+    val achievementsSuccess = MutableLiveData<Result<List<AchievementData>>>()
 
     /**
      * obtains ProfileInfo from the lower level
@@ -555,13 +552,13 @@ class ProfileRepository {
         return accountDeletedSuccessfully!!
     }
 
-    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
-        val call: Call<ResponseBody> = userService!!.deleteAccount(username)
+    fun updateDarkMode(username: String, dm: DarkModeUpdate): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.updateDarkMode(username, dm)
 
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    updatedDarkMode!!.value = Result.Success("Account theme updated")
+                    updatedDarkMode!!.value = Result.Success("Account theme updated successfully")
                 } else {
                     updatedDarkMode!!.value = Result.Error(IOException("updated account response unsuccessful with DB"))
                 }
@@ -572,4 +569,24 @@ class ProfileRepository {
         })
         return updatedDarkMode!!
     }
+
+    fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
+        val call: Call<List<AchievementData>> = userService!!.getAchievements(userEmail)
+
+        call.enqueue(object : Callback<List<AchievementData>> {
+            override fun onResponse(call: Call<List<AchievementData>>, response: Response<List<AchievementData>>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200) achievementsSuccess.value = Result.Success(response.body()!!)
+                    else achievementsSuccess.value = Result.Success(ArrayList<AchievementData>())
+                } else {
+                    achievementsSuccess.value = Result.Error(IOException("get achievements response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<List<AchievementData>>, t: Throwable) {
+                achievementsSuccess.value = Result.Error(IOException("Error getting user achievements. communication failure (no response DB)"))
+            }
+        })
+        return achievementsSuccess
+    }
+
 }

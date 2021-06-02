@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityData
+import com.offhome.app.data.profilejson.AchievementList
 
 /**
  * View Model for CreateActivity Activity
@@ -18,7 +19,7 @@ class CreateActivityViewModel : ViewModel() {
 
     // private var repositoryChat: ChatRepository = ChatRepository()
 
-    fun addActivity(activity: ActivityData): MutableLiveData<Result<String>> {
+    fun addActivity(activity: ActivityData): MutableLiveData<Result<AchievementList>> {
         return repository.addActivity(activity)
     }
 

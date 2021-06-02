@@ -9,9 +9,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
-import com.offhome.app.data.model.ActivityFromList
-import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.model.*
 
 /**
  * Class *ProfileFragmentViewModel*
@@ -144,7 +142,11 @@ class ProfileFragmentViewModel : ViewModel() {
         return repository.deleteAccount(loggedUserEmail)
     }
 
-    fun updateDarkMode(username: String, dm: Boolean): MutableLiveData<Result<String>> {
-        return repository.updateDarkMode(username, dm)
+    fun updateDarkMode(username: String, dm: DarkModeUpdate): MutableLiveData<Result<String>> {
+        return repository.updateDarkMode(username,dm)
+    }
+
+    fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
+        return repository.getAchievements(userEmail)
     }
 }

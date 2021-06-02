@@ -85,16 +85,17 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
+        if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
+            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+        }
+        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+
+
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
             finish()
         }
-
-        if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
 
         setUp()
         startObservers()

@@ -3,6 +3,7 @@ package com.offhome.app.data.retrofit
 
 
 import com.offhome.app.data.model.*
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 import okhttp3.ResponseBody
 import retrofit2.Call
@@ -14,7 +15,8 @@ interface ActivitiesService {
      * This call is for creating a new activity
      */
     @POST("activitats/create/{usuariCreador}")
-    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
+    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
+
 
     @GET("categories/{category}")
     fun getAllActivities(@Path("category") categoryName: String): Call<List<ActivityFromList>>
@@ -49,7 +51,7 @@ interface ActivitiesService {
      * This call is for joining an activity
      */
     @POST("/activitats/insertusuari")
-    fun joinActivity(@Body join: JoInActivity): Call<ResponseBody>
+    fun joinActivity(@Body join: JoInActivity): Call<AchievementList>
 
     /**
      * This call is to leave an activity
@@ -67,7 +69,7 @@ interface ActivitiesService {
      * This call is to review an activity
      */
     @PUT("/activitats/valorar")
-    fun addReview(@Body rate: RatingSubmission): Call<ResponseBody>
+    fun addReview(@Body rate: RatingSubmission): Call<AchievementList>
 
     /**
      * This call is to get the rating of the user on an activity
@@ -112,7 +114,7 @@ interface ActivitiesService {
      */
     @GET ("/activitats/amics/{email}")
     fun getFriendsActivities(@Path("email")loggedUserEmail: String): Call<List<ActivityFromList>>
-  
+
     @GET("activitats/searchbyradi")
     fun getActivitiesByRadi(@Query("latitud") latitude: Double, @Query("altitud") longitude: Double, @Query("distance") progress: Int): Call<List<ActivityFromList>>
 }

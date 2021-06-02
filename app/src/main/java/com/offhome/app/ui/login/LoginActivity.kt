@@ -91,7 +91,7 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        if (!SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
+        if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
             AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
         }
         else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)

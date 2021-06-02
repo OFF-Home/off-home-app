@@ -60,6 +60,7 @@ class ProfileSettingsFragment : Fragment() {
     private lateinit var name_us: String
 
     private lateinit var profileVM: ProfileFragmentViewModel
+    private lateinit var email: String
 
     /**
      * Override the onCreateView method
@@ -115,7 +116,6 @@ class ProfileSettingsFragment : Fragment() {
 
         changePassword()
 
-        manageNotifications()
 
         infoOFFHOME()
 
@@ -123,7 +123,16 @@ class ProfileSettingsFragment : Fragment() {
 
         covidPolicy()
 
-        changeToDarkMode()
+        profileVM.getProfileInfoByUsername(name_us).observe(
+            viewLifecycleOwner,{
+                if (it is Result.Success) {
+                    email = it.data.email
+                    manageNotifications()
+                    changeToDarkMode()
+                }
+                else if (it is Result.Error) Log.d("GET", "Get email error")
+            }
+        )
     }
 
     private fun covidPolicy() {
@@ -245,7 +254,7 @@ class ProfileSettingsFragment : Fragment() {
             val notif : Int
             if (SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) notif = 1
             else notif = 0
-            profileVM.updateNotifications(name_us, NotificationData(notif)).observe(
+            profileVM.updateNotifications(email, NotificationData(notif)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {
@@ -276,7 +285,7 @@ class ProfileSettingsFragment : Fragment() {
             val dm : Int
             if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) dm = 1
             else dm = 0
-            profileVM.updateDarkMode(name_us, DarkModeUpdate(dm)).observe(
+            profileVM.updateDarkMode(email, DarkModeUpdate(dm)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {

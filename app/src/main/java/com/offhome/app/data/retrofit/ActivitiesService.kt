@@ -41,7 +41,9 @@ interface ActivitiesService {
      * This call is for diliking an activity
      */
     @DELETE("/activitats/likedActivities")
-    fun dislikeActivity(@Body join: LikeActivity): Call<ResponseBody>
+    fun dislikeActivity(@Query("usuariCreador") usuariCreador: String,
+                        @Query("dataHoraIni") dataHoraIni: String,
+                        @Query("usuariGuardador") usuariParticipant: String): Call<ResponseBody>
 
     /**
      * This call is for joining an activity

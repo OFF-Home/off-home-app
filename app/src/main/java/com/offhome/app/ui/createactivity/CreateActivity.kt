@@ -158,9 +158,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         inviteFriends()
 
         createTheActivity()
-
-        val auxSnack = AuxShowAchievementSnackbar()
-        auxSnack.showAchievementSnackbar(layout, this, "STUB PLATINUM!")
     }
 
     override fun onSupportNavigateUp(): Boolean {
@@ -310,8 +307,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                             //achievements
                             if (it1.data.result.isNotEmpty()) {
                                 Log.d("create, response", "entro a isNotEmpty")
-                                val auxSnack = AuxShowAchievementSnackbar()
-                                auxSnack.showAchievementSnackbarObject(layout, this, it1.data.result)   //TODO treure crec
+                                /*val auxSnack = AuxShowAchievementSnackbar()
+                                auxSnack.showAchievementSnackbarObject(layout, this, it1.data.result)   //TODO treure crec*/
                                 //chapuzilla pq els snackbars es queden en una activity. passo les dades a la seguent activity i ella ho mostra.
                                 intent.putExtra("achievement_list", GsonBuilder().create().toJson(it1.data))
                             }

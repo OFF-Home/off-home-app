@@ -55,7 +55,7 @@ interface ActivitiesService {
      * This call is to review an activity
      */
     @PUT("/activitats/valorar")
-    fun addReview(@Body rate: RatingSubmission): Call<ResponseBody>
+    fun addReview(@Body rate: RatingSubmission): Call<AchievementList>
 
     /**
      * This call is to get the rating of the user on an activity

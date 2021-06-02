@@ -76,7 +76,7 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the user's rating of the activity from the repository
      */
-    fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+    fun putValoracio(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<Result<AchievementList>> {
         return repository.valorarActivitat(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
     }
 

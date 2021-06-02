@@ -411,19 +411,29 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 ).observe(
                     this,
                     {
-                        if (it != " ") {
-                            if (it == "Your rating has been saved") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
-                                snackbar.show()
+                        if (it is Result.Success) {
+                            //if (it == "Your rating has been saved") {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                            snackbar.show()
 
-                                // cambiar estrellas y edit text a que ya no pueda añadir nada
-                                estrelles.isFocusable = false
-                                estrelles.setIsIndicator(true)
-                                comment.setHint(R.string.reviewnotpossible)
-                                comment.isFocusable = false
-                                btnsubmit.setEnabled(false)
+                            // cambiar estrellas y edit text a que ya no pueda añadir nada
+                            estrelles.isFocusable = false
+                            estrelles.setIsIndicator(true)
+                            comment.setHint(R.string.reviewnotpossible)
+                            comment.isFocusable = false
+                            btnsubmit.setEnabled(false)
+
+                            //achievements
+                            Log.d("rate, response", "it.data = "+ it.data.toString())
+                            Log.d("rate, response", "it.data.result.size = "+ it.data.result.size)
+
+                            if (it.data.result.isNotEmpty()) {
+                                Log.d("rate, response", "entro a isNotEmpty")
+                                val auxSnack = AuxShowAchievementSnackbar()
+                                auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
+                            //}
                         }
                     }
                 )

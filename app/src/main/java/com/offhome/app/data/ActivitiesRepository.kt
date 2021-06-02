@@ -353,23 +353,32 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+    fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<Result<AchievementList>> {
+        val result = MutableLiveData<Result<AchievementList>>()
         val rate = RatingSubmission(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
         val call = activitiesService?.addReview(rate)
-        call!!.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        call!!.enqueue(object : Callback<AchievementList> {
+            override fun onResponse(call: Call<AchievementList>, response: Response<AchievementList>) {
                 if (response.isSuccessful) {
-                    responseValorar?.value = "Your rating has been saved"
-                } else responseValorar?.value =
-                    "There has been an error and your rating could not be saved!"
+                    //responseValorar?.value = "Your rating has been saved"
+                    Log.d("valorarActivitat", "response successful")
+                    result.value = Result.Success(response.body()!!)
+                } else {
+                   // responseValorar?.value = "There has been an error and your rating could not be saved!"
+
+                    Log.d("valorarActivitat", "response unsuccessful")
+                    result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
+                }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseValorar?.value =
-                    "There has been an error and your rating could not be saved!"
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
+                //responseValorar?.value = "There has been an error and your rating could not be saved!"
+
+                Log.d("valorarActivitat", "no response!")
+                result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
             }
         })
-        return responseValorar as MutableLiveData<String>
+        return result
     }
 
     /**

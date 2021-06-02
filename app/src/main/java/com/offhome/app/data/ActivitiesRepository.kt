@@ -116,7 +116,7 @@ class ActivitiesRepository {
      * @param newActivity is an instance of the data class [ActivityData]
      * @return the result with a live data string type
      */
-    fun addActivity(newActivity: ActivityData): MutableLiveData<Result<String>> {
+    /*fun addActivity(newActivity: ActivityData): MutableLiveData<Result<String>> {
         val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
             activitiesService?.createActivityByUser(
                 emailCreator = it,
@@ -139,9 +139,9 @@ class ActivitiesRepository {
             }
         })
         return mutableLiveData as MutableLiveData<Result<String>>
-    }
+    }*/
 
-    fun addActivityFerran(newActivity: ActivityData): MutableLiveData<Result<AchievementList>> {
+    fun addActivity(newActivity: ActivityData): MutableLiveData<Result<AchievementList>> {
         Log.d("addActivityFerran", "entrem")
         val result = MutableLiveData<Result<AchievementList>>()
 
@@ -162,13 +162,13 @@ class ActivitiesRepository {
                     result.value = Result.Success(response.body()!!)
                 } else {
                     Log.d("addActivityFerran", "response unsuccessful")
-                    result.value = Result.Error(IOException("addActivityFerran Error: unsuccessful"))
+                    result.value = Result.Error(IOException("There has been an error and the activity cannot be created"))
                 }
             }
 
             override fun onFailure(call: Call<AchievementList>, t: Throwable) {
                 Log.d("addActivityFerran", "no response!")
-                result.value = Result.Error(IOException("addActivityFerran Error: failure", t))
+                result.value = Result.Error(IOException("Error: connection failure"))
             }
         })
         Log.d("addActivityFerran", "passo el call.enqueue")

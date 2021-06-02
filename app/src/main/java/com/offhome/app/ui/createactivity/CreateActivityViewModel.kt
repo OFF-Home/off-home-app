@@ -20,8 +20,7 @@ class CreateActivityViewModel : ViewModel() {
     // private var repositoryChat: ChatRepository = ChatRepository()
 
     fun addActivity(activity: ActivityData): MutableLiveData<Result<AchievementList>> {
-        //return repository.addActivity(activity)
-        return repository.addActivityFerran(activity)
+        return repository.addActivity(activity)
     }
 
     // fun addChatGroup(chatGroupide: ChatGroupIdentification): MutableLiveData<String> {

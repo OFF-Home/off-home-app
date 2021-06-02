@@ -94,9 +94,6 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
 
-    private var latitude: Double = 0.0
-    private var longitude: Double = 0.0
-
     /**
      * This function represents the current time using current locale and timezone
      */

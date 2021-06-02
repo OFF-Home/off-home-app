@@ -97,9 +97,6 @@ class InfoActivityViewModel : ViewModel() {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
     }
 
-    fun getInviteAchievements() {
-        inviteAchievements = repository.getInviteAchievements(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString())
-    }
     /**
      * gets the weather
      */

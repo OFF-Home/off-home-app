@@ -482,29 +482,6 @@ class ActivitiesRepository {
         return result
     }
 
-    fun getInviteAchievements(email: String): MutableLiveData<Result<String>> { //TODO per List<AchievementInfo> o algo aixi
-        val result = MutableLiveData<Result<String>>()
-
-        val call:Call<String> = activitiesService!!.getInviteAchievements(email)
-        call.enqueue(object:Callback<String> {
-            override fun onResponse(call: Call<String>, response: Response<String>) {
-                if (response.isSuccessful) {
-                    Log.d("response", "getInviteAchievements response: is successful")
-                    result.value = Result.Success(response.body()!!)
-                }
-                else {
-                    Log.d("response", "getInviteAchievements response: unsuccessful")
-                    result.value = Result.Error(IOException("getInviteAchievements Error: unsuccessful"))
-                }
-            }
-
-            override fun onFailure(call: Call<String>, t: Throwable) {
-                Log.d("no response", "getInviteAchievements no response")
-                result.value = Result.Error(IOException("getInviteAchievements Error: failure", t))
-            }
-        })
-        return result
-    }
     fun getWeather(): MutableLiveData<Result<Tiempo>> {
         val result = MutableLiveData<Result<Tiempo>>()
         val call: Call<Tiempo> = weatherService!!.getWeather()

@@ -235,6 +235,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 viewModel.joinActivity(activity.usuariCreador, activity.dataHoraIni).observe(
                     this,
                     {
+                        Log.d("join, response", "joinactivity observer salta")
                         if (it is Result.Success) {
                             val snackbar: Snackbar = Snackbar
                                 .make(layout, getString(R.string.successfully_joined), Snackbar.LENGTH_LONG)
@@ -251,14 +252,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             participantsAdapter.setData(participants)
                             btnAddCalendar.visibility = View.VISIBLE
 
-                            //espero q si no és "OK" sigui un trophy
-                            if (it.data != "OK") {
-                               val snackAux=AuxShowAchievementSnackbar()
-                               snackAux.showAchievementSnackbar(layout, applicationContext,it.data)
+                            //achievements
+                            Log.d("join, response", "it.data = "+ it.data.toString())
+                            Log.d("join, response", "it.data.result.size = "+ it.data.result.size)
+
+                            if (it.data.result.isNotEmpty()) {
+                                Log.d("join, response", "entro a isNotEmpty")
+                                val auxSnack = AuxShowAchievementSnackbar()
+                                auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
                         }
-                        else {
-                            Toast.makeText(this, getString(R.string.error), Toast.LENGTH_LONG).show()
+                        else if (it is Result.Error) {
+                            Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                         }
                     }
                 )

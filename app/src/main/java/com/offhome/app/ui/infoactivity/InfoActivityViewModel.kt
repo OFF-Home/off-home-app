@@ -13,6 +13,7 @@ import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.Rating
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.model.UserInfo
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 
 /**
@@ -36,7 +37,7 @@ class InfoActivityViewModel : ViewModel() {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<String>> {
+    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<AchievementList>> {
         return repository.joinActivity(
             usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()

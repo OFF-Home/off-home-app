@@ -15,10 +15,7 @@ interface ActivitiesService {
      * This call is for creating a new activity
      */
     @POST("activitats/create/{usuariCreador}")
-    fun addActivityFerran(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
-
-    @POST("activitats/create/{usuariCreador}")
-    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<ResponseBody>
+    fun createActivityByUser(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
 
 
     @GET("categories/{category}")
@@ -40,7 +37,7 @@ interface ActivitiesService {
      * This call is for joining an activity
      */
     @POST("/activitats/insertusuari")
-    fun joinActivity(@Body join: JoInActivity): Call<ResponseBody>
+    fun joinActivity(@Body join: JoInActivity): Call<AchievementList>
 
     /**
      * This call is to leave an activity

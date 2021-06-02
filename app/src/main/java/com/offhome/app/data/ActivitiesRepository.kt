@@ -146,7 +146,7 @@ class ActivitiesRepository {
         val result = MutableLiveData<Result<AchievementList>>()
 
         val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
-            activitiesService?.addActivityFerran(
+            activitiesService?.createActivityByUser(
                 emailCreator = it,
                 activitydata = newActivity
             )
@@ -182,29 +182,30 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
-        val result = MutableLiveData<Result<String>>()
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<AchievementList>> {
+        Log.d("joinActivity", "entrem")
+        val result = MutableLiveData<Result<AchievementList>>()
 
         val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
         val call = activitiesService?.joinActivity(join)
-        call!!.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        call!!.enqueue(object : Callback<AchievementList> {
+            override fun onResponse(call: Call<AchievementList>, response: Response<AchievementList>) {
+                Log.d("joinActivity", "we got a response")
                 if (response.isSuccessful) {
                     Log.d("repo::joinActivity", "response.code() == " + response.code())
-                    //responseJoin?.value = "You have joined the activity!"
-                    result.value = Result.Success(response.body().toString())
+                    result.value = Result.Success(response.body()!!)
                 } else {
-                    //responseJoin?.value ="There has been an error and you haven't joined the activity!"
-                    result.value = Result.Error(IOException("joinActivity Error: unsuccessful"))
+                    Log.d("joinActivity", "response unsuccessful")
+                    result.value = Result.Error(IOException("There has been an error and you haven't joined the activity!"))
                 }
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                //responseJoin?.value = "There has been an error and you haven't joined the activity!"
-                result.value = Result.Error(IOException("joinActivity Error: failure", t))
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
+                Log.d("joinActivity", "no response!")
+                result.value = Result.Error(IOException("There has been an error and you haven't joined the activity!", t))
             }
         })
-       // return responseJoin as MutableLiveData<String>
+        Log.d("joinActivity", "passo el call.enqueue")
         return result
     }
 

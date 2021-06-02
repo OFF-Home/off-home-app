@@ -3,8 +3,6 @@ package com.offhome.app.ui.profile
 
 
 import android.app.AlertDialog
-import android.content.Intent
-import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -15,22 +13,21 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
-import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.TagData
-import com.offhome.app.data.model.UserInfo
-import com.offhome.app.ui.otherprofile.OtherProfileActivity
-import java.lang.Error
 import java.util.*
+
 
 /**
  * Class *ProfileAboutMeFragment*
@@ -133,8 +130,22 @@ class ProfileAboutMeFragment : Fragment() {
         iniEditElements()
         iniEditionResultListeners()
 
+        val gridLayout: GridLayout
+        gridLayout = view.findViewById(R.id.gridLayout)
 
+        val imageView = ImageView(requireContext())
+        val drawable2: Drawable? =
+            ResourcesCompat.getDrawable(
+                requireContext().resources,
+                R.drawable.trophy_diamond,
+                requireContext().theme
+            )
+        imageView.setImageDrawable(drawable2)
+        imageView.id = R.id.trophy_one
+       // imageView.layoutParams = ViewGroup.LayoutParams(50, 50)
+       // imageView.requestLayout()
 
+        gridLayout.addView(imageView)
         return view
     }
 
@@ -159,14 +170,25 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString())
+                Log.d(
+                    "setDescription",
+                    "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString()
+                )
 
-                Log.d("setDescription", "resultVM.toString().length = " + resultVM.toString().length)
+                Log.d(
+                    "setDescription",
+                    "resultVM.toString().length = " + resultVM.toString().length
+                )
 
                 if (!resultVM.toString().contains("Error")) {
-                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
+                        .show()
                 } else {
-                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.description_update_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
 
                 // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
@@ -188,7 +210,8 @@ class ProfileAboutMeFragment : Fragment() {
                 if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG)
+                        .show()
                 }
                 profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
@@ -209,7 +232,8 @@ class ProfileAboutMeFragment : Fragment() {
                 if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG)
+                        .show()
                 }
 
                 /*if (resultVM.string() == "Insert tag al usuario") {
@@ -221,10 +245,6 @@ class ProfileAboutMeFragment : Fragment() {
                 profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     /**
@@ -423,7 +443,13 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
-        constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8) // a ver
+        constraintSet1.connect(
+            R.id.textViewProfileDescription,
+            ConstraintSet.TOP,
+            R.id.editTextProfileDescription,
+            ConstraintSet.BOTTOM,
+            8
+        ) // a ver
 
         constraintSet1.applyTo(constraintLayout)
 
@@ -479,7 +505,11 @@ class ProfileAboutMeFragment : Fragment() {
      * It checks whether the introduced text is empty. If it isn't, it adds the tag
      */
     private fun addTagPressed() {
-        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogs, view as ViewGroup, false)
+        val textInputLayout = LayoutInflater.from(context).inflate(
+            R.layout.text_input_for_dialogs,
+            view as ViewGroup,
+            false
+        )
         val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
         textInput.setHint(R.string.tag)
 
@@ -514,15 +544,16 @@ class ProfileAboutMeFragment : Fragment() {
 
 
     private fun getAchievements(){
-        profileVM.getAchievements(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
+        profileVM.getAchievements(
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        ).observe(
             viewLifecycleOwner,
             Observer {
-                if (it is Result.Success){
-                    for(x in it.data!!){
-                        Log.d("GET","YEEEEEEEES")
+                if (it is Result.Success) {
+                    for (x in it.data) {
+                        Log.d("GET", "YEEEEEEEES")
                     }
-                }
-                else if (it is Result.Error){
+                } else if (it is Result.Error) {
                     Log.d("GET", it.exception.message.toString())
                 }
             })

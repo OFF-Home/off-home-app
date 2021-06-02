@@ -238,7 +238,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
         if (current == DATE_DIALOG_ID1) {
             // set selected date into textview
             startDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
-            dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"
+            dataHoraIni = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00  "
         } else {
             endDate.text = "$savedDay-$savedMonth-$savedYear\n at $savedHour:$savedMinute h"
             dataHoraEnd = "$savedYear-$savedMonth-$savedDay $savedHour:$savedMinute:00"

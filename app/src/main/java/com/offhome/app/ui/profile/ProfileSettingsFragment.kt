@@ -26,6 +26,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.DarkModeUpdate
+import com.offhome.app.data.model.NotificationData
 import com.offhome.app.ui.infopolitiques.CovidPolicyActivity
 import com.offhome.app.ui.infopolitiques.InfoOFFHomeActivity
 import com.offhome.app.ui.infopolitiques.PolicyActivity
@@ -239,17 +240,31 @@ class ProfileSettingsFragment : Fragment() {
      */
     private fun manageNotifications() {
         var clicked = false
+
         btnNotifications.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
-                Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                // crida a Back
-            } else {
-                btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
-                Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                // crida a Back
-            }
+            val notif : Int
+            if (SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) notif = 1
+            else notif = 0
+            profileVM.updateNotifications(name_us, NotificationData(notif)).observe(
+                viewLifecycleOwner,
+                { res ->
+                    if (res is Result.Success) {
+                        if (SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) {
+                            btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
+                            Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setBooleanValue(Constants().NOTIFICATION_OFF, false)
+                        }
+                        else {
+                            btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
+                            Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, true)
+                        }
+                    }
+                    else if (res is Result.Error) {
+                        Toast.makeText(context, res.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
         }
     }
 

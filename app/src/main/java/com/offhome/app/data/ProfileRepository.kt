@@ -57,6 +57,7 @@ class ProfileRepository {
     var tags: MutableLiveData< List<TagData> >? = null
     var followedUsers: MutableLiveData<List<UserInfo>>? = null
     var updatedDarkMode = MutableLiveData<Result<String>>()
+    var updatedNotifications = MutableLiveData<Result<String>>()
     val achievementsSuccess = MutableLiveData<Result<List<AchievementData>>>()
 
     /**
@@ -587,6 +588,25 @@ class ProfileRepository {
             }
         })
         return achievementsSuccess
+    }
+
+
+    fun updateNotifications(username:String, notif: NotificationData): MutableLiveData<Result<String>>{
+        val call: Call<ResponseBody> = userService!!.updateNotifications(username, notif)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    updatedNotifications.value = Result.Success("Updated successful")
+                } else {
+                    updatedNotifications.value = Result.Error(IOException("updated  response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                updatedNotifications.value = Result.Error(IOException("Error updating notifications. communication failure (no response DB)"))
+            }
+        })
+        return updatedNotifications
     }
 
 }

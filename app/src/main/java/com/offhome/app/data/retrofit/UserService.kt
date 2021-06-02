@@ -126,4 +126,7 @@ interface UserService {
 
     @GET("/assoliments")
     fun getAchievements(@Query("useremail") useremail: String): Call<List<AchievementData>>
+
+    @POST("/users/{username}/update")
+    fun updateNotifications(@Path("username") username: String, @Body notif: NotificationData): Call<ResponseBody>
 }

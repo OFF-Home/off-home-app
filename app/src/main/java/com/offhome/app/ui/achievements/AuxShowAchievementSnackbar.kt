@@ -12,7 +12,7 @@ import com.google.android.material.snackbar.Snackbar
 import com.offhome.app.R
 import com.offhome.app.data.profilejson.AchievementList
 
-class AuxShowAchievementSnackbar {
+class   AuxShowAchievementSnackbar {
 
     fun showAchievementSnackbar(passLayout: View, passContext: Context, string:String) {
         val achievementSnackbar = Snackbar.make(

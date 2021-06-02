@@ -124,22 +124,16 @@ class ProfileAboutMeFragment : Fragment() {
             }
         )
 
-        // testing
-        // omplirTagGroupStub()
-
         iniEditElements()
         iniEditionResultListeners()
 
+        //testing trophies
         val gridLayout: GridLayout
         gridLayout = view.findViewById(R.id.gridLayout)
 
         val imageView = ImageView(requireContext())
-        val drawable2: Drawable? =
-            ResourcesCompat.getDrawable(
-                requireContext().resources,
-                R.drawable.trophy_diamond,
-                requireContext().theme
-            )
+        val drawable2: Drawable? = ResourcesCompat.getDrawable(requireContext().resources,R.drawable.trophy_diamond_small,requireContext().theme)
+
         imageView.setImageDrawable(drawable2)
         imageView.id = R.id.trophy_one
        // imageView.layoutParams = ViewGroup.LayoutParams(50, 50)

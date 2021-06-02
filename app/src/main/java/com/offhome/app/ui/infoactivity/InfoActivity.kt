@@ -363,11 +363,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
-
-        groupChat = findViewById(R.id.joinGroupChat)
-        groupChat.setOnClickListener {
-            displayChatGroup()
-        }
     }
 
     private fun uploadParticipants(date: Date, currentTime: Date) {

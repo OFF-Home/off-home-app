@@ -83,6 +83,7 @@ class ActivitiesViewModel : ViewModel() {
             usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         )
+    }
 
     fun getActivitiesByRadi(
         categoryName: String,

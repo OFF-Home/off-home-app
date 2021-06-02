@@ -89,7 +89,7 @@ class ProfileMyActivitiesFragment : Fragment() {
         }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context, activitiesViewModel, viewLifecycleOwner)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context, activitiesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter

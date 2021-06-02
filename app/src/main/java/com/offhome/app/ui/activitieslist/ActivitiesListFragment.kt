@@ -67,7 +67,7 @@ class ActivitiesListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         activitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities, activitiesViewModel, viewLifecycleOwner)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context as Activities, activitiesViewModel)
 
         val layout = view.findViewById<RecyclerView>(R.id.listActivities)
         layout.layoutManager = LinearLayoutManager(context)
@@ -82,47 +82,46 @@ class ActivitiesListFragment : Fragment() {
         activitiesViewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             viewLifecycleOwner,
             Observer {
-                if (it != null) {
-                    likedActivitiesList = it as MutableList<ActivityFromList>
-                }
-            }
-        )
-
-        activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
-            viewLifecycleOwner,
-            Observer {
                 if (it is Result.Success) {
-                    for (item in it.data) {
-                        // transform dataHoraIni into date format
-                        val mydate = item.dataHoraFi
-                        var date: Date? = null
-                        val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
+                    likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    activitiesViewModel.getActivitiesList((activity as Activities).categoryName).observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (it is Result.Success) {
+                                for (item in it.data) {
+                                    // transform dataHoraIni into date format
+                                    val mydate = item.dataHoraFi
+                                    var date: Date? = null
+                                    val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
-                        try {
-                            date = format.parse(mydate)
-                        } catch (e: ParseException) {
-                            e.printStackTrace()
-                        }
+                                    try {
+                                        date = format.parse(mydate)
+                                    } catch (e: ParseException) {
+                                        e.printStackTrace()
+                                    }
 
-                        if (date != null) {
-                            if (date > currentTime) {
-                                activitiesList.add(item)
+                                    if (date != null) {
+                                        if (date > currentTime) {
+                                            activitiesList.add(item)
+                                        }
+                                    }
+                                }
+                                likedList.clear()
+                                for (item in activitiesList) {
+                                    val found = likedActivitiesList?.find { element -> element == item }
+                                    if (found == item) likedList.add(true)
+                                    else likedList.add(false)
+                                }
+                                activitiesListAdapter.setData(activitiesList, likedList)
                             }
+
                         }
-                    }
-                    likedList.clear()
-                    for (item in activitiesList) {
-                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                        val found = likedActivitiesList?.find { element -> element == item}
-                        if (found == item) likedList.add(true)
-                        else likedList.add(false)
-                    }
-                    // stub ferran
-                    // activitiesList.add(ActivityFromList(usuariCreador = "ferranib00@gmail.com", dataHoraIni = "2021-06-25 18:00:00.000", dataHoraFi = "2021-06-25 19:00:00.000", nomCarrer = "si", numCarrer = 2, categoria = "Running", maxParticipant = 6, titol = "run to the hills", descripcio = "cursa bastant guapa"))
+                    )
                 }
-                activitiesListAdapter.setData(activitiesList, likedList)
             }
         )
+
+
     }
 
     /**

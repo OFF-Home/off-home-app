@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
@@ -34,8 +35,7 @@ import kotlin.collections.ArrayList
  */
 class ActivitiesListRecyclerViewAdapter(
     private val context: Context?,
-    private var activitiesViewModel: ActivitiesViewModel,
-    private val viewLifecycleOwner: LifecycleOwner
+    private var activitiesViewModel: ActivitiesViewModel
 ) : RecyclerView.Adapter<ActivitiesListRecyclerViewAdapter.ViewHolder>() {
 
     private var tempListAct: List<ActivityFromList> = ArrayList()
@@ -100,9 +100,7 @@ class ActivitiesListRecyclerViewAdapter(
                             .into(holder.iconLikeImage)
                         likedList[position] = true
                     } else {
-                        val snackbar: Snackbar = Snackbar
-                            .make(layout, context.getString(R.string.couldnt_like_activity), Snackbar.LENGTH_LONG)
-                        snackbar.show()
+                        Toast.makeText(context, context.getString(R.string.couldnt_like_activity), Toast.LENGTH_LONG).show()
                     }
                 }
             } else {
@@ -114,9 +112,7 @@ class ActivitiesListRecyclerViewAdapter(
                         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
                         likedList[position] = false
                     } else {
-                        val snackbar: Snackbar = Snackbar
-                            .make(layout, context.getString(R.string.couldnt_like_activity), Snackbar.LENGTH_LONG)
-                        snackbar.show()
+                        Toast.makeText(context, context.getString(R.string.couldnt_dislike_activity), Toast.LENGTH_LONG).show()
                     }
                 }
             }

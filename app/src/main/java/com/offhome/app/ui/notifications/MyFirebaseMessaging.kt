@@ -12,6 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.R
 import com.offhome.app.data.model.Message
+import com.offhome.app.data.model.SendMessage
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 
 /**
@@ -29,8 +30,8 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
      */
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
-        titol = remotemessage.data.get("titol").toString()
-        message = (remotemessage.data.get("message") as Message).message
+        titol = remotemessage.data.get("title").toString()
+        message = remotemessage.data.get("body").toString()
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
@@ -43,8 +44,8 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
     private fun sendNotification() {
         val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
-        intent.putExtra("titol", titol)
-        intent.putExtra("message", message)
+        intent.putExtra("title", titol)
+        intent.putExtra("body", message)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {

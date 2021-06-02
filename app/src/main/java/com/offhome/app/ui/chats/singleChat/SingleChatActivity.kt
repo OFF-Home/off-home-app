@@ -53,7 +53,7 @@ class SingleChatActivity : AppCompatActivity() {
 
     private lateinit var userName: String
 
-    private lateinit var message: Message
+    private var email = ""
 
     /**
      * It is called when creating the activity and has all the connection with database
@@ -62,6 +62,11 @@ class SingleChatActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_single_chat)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        viewModel = ViewModelProvider(
+            this,
+            SingleChatViewModelFactory()
+        ).get(SingleChatViewModel::class.java)
 
         val arguments = intent.extras
         userUid = arguments?.getString("uid").toString()
@@ -77,6 +82,15 @@ class SingleChatActivity : AppCompatActivity() {
         title = userName
         myRef = if (userUid!! < SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!) database.getReference("xatsIndividuals/${userUid}_${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}")
         else database.getReference("xatsIndividuals/${SharedPreferenceManager.getStringValue(Constants().PREF_UID)}_$userUid")
+
+        viewModel.getProfileInfoByUsername(userName).observe(
+            this@SingleChatActivity,{
+                if (it is Result.Success) {
+                    email = it.data.email
+                }
+                else if (it is Result.Error) Log.d("NOTIFICATION", "Notification cannot be sent")
+            }
+        )
         myRef.addValueEventListener(object : ValueEventListener {
             override fun onDataChange(snapshot: DataSnapshot) {
                 if (!snapshot.exists()) {
@@ -104,13 +118,6 @@ class SingleChatActivity : AppCompatActivity() {
             }
         })
 
-        viewModel = ViewModelProvider(
-            this,
-            SingleChatViewModelFactory()
-        ).get(SingleChatViewModel::class.java)
-
-        // viewModel.initializeSocket(userUid, this)
-
         editTextNewMessage.apply {
             setOnEditorActionListener { _, actionId, _ ->
                 when (actionId) {
@@ -122,7 +129,6 @@ class SingleChatActivity : AppCompatActivity() {
                             ).show()
                         else {
                             sendMessage()
-                            manageNotifications()
                         }
                 }
                 false
@@ -135,7 +141,6 @@ class SingleChatActivity : AppCompatActivity() {
                     ).show()
                 else {
                     sendMessage()
-                    manageNotifications()
                 }
             }
         }
@@ -150,7 +155,7 @@ class SingleChatActivity : AppCompatActivity() {
             exists = true
         }
         ++numMessages
-        message = Message(
+        val message = Message(
             editTextNewMessage.text.toString(),
             SharedPreferenceManager.getStringValue(Constants().PREF_UID)!!,
             System.currentTimeMillis(),
@@ -158,6 +163,14 @@ class SingleChatActivity : AppCompatActivity() {
         )
         myRef.push().setValue(message)
         editTextNewMessage.text.clear()
+
+        val notification = SendNotification(email, message.message, SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString())
+        viewModel.sendNotification(notification).observe(
+            this@SingleChatActivity, {
+                if (it is Result.Success) Log.d("NOTIFICATION", "Send successfully")
+                else if (it is Result.Error) Log.d("NOTIFICATION", "Send unsuccessfully")
+            }
+        )
     }
 
     /**
@@ -191,19 +204,5 @@ class SingleChatActivity : AppCompatActivity() {
                 TODO("Not yet implemented")
             }
         })
-    }
-
-    fun manageNotifications(){
-        var email: String
-        viewModel.getProfileInfoByUsername(userName).observe(
-            this@SingleChatActivity,{
-                if (it is Result.Success) {
-                    email = it.data.email
-                    val notification = SendNotification(email, message.toString(), SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString())
-                    viewModel.sendNotification(notification)
-                }
-                else if (it is Result.Error) Log.d("NOTIFICATION", "Notification cannot be sent")
-            }
-        )
     }
 }

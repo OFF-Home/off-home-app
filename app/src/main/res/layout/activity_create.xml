@@ -93,7 +93,7 @@
     <EditText
         android:id="@+id/about_the_activity"
         android:layout_width="337dp"
-        android:layout_height="53dp"
+        android:layout_height="56dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
@@ -102,12 +102,10 @@
         android:inputType="textWebEditText"
         android:maxLength="250"
         android:padding="18dp"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.431"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/textAbout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/textAbout" />
 
     <TextView
         android:id="@+id/tvDate2"

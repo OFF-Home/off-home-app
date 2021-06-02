@@ -18,7 +18,7 @@ import com.offhome.app.data.profilejson.UserUsername
  */
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
+    var participants = MutableLiveData<Result<List<UserUsername>>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
     private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
 
@@ -32,10 +32,11 @@ class InfoActivityViewModel : ViewModel() {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, uidCreador: String): MutableLiveData<Result<String>> {
         return repository.joinActivity(
             usuariCreador, dataHoraIni,
-            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(), uidCreador,
+            SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
         )
     }
 
@@ -45,17 +46,18 @@ class InfoActivityViewModel : ViewModel() {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string type
      */
-    fun deleteUsuari(usuariCreador: String, dataHoraIni: String): MutableLiveData<String> {
+    fun deleteUsuari(usuariCreador: String, dataHoraIni: String, uidCreador: String): MutableLiveData<Result<String>> {
         return repository.deleteUsuari(
             usuariCreador, dataHoraIni,
-            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(), uidCreador,
+            SharedPreferenceManager.getStringValue(Constants().PREF_UID).toString()
         )
     }
 
     /**
      * gets the participants from the repository
      */
-    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<UserUsername>> {
+    fun getParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<List<UserUsername>>> {
         participants = repository.getNamesParticipants(usuariCreador, dataHoraIni)
         return participants
     }
@@ -86,6 +88,11 @@ class InfoActivityViewModel : ViewModel() {
     fun getProfileInfo(email: String) {
         profileInfo = repositoryProfile.getProfileInfo(email)
     }
+
+    fun getCreatorInfo(email: String): MutableLiveData<Result<UserInfo>> {
+        return repositoryProfile.getProfileInfo(email)
+    }
+
     // gets a single activity identified by its creator and date
     fun getActivityResult(activityCreator: String, activityDateTime: String) {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)

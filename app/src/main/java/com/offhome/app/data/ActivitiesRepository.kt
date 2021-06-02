@@ -160,23 +160,24 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
-        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String, uidCreador: String, uidParticipant: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant, uidCreador, uidParticipant)
         val call = activitiesService?.joinActivity(join)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    responseJoin?.value = "You have joined the activity!"
-                } else responseJoin?.value =
-                    "There has been an error and you haven't joined the activity!"
+                    result.value = Result.Success("You have joined the activity!")
+                } else result.value =
+                    Result.Error(IOException("There has been an error and you haven't joined the activity!"))
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseJoin?.value =
-                    "There has been an error and you haven't joined the activity!"
+                result.value =
+                    Result.Error(IOException("There has been an error and you haven't joined the activity!"))
             }
         })
-        return responseJoin as MutableLiveData<String>
+        return result
     }
 
     /**
@@ -186,23 +187,24 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun deleteUsuari(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<String> {
-        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant)
+    fun deleteUsuari(usuariCreador: String, dataHoraIni: String, usuariParticipant: String, uidCreador: String, uidParticipant: String): MutableLiveData<Result<String>> {
+        val result = MutableLiveData<Result<String>>()
+        val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant, uidCreador, uidParticipant)
         val call = activitiesService?.deleteUsuari(join)
         call!!.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    responseJoin?.value = "You have left the activity :("
-                } else responseJoin?.value =
-                    "There has been an error and you haven't left the activity!"
+                    result.value = Result.Success("You have left the activity :(")
+                } else result.value =
+                    Result.Error(IOException("There has been an error and you haven't left the activity!"))
             }
 
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseJoin?.value =
-                    "There has been an error and you haven't left the activity!"
+                result.value =
+                    Result.Error(IOException("There has been an error and you haven't left the activity!"))
             }
         })
-        return responseJoin as MutableLiveData<String>
+        return result
     }
 
     /**
@@ -275,22 +277,25 @@ class ActivitiesRepository {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string list
      */
-    fun getNamesParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<UserUsername>> {
-        if (participants == null) participants = MutableLiveData<List<UserUsername>>()
+    fun getNamesParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<List<UserUsername>>> {
+        val result = MutableLiveData<Result<List<UserUsername>>>()
         val call: Call<List<UserUsername>> = activitiesService!!.getAllParticipants(usuariCreador, dataHoraIni)
         call.enqueue(object : Callback<List<UserUsername>> {
             override fun onResponse(call: Call<List<UserUsername>>, response: Response<List<UserUsername>>) {
                 if (response.isSuccessful) {
-                    participants!!.value = response.body()
+                    result.value = Result.Success(response.body() as List<UserUsername>)
+                } else {
+                    result.value = Result.Error(IOException("Error getting participants"))
                 }
             }
 
             override fun onFailure(call: Call<List<UserUsername>>, t: Throwable) {
                 // Error en la connexion
                 Log.d("GET", "Error getting info")
+                result.value = Result.Error(IOException("Error getting participants"))
             }
         })
-        return participants as MutableLiveData<List<UserUsername>>
+        return result
     }
 
     /**

@@ -20,7 +20,7 @@ class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
     var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
     private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
-    private var valoracio: MutableLiveData<Rating> = MutableLiveData<Rating>()
+    private lateinit var valoracio: MutableLiveData<Result<Rating>>
 
     var profileInfo = MutableLiveData<Result<UserInfo>>()
     private var repositoryProfile: ProfileRepository = ProfileRepository()
@@ -63,7 +63,7 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the user's rating of the activity from the repository
      */
-    fun getValoracioUsuari(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Rating> {
+    fun getValoracioUsuari(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<Rating>> {
         valoracio = repository.getValoracio(usuariCreador, dataHoraIni, usuariParticipant)
         return valoracio
     }

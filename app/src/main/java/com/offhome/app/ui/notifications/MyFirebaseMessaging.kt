@@ -2,14 +2,18 @@ package com.offhome.app.ui.notifications
 
 
 
+import android.annotation.SuppressLint
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.media.RingtoneManager
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import com.offhome.app.MainActivity
 import com.offhome.app.R
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 
@@ -17,7 +21,7 @@ import com.offhome.app.ui.chats.groupChat.GroupChatActivity
  * Base class for receiving messages from Firebase Cloud Messaging.
  */
 class MyFirebaseMessaging : FirebaseMessagingService() {
-    lateinit var title: String
+    lateinit var titol: String
     lateinit var message: String
     var CHANNEL_ID = "CHANNEL"
 
@@ -28,7 +32,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
      */
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
-        title = remotemessage.data.get("title")!!
+        titol = remotemessage.data.get("titol")!!
         message = remotemessage.data.get("message")!!
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
@@ -49,7 +53,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
     private fun sendNotification() {
         val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
-        intent.putExtra("title", title)
+        intent.putExtra("titol", titol)
         intent.putExtra("message", message)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
@@ -63,7 +67,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
         }
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
+            .setContentTitle(titol)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setAutoCancel(true)
             .setContentText(message)

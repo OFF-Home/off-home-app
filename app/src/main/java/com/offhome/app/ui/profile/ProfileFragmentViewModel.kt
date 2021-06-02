@@ -6,6 +6,7 @@ import android.text.Editable
 import androidx.lifecycle.*
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.ActivitiesRepository
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
@@ -37,6 +38,7 @@ import com.offhome.app.data.model.UserInfo
 class ProfileFragmentViewModel : ViewModel() {
 
     private var repository = ProfileRepository()
+    private val activityRepository =ActivitiesRepository()
     private var loggedUserEmail = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
 
     private var _profileInfo = MutableLiveData<Result<UserInfo>>()
@@ -45,8 +47,9 @@ class ProfileFragmentViewModel : ViewModel() {
     private var _tags = MutableLiveData< List<TagData> >()
     var tags: LiveData<List<TagData>> = _tags
 
-    private var _myActivities = MutableLiveData<List<ActivityFromList>>()
-    var myActivities: LiveData<List<ActivityFromList>> = _myActivities
+    private var _myActivities = MutableLiveData<Result<List<ActivityFromList>>>()
+    var myActivities: LiveData<Result<List<ActivityFromList>>> = _myActivities
+    var likedActivities = MutableLiveData<Result<List<ActivityFromList>>>()
 
     var usernameSetSuccessfullyResult= MutableLiveData<Result<String>>()
 
@@ -72,6 +75,10 @@ class ProfileFragmentViewModel : ViewModel() {
     private fun getMyActivities() {
         myActivities =
             repository.getUserActivities(loggedUserEmail) // funciona amb myActivities i no amb _myActivities
+    }
+
+    fun getLikedActivitiesList(userEmail: String) {
+        likedActivities = activityRepository.getLikedAct(userEmail)
     }
 
     /**

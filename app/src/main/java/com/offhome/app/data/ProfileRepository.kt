@@ -99,24 +99,26 @@ class ProfileRepository {
      * @param email key of the user whose activities are to be obtained
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
-    fun getUserActivities(email: String): MutableLiveData<List<ActivityFromList>> {
-        if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
+    fun getUserActivities(email: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        val result = MutableLiveData<Result<List<ActivityFromList>>>()
 
         val call: Call<List<ActivityFromList>> = userService!!.getUserActivities(email)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities!!.value = response.body()
+                    result.value = Result.Success(response.body() as List<ActivityFromList>)
                     Log.d("response", "getUserActivities response: is successful")
                 } else {
+                    result.value = Result.Error(IOException("getUserActivities response: unsuccessful"))
                     Log.d("response", "getUserActivities response: unsuccessful")
                 }
             }
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                result.value = Result.Error(IOException("Error getting getUserActivities. communication failure (no response)"))
                 Log.d("GET", "Error getting getUserActivities. communication failure (no response)")
             }
         })
-        return activities as MutableLiveData<List<ActivityFromList>>
+        return result
     }
 
     /**

@@ -49,7 +49,7 @@ class ReviewsRecyclerViewAdapter() : RecyclerView.Adapter<ReviewsRecyclerViewAda
     override fun onBindViewHolder(holder: ReviewsRecyclerViewAdapter.ViewHolder, position: Int) {
         val item = reviewsList[position]
         holder.textViewUsername.text = item.username
-        holder.textViewComment.text = item.review
+        holder.textViewComment.text = item.comentari
     }
 
     /**

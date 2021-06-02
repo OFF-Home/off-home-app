@@ -19,7 +19,7 @@ import com.offhome.app.data.profilejson.UserUsername
 class InfoActivityViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
     var participants: MutableLiveData<List<UserUsername>> = MutableLiveData<List<UserUsername>>()
-    private var reviews: MutableLiveData<List<ReviewOfParticipant>> = MutableLiveData<List<ReviewOfParticipant>>()
+    var reviews = MutableLiveData<Result<List<ReviewOfParticipant>>>()
     private lateinit var valoracio: MutableLiveData<Result<Rating>>
 
     var profileInfo = MutableLiveData<Result<UserInfo>>()
@@ -78,7 +78,7 @@ class InfoActivityViewModel : ViewModel() {
     /**
      * gets the reviews of the activity from the repository
      */
-    fun getReviews(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<ReviewOfParticipant>> {
+    fun getReviews(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<List<ReviewOfParticipant>>> {
         reviews = repository.getCommentsParticipants(usuariCreador, dataHoraIni)
         return reviews
     }

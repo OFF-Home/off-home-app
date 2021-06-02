@@ -7,5 +7,5 @@ package com.offhome.app.data.model
  */
 data class ReviewOfParticipant(
     val username: String,
-    val review: String,
+    val comentari: String,
 )

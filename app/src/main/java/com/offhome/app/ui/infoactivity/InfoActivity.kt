@@ -444,9 +444,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         btnsubmit.setOnClickListener {
             // si no hay estrellas, muestra mensaje pidiendolas
             if (estrelles.numStars == 0) {
-                val snackbar: Snackbar = Snackbar
-                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
-                snackbar.show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.mustaddrating),
+                    Toast.LENGTH_LONG
+                ).show()
             }
             // si las hay, enviar datos a back
             else {
@@ -457,24 +459,35 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     estrelles.getRating().toInt(),
                     comment.text.toString()
                 ).observe(
-                    this,
-                    {
-                        if (it != " ") {
-                            if (it == "Your rating has been saved") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
-                                snackbar.show()
+                    this
+                ) {
+                    if (it != " ") {
+                        if (it == "Your rating has been saved") {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                            snackbar.show()
 
-                                // cambiar estrellas y edit text a que ya no pueda añadir nada
-                                estrelles.isFocusable = false
-                                estrelles.setIsIndicator(true)
-                                comment.setHint(R.string.reviewnotpossible)
-                                comment.isFocusable = false
-                                btnsubmit.setEnabled(false)
+                            // cambiar estrellas y edit text a que ya no pueda añadir nada
+                            estrelles.isFocusable = false
+                            estrelles.setIsIndicator(true)
+                            comment.setHint(R.string.reviewnotpossible)
+                            comment.isFocusable = false
+                            btnsubmit.setEnabled(false)
+
+                            //actualizar lista de reviews
+                            var comentaris = ArrayList<ReviewOfParticipant>()
+                            viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
+                                this
+                            ) {
+                                if (it is Result.Success) {
+                                    comentaris = it.data as ArrayList<ReviewOfParticipant>
+                                    reviewsAdapter.setData(comentaris)
+
+                                }
                             }
                         }
                     }
-                )
+                }
             }
         }
     }
@@ -490,9 +503,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
             {
-                if (it != null) {
-                    for (item in it) {
-                        if (item.review != null) reviewsList.add(item)
+                if (it is Result.Success) {
+                    for (item in it.data) {
+                        if (item.comentari != null) reviewsList.add(item)
                     }
                 }
                 reviewsAdapter.setData(reviewsList)

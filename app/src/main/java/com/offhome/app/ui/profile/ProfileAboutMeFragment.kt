@@ -4,6 +4,7 @@ package com.offhome.app.ui.profile
 
 import android.app.AlertDialog
 import android.content.Intent
+import android.content.SharedPreferences
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -22,10 +23,13 @@ import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.TagData
 import com.offhome.app.data.model.UserInfo
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
+import java.lang.Error
 import java.util.*
 
 /**
@@ -128,6 +132,8 @@ class ProfileAboutMeFragment : Fragment() {
 
         iniEditElements()
         iniEditionResultListeners()
+
+
 
         return view
     }
@@ -504,5 +510,21 @@ class ProfileAboutMeFragment : Fragment() {
         addTagToChipGroup(tag)
         profileVM.tagAddedByUser(tag)
         iniTagAdditionListener()
+    }
+
+
+    private fun getAchievements(){
+        profileVM.getAchievements(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success){
+                    for(x in it.data!!){
+                        Log.d("GET","YEEEEEEEES")
+                    }
+                }
+                else if (it is Result.Error){
+                    Log.d("GET", it.exception.message.toString())
+                }
+            })
     }
 }

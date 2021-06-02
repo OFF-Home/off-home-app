@@ -24,6 +24,7 @@ import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.DarkModeUpdate
 import com.offhome.app.ui.infopolitiques.CovidPolicyActivity
 import com.offhome.app.ui.infopolitiques.InfoOFFHomeActivity
 import com.offhome.app.ui.infopolitiques.PolicyActivity
@@ -256,7 +257,10 @@ class ProfileSettingsFragment : Fragment() {
      */
     private fun changeToDarkMode(){
         btnDarkMode.setOnClickListener{
-            profileVM.updateDarkMode(name_us, SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)).observe(
+            val dm : Int
+            if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) dm = 1
+            else dm = 0
+            profileVM.updateDarkMode(name_us, DarkModeUpdate(dm)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {

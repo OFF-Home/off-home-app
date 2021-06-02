@@ -52,6 +52,7 @@ import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
 import android.text.format.DateFormat;
+import androidx.core.view.isGone
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import java.text.SimpleDateFormat
@@ -86,9 +87,12 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var layoutParticipants: RecyclerView
     private lateinit var layoutReviews: RecyclerView
     private var joined = false
+    private lateinit var valoracio: TextView
     private lateinit var estrelles: RatingBar
     private lateinit var comment: EditText
     private lateinit var btnsubmit: Button
+    private lateinit var reviewstitle: TextView
+    private lateinit var listcomments: RecyclerView
     private var reviewsList: MutableList<ReviewOfParticipant> = ArrayList()
     private lateinit var btnAddCalendar: Button
 
@@ -136,23 +140,24 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         creator = findViewById<TextView>(R.id.textViewCreator)
         capacity = findViewById<TextView>(R.id.textViewCapacity)
         description = findViewById<TextView>(R.id.textViewDescription)
+        valoracio = findViewById<TextView>(R.id.textViewValoracio)
         estrelles = findViewById<RatingBar>(R.id.ratingStars)
         comment = findViewById<EditText>(R.id.yourcomment)
         btnsubmit = findViewById<Button>(R.id.submitcomment)
+        reviewstitle = findViewById<TextView>(R.id.textViewComments)
+        listcomments = findViewById<RecyclerView>(R.id.listComments)
         layout = findViewById<View>(R.id.content)
-
-        estrelles = findViewById<RatingBar>(R.id.ratingStars)
-        comment = findViewById<EditText>(R.id.yourcomment)
-        btnsubmit = findViewById<Button>(R.id.submitcomment)
         btnAddCalendar = findViewById(R.id.btnAddToCalendar)
+        weatherIcon = findViewById<ImageView>(R.id.imageViewWeather)
+        temperature = findViewById<TextView>(R.id.textViewTemperature)
 
-        // mostrar todas las reviews de la activity
+        /* mostrar todas las reviews de la activity: esto esta repetido
         reviewsAdapter = ReviewsRecyclerViewAdapter()
         layoutReviews = findViewById(R.id.listComments)
         with(layoutReviews) {
             layoutManager = LinearLayoutManager(context)
             adapter = reviewsAdapter
-        }
+        }*/
 
         // ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
@@ -202,8 +207,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     // Ferran: he ficat en aquest mètode tot el que es feia a onCreate que podia requerir tenir les dades de la Activitat. (get dades, set listeners, ...)
     fun iniMostrarActivitat() {
+        // get the current date
+        val currentTime = Calendar.getInstance().time
+        // change final date format
+        var date = changeDateFormat(activity.dataHoraFi)
+
         setInfoUsuariCreador()
-        uploadParticipants()
+        uploadParticipants(date, currentTime)
 
         val datahora = findViewById<TextView>(R.id.textViewDataTimeActivity)
         datahora.text = activity.dataHoraIni
@@ -214,23 +224,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
 
-        weatherIcon = findViewById<ImageView>(R.id.imageViewWeather)
-        temperature = findViewById<TextView>(R.id.textViewTemperature)
-
-        estrelles = findViewById(R.id.ratingStars)
-        comment = findViewById(R.id.yourcomment)
-        btnsubmit = findViewById(R.id.submitcomment)
-        btnAddCalendar = findViewById(R.id.btnAddToCalendar)
-
-        // get the current date
-        val currentTime = Calendar.getInstance().time
-        // change final date format
-        var date = changeDateFormat(activity.dataHoraFi)
-
-        // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
-        if (date != null) {
-            if (!joined or (date > currentTime)) cantreview()
-        }
 
         //si la actividad todavia no es vieja, obtener los dias que faltan para ella
         if (date > currentTime) {
@@ -273,7 +266,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
 
-        valoracioUsuari()
+        valoracioUsuari(date, currentTime)
 
         showReviews()
 
@@ -370,14 +363,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 imageLike.setImageResource(R.drawable.ic_baseline_favorite_border_24)
             }
         }
-
-        groupChat = findViewById(R.id.joinGroupChat)
-        groupChat.setOnClickListener {
-            displayChatGroup()
-        }
     }
 
-    private fun uploadParticipants() {
+    private fun uploadParticipants(date: Date, currentTime: Date) {
         // cargar participantes activity y mirar si el usuario ya esta apuntado en esta
         viewModel.getParticipants(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
@@ -398,60 +386,78 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         "getParticipants",
                         "nRemainingParticipants = " + nRemainingParticipants.toString()
                     )
+                    enableDisable(date, currentTime)
                 }
-            }
-        )
+            })
     }
 
-    private fun valoracioUsuari() {
-        datahora.text = activity.dataHoraIni
+    private fun enableDisable(date: Date, currentTime: Date) {
+        if (date != null) {
+            //si la actividad no ha pasado todavia, hacer invisible la parte de rating y/o review
+            if (date > currentTime) {
+                valoracio.visibility = View.GONE;
+                estrelles.visibility = View.GONE;
+                comment.visibility = View.GONE;
+                btnsubmit.visibility = View.GONE;
+                reviewstitle.visibility = View.GONE;
+                listcomments.visibility = View.GONE;
+            }
+            else {
+                // si el usuario no es participante de la activity no se permite hacer rating y/o review
+                if (!joined) cantreview()
+            }
+
+        }
+    }
+
+    private fun valoracioUsuari(date: Date, currentTime: Date) {
+        /*datahora.text = activity.dataHoraIni
         creator.text = getString(R.string.created_by) + activity.usuariCreador
         capacity.text = activity.numParticipants.toString() + "/" +  activity.maxParticipant.toString()
-        description.text = activity.descripcio
+        description.text = activity.descripcio*/
 
-        // get the current date
-        val currentTime = Calendar.getInstance().time
-        // change final date format
-        var date = changeDateFormat(activity.dataHoraFi)
-
+        /*
         // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
         if (date != null) {
             if (!joined or (date > currentTime)) {
                 cantreview()
             }
-        }
+        }*/
         viewModel.getValoracioUsuari(
             activity.usuariCreador, activity.dataHoraIni,
             SharedPreferenceManager.getStringValue(
                 Constants().PREF_EMAIL
             ).toString()
         ).observe(
-            this,
-            {
-                // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
-                if (it.valoracio != 0) {
-                    estrelles.setRating(it.valoracio.toFloat())
+            this
+        ) {
+            // si tiene valoración, ponerla en las estrellas y ya no puede añadir rating, solo review
+            if (it is Result.Success) {
+                if (it.data.valoracio != 0) {
+                    estrelles.setRating(it.data.valoracio.toFloat())
                     estrelles.invalidate()
                     estrelles.isFocusable = false
                     estrelles.setIsIndicator(true)
                 }
                 // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
-                if (it.review != " ") {
+                if (it.data.comentari != null) {
                     comment.setHint(R.string.reviewnotpossible)
                     comment.isFocusable = false
                     btnsubmit.setEnabled(false)
                 }
             }
-        )
+        }
         layout = findViewById(R.id.content)
 
         // al clicar a submit, envía valoracion a back
         btnsubmit.setOnClickListener {
             // si no hay estrellas, muestra mensaje pidiendolas
             if (estrelles.numStars == 0) {
-                val snackbar: Snackbar = Snackbar
-                    .make(layout, R.string.mustaddrating, Snackbar.LENGTH_LONG)
-                snackbar.show()
+                Toast.makeText(
+                    applicationContext,
+                    getString(R.string.mustaddrating),
+                    Toast.LENGTH_LONG
+                ).show()
             }
             // si las hay, enviar datos a back
             else {
@@ -459,7 +465,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
                     activity.usuariCreador,
                     activity.dataHoraIni,
-                    estrelles.numStars,
+                    estrelles.getRating().toInt(),
                     comment.text.toString()
                 ).observe(
                     this,
@@ -476,6 +482,18 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             comment.isFocusable = false
                             btnsubmit.setEnabled(false)
 
+                            //actualizar lista de reviews
+                            var comentaris = ArrayList<ReviewOfParticipant>()
+                            viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
+                                this,
+                             {
+                                if (it is Result.Success) {
+                                    comentaris = it.data as ArrayList<ReviewOfParticipant>
+                                    reviewsAdapter.setData(comentaris)
+
+                                }
+                             }
+                            )
                             //achievements
                             Log.d("rate, response", "it.data = "+ it.data.toString())
                             Log.d("rate, response", "it.data.result.size = "+ it.data.result.size)
@@ -486,8 +504,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
                         }
-                    }
-                )
+                })
             }
         }
     }
@@ -503,9 +520,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
             this,
             {
-                if (it != null) {
-                    for (item in it) {
-                        if (item.review != null) reviewsList.add(item)
+                if (it is Result.Success) {
+                    for (item in it.data) {
+                        if (item.comentari != null) reviewsList.add(item)
                     }
                 }
                 reviewsAdapter.setData(reviewsList)

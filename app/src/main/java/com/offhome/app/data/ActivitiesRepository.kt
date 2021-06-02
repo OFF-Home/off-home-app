@@ -31,8 +31,8 @@ class ActivitiesRepository {
     private var oldActivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var likedActivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var participants: MutableLiveData<List<UserUsername>>? = null
-    private var valoracio: MutableLiveData<Rating>? = null
-    private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
+    private var valoracio = MutableLiveData<Result<Rating>>()
+    private var reviews = MutableLiveData<Result<List<ReviewOfParticipant>>>()
     private var mutableLiveData: MutableLiveData<Result<String>>? = MutableLiveData()
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
     private var responseLike: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
@@ -377,22 +377,29 @@ class ActivitiesRepository {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data string list
      */
-    fun getValoracio(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Rating> {
-        if (valoracio == null) valoracio = MutableLiveData<Rating>()
+    fun getValoracio(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<Rating>> {
         val call: Call<Rating> = activitiesService!!.getValoracioParticipant(usuariCreador, dataHoraIni, usuariParticipant)
         call.enqueue(object : Callback<Rating> {
             override fun onResponse(call: Call<Rating>, response: Response<Rating>) {
                 if (response.isSuccessful) {
-                    valoracio!!.value = response.body()
+                    if (response.code() == 200) {
+                        valoracio.value =  Result.Success(response.body() as Rating)
+                    }
+                    else {
+                        valoracio.value = Result.Error(IOException("Error getting valoracio participant"))
+                    }
+                }
+                else {
+                    valoracio.value = Result.Error(IOException("Error getting valoracio participant"))
                 }
             }
 
             override fun onFailure(call: Call<Rating>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Error getting info")
+                valoracio.value = Result.Error(IOException("Error getting valoracio participant"))
             }
         })
-        return valoracio as MutableLiveData<Rating>
+        return valoracio
     }
 
     /**
@@ -433,22 +440,28 @@ class ActivitiesRepository {
      * @param dataHoraIni is the date and hour of the activity
      * @return the result with a live data list of the data class ReviewOfParticipant
      */
-    fun getCommentsParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<List<ReviewOfParticipant>> {
-        if (reviews == null) reviews = MutableLiveData<List<ReviewOfParticipant>>()
+    fun getCommentsParticipants(usuariCreador: String, dataHoraIni: String): MutableLiveData<Result<List<ReviewOfParticipant>>> {
         val call: Call<List<ReviewOfParticipant>> = activitiesService!!.getAllReviews(usuariCreador, dataHoraIni)
         call.enqueue(object : Callback<List<ReviewOfParticipant>> {
             override fun onResponse(call: Call<List<ReviewOfParticipant>>, response: Response<List<ReviewOfParticipant>>) {
                 if (response.isSuccessful) {
-                    reviews!!.value = response.body()
+                    if (response.code() == 200) {
+                        reviews.value =  Result.Success(response.body() as List<ReviewOfParticipant>)
+                    }
+                    else {
+                        reviews.value = Result.Error(IOException("Error getting reviews"))
+                    }
+                }
+                else {
+                    valoracio.value = Result.Error(IOException("Error getting reviews"))
                 }
             }
-
             override fun onFailure(call: Call<List<ReviewOfParticipant>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Error getting info")
+                valoracio.value = Result.Error(IOException("Error getting reviews"))
             }
         })
-        return reviews as MutableLiveData<List<ReviewOfParticipant>>
+        return reviews
     }
 
     fun getActivitiesByDescTitle(): MutableLiveData<List<ActivityFromList>> {

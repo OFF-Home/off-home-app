@@ -3,6 +3,7 @@ package com.offhome.app.ui.profile
 
 
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
@@ -11,11 +12,12 @@ import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
 import android.widget.*
-import android.widget.LinearLayout
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
@@ -72,6 +74,7 @@ class ProfileAboutMeFragment : Fragment() {
     private lateinit var saveIconDrawable: Drawable
     private lateinit var addIconDrawable: Drawable
     private lateinit var editTextProfileDescription: EditText
+    private lateinit var gridLayout: GridLayout
 
     /**
      * Override the onCreateView method
@@ -127,19 +130,9 @@ class ProfileAboutMeFragment : Fragment() {
         iniEditElements()
         iniEditionResultListeners()
 
-        //testing trophies
-        val gridLayout: GridLayout
         gridLayout = view.findViewById(R.id.gridLayout)
+        getAchievements()
 
-        val imageView = ImageView(requireContext())
-        val drawable2: Drawable? = ResourcesCompat.getDrawable(requireContext().resources,R.drawable.trophy_diamond_small,requireContext().theme)
-
-        imageView.setImageDrawable(drawable2)
-        imageView.id = R.id.trophy_one
-       // imageView.layoutParams = ViewGroup.LayoutParams(50, 50)
-       // imageView.requestLayout()
-
-        gridLayout.addView(imageView)
         return view
     }
 
@@ -537,19 +530,62 @@ class ProfileAboutMeFragment : Fragment() {
     }
 
 
-    private fun getAchievements(){
+    private fun getAchievements() {
         profileVM.getAchievements(
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         ).observe(
             viewLifecycleOwner,
             Observer {
                 if (it is Result.Success) {
-                    for (x in it.data) {
-                        Log.d("GET", "YEEEEEEEES")
-                    }
+                    for ((index, x) in it.data.withIndex()) {
+                        val imageView = ImageView(requireContext())
+                        var drawable2: Drawable?
+                        if (x.nom.contains("DIAMOND", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_diamond_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("PLATINUM", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_platinum_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("BRONZE", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_bronze_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("SILVER", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_silver_small,
+                                requireContext().theme
+                            )
+                        } else {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_gold_small,
+                                requireContext().theme
+                            )
+                        }
+                        imageView.setImageDrawable(drawable2)
+                        gridLayout.addView(imageView)
+                        imageView.setOnClickListener {
+                            Toast.makeText(context, x.descripcio, Toast.LENGTH_SHORT).show()
+                        }
+                        }
+                          /*  val progress = ProgressDialog(context)
+                            progress.setTitle(x.descripcio)
+                            progress.setCancelable(true)
+                            progress.show()*/
+                     //       Toast.makeText(context, x.descripcio, Toast.LENGTH_LONG).show()
                 } else if (it is Result.Error) {
                     Log.d("GET", it.exception.message.toString())
                 }
             })
     }
+
 }

@@ -569,12 +569,13 @@ class ProfileRepository {
     }
 
     fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
-        val call: Call<List<AchievementData>> = userService!!.getAchievements(userEmail)
+        val call: Call<List<AchievementData>> = userService!!.getAchievements("ferranib00@gmail.com")
 
         call.enqueue(object : Callback<List<AchievementData>> {
             override fun onResponse(call: Call<List<AchievementData>>, response: Response<List<AchievementData>>) {
                 if (response.isSuccessful) {
-                 //   achievementsSuccess.value = Result.Success(response.body())
+                    if (response.code() == 200) achievementsSuccess.value = Result.Success(response.body()!!)
+                    else achievementsSuccess.value = Result.Success(ArrayList<AchievementData>())
                 } else {
                     achievementsSuccess.value = Result.Error(IOException("get achievements response unsuccessful with DB"))
                 }

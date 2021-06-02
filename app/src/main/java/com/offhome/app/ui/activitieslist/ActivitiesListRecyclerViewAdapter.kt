@@ -80,7 +80,7 @@ class ActivitiesListRecyclerViewAdapter(
         holder.textViewCapacity.text = item.maxParticipant.toString()
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
-        if (likedList[position] == true) Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
+  /*      if (likedList[position] == true) Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
         else Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
         with(holder.background) {
             tag = item
@@ -116,7 +116,7 @@ class ActivitiesListRecyclerViewAdapter(
                     }
                 }
             }
-        }
+        }*/
     }
 
 

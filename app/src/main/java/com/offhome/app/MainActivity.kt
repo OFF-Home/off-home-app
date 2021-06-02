@@ -14,7 +14,6 @@ import androidx.navigation.ui.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
-import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import com.offhome.app.ui.createactivity.CreateActivity

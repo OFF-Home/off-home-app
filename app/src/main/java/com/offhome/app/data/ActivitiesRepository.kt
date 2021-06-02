@@ -365,15 +365,12 @@ class ActivitiesRepository {
                     result.value = Result.Success(response.body()!!)
                 } else {
                    // responseValorar?.value = "There has been an error and your rating could not be saved!"
-
                     Log.d("valorarActivitat", "response unsuccessful")
                     result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
                 }
             }
-
             override fun onFailure(call: Call<AchievementList>, t: Throwable) {
                 //responseValorar?.value = "There has been an error and your rating could not be saved!"
-
                 Log.d("valorarActivitat", "no response!")
                 result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
             }
@@ -495,7 +492,7 @@ class ActivitiesRepository {
         return result
     }
 
-    fun getInviteAchievements(email: String): MutableLiveData<Result<String>> {
+    fun getInviteAchievements(email: String): MutableLiveData<Result<String>> { //TODO per List<AchievementInfo> o algo aixi
         val result = MutableLiveData<Result<String>>()
 
         val call:Call<String> = activitiesService!!.getInviteAchievements(email)

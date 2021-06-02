@@ -96,7 +96,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var description: TextView
     private lateinit var layout: View
 
-    private var latestInviteAchievement:String? = null
+    private var nInviteAchievements:Int? = null
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -412,7 +412,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     this,
                     {
                         if (it is Result.Success) {
-                            //if (it == "Your rating has been saved") {
                             val snackbar: Snackbar = Snackbar
                                 .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
                             snackbar.show()
@@ -433,7 +432,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 val auxSnack = AuxShowAchievementSnackbar()
                                 auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
-                            //}
                         }
                     }
                 )
@@ -758,7 +756,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             this,
             Observer {
                 if (it is Result.Success) {
-                    latestInviteAchievement = it.data
+                    /*var nInviteAchievements = 0
+                    for (achievement in it.data) { //count invite achievements   //TODO tipus
+                        if (achievement.nom.contains("SHARER"))
+                            ++nInviteAchievements
+                    }*/
                 }
                 else
                     Log.d("getInviteAchievements", "result: error")
@@ -778,6 +780,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             achievement = "INVITE GOLD"
         else /*if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==100)*/
             achievement = "INVITE PLATINUM"
+
 
 
         val aux= AuxShowAchievementSnackbar()

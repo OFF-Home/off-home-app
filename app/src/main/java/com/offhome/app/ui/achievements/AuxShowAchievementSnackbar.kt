@@ -49,53 +49,10 @@ class AuxShowAchievementSnackbar {
     }
 
     fun showAchievementSnackbarObject(passLayout: View, passContext: Context, achievementList:List<String>) {
-        Log.d("auxSnackbar", "arribo. AchievementList = "+achievementList.toString())
+        Log.d("auxSnackbar", "arribo al 2. AchievementList = "+achievementList.toString())
         for (string in achievementList) {
             Log.d("auxSnackbar", "entro al for. String = " + string)
-
-            val achievementSnackbar = Snackbar.make(passLayout,string,Snackbar.LENGTH_LONG)
-            val imageView = ImageView(passContext)
-            val drawable2: Drawable?
-            if (string.contains("DIAMOND", true)) {
-                drawable2 = ResourcesCompat.getDrawable(
-                    passContext.resources,
-                    R.drawable.trophy_diamond,
-                    passContext.theme
-                )
-            } else if (string.contains("PLATINUM", true)) {
-                drawable2 = ResourcesCompat.getDrawable(
-                    passContext.resources,
-                    R.drawable.trophy_platinum,
-                    passContext.theme
-                )
-            } else if (string.contains("BRONZE", true)) {
-                drawable2 = ResourcesCompat.getDrawable(
-                    passContext.resources,
-                    R.drawable.trophy_bronze,
-                    passContext.theme
-                )
-            } else if (string.contains("SILVER", true)) {
-                drawable2 = ResourcesCompat.getDrawable(
-                    passContext.resources,
-                    R.drawable.trophy_silver,
-                    passContext.theme
-                )
-            } else {
-                drawable2 = ResourcesCompat.getDrawable(
-                    passContext.resources,
-                    R.drawable.trophy_gold,
-                    passContext.theme
-                )
-            }
-
-            imageView.setImageDrawable(drawable2)
-            imageView.id = R.id.trophy_one
-
-            val snackbarView = achievementSnackbar.view as Snackbar.SnackbarLayout
-            snackbarView.addView(imageView)
-            snackbarView.findViewById<ImageView>(R.id.trophy_one).marginLeft      //.foregroundGravity = Gravity.END
-
-            achievementSnackbar.show()
+            showAchievementSnackbar(passLayout, passContext, string)
         }
     }
 }

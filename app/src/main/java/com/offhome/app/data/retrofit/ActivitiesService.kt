@@ -103,6 +103,6 @@ interface ActivitiesService {
     @GET ("")//TODO
     fun getInviteAchievements(email:String): Call<String>
 
-    @POST("activitats/creaAte/{usuariCreador}")
+    @POST("activitats/create/{usuariCreador}")
     fun addActivityFerran(@Path("usuariCreador") emailCreator: String, @Body activitydata: ActivityData): Call<AchievementList>
 }

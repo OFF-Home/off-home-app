@@ -28,6 +28,7 @@ class InfoActivityViewModel : ViewModel() {
     var profileInfo = MutableLiveData<Result<UserInfo>>()
     private var repositoryProfile: ProfileRepository = ProfileRepository()
     var infoActivitatResult = MutableLiveData<Result<ActivityFromList>>()
+    var inviteAchievements = MutableLiveData<Result<String>>()
 
     /**
      * This function calls the [ActivitiesRepository] in order to join to an activity
@@ -92,5 +93,9 @@ class InfoActivityViewModel : ViewModel() {
     // gets a single activity identified by its creator and date
     fun getActivityResult(activityCreator: String, activityDateTime: String) {
         infoActivitatResult = repository.getActivityResult(activityCreator, activityDateTime)
+    }
+
+    fun getInviteAchievements() {
+        inviteAchievements = repository.getInviteAchievements(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString())
     }
 }

@@ -96,6 +96,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var description: TextView
     private lateinit var layout: View
 
+    private var latestInviteAchievement:String? = null
+
     /**
      * This is executed when the activity is launched for the first time or created again.
      * @param savedInstanceState is the instance of the saved State of the activity
@@ -142,6 +144,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             layoutManager = LinearLayoutManager(context)
             adapter = reviewsAdapter
         }
+
+       // getInviteAchievements()
 
         // ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
@@ -545,6 +549,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.share_outside_app_btn) {
             if (this::activity.isInitialized) {
+
+
                 val linkGenerator = AuxGenerateDynamicLink()
                 val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(
                     ActivityDataForInvite(
@@ -566,6 +572,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, "Share To:"))
+                //comprovar achievements
+                checkExternalAppInviteAchievements()
             } else {
                 Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
             }
@@ -727,5 +735,38 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         return null
+    }
+
+    private fun getInviteAchievements() {
+        viewModel.getInviteAchievements()
+        viewModel.inviteAchievements.observe(
+            this,
+            Observer {
+                if (it is Result.Success) {
+                    latestInviteAchievement = it.data
+                }
+                else
+                    Log.d("getInviteAchievements", "result: error")
+            }
+        )
+    }
+
+    private fun checkExternalAppInviteAchievements() {
+        //incrementem N_EXTERNAL_INVITES
+        SharedPreferenceManager.setIntValue(Constants().N_EXTERNAL_INVITES, SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES)+1)
+        val achievement:String
+        if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) == 1/*0*/)
+            achievement = "INVITE BRONZE"
+        else if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==2/*5*/)
+            achievement = "INVITE SILVER"
+        else if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==3/*50*/)
+            achievement = "INVITE GOLD"
+        else /*if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==100)*/
+            achievement = "INVITE PLATINUM"
+
+
+        val aux= AuxShowAchievementSnackbar()
+        aux.showAchievementSnackbar(layout, this, achievement)
+
     }
 }

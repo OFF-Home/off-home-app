@@ -5,7 +5,6 @@ package com.offhome.app.data
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.util.Log
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
@@ -254,7 +253,7 @@ class ProfileRepository {
     fun setDescription(email: String, newDescription: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
 
-        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(description = newDescription))
+        val call: Call<ResponseBody> = userService!!.setDescription(email = email, description = UserDescription(descripcio = newDescription))
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
@@ -285,7 +284,7 @@ class ProfileRepository {
      */
     fun deleteTag(email: String, tag: String): MutableLiveData<Result<String>> {
         val result = MutableLiveData<Result<String>>()
-        val call: Call<ResponseBody> = userService!!.deleteTag(email, NomTag(nomTag = tag))
+        val call: Call<ResponseBody> = userService!!.deleteTag(email, /*NomTag(nomTag =*/ tag/*)*/)
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {

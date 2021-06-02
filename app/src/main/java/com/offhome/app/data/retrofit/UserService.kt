@@ -83,8 +83,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @POST("/tags/{email}/delete")
-    fun deleteTag(@Path("email") email: String, @Body nomTag: NomTag): Call<ResponseBody>
+    @DELETE("/tags/{username}/delete/{nomTag}")
+    fun deleteTag(@Path("username") email: String, @Path("nomTag") nomTag: String): Call<ResponseBody>
 
     /**
      * sets a user's username in the back-end database
@@ -106,8 +106,8 @@ interface UserService {
      * @return returns the call to be executed.
      */
     @Headers("Content-Type: application/json")
-    @PUT("users/{username}/update")
-    fun setDescription(@Path("username") email: String, @Body description: UserDescription): Call<ResponseBody> //potser caldra utilitzar UserDescripcioCat
+    @PUT("users/{useremail}/update")
+    fun setDescription(@Path("useremail") email: String, @Body description: UserDescription): Call<ResponseBody> //potser caldra utilitzar UserDescripcioCat
 
     @GET("/users/{username}")
     fun getProfileInfoByUsername(@Path("username") newText: String): Call<UserInfo>

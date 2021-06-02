@@ -60,6 +60,7 @@ class ProfileRepository {
     var updatedNotifications = MutableLiveData<Result<String>>()
     val achievementsSuccess = MutableLiveData<Result<List<AchievementData>>>()
 
+    var notificationSuccess = MutableLiveData<Result<String>>()
     /**
      * obtains ProfileInfo from the lower level
      *
@@ -607,6 +608,24 @@ class ProfileRepository {
             }
         })
         return updatedNotifications
+    }
+
+    fun sendNotification(not: SendNotification): MutableLiveData<Result<String>> {
+        val call: Call<ResponseBody> = userService!!.sendNotification(not)
+
+        call.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    notificationSuccess.value = Result.Success("Notification sent")
+                } else {
+                    notificationSuccess.value = Result.Error(IOException("notification response unsuccessful with DB"))
+                }
+            }
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                notificationSuccess.value = Result.Error(IOException("Error notification. communication failure (no response DB)"))
+            }
+        })
+        return notificationSuccess
     }
 
 }

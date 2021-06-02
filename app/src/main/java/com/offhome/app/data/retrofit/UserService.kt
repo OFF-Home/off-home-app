@@ -129,4 +129,7 @@ interface UserService {
 
     @POST("/users/{username}/update")
     fun updateNotifications(@Path("username") username: String, @Body notif: NotificationData): Call<ResponseBody>
+
+    @POST("/xats/sendmessage")
+    fun sendNotification(@Body notification: SendNotification): Call<ResponseBody>
 }

@@ -11,13 +11,15 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.R
+import com.offhome.app.data.model.Message
+import com.offhome.app.data.model.SendMessage
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 
 /**
  * Base class for receiving messages from Firebase Cloud Messaging.
  */
 class MyFirebaseMessaging : FirebaseMessagingService() {
-    lateinit var title: String
+    lateinit var titol: String
     lateinit var message: String
     var CHANNEL_ID = "CHANNEL"
 
@@ -28,19 +30,12 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
      */
     override fun onMessageReceived(remotemessage: RemoteMessage) {
         super.onMessageReceived(remotemessage)
-        title = remotemessage.data.get("title")!!
-        message = remotemessage.data.get("message")!!
+        titol = remotemessage.data.get("title").toString()
+        message = remotemessage.data.get("body").toString()
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
-        //  sendNotification()
-    }
-
-    /**
-     * Called when a new token for the default Firebase project is generated.
-     */
-    override fun onNewToken(p0: String) {
-        super.onNewToken(p0)
+        sendNotification()
     }
 
     /**
@@ -49,8 +44,8 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
     private fun sendNotification() {
         val intent = Intent(applicationContext, GroupChatActivity::class.java)
 
-        intent.putExtra("title", title)
-        intent.putExtra("message", message)
+        intent.putExtra("title", titol)
+        intent.putExtra("body", message)
         intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
         intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
@@ -63,7 +58,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
         }
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(title)
+            .setContentTitle(titol)
             .setSmallIcon(R.drawable.ic_launcher_background)
             .setAutoCancel(true)
             .setContentText(message)

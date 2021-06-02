@@ -3,13 +3,17 @@ package com.offhome.app.ui.otherprofile
 
 
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
@@ -17,6 +21,8 @@ import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.TagData
 import com.offhome.app.data.model.UserInfo
@@ -47,6 +53,7 @@ class AboutThemFragment : Fragment() {
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
+    private lateinit var gridLayout: GridLayout
 
     /**
      * Override the onCreateView method
@@ -73,6 +80,8 @@ class AboutThemFragment : Fragment() {
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
+
+        gridLayout = view.findViewById(R.id.gridLayout)
 
         return view
     }
@@ -107,6 +116,7 @@ class AboutThemFragment : Fragment() {
                 }
             }
         )
+        getAchievements()
     }
 
     // old, stub.
@@ -148,5 +158,57 @@ class AboutThemFragment : Fragment() {
      */
     fun updateFollowes() {
         textViewFollowerCount.text = viewModel.getUserInfo().followers.toString()
+    }
+
+    private fun getAchievements() {
+        viewModel.getAchievements().observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    for ((index, x) in it.data.withIndex()) {
+                        val imageView = ImageView(requireContext())
+                        var drawable2: Drawable?
+                        if (x.nom.contains("DIAMOND", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_diamond_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("PLATINUM", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_platinum_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("BRONZE", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_bronze_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("SILVER", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_silver_small,
+                                requireContext().theme
+                            )
+                        } else {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_gold_small,
+                                requireContext().theme
+                            )
+                        }
+                        imageView.setImageDrawable(drawable2)
+                        gridLayout.addView(imageView)
+                        imageView.setOnClickListener {
+                            Toast.makeText(context, x.descripcio, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                } else if (it is Result.Error) {
+                    Log.d("GET", it.exception.message.toString())
+                }
+            })
     }
 }

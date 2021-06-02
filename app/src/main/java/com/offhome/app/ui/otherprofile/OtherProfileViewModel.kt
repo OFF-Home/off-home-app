@@ -8,6 +8,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.ProfileRepository
 import com.offhome.app.data.Result
+import com.offhome.app.data.model.AchievementData
 import com.offhome.app.data.model.FollowingUser
 import com.offhome.app.data.model.TagData
 import com.offhome.app.data.model.UserInfo
@@ -90,5 +91,9 @@ class OtherProfileViewModel : ViewModel() {
      */
     fun setFollowing(b: Boolean) {
         isFollowing.value = b
+    }
+
+    fun getAchievements(): MutableLiveData<Result<List<AchievementData>>> {
+        return repository.getAchievements(userInfo.email)
     }
 }

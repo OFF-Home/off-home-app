@@ -22,10 +22,4 @@ class CategoriesViewModel : ViewModel() {
     fun getCategories(): LiveData<List<Category>> {
         return categories
     }
-/*
-    fun getNewCategories(): LiveData<List<Category>> {
-        categories = repository.getAll()
-        return categories
-    }
- */
 }

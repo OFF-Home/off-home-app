@@ -64,8 +64,7 @@ class ActivitiesListRecyclerViewAdapter(private val context: Context?) : Recycle
         val item = activitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
-        // holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
-        holder.textViewCapacity.text = item.maxParticipant.toString()
+        holder.textViewCapacity.text = item.numParticipants.toString() + "/" + item.maxParticipant.toString()
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(
             holder.dataTimeImage
         )

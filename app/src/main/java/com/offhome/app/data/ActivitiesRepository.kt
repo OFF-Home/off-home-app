@@ -53,7 +53,12 @@ class ActivitiesRepository {
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    if (response.code() == 200) {
+                        activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    }
+                    else {
+                        activities.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
                 }
                 else {
                     activities.value = Result.Error(IOException("Error getting activities"))

@@ -164,13 +164,19 @@ class SingleChatActivity : AppCompatActivity() {
         myRef.push().setValue(message)
         editTextNewMessage.text.clear()
 
-        val notification = SendNotification(email, message.message, SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString())
-        viewModel.sendNotification(notification).observe(
-            this@SingleChatActivity, {
-                if (it is Result.Success) Log.d("NOTIFICATION", "Send successfully")
-                else if (it is Result.Error) Log.d("NOTIFICATION", "Send unsuccessfully")
-            }
-        )
+        if (!SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) {
+            val notification = SendNotification(
+                email,
+                message.message,
+                SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString()
+            )
+            viewModel.sendNotification(notification).observe(
+                this@SingleChatActivity, {
+                    if (it is Result.Success) Log.d("NOTIFICATION", "Send successfully")
+                    else if (it is Result.Error) Log.d("NOTIFICATION", "Send unsuccessfully")
+                }
+            )
+        }
     }
 
     /**

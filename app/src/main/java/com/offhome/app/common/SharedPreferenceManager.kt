@@ -34,13 +34,5 @@ class SharedPreferenceManager {
         fun deleteData() {
             getSharedPreferences().edit().clear().apply()
         }
-        fun getIntValue(dataLabel: String): Int {
-            return getSharedPreferences().getInt(dataLabel, 0)
-        }
-        fun setIntValue(dataLabel: String, dataValue: Int) {
-            val editor = getSharedPreferences().edit()
-            editor.putInt(dataLabel, dataValue)
-            editor.apply()
-        }
     }
 }

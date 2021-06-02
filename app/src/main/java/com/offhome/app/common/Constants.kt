@@ -17,5 +17,5 @@ data class Constants(
     val REQUEST_IMAGE_CAPTURE: Int = 1,
     val PREF_IS_NOT_FIRST_TIME_OPENING_APP: String = "PREF_IS_FIRST_TIME_OPENING_APP",
     val DARK_MODE: String = "DARK_MODE",
-    val N_EXTERNAL_INVITES: String = "N_EXTERNAL_INVITES"
+    //val N_EXTERNAL_INVITES: String = "N_EXTERNAL_INVITES"
 )

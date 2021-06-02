@@ -145,8 +145,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             adapter = reviewsAdapter
         }
 
-       // getInviteAchievements()
-
         // ara procedim a obtenir les dades de la activitat per a poder mostrar algo
 
         if (intent.extras != null && intent.extras!!.getString("activity") != null) { // si tenim intent.extras (és a dir, venim d'una altra activity de la app)
@@ -585,8 +583,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 )
                 intent.type = "text/plain"
                 startActivity(Intent.createChooser(intent, "Share To:"))
-                //comprovar achievements
-                checkExternalAppInviteAchievements()
             } else {
                 Toast.makeText(applicationContext, R.string.error, Toast.LENGTH_SHORT).show()
             }
@@ -748,43 +744,5 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         return null
-    }
-
-    private fun getInviteAchievements() {
-        viewModel.getInviteAchievements()
-        viewModel.inviteAchievements.observe(
-            this,
-            Observer {
-                if (it is Result.Success) {
-                    /*var nInviteAchievements = 0
-                    for (achievement in it.data) { //count invite achievements   //TODO tipus
-                        if (achievement.nom.contains("SHARER"))
-                            ++nInviteAchievements
-                    }*/
-                }
-                else
-                    Log.d("getInviteAchievements", "result: error")
-            }
-        )
-    }
-
-    private fun checkExternalAppInviteAchievements() {
-        //incrementem N_EXTERNAL_INVITES
-        SharedPreferenceManager.setIntValue(Constants().N_EXTERNAL_INVITES, SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES)+1)
-        val achievement:String
-        if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) == 1/*0*/)
-            achievement = "INVITE BRONZE"
-        else if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==2/*5*/)
-            achievement = "INVITE SILVER"
-        else if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==3/*50*/)
-            achievement = "INVITE GOLD"
-        else /*if (SharedPreferenceManager.getIntValue(Constants().N_EXTERNAL_INVITES) ==100)*/
-            achievement = "INVITE PLATINUM"
-
-
-
-        val aux= AuxShowAchievementSnackbar()
-        aux.showAchievementSnackbar(layout, this, achievement)
-
     }
 }

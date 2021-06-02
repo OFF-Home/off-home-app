@@ -27,7 +27,6 @@ import com.offhome.app.data.model.UserInfo
  *
  * @property viewModel reference to the ViewModel object of the entire OtherProfile.
  * @property textViewProfileDescription reference to description TextView
- * @property textViewBirthDate reference to birth date TextView
  * @property textViewFollowerCount reference to follower count TextView
  * @property textViewFollowingCount reference to following count TextView
  * @property chipGroupTags reference to the tags ChipGroup
@@ -45,7 +44,6 @@ class AboutThemFragment : Fragment() {
     private lateinit var viewModel: OtherProfileViewModel
 
     private lateinit var textViewProfileDescription: TextView
-    private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
@@ -72,7 +70,6 @@ class AboutThemFragment : Fragment() {
         viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
-        textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
@@ -92,7 +89,6 @@ class AboutThemFragment : Fragment() {
         val uinfo: UserInfo = viewModel.getUserInfo()
 
         textViewProfileDescription.text = uinfo.description
-        textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
 
@@ -130,8 +126,7 @@ class AboutThemFragment : Fragment() {
             addTagToChipGroup(tagData.nomTag)
         }
         if (tagList.isEmpty()) {
-            // TODO treure
-            Toast.makeText(context, "tags empty", Toast.LENGTH_LONG).show()
+            Log.d("tags otherprofile", "tags empty")
         }
     }
 

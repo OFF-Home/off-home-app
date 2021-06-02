@@ -50,8 +50,12 @@ import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
+import android.text.format.DateFormat;
+import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import java.text.SimpleDateFormat
 import java.util.*
+import java.util.function.LongToIntFunction
 
 /**
  * Class *InfoActivity*
@@ -67,6 +71,11 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
 
     private lateinit var mMap: GoogleMap
     private lateinit var imageLike: ImageView
+    private lateinit var weatherIcon: ImageView
+    private lateinit var temperature: TextView
+    private var daysLeft: Int = 1000000
+    private lateinit var dateWeather: Date
+    private lateinit var hourWeather: String
     private lateinit var activity: ActivityFromList
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
@@ -197,10 +206,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         datahora.text = activity.dataHoraIni
 
         val capacity = findViewById<TextView>(R.id.textViewCapacity)
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" + activity.maxParticipant.toString()
 
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
+
+        weatherIcon = findViewById<ImageView>(R.id.imageViewWeather)
+        temperature = findViewById<TextView>(R.id.textViewTemperature)
 
         estrelles = findViewById(R.id.ratingStars)
         comment = findViewById(R.id.yourcomment)
@@ -210,11 +222,52 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         // get the current date
         val currentTime = Calendar.getInstance().time
         // change final date format
-        var date = changeDateFormat()
+        var date = changeDateFormat(activity.dataHoraFi)
 
         // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
         if (date != null) {
             if (!joined or (date > currentTime)) cantreview()
+        }
+
+        //si la actividad todavia no es vieja, obtener los dias que faltan para ella
+        if (date > currentTime) {
+            daysLeft = getDaysLeft(date, currentTime)!!
+        }
+
+        //guardarnos el dia y la hora de la actividad
+        val day = DateFormat.format("dd", date) as String
+        val hour = DateFormat.format("HH", date) as String
+
+        //si falta 5 o menos dias para la actividad, obtenemos el tiempo
+        if (daysLeft <= 5) {
+            viewModel.getWeather().observe(
+                this
+            ) {
+                if (it is Result.Success) {
+                    //mirar cada resultado del tiempo, coger el del mismo dia a la activity
+                    if (hour < "12") {
+                        hourWeather = "09:00:00"
+                    }
+                    else {
+                        hourWeather = "15:00:00"
+                    }
+                    for((index, item) in it.data.list.withIndex()) {
+                        dateWeather = changeDateFormat(item.dt_txt)
+                        val dayDateWeather = DateFormat.format("dd", dateWeather) as String
+                        val hourDateWeather = DateFormat.format("HH:mm:ss", dateWeather) as String
+
+                        //si coincide el dia y la hora, ya puedo cargar esa temperatura
+                        if (day == dayDateWeather) {
+                            if (hourWeather == hourDateWeather) {
+                                Glide.with(this).load("http://openweathermap.org/img/wn/${item.weather.get(0).icon}@2x.png").centerCrop()
+                                    .diskCacheStrategy(DiskCacheStrategy.NONE)
+                                    .skipMemoryCache(true).into(weatherIcon)
+                                temperature.text = item.main.temp.toString() + "ºC"
+                            }
+                        }
+                    }
+                }
+            }
         }
 
         valoracioUsuari()
@@ -338,13 +391,13 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun valoracioUsuari() {
         datahora.text = activity.dataHoraIni
         creator.text = getString(R.string.created_by) + activity.usuariCreador
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" +  activity.maxParticipant.toString()
         description.text = activity.descripcio
 
         // get the current date
         val currentTime = Calendar.getInstance().time
         // change final date format
-        var date = changeDateFormat()
+        var date = changeDateFormat(activity.dataHoraFi)
 
         // si el usuario no es participante de la activity o si esta no se ha realizado, no se permite hacer rating y/o review
         if (date != null) {
@@ -614,9 +667,9 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         btnsubmit.setEnabled(true)
     }
 
-    fun changeDateFormat(): Date {
-        // transform dataHoraIni into date format
-        val mydate = activity.dataHoraFi
+    fun changeDateFormat(mydate: String): Date {
+        // transform date in string format to Date
+
         var date: Date? = null
         val format = SimpleDateFormat("yyyy-MM-dd HH:mm:ss")
 
@@ -721,5 +774,21 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
             }
         }
         return null
+    }
+
+    private fun getDaysLeft(date: Date, currentTime: Date): Int? {
+
+        //calcular diferencia de tiempo entre la fecha de la activity y la fecha actual
+        var diff: Long = date.getTime() - currentTime.getTime()
+
+        //pasar la diferencia a dias
+        val segundos: Long =  1000
+        val minutos: Long = segundos * 60
+        val horas: Long = minutos * 60
+        val dias: Long = horas * 24
+
+        val diasTranscurridos: Long = diff / dias
+        var days: Int = diasTranscurridos.toInt()
+        return days
     }
 }

@@ -20,12 +20,12 @@ data class UserInfo(
     val email: String,
     val username: String,
     val uid: String,
-    val birthDate: String,
     val description: String,
     var followers: Int,
     val following: Int,
     val darkmode: Int, // a backend no els funcionava el boolean
     val notifications: Int,
-    val estrelles: Double, // TODO hauria de ser float?
-    val language: String
+    val estrelles: Double,
+    val language: String,
+    val image: String
 )

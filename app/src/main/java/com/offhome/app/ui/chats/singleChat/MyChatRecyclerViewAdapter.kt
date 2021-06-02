@@ -11,6 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.MyApp
@@ -74,8 +75,14 @@ class MyChatRecyclerViewAdapter(private val context: Context?) : RecyclerView.Ad
             }
             return@setOnLongClickListener true
         }
-        // TODO Load image of a user
-        Glide.with(MyApp.getContext()).load(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().into(holder.imageViewPerson)
+        Glide.with(MyApp.getContext())
+            .load(Constants().BASE_URL + "upload/userimageget/" + item.username_enviador)
+            .placeholder(R.drawable.profile_pic_placeholder)
+            .centerCrop()
+            .circleCrop()
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
+            .skipMemoryCache(true)
+            .into(holder.imageViewPerson)
     }
 
     /**

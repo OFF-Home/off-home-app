@@ -205,6 +205,8 @@
     <string name="couldnt_delete_tag_toast">Couldn\'t delete tag</string>
     <string name="error_change_password_google">You can\'t change the password, because you have logged in with Google</string>
     <string name="btn_share" translatable="false">btn_share</string>
+    <string name="what_is_everyone_doing" translatable="false">What is everyone doing?</string>
+    <string name="no_activities_friends_found" translatable="false">No activities from friends found!</string>
     <string name="valoracions">Add you rating and review</string>
     <string name="comments">Reviews</string>
     <string name="reviewnotpossible">You can\'t review this activity</string>
@@ -226,7 +228,9 @@
     <string name="sending_invitations_snackbar"> Sending invitations to %1$s </string>
     <string name="add_calendar">Add to Google Calendar</string>
     <string name="error_no_calendar">No Calendar found on device!</string>
-    <string name="saved_to_calendar">Successfully saved into calendar!</string>
+    <string name="saved_to_calendar">Succesfully saved into calendar!</string>
+    <string name="share_activity_message_details" translatable="false"> %1$s\nCategory: %2$s\ndescription: %3$s\nCreated by: %4$s\nat: %5$s </string>
+    <string name="error_getting_chats" translatable="false">Error getting chats!</string>
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
     <string name="couldnt_retrieve_link_activity">Couldn\'t retrieve that activity. Please make sure the link is correct</string>
     <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
@@ -250,7 +254,7 @@
     <string name="set_username">Username</string>
     <string name="set_username_description">Please, set your username</string>
     <string name="dialog_delete_message_title">Delete message</string>
-    <string name="dialog_delete_message_message">Are you sure to delete message?</string>
+    <string name="dialog_delete_message_message">Are you sure you want to delete this message?</string>
     <string name="yes">Yes</string>
     <string name="textView_OffHome_info" translatable="false">El projecte OFF-Home es basa en el desenvolupament d’una aplicació que tindrà com a principal funcionalitat portar un seguiment de la quantitat de persones que hi ha realitzant una activitat concreta a l’aire lliure. Els usuaris de l’aplicació podran consultar aquestes dades i també apuntar-se ells mateixos com a participants de les activitats.
 
@@ -434,4 +438,18 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="something_was_cancelled">Something was cancelled</string>
     <string name="list">List</string>
     <string name="map">Map</string>
+    <string name="plan_activities">PLAN ACTIVITIES</string>
+    <string name="_join_hundreds_of_activities">Or join hundreds of activities near you</string>
+    <string name="next_button">NEXT</string>
+    <string name="talk_to_people_with_hobbies">Chat and talk to people with the same hobbies</string>
+    <string name="back_button">BACK</string>
+    <string name="meet_people">MEET PEOPLE</string>
+    <string name="maintain_distance">Maintain the minnimum safe distance with other participants.</string>
+    <string name="covid_free">COVID FREE</string>
+    <string name="finish" translatable="false">FINISH</string>
+    <string name="done_button">DONE!</string>
+    <string name="wear_mask">Always wear your mask covering nose and mouth.</string>
+    <string name="wash_hands">Wash your hands before and after an activity.</string>
+    <string name="suggested">Suggested</string>
+    <string name="all_activities">All</string>
 </resources>

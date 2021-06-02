@@ -18,15 +18,15 @@ import com.offhome.app.data.model.ActivityFromList
  */
 class ActivitiesViewModel : ViewModel() {
     private var repository: ActivitiesRepository = ActivitiesRepository()
-    private lateinit var activitiesList: LiveData<List<ActivityFromList>>
-    private lateinit var oldActivitiesList: LiveData<List<ActivityFromList>>
-    private lateinit var likedActivitiesList: LiveData<List<ActivityFromList>>
+    private lateinit var activitiesList: MutableLiveData<Result<List<ActivityFromList>>>
+    private lateinit var oldActivitiesList: MutableLiveData<Result<List<ActivityFromList>>>
+    private lateinit var likedActivitiesList: MutableLiveData<Result<List<ActivityFromList>>>
 
     /**
      * gets the activities of a category from the repository
      */
-    fun getActivitiesList(categoryName: String): LiveData<List<ActivityFromList>> {
-        activitiesList = repository.getAll(categoryName)
+    fun getActivitiesList(categoryName: String): MutableLiveData<Result<List<ActivityFromList>>> {
+        activitiesList = repository.getAll(categoryName)!!
         return activitiesList
     }
 
@@ -45,7 +45,7 @@ class ActivitiesViewModel : ViewModel() {
     /**
      * gets the old activities a user has joined from the repository
      */
-    fun getOldActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
+    fun getOldActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         oldActivitiesList = repository.getOldAct(userEmail)
         return oldActivitiesList
     }
@@ -53,10 +53,11 @@ class ActivitiesViewModel : ViewModel() {
     /**
      * gets the old activities a user has joined from the repository
      */
-    fun getLikedActivitiesList(userEmail: String): LiveData<List<ActivityFromList>> {
+    fun getLikedActivitiesList(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         likedActivitiesList = repository.getLikedAct(userEmail)
         return likedActivitiesList
     }
+
 
     /**
      * This function calls the [ActivitiesRepository] in order to like an activity
@@ -82,5 +83,13 @@ class ActivitiesViewModel : ViewModel() {
             usuariCreador, dataHoraIni,
             SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         )
+
+    fun getActivitiesByRadi(
+        categoryName: String,
+        altitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        return repository.getActivitiesByRadi(categoryName, altitude, longitude, progress)
     }
 }

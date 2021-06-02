@@ -13,7 +13,9 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.observe
+import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver
 import com.bumptech.glide.Glide
 import com.google.android.material.snackbar.Snackbar
 import com.google.gson.GsonBuilder
@@ -23,6 +25,7 @@ import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.infoactivity.InfoActivity
 import java.util.*
 import kotlin.collections.ArrayList
+
 
 /**
  * Adpter for the recycler view of the activities list
@@ -79,7 +82,6 @@ class ActivitiesListRecyclerViewAdapter(
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
         if (likedList[position] == true) Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
         else Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
-
         with(holder.background) {
             tag = item
             setOnClickListener(mOnClickListener)
@@ -121,6 +123,23 @@ class ActivitiesListRecyclerViewAdapter(
         }
     }
 
+
+/*    mRecyclerViewAdapter.registerAdapterDataObserver(myObserver);
+
+
+    protected fun setupRecyclerView() {
+        mAdapter = MyAdapter(listActivitiesFull)
+        mAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkAdapterIsEmpty()
+            }
+        })
+        mRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.setAdapter(mAdapter)
+        checkAdapterIsEmpty()
+    }*/
 
     /**
      * gets the number of views
@@ -177,7 +196,9 @@ class ActivitiesListRecyclerViewAdapter(
         else {
             val resultList = ArrayList<ActivityFromList>()
             for (row in activitiesList) {
-                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(row)
+                if (row.titol.toLowerCase(Locale.ROOT).contains(charSearch.toLowerCase(Locale.ROOT))) resultList.add(
+                    row
+                )
             }
             resultList
         }

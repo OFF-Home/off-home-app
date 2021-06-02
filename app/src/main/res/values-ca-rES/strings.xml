@@ -165,4 +165,8 @@
     <string name="suggested">Suggerit</string>
     <string name="all_activities">Totes</string>
     <string name="joined">APUNTAT!</string>
+    <string name="what_is_everyone_doing">Què està fent la gent?</string>
+    <string name="no_activities_friends_found">Actiitats d\'amics no trobades</string>
+    <string name="error_getting_chats">Error obtenint xats</string>
+    <string name="finish">ACABAR!</string>
 </resources>

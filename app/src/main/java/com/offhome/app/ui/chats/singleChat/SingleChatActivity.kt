@@ -164,7 +164,6 @@ class SingleChatActivity : AppCompatActivity() {
         myRef.push().setValue(message)
         editTextNewMessage.text.clear()
 
-        if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 0) {
             val notification = SendNotification(
                 email,
                 message.message,
@@ -176,7 +175,6 @@ class SingleChatActivity : AppCompatActivity() {
                     else if (it is Result.Error) Log.d("NOTIFICATION", "Send unsuccessfully")
                 }
             )
-        }
     }
 
     /**

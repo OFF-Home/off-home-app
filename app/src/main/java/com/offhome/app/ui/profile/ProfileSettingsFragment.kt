@@ -250,15 +250,15 @@ class ProfileSettingsFragment : Fragment() {
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {
-                        if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 1) {
+                        if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 0) {
                             btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
                             Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setIntValue(Constants().NOTIFICATION_OFF, 0)
+                            SharedPreferenceManager.setIntValue(Constants().NOTIFICATION_OFF, 1)
                         }
                         else {
                             btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
                             Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 1)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 0)
                         }
                     }
                     else if (res is Result.Error) {

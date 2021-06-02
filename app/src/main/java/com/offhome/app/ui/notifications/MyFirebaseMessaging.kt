@@ -11,6 +11,8 @@ import androidx.core.app.NotificationCompat
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.Message
 import com.offhome.app.data.model.SendMessage
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
@@ -35,6 +37,7 @@ class MyFirebaseMessaging : FirebaseMessagingService() {
 
         manager = this.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
 
+        //if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 1)
         sendNotification()
     }
 

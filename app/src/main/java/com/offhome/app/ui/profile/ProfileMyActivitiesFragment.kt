@@ -15,6 +15,9 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import com.offhome.app.ui.activitieslist.ActivitiesViewModel
@@ -96,19 +99,30 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
         profileVM = profileFragment.getViewModel()
-        profileVM.myActivities.observe(
+        profileVM.likedActivities.observe(
             viewLifecycleOwner,
             Observer {
-                val myActivitiesVM = it ?: return@Observer
-                // copiat de ActivitiesList
-                Log.d("MyActivities", "my activities got to the fragment")
-                activitiesList = myActivitiesVM
+                if (it is Result.Success) {
+                    val likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    profileVM.myActivities.observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (it is Result.Success) {
+                                activitiesList = it.data
+                                val likedList = ArrayList<Boolean>()
+                                for (item in activitiesList) {
+                                    //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                    val found = likedActivitiesList.find { element -> element == item }
+                                    if (found == item) likedList.add(true)
+                                    else likedList.add(false)
+                                }
+                                activitiesListAdapter.setData(activitiesList, likedList)
+                            }
 
-                activitiesListAdapter.setData(activitiesList, likedList)
-                // com que això ho he copiat nose si se li assigna un listener...
+                        })
+                }
             }
         )
-
         return view
     }
 

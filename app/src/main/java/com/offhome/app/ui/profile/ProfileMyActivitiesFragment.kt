@@ -11,14 +11,18 @@ import android.view.ViewGroup
 import android.widget.Button
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
+import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import com.offhome.app.ui.oldandliked.LikedActivities
 import com.offhome.app.ui.oldandliked.OldActivities
-import java.util.*
 import kotlin.collections.ArrayList
 
 /**
@@ -40,7 +44,9 @@ class ProfileMyActivitiesFragment : Fragment() {
 
     private lateinit var profileVM: ProfileFragmentViewModel
     private var activitiesList: List<ActivityFromList> = ArrayList()
+    private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
+    private var likedList = ArrayList<Boolean>()
     lateinit var buttonold: Button
     lateinit var buttonliked: Button
 
@@ -67,6 +73,8 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         rotateArrowDrawables()
 
+        activitiesViewModel = ViewModelProvider(this).get(ActivitiesViewModel::class.java)
+
         buttonold = view.findViewById<Button>(R.id.buttonOlderActivities)
         buttonliked = view.findViewById<Button>(R.id.buttonLikedActivities)
 
@@ -84,26 +92,37 @@ class ProfileMyActivitiesFragment : Fragment() {
         }
 
         // tot lo del recycler ho he robat descaradament de ActivitiesList
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context, activitiesViewModel)
         val recyclerView = view.findViewById<RecyclerView>(R.id.RecyclerViewProfileActivities)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter
 
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
         profileVM = profileFragment.getViewModel()
-        profileVM.myActivities.observe(
+        profileVM.likedActivities.observe(
             viewLifecycleOwner,
             Observer {
-                val myActivitiesVM = it ?: return@Observer
-                // copiat de ActivitiesList
-                Log.d("MyActivities", "my activities got to the fragment")
-                activitiesList = myActivitiesVM
+                if (it is Result.Success) {
+                    val likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    profileVM.myActivities.observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (it is Result.Success) {
+                                activitiesList = it.data
+                                val likedList = ArrayList<Boolean>()
+                                for (item in activitiesList) {
+                                    //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                    val found = likedActivitiesList.find { element -> element == item }
+                                    if (found == item) likedList.add(true)
+                                    else likedList.add(false)
+                                }
+                                activitiesListAdapter.setData(activitiesList, likedList)
+                            }
 
-                activitiesListAdapter.setData(activitiesList)
-                // com que això ho he copiat nose si se li assigna un listener...
+                        })
+                }
             }
         )
-
         return view
     }
 

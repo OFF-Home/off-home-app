@@ -24,10 +24,4 @@ class CategoriesViewModel : ViewModel() {
     fun getCategories(): MutableLiveData<Result<List<Category>>> {
         return categories
     }
-/*
-    fun getNewCategories(): LiveData<List<Category>> {
-        categories = repository.getAll()
-        return categories
-    }
- */
 }

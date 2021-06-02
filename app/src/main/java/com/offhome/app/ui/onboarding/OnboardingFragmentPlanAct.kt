@@ -26,6 +26,6 @@ class OnboardingFragmentPlanAct : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         viewModel = ViewModelProvider(this).get(OnboardingViewModel::class.java)
-        // TODO: Use the ViewModel
+        // Use the ViewModel
     }
 }

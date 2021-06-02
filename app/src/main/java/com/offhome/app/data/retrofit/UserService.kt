@@ -123,4 +123,7 @@ interface UserService {
 
     @POST("/users/{username}/update")
     fun updateDarkMode(@Path("username") username: String, @Body dm: DarkModeUpdate): Call<ResponseBody>
+
+    @GET("/assoliments")
+    fun getAchievements(@Query("useremail") useremail: String): Call<List<AchievementData>>
 }

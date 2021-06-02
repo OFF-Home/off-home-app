@@ -16,8 +16,11 @@ import com.offhome.app.R
 import com.offhome.app.data.Result
 import com.offhome.app.ui.activitieslist.ActivitiesListRecyclerViewAdapter
 import androidx.lifecycle.ViewModelProvider
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ChatInfo
+import com.offhome.app.ui.activitieslist.ActivitiesViewModel
 import com.offhome.app.ui.otherprofile.OtherProfileActivity
 
 /**
@@ -31,6 +34,8 @@ class ExploreFragment : Fragment() {
     private lateinit var recyclerViewFriends: RecyclerView
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private var activitiesListFriends: List<ActivityFromList> = ArrayList()
+    private var likedList = ArrayList<Boolean>()
+    private var likedActivitiesList: MutableList<ActivityFromList>? = ArrayList()
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
     private lateinit var activitiesListFiendsAdapter: ActivitiesFriendsListRecyclerViewAdapter
 
@@ -52,7 +57,7 @@ class ExploreFragment : Fragment() {
     ): View? {
         setHasOptionsMenu(true)
         val view = inflater.inflate(R.layout.explore_fragment, container, false)
-        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context)
+        activitiesListAdapter = ActivitiesListRecyclerViewAdapter(context, ActivitiesViewModel())
         recyclerView = view.findViewById(R.id.RecyclerViewExploreSuggested)
         recyclerView.layoutManager = LinearLayoutManager(context)
         recyclerView.adapter = activitiesListAdapter
@@ -63,16 +68,31 @@ class ExploreFragment : Fragment() {
         recyclerViewFriends.adapter = activitiesListFiendsAdapter
         viewModel = ViewModelProvider(this).get(ExploreViewModel::class.java)
 
-        viewModel.getSuggestedActivities()
-        viewModel.suggestedActivities.observe(
+        viewModel.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()).observe(
             viewLifecycleOwner,
             Observer {
                 if (it is Result.Success) {
-                    activitiesList = it.data
-                    activitiesListAdapter.setData(activitiesList)
-                }
+                    likedActivitiesList = it.data as MutableList<ActivityFromList>
+                    viewModel.getSuggestedActivities()
+                    viewModel.suggestedActivities.observe(
+                        viewLifecycleOwner,
+                        Observer {
+                            if (it is Result.Success) {
+                                activitiesList = it.data
+                                likedList.clear()
+                                for (item in activitiesList) {
+                                    //mirar que activities ya tienen like y ponerlo en la lista con los bools
+                                    val found = likedActivitiesList?.find { element -> element == item }
+                                    if (found == item) likedList.add(true)
+                                    else likedList.add(false)
+                                }
+                                activitiesListAdapter.setData(activitiesList, likedList)
+                            }
 
-            })
+                        })
+                }
+            }
+        )
 
         viewModel.getFriendsActivities()
         viewModel.friendsActivities.observe(

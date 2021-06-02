@@ -47,6 +47,7 @@ import com.offhome.app.data.model.ActivityDataForInvite
 import com.offhome.app.data.model.ActivityFromList
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.profilejson.UserUsername
+import com.offhome.app.ui.achievements.AuxShowAchievementSnackbar
 import com.offhome.app.ui.chats.groupChat.GroupChatActivity
 import com.offhome.app.ui.inviteChoosePerson.AuxGenerateDynamicLink
 import com.offhome.app.ui.inviteChoosePerson.InviteActivity
@@ -95,7 +96,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var username: String
 
     private lateinit var groupChat: FloatingActionButton
-    private var nRemainingParticipants: Int = 12
+    private var nRemainingParticipants: Int = 0
 
     private lateinit var btnJoin: Button
     private lateinit var datahora: TextView
@@ -103,6 +104,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var capacity: TextView
     private lateinit var description: TextView
     private lateinit var layout: View
+
+    private var nInviteAchievements:Int? = null
 
     /**
      * This is executed when the activity is launched for the first time or created again.
@@ -206,7 +209,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
         datahora.text = activity.dataHoraIni
 
         val capacity = findViewById<TextView>(R.id.textViewCapacity)
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" + activity.maxParticipant.toString()
 
         val description = findViewById<TextView>(R.id.textViewDescription)
         description.text = activity.descripcio
@@ -303,6 +306,16 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                         .toString()))
                                     participantsAdapter.setData(participants)
                                     btnAddCalendar.visibility = View.VISIBLE
+                                    Log.d("join, response", "it.data = "+ it.data.toString())
+                                    Log.d("join, response", "it.data.result.size = "+ it.data.result.size)
+
+                                    if (it.data.result.isNotEmpty()) {
+                                        Log.d("join, response", "entro a isNotEmpty")
+                                        val auxSnack = AuxShowAchievementSnackbar()
+                                        auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
+                                    }
+                                }else if (it is Result.Error) {
+                                    Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                                 }
                             }
                         )
@@ -393,7 +406,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     private fun valoracioUsuari() {
         datahora.text = activity.dataHoraIni
         creator.text = getString(R.string.created_by) + activity.usuariCreador
-        capacity.text = activity.maxParticipant.toString()
+        capacity.text = activity.numParticipants.toString() + "/" +  activity.maxParticipant.toString()
         description.text = activity.descripcio
 
         // get the current date
@@ -451,18 +464,26 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                 ).observe(
                     this,
                     {
-                        if (it != " ") {
-                            if (it == "Your rating has been saved") {
-                                val snackbar: Snackbar = Snackbar
-                                    .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
-                                snackbar.show()
+                        if (it is Result.Success) {
+                            val snackbar: Snackbar = Snackbar
+                                .make(layout, R.string.savedrating, Snackbar.LENGTH_LONG)
+                            snackbar.show()
 
-                                // cambiar estrellas y edit text a que ya no pueda añadir nada
-                                estrelles.isFocusable = false
-                                estrelles.setIsIndicator(true)
-                                comment.setHint(R.string.reviewnotpossible)
-                                comment.isFocusable = false
-                                btnsubmit.setEnabled(false)
+                            // cambiar estrellas y edit text a que ya no pueda añadir nada
+                            estrelles.isFocusable = false
+                            estrelles.setIsIndicator(true)
+                            comment.setHint(R.string.reviewnotpossible)
+                            comment.isFocusable = false
+                            btnsubmit.setEnabled(false)
+
+                            //achievements
+                            Log.d("rate, response", "it.data = "+ it.data.toString())
+                            Log.d("rate, response", "it.data.result.size = "+ it.data.result.size)
+
+                            if (it.data.result.isNotEmpty()) {
+                                Log.d("rate, response", "entro a isNotEmpty")
+                                val auxSnack = AuxShowAchievementSnackbar()
+                                auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
                         }
                     }
@@ -594,6 +615,8 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         if (item.itemId == R.id.share_outside_app_btn) {
             if (this::activity.isInitialized) {
+
+
                 val linkGenerator = AuxGenerateDynamicLink()
                 val dynamicLinkUri: Uri = linkGenerator.generateDynamicLink(
                     ActivityDataForInvite(

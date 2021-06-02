@@ -7,6 +7,7 @@ import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.model.JoInActivity
 import com.offhome.app.ui.explore.NoActivitiesException
 import com.offhome.app.data.model.*
+import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
 import com.offhome.app.data.retrofit.WeatherClient
@@ -34,6 +35,7 @@ class ActivitiesRepository {
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
     private var mutableLiveData: MutableLiveData<Result<String>>? = MutableLiveData()
     private var responseJoin: MutableLiveData<String>? = MutableLiveData(" ")
+    private var responseLike: MutableLiveData<Result<String>>? = MutableLiveData<Result<String>>()
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
@@ -42,6 +44,8 @@ class ActivitiesRepository {
     private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var singleActivity: MutableLiveData<ActivityFromList>? = null
+
+    private var achievementSet = MutableLiveData<Result<AchievementList>>()
 
     /**
      * This function calls the [activitiesService] in order to get all the activities in a category
@@ -53,7 +57,12 @@ class ActivitiesRepository {
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    if (response.code() == 200) {
+                        activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    }
+                    else {
+                        activities.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
                 }
                 else {
                     activities.value = Result.Error(IOException("Error getting activities"))
@@ -123,56 +132,121 @@ class ActivitiesRepository {
         return likedActivities
     }
 
+
+    /**
+     * This function calls the [activitiesService] in order to like an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to like the activity
+     * @return the result with a live data string type
+     */
+    fun likeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
+        val join = LikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        val call = activitiesService?.likeActivity(join)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseLike?.value = Result.Success("You have liked the activity!")
+                } else responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't liked the activity!"))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't liked the activity!"))
+            }
+        })
+        return responseLike as MutableLiveData<Result<String>>
+    }
+
+    /**
+     * This function calls the [activitiesService] in order to dislike an activity
+     * @param usuariCreador is the creator of the activity
+     * @param dataHoraIni is the date and hour of the activity
+     * @param usuariParticipant is the user that wants to dislike the activity
+     * @return the result with a live data string type
+     */
+    fun dislikeActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String): MutableLiveData<Result<String>> {
+        val call = activitiesService?.dislikeActivity(usuariCreador, dataHoraIni, usuariParticipant)
+        call!!.enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+                if (response.isSuccessful) {
+                    responseLike?.value = Result.Success("You have disliked the activity!")
+                } else responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't disliked the activity!"))
+            }
+
+            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+                responseLike?.value =
+                    Result.Error(IOException("There has been an error and you haven't disliked the activity!"))
+            }
+        })
+        return responseLike as MutableLiveData<Result<String>>
+    }
+
+
+
     /**
      * This function calls the [activitiesService] in order to create the activity and set the MutableLiveData with the result
      * @param newActivity is an instance of the data class [ActivityData]
      * @return the result with a live data string type
      */
-    fun addActivity(newActivity: ActivityData): MutableLiveData<Result<String>> {
+    fun addActivity(newActivity: ActivityData): MutableLiveData<Result<AchievementList>> {
+        Log.d("addActivityFerran", "entrem")
+        val result = MutableLiveData<Result<AchievementList>>()
+
         val call = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL)?.let {
             activitiesService?.createActivityByUser(
                 emailCreator = it,
                 activitydata = newActivity
             )
         }
-        call!!.enqueue(object : Callback<ResponseBody> {
+        call!!.enqueue(object : Callback<AchievementList> {
             override fun onResponse(
-                call: Call<ResponseBody>,
-                response: Response<ResponseBody>
+                call: Call<AchievementList>,
+                response: Response<AchievementList>
             ) {
+                Log.d("addActivity", "we got a response")
                 if (response.isSuccessful) {
-                    mutableLiveData?.value = Result.Success("Activity created!")
-                } else mutableLiveData?.value =
-                   Result.Error(IOException("There has been an error and the activity cannot be created"))
+                    Log.d("addActivity", "response successful")
+                    result.value = Result.Success(response.body()!!)
+                } else {
+                    Log.d("addActivity", "response unsuccessful")
+                    result.value = Result.Error(IOException("There has been an error and the activity cannot be created"))
+                }
             }
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                mutableLiveData?.value =
-                    Result.Error(IOException("Error: connection failure"))
+
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
+                Log.d("addActivity", "no response!")
+                result.value = Result.Error(IOException("Error: connection failure"))
             }
         })
-        return mutableLiveData as MutableLiveData<Result<String>>
+        Log.d("addActivity", "passo el call.enqueue")
+        return result
     }
 
     /**
-     * This function calls the [activitiesService] in order to join to an activity
+     * This function calls the [activitiesService] in order to join an activity
      * @param usuariCreador is the creator of the activity
      * @param dataHoraIni is the date and hour of the activity
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String, uidCreador: String, uidParticipant: String): MutableLiveData<Result<String>> {
-        val result = MutableLiveData<Result<String>>()
+    fun joinActivity(usuariCreador: String, dataHoraIni: String, usuariParticipant: String, uidCreador: String, uidParticipant: String): MutableLiveData<Result<AchievementList>> {
+        val result = MutableLiveData<Result<AchievementList>>()
         val join = JoInActivity(usuariCreador, dataHoraIni, usuariParticipant, uidCreador, uidParticipant)
         val call = activitiesService?.joinActivity(join)
-        call!!.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        call!!.enqueue(object : Callback<AchievementList> {
+            override fun onResponse(call: Call<AchievementList>, response: Response<AchievementList>) {
+                Log.d("joinActivity", "we got a response")
                 if (response.isSuccessful) {
-                    result.value = Result.Success("You have joined the activity!")
+                    Log.d("repo::joinActivity", "response.code() == " + response.code())
+                    result.value = Result.Success(response.body()!!)
                 } else result.value =
                     Result.Error(IOException("There has been an error and you haven't joined the activity!"))
             }
 
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
                 result.value =
                     Result.Error(IOException("There has been an error and you haven't joined the activity!"))
             }
@@ -328,23 +402,29 @@ class ActivitiesRepository {
      * @param usuariParticipant is the user that wants to join the activity
      * @return the result with a live data string type
      */
-    fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<String> {
+    fun valorarActivitat(usuariParticipant: String, usuariCreador: String, dataHoraIni: String, valoracio: Int, comentari: String): MutableLiveData<Result<AchievementList>> {
+        val result = MutableLiveData<Result<AchievementList>>()
         val rate = RatingSubmission(usuariParticipant, usuariCreador, dataHoraIni, valoracio, comentari)
         val call = activitiesService?.addReview(rate)
-        call!!.enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
+        call!!.enqueue(object : Callback<AchievementList> {
+            override fun onResponse(call: Call<AchievementList>, response: Response<AchievementList>) {
                 if (response.isSuccessful) {
-                    responseValorar?.value = "Your rating has been saved"
-                } else responseValorar?.value =
-                    "There has been an error and your rating could not be saved!"
+                    //responseValorar?.value = "Your rating has been saved"
+                    Log.d("valorarActivitat", "response successful")
+                    result.value = Result.Success(response.body()!!)
+                } else {
+                   // responseValorar?.value = "There has been an error and your rating could not be saved!"
+                    Log.d("valorarActivitat", "response unsuccessful")
+                    result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
+                }
             }
-
-            override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                responseValorar?.value =
-                    "There has been an error and your rating could not be saved!"
+            override fun onFailure(call: Call<AchievementList>, t: Throwable) {
+                //responseValorar?.value = "There has been an error and your rating could not be saved!"
+                Log.d("valorarActivitat", "no response!")
+                result.value = Result.Error(IOException("There has been an error and your rating could not be saved!"))
             }
         })
-        return responseValorar as MutableLiveData<String>
+        return result
     }
 
     /**

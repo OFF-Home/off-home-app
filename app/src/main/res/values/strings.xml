@@ -166,7 +166,7 @@
     <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
     <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="button_login">Log in</string>
-    <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
+    <string name="text_view_have_not_account">"Don \'t have an account yet? Sign up "</string>
     <string name="login_failed_email">Email not verified</string>
     <string name="login_failed_login">Wrong email or password</string>
     <string name="off_home_logo">OFF Home logo</string>
@@ -186,7 +186,7 @@
     <string name="tags_cant_be_empty_toast">tags can\'t be empty</string>
     <string name="title_activity_map_with_activities">Map</string>
     <string name="search_title" translatable="false">search_title</string>
-    <string name="text_view_recover_password">Don\'t remember your password? Recover it </string>
+    <string name="text_view_recover_password">"Don\'t remember your password? Recover it "</string>
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint" translatable="false">search_hint</string>
@@ -234,6 +234,8 @@
     <string name="share_activity_deeplink_description">%1$s (OFF Home Activity)</string>
     <string name="couldnt_retrieve_link_activity">Couldn\'t retrieve that activity. Please make sure the link is correct</string>
     <string name="couldnt_reach_the_server">Couldn\'t reach the server. Please try again later </string>
+    <string name="couldnt_like_activity">Error liking the activity</string>
+    <string name="couldnt_dislike_activity">Error disliking the activity</string>
     <string name="change_password">Change password</string>
     <string name="language">Language</string>
     <string name="notifications">Show notifications</string>
@@ -448,6 +450,9 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="done_button">DONE!</string>
     <string name="wear_mask">Always wear your mask covering nose and mouth.</string>
     <string name="wash_hands">Wash your hands before and after an activity.</string>
+    <string name="successfully_joined">Successfully joined!</string>
+    <string name="achievement_first_activity">Creator platinum</string>
+    <string name ="activity_created">Activity created!</string>
     <string name="suggested">Suggested</string>
     <string name="all_activities">All</string>
     <string name="joined">JOINED!</string>

@@ -153,8 +153,4 @@ class ProfileFragmentViewModel : ViewModel() {
     fun updateNotifications(username: String, notif: NotificationData): MutableLiveData<Result<String>>{
         return repository.updateNotifications(username, notif)
     }
-
-    fun getProfileInfoByUsername(name_us: String): MutableLiveData<Result<UserInfo>>{
-        return repository.getProfileInfoByUsername(name_us)
-    }
 }

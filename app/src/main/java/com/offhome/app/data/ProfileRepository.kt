@@ -571,16 +571,16 @@ class ProfileRepository {
         call.enqueue(object : Callback<ResponseBody> {
             override fun onResponse(call: Call<ResponseBody>, response: Response<ResponseBody>) {
                 if (response.isSuccessful) {
-                    updatedDarkMode!!.value = Result.Success("Account theme updated successfully")
+                    updatedDarkMode.value = Result.Success("Account theme updated successfully")
                 } else {
-                    updatedDarkMode!!.value = Result.Error(IOException("updated account response unsuccessful with DB"))
+                    updatedDarkMode.value = Result.Error(IOException("updated account response unsuccessful with DB"))
                 }
             }
             override fun onFailure(call: Call<ResponseBody>, t: Throwable) {
-                updatedDarkMode!!.value = Result.Error(IOException("Error updating user account. communication failure (no response DB)"))
+                updatedDarkMode.value = Result.Error(IOException("Error updating user account. communication failure (no response DB)"))
             }
         })
-        return updatedDarkMode!!
+        return updatedDarkMode
     }
 
     fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {

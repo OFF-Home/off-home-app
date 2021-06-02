@@ -109,7 +109,7 @@ class ProfileSettingsFragment : Fragment() {
         btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
 
         name_us = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString()
-
+        email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         manageUserInfo()
 
         deleteAccount()
@@ -123,16 +123,8 @@ class ProfileSettingsFragment : Fragment() {
 
         covidPolicy()
 
-        profileVM.getProfileInfoByUsername(name_us).observe(
-            viewLifecycleOwner,{
-                if (it is Result.Success) {
-                    email = it.data.email
-                    manageNotifications()
-                    changeToDarkMode()
-                }
-                else if (it is Result.Error) Log.d("GET", "Get email error")
-            }
-        )
+        manageNotifications()
+        changeToDarkMode()
     }
 
     private fun covidPolicy() {
@@ -252,21 +244,21 @@ class ProfileSettingsFragment : Fragment() {
 
         btnNotifications.setOnClickListener {
             val notif : Int
-            if (SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) notif = 1
-            else notif = 0
+            if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 1) notif = 0
+            else notif = 1
             profileVM.updateNotifications(email, NotificationData(notif)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {
-                        if (SharedPreferenceManager.getBooleanValue(Constants().NOTIFICATION_OFF)) {
+                        if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 1) {
                             btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
                             Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().NOTIFICATION_OFF, false)
+                            SharedPreferenceManager.setIntValue(Constants().NOTIFICATION_OFF, 0)
                         }
                         else {
                             btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
                             Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, true)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 1)
                         }
                     }
                     else if (res is Result.Error) {
@@ -283,21 +275,21 @@ class ProfileSettingsFragment : Fragment() {
     private fun changeToDarkMode(){
         btnDarkMode.setOnClickListener{
             val dm : Int
-            if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) dm = 1
-            else dm = 0
+            dm = if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 1) 0
+            else 1
             profileVM.updateDarkMode(email, DarkModeUpdate(dm)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {
-                        if (!SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
+                        if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 0) {
                             setDefaultNightMode(MODE_NIGHT_YES)
                             Toast.makeText(context, "Dark mode ON", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, true)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 1)
                         }
                         else {
                             setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
                             Toast.makeText(context, "Dark mode OFF", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, false)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 0)
                         }
                     }
                     else if (res is Result.Error) {

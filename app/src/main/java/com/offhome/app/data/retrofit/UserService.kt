@@ -121,13 +121,13 @@ interface UserService {
     @DELETE("/users/delete/{email}")
     fun deleteAccount(@Path("email") email: String): Call<ResponseBody>
 
-    @POST("/users/{useremail}/update")
+    @PUT("/users/{useremail}/update")
     fun updateDarkMode(@Path("useremail") useremail: String, @Body dm: DarkModeUpdate): Call<ResponseBody>
 
     @GET("/assoliments")
     fun getAchievements(@Query("useremail") useremail: String): Call<List<AchievementData>>
 
-    @POST("/users/{useremail}/update")
+    @PUT("/users/{useremail}/update")
     fun updateNotifications(@Path("useremail") useremail: String, @Body notif: NotificationData): Call<ResponseBody>
 
     @POST("/xats/sendmessage")

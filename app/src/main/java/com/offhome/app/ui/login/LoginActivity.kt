@@ -85,12 +85,6 @@ class LoginActivity : AppCompatActivity() {
             finish()
         }
 
-        if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
-            AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
-        }
-        else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
-
-
         if (SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL) != null) {
             val intent = Intent(this, MainActivity::class.java)
             startActivity(intent)
@@ -164,6 +158,18 @@ class LoginActivity : AppCompatActivity() {
                                     SharedPreferenceManager.setStringValue(
                                         Constants().PREF_USERNAME,
                                         it.data.username
+                                    )
+                                    SharedPreferenceManager.setIntValue(
+                                        Constants().DARK_MODE,
+                                        it.data.darkmode
+                                    )
+                                    if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 1) {
+                                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                                    }
+                                    else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                                    SharedPreferenceManager.setIntValue(
+                                        Constants().NOTIFICATION_OFF,
+                                        it.data.notifications
                                     )
                                     val welcome = getString(R.string.welcome)
                                     val intent = Intent(this, MainActivity::class.java)
@@ -326,6 +332,18 @@ class LoginActivity : AppCompatActivity() {
                                 if (it is Result.Success){
                                     val username = it.data.username
                                     SharedPreferenceManager.setStringValue(Constants().PREF_USERNAME, username)
+                                    SharedPreferenceManager.setIntValue(
+                                        Constants().DARK_MODE,
+                                        it.data.darkmode
+                                    )
+                                    if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 1) {
+                                        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES)
+                                    }
+                                    else AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM)
+                                    SharedPreferenceManager.setIntValue(
+                                        Constants().NOTIFICATION_OFF,
+                                        it.data.notifications
+                                    )
                                     val intent = Intent(this, MainActivity::class.java)
                                     startActivity(intent)
                                     Toast.makeText(

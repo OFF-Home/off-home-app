@@ -166,7 +166,7 @@
     <string name="sign_up_fb_connection_error">Sign up error: Could not reach Firebase </string>
     <string name="title_activity_login" translatable="false">LoginActivity</string>
     <string name="button_login">Log in</string>
-    <string name="text_view_have_not_account">Don \'t have an account yet? Sign up </string>
+    <string name="text_view_have_not_account">"Don \'t have an account yet? Sign up "</string>
     <string name="login_failed_email">Email not verified</string>
     <string name="login_failed_login">Wrong email or password</string>
     <string name="off_home_logo">OFF Home logo</string>
@@ -186,7 +186,7 @@
     <string name="tags_cant_be_empty_toast">tags can\'t be empty</string>
     <string name="title_activity_map_with_activities">Map</string>
     <string name="search_title" translatable="false">search_title</string>
-    <string name="text_view_recover_password">Don\'t remember your password? Recover it </string>
+    <string name="text_view_recover_password">"Don\'t remember your password? Recover it "</string>
     <string name="recover_password_text">Type your email to send a mail to reset your password.</string>
     <string name="btn_recover_password">Recover password</string>
     <string name="search_hint" translatable="false">search_hint</string>

@@ -9,7 +9,9 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.offhome.app.R
+import com.offhome.app.common.Constants
 import com.offhome.app.data.profilejson.UserUsername
 
 /**
@@ -52,7 +54,10 @@ class ParticipantsRecyclerViewAdapter() : RecyclerView.Adapter<ParticipantsRecyc
         val item = participantsList[position]
         holder.textViewUsername.text = item.username
         // aqui hay que pedir profile pic realmente
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.profilepic)
+        Glide.with(holder.mView.context).load(Constants().BASE_URL + "upload/userimageget/" + item.username)
+            .placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop().diskCacheStrategy(
+            DiskCacheStrategy.NONE)
+            .skipMemoryCache(true).into(holder.profilepic)
     }
 
     /**

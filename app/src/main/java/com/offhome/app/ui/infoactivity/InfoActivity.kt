@@ -392,8 +392,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                         "nRemainingParticipants = " + nRemainingParticipants.toString()
                     )
                 }
-            }
-        }
+            })
     }
 
     private fun enableDisable(date: Date, currentTime: Date) {
@@ -490,13 +489,15 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                             //actualizar lista de reviews
                             var comentaris = ArrayList<ReviewOfParticipant>()
                             viewModel.getReviews(activity.usuariCreador, activity.dataHoraIni).observe(
-                                this
-                            ) {
+                                this,
+                             {
                                 if (it is Result.Success) {
                                     comentaris = it.data as ArrayList<ReviewOfParticipant>
                                     reviewsAdapter.setData(comentaris)
 
                                 }
+                             }
+                            )
                             //achievements
                             Log.d("rate, response", "it.data = "+ it.data.toString())
                             Log.d("rate, response", "it.data.result.size = "+ it.data.result.size)
@@ -507,8 +508,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                 auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                             }
                         }
-                    }
-                }
+                })
             }
         }
     }

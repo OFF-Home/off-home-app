@@ -103,8 +103,13 @@ class ProfileRepository {
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    result.value = Result.Success(response.body() as List<ActivityFromList>)
-                    Log.d("response", "getUserActivities response: is successful")
+                    if (response.code() == 200) {
+                        result.value = Result.Success(response.body() as List<ActivityFromList>)
+                        Log.d("response", "getUserActivities response: is successful")
+                    }
+                    else {
+                        result.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
                 } else {
                     result.value = Result.Error(IOException("getUserActivities response: unsuccessful"))
                     Log.d("response", "getUserActivities response: unsuccessful")

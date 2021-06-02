@@ -103,5 +103,7 @@ interface ActivitiesService {
 
     @GET ("assoliments")//TODO
     fun getInviteAchievements(@Query("useremail") email:String): Call<String>
-
+  
+    @GET("activitats/searchbyradi")
+    fun getActivitiesByRadi(@Query("latitud") latitude: Double, @Query("altitud") longitude: Double, @Query("distance") progress: Int): Call<List<ActivityFromList>>
 }

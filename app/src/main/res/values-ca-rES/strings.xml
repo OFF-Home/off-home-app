@@ -160,4 +160,6 @@
     <string name="successfully_joined">T\'hi has unit!</string>
     <string name="achievement_first_activity">Creador platí</string>
     <string name ="activity_created">Activitat creada!</string>
+    <string name="suggested">Suggerit</string>
+    <string name="all_activities">Totes</string>
 </resources>

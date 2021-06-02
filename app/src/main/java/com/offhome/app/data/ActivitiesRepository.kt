@@ -10,7 +10,9 @@ import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.AchievementList
 import com.offhome.app.data.profilejson.UserUsername
 import com.offhome.app.data.retrofit.ActivitiesClient
+import com.offhome.app.data.retrofit.WeatherClient
 import java.io.IOException
+import java.util.ArrayList
 import okhttp3.ResponseBody
 import retrofit2.Call
 import retrofit2.Callback
@@ -25,9 +27,9 @@ import retrofit2.Response
  *
  */
 class ActivitiesRepository {
-    private var activities: MutableLiveData<List<ActivityFromList>>? = null
-    private var oldActivities: MutableLiveData<List<ActivityFromList>>? = null
-    private var likedActivities: MutableLiveData<List<ActivityFromList>>? = null
+    private var activities = MutableLiveData<Result<List<ActivityFromList>>>()
+    private var oldActivities = MutableLiveData<Result<List<ActivityFromList>>>()
+    private var likedActivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var participants: MutableLiveData<List<UserUsername>>? = null
     private var valoracio: MutableLiveData<Rating>? = null
     private var reviews: MutableLiveData<List<ReviewOfParticipant>>? = null
@@ -36,6 +38,8 @@ class ActivitiesRepository {
     private var responseValorar: MutableLiveData<String>? = MutableLiveData(" ")
     private val activitiesClient = ActivitiesClient()
     private var activitiesService = activitiesClient.getActivitiesService()
+    private val weatherClient = WeatherClient()
+    private var weatherService = weatherClient.getWeatherService()
     private var suggestedactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var friendsactivities = MutableLiveData<Result<List<ActivityFromList>>>()
     private var singleActivity: MutableLiveData<ActivityFromList>? = null
@@ -47,22 +51,24 @@ class ActivitiesRepository {
      * @param categoryName is the category that we want to get the activities of
      * @return the result with a live data list of the data class ActivityFromList
      */
-    fun getAll(categoryName: String): MutableLiveData<List<ActivityFromList>> {
-        if (activities == null) activities = MutableLiveData<List<ActivityFromList>>()
+    fun getAll(categoryName: String): MutableLiveData<Result<List<ActivityFromList>>> {
         val call: Call<List<ActivityFromList>> = activitiesService!!.getAllActivities(categoryName)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    activities!!.value = response.body()
+                    activities.value = Result.Success(response.body() as List<ActivityFromList>)
+                }
+                else {
+                    activities.value = Result.Error(IOException("Error getting activities"))
                 }
             }
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Error getting activities")
+                oldActivities.value = Result.Error(IOException("Error getting old activities"))
             }
         })
-        return activities as MutableLiveData<List<ActivityFromList>>
+        return activities
     }
 
     /**
@@ -70,22 +76,24 @@ class ActivitiesRepository {
      * @param userEmail is the email of the user
      * @return the result with a live data list of the data class ActivityFromList
      */
-    fun getOldAct(userEmail: String): MutableLiveData<List<ActivityFromList>> {
-        if (oldActivities == null) oldActivities = MutableLiveData<List<ActivityFromList>>()
+    fun getOldAct(userEmail: String): MutableLiveData<Result<List<ActivityFromList>>> {
         val call: Call<List<ActivityFromList>> = activitiesService!!.getOldActivities(userEmail)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    oldActivities!!.value = response.body()
+                    oldActivities.value = Result.Success(response.body() as List<ActivityFromList>)
+                }
+                else {
+                    oldActivities.value = Result.Error(IOException("Error getting old activities"))
                 }
             }
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Error getting old activities")
+                oldActivities.value = Result.Error(IOException("Error getting old activities"))
             }
         })
-        return oldActivities as MutableLiveData<List<ActivityFromList>>
+        return oldActivities
     }
 
     /**
@@ -93,22 +101,29 @@ class ActivitiesRepository {
      * @param userEmail is the email of the user
      * @return the result with a live data list of the data class ActivityFromList
      */
-    fun getLikedAct(email: String): MutableLiveData<List<ActivityFromList>> {
-        if (likedActivities == null) likedActivities = MutableLiveData<List<ActivityFromList>>()
+    fun getLikedAct(email: String): MutableLiveData<Result<List<ActivityFromList>>> {
         val call: Call<List<ActivityFromList>> = activitiesService!!.getLikedActivities(email)
         call.enqueue(object : Callback<List<ActivityFromList>> {
             override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
                 if (response.isSuccessful) {
-                    likedActivities!!.value = response.body()
+                    if (response.code() == 200) {
+                        likedActivities.value = Result.Success(response.body() as List<ActivityFromList>)
+                    }
+                    else {
+                        likedActivities.value = Result.Success(ArrayList<ActivityFromList>())
+                    }
+                }
+                else {
+                    likedActivities.value = Result.Error(IOException("Error getting liked activities"))
                 }
             }
 
             override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
                 // Error en la connexion
-                Log.d("GET", "Error getting liked activities")
+                likedActivities!!.value = Result.Error(IOException("Error getting liked activities"))
             }
         })
-        return likedActivities as MutableLiveData<List<ActivityFromList>>
+        return likedActivities
     }
 
     /**
@@ -131,22 +146,22 @@ class ActivitiesRepository {
                 call: Call<AchievementList>,
                 response: Response<AchievementList>
             ) {
-                Log.d("addActivityFerran", "we got a response")
+                Log.d("addActivity", "we got a response")
                 if (response.isSuccessful) {
-                    Log.d("addActivityFerran", "response successful")
+                    Log.d("addActivity", "response successful")
                     result.value = Result.Success(response.body()!!)
                 } else {
-                    Log.d("addActivityFerran", "response unsuccessful")
+                    Log.d("addActivity", "response unsuccessful")
                     result.value = Result.Error(IOException("There has been an error and the activity cannot be created"))
                 }
             }
 
             override fun onFailure(call: Call<AchievementList>, t: Throwable) {
-                Log.d("addActivityFerran", "no response!")
+                Log.d("addActivity", "no response!")
                 result.value = Result.Error(IOException("Error: connection failure"))
             }
         })
-        Log.d("addActivityFerran", "passo el call.enqueue")
+        Log.d("addActivity", "passo el call.enqueue")
         return result
     }
 
@@ -486,6 +501,55 @@ class ActivitiesRepository {
             override fun onFailure(call: Call<String>, t: Throwable) {
                 Log.d("no response", "getInviteAchievements no response")
                 result.value = Result.Error(IOException("getInviteAchievements Error: failure", t))
+            }
+        })
+        return result
+    }
+    fun getWeather(): MutableLiveData<Result<Tiempo>> {
+        val result = MutableLiveData<Result<Tiempo>>()
+        val call: Call<Tiempo> = weatherService!!.getWeather()
+        call.enqueue(object : Callback<Tiempo> {
+            override fun onResponse(call: Call<Tiempo>, response: Response<Tiempo>) {
+                if (response.isSuccessful) {
+                    result.value = Result.Success(response.body() as Tiempo)
+                }
+                else {
+                    result.value = Result.Error(IOException("Error getting info"))
+                }
+            }
+
+            override fun onFailure(call: Call<Tiempo>, t: Throwable) {
+                result.value = Result.Error(IOException("Error getting info"))
+            }
+        })
+                
+        return result
+    }
+    
+    /**
+     * It gets the activities by distance
+     */
+    fun getActivitiesByRadi(
+        categoryName: String,
+        latitude: Double,
+        longitude: Double,
+        progress: Int
+    ): MutableLiveData<Result<List<ActivityFromList>>> {
+        val result = MutableLiveData<Result<List<ActivityFromList>>>()
+        val call: Call<List<ActivityFromList>> = activitiesService!!.getActivitiesByRadi(latitude, longitude, progress)
+        call.enqueue(object : Callback<List<ActivityFromList>> {
+            override fun onResponse(call: Call<List<ActivityFromList>>, response: Response<List<ActivityFromList>>) {
+                if (response.isSuccessful) {
+                    if (response.code() == 200)
+                        result.value = Result.Success(response.body() as List<ActivityFromList>)
+                    else result.value = Result.Success(ArrayList<ActivityFromList>())
+                } else result.value = Result.Error(IOException("Error getting activities"))
+            }
+
+            override fun onFailure(call: Call<List<ActivityFromList>>, t: Throwable) {
+                // Error en la connexion
+                result.value = Result.Error(IOException("Error getting activities"))
+                Log.d("GET", "Error getting activities")
             }
         })
         return result

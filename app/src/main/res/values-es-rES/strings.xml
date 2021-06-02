@@ -160,4 +160,6 @@
     <string name="successfully_joined">¡Te has unido!</string>
     <string name="achievement_first_activity">Creador platino</string>
     <string name ="activity_created">¡Actividad creada!</string>
+    <string name="suggested">Sugerido</string>
+    <string name="all_activities">Todas</string>
 </resources>

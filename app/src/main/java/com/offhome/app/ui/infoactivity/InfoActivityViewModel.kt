@@ -14,6 +14,7 @@ import com.offhome.app.data.model.Rating
 import com.offhome.app.data.model.ReviewOfParticipant
 import com.offhome.app.data.model.UserInfo
 import com.offhome.app.data.profilejson.AchievementList
+import com.offhome.app.data.model.*
 import com.offhome.app.data.profilejson.UserUsername
 
 /**
@@ -98,5 +99,11 @@ class InfoActivityViewModel : ViewModel() {
 
     fun getInviteAchievements() {
         inviteAchievements = repository.getInviteAchievements(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString())
+    }
+    /**
+     * gets the weather
+     */
+    fun getWeather(): MutableLiveData<Result<Tiempo>> {
+        return repository.getWeather()
     }
 }

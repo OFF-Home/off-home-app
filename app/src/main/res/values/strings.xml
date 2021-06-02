@@ -451,4 +451,6 @@ If you have any questions about this Privacy Policy, You can contact us:
     <string name="successfully_joined">Successfully joined!</string>
     <string name="achievement_first_activity">Creator platinum</string>
     <string name ="activity_created">Activity created!</string>
+    <string name="suggested">Suggested</string>
+    <string name="all_activities">All</string>
 </resources>

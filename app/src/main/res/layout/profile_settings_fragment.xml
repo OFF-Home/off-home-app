@@ -41,11 +41,11 @@
 
             <TextView
                 android:id="@+id/emailUser"
-                android:layout_width="189dp"
+                android:layout_width="100dp"
                 android:layout_height="22dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/email"
                 android:textStyle="bold"
@@ -57,11 +57,11 @@
 
             <TextView
                 android:id="@+id/nameUser"
-                android:layout_width="189dp"
+                android:layout_width="100dp"
                 android:layout_height="23dp"
                 android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
+                android:layout_marginEnd="8dp"
                 android:layout_marginBottom="8dp"
                 android:text="@string/username"
                 android:textStyle="bold"
@@ -75,12 +75,12 @@
                 android:id="@+id/emailUser2"
                 android:layout_width="189dp"
                 android:layout_height="22dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="36dp"
                 android:layout_marginBottom="8dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/nameUser2"
-                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/emailUser"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintVertical_bias="0.0" />
 
@@ -88,15 +88,12 @@
                 android:id="@+id/nameUser2"
                 android:layout_width="189dp"
                 android:layout_height="23dp"
-                android:layout_marginStart="32dp"
+                android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
                 android:layout_marginBottom="8dp"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toTopOf="@+id/changePsw"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.975"
-                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/nameUser"
                 app:layout_constraintTop_toBottomOf="@+id/emailUser" />
 
             <TextView

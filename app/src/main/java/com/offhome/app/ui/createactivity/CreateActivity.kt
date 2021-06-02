@@ -94,6 +94,9 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
     private var latitude: Double = 0.0
     private var longitude: Double = 0.0
 
+    private var latitude: Double = 0.0
+    private var longitude: Double = 0.0
+
     /**
      * This function represents the current time using current locale and timezone
      */
@@ -248,7 +251,7 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
      * This function let the user pick the number maximum of participants allowed by the activity created
      */
     private fun pickAvailability() {
-        pick_availability.maxValue = 10
+        pick_availability.maxValue = 20
         pick_availability.minValue = 3
     }
 
@@ -285,6 +288,8 @@ class CreateActivity : AppCompatActivity(), OnDateSetListener, TimePickerDialog.
                 val activitydata = ActivityData(
                     nameStreet.text.toString(),
                     numberStreet.text.toString().toInt(),
+                    latitude,
+                    longitude,
                     dataHoraIni,
                     category_selected.selectedItem.toString(),
                     pick_availability.value,

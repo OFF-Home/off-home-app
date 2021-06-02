@@ -431,7 +431,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     estrelles.setIsIndicator(true)
                 }
                 // si tiene review, cambiar el texto del edittext, bloquearlo y bloquear boton submit
-                if (it.data.comentari != " ") {
+                if (it.data.comentari != null) {
                     comment.setHint(R.string.reviewnotpossible)
                     comment.isFocusable = false
                     btnsubmit.setEnabled(false)
@@ -454,7 +454,7 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                     SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString(),
                     activity.usuariCreador,
                     activity.dataHoraIni,
-                    estrelles.numStars,
+                    estrelles.getRating().toInt(),
                     comment.text.toString()
                 ).observe(
                     this,

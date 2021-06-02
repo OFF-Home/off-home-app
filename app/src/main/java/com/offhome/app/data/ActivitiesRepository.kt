@@ -312,7 +312,7 @@ class ActivitiesRepository {
                         valoracio.value =  Result.Success(response.body() as Rating)
                     }
                     else {
-                        valoracio.value = Result.Success(Rating(0, " "))
+                        valoracio.value = Result.Error(IOException("Error getting valoracio participant"))
                     }
                 }
                 else {

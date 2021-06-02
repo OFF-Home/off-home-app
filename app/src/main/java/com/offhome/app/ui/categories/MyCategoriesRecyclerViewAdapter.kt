@@ -59,8 +59,8 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
         val item = categories[position]
         holder.textViewName.text = item.categoria
         if (context != null) {
-            Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
-            Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
+            Glide.with(context).load(item.urlBackground).centerCrop().into(holder.imageViewBackground)
+            Glide.with(context).load(item.urlIcon).centerCrop().into(holder.imageViewIcon)
         }
         with(holder.imageViewBackground) {
             tag = item

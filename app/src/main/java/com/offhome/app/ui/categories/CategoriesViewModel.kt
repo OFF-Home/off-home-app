@@ -3,8 +3,10 @@ package com.offhome.app.ui.categories
 
 
 import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.CategoryRepository
+import com.offhome.app.data.Result
 import com.offhome.app.data.model.Category
 
 /**
@@ -14,12 +16,12 @@ import com.offhome.app.data.model.Category
  */
 class CategoriesViewModel : ViewModel() {
     private var repository: CategoryRepository = CategoryRepository()
-    private var categories: LiveData<List<Category>> = repository.getAll()
+    private var categories: MutableLiveData<Result<List<Category>>> = repository.getAll()
 
     /**
      * gets the categories from the repository
      */
-    fun getCategories(): LiveData<List<Category>> {
+    fun getCategories(): MutableLiveData<Result<List<Category>>> {
         return categories
     }
 /*

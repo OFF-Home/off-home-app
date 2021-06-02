@@ -8,4 +8,6 @@ package com.offhome.app.data.model
 data class Category(
     val categoria: String,
     val descripcio: String,
+    val urlBackground: String,
+    val urlIcon: String
 )

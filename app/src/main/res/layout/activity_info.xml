@@ -187,7 +187,7 @@
                 android:layout_marginTop="1dp"
                 android:fontFamily="sans-serif"
                 android:padding="0dp"
-                android:text="20 graditos"
+                android:text=""
                 android:textAlignment="center"
                 android:textSize="16dp"
                 android:textStyle="bold"

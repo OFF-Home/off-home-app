@@ -25,11 +25,19 @@ class SharedPreferenceManager {
             editor.putBoolean(dataLabel, dataValue)
             editor.apply()
         }
+        fun setIntValue(dataLabel: String, dataValue: Int) {
+            val editor = getSharedPreferences().edit()
+            editor.putInt(dataLabel, dataValue)
+            editor.apply()
+        }
         fun getStringValue(dataLabel: String): String? {
             return getSharedPreferences().getString(dataLabel, null)
         }
         fun getBooleanValue(dataLabel: String): Boolean {
             return getSharedPreferences().getBoolean(dataLabel, false)
+        }
+        fun getIntValue(dataLabel: String): Int {
+            return getSharedPreferences().getInt(dataLabel, 0)
         }
         fun deleteData() {
             getSharedPreferences().edit().clear().apply()

@@ -149,4 +149,8 @@ class ProfileFragmentViewModel : ViewModel() {
     fun getAchievements(userEmail: String): MutableLiveData<Result<List<AchievementData>>> {
         return repository.getAchievements(userEmail)
     }
+
+    fun updateNotifications(username: String, notif: NotificationData): MutableLiveData<Result<String>>{
+        return repository.updateNotifications(username, notif)
+    }
 }

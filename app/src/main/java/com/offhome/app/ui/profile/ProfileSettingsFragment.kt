@@ -26,6 +26,7 @@ import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
 import com.offhome.app.data.Result
 import com.offhome.app.data.model.DarkModeUpdate
+import com.offhome.app.data.model.NotificationData
 import com.offhome.app.ui.infopolitiques.CovidPolicyActivity
 import com.offhome.app.ui.infopolitiques.InfoOFFHomeActivity
 import com.offhome.app.ui.infopolitiques.PolicyActivity
@@ -59,6 +60,7 @@ class ProfileSettingsFragment : Fragment() {
     private lateinit var name_us: String
 
     private lateinit var profileVM: ProfileFragmentViewModel
+    private lateinit var email: String
 
     /**
      * Override the onCreateView method
@@ -107,14 +109,13 @@ class ProfileSettingsFragment : Fragment() {
         btnCovidPolicy = view.findViewById(R.id.COVIDPolicy)
 
         name_us = SharedPreferenceManager.getStringValue(Constants().PREF_USERNAME).toString()
-
+        email = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
         manageUserInfo()
 
         deleteAccount()
 
         changePassword()
 
-        manageNotifications()
 
         infoOFFHOME()
 
@@ -122,6 +123,7 @@ class ProfileSettingsFragment : Fragment() {
 
         covidPolicy()
 
+        manageNotifications()
         changeToDarkMode()
     }
 
@@ -239,17 +241,31 @@ class ProfileSettingsFragment : Fragment() {
      */
     private fun manageNotifications() {
         var clicked = false
+
         btnNotifications.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
-                Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
-                // crida a Back
-            } else {
-                btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
-                Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
-                // crida a Back
-            }
+            val notif : Int
+            if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 1) notif = 0
+            else notif = 1
+            profileVM.updateNotifications(email, NotificationData(notif)).observe(
+                viewLifecycleOwner,
+                { res ->
+                    if (res is Result.Success) {
+                        if (SharedPreferenceManager.getIntValue(Constants().NOTIFICATION_OFF) == 0) {
+                            btnNotifications.setImageResource(R.drawable.ic_baseline_notifications_active_24)
+                            Toast.makeText(context, "Notifications enabled", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setIntValue(Constants().NOTIFICATION_OFF, 1)
+                        }
+                        else {
+                            btnNotifications.setImageResource(R.drawable.ic_outline_notifications_active_24)
+                            Toast.makeText(context, "Notifications disabled", Toast.LENGTH_SHORT).show()
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 0)
+                        }
+                    }
+                    else if (res is Result.Error) {
+                        Toast.makeText(context, res.exception.message, Toast.LENGTH_SHORT).show()
+                    }
+                }
+            )
         }
     }
 
@@ -259,21 +275,21 @@ class ProfileSettingsFragment : Fragment() {
     private fun changeToDarkMode(){
         btnDarkMode.setOnClickListener{
             val dm : Int
-            if (SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) dm = 1
-            else dm = 0
-            profileVM.updateDarkMode(name_us, DarkModeUpdate(dm)).observe(
+            dm = if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 1) 0
+            else 1
+            profileVM.updateDarkMode(email, DarkModeUpdate(dm)).observe(
                 viewLifecycleOwner,
                 { res ->
                     if (res is Result.Success) {
-                        if (!SharedPreferenceManager.getBooleanValue(Constants().DARK_MODE)) {
+                        if (SharedPreferenceManager.getIntValue(Constants().DARK_MODE) == 0) {
                             setDefaultNightMode(MODE_NIGHT_YES)
                             Toast.makeText(context, "Dark mode ON", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, true)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 1)
                         }
                         else {
                             setDefaultNightMode(MODE_NIGHT_FOLLOW_SYSTEM)
                             Toast.makeText(context, "Dark mode OFF", Toast.LENGTH_SHORT).show()
-                            SharedPreferenceManager.setBooleanValue(Constants().DARK_MODE, false)
+                            SharedPreferenceManager.setIntValue(Constants().DARK_MODE, 0)
                         }
                     }
                     else if (res is Result.Error) {

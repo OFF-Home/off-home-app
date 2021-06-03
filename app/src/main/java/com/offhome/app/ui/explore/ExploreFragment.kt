@@ -82,8 +82,8 @@ class ExploreFragment : Fragment() {
                                 likedList.clear()
                                 for (item in activitiesList) {
                                     //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                    val found = likedActivitiesList?.find { element -> element == item }
-                                    if (found == item) likedList.add(true)
+                                    val found = likedActivitiesList?.find { element -> element.usuariCreador == item.usuariCreador && element.dataHoraIni == item.dataHoraIni }
+                                    if (found != null) likedList.add(true)
                                     else likedList.add(false)
                                 }
                                 activitiesListAdapter.setData(activitiesList, likedList)

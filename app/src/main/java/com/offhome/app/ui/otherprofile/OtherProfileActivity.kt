@@ -154,11 +154,6 @@ class OtherProfileActivity : AppCompatActivity() {
         )
     }
 
-    override fun onPause() {
-        super.onPause()
-        finish()
-    }
-
     /**
      * Change the button text from Follow to Following and viceversa
      */

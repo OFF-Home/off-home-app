@@ -155,7 +155,7 @@ class ProfileRepository {
         Log.d("comença getUserTagsRes", "email = " + email)
         val result = MutableLiveData<Result<List<TagData>>>()
 
-        val call: Call<List<TagData>> = userService!!.getTags(email = email)
+        val call: Call<List<TagData>> = userService!!.getTags(email)
         call.enqueue(object : Callback< List<TagData> > {
             override fun onResponse(call: Call< List<TagData> >, response: Response< List<TagData> >) {
                 if (response.isSuccessful) {

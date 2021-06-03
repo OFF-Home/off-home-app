@@ -60,9 +60,9 @@ class OtherProfileViewModel : ViewModel() {
     fun setUserTags(tags: List<TagData>) {
     }
 
-    fun getUserTags()/*: List<TagData>*/ {
+    fun getUserTags(): MutableLiveData<Result<List<TagData>>> {
         // return userTags
-        userTagsFromBack = repository.getUserTagsResult(userInfo.email)
+        return repository.getUserTagsResult(userInfo.email)
     }
 
     /**

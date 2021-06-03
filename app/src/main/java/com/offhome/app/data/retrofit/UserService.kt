@@ -51,7 +51,7 @@ interface UserService {
      * @param email user's email. Will be passed through the path, as it is the identifier of the user
      * @return returns the call to be executed. the response in it will contain the list of tags
      */
-    @GET("/tags/{email}/show")
+    @GET("tags/{email}/show")
     fun getTags(@Path("email") email: String): Call< List<TagData> >
 
     /**

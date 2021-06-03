@@ -101,16 +101,12 @@ class AboutThemFragment : Fragment() {
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
 
-        viewModel.getUserTags()
-        viewModel.userTagsFromBack.observe(
+        viewModel.getUserTags().observe(
             viewLifecycleOwner,
             Observer {
-                Log.d("tags", "tags arriben al aboutThemFragment1")
-                val tagsVM = it ?: return@Observer
-                Log.d("tags", "tags arriben al aboutThemFragment2")
 
-                if (tagsVM is Result.Success) {
-                    omplirTagGroup(tagsVM.data)
+                if (it is Result.Success) {
+                    omplirTagGroup(it.data)
                 } else {
                     Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
                 }

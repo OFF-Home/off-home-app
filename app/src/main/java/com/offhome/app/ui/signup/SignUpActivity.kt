@@ -1,10 +1,13 @@
 package com.offhome.app.ui.signup
 
+
+
 import android.app.Activity
 import android.app.DatePickerDialog
 import android.content.Intent
 import android.os.Bundle
 import android.text.Editable
+import android.text.InputType
 import android.text.TextWatcher
 import android.view.View
 import android.view.inputmethod.EditorInfo
@@ -13,8 +16,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.offhome.app.MainActivity
 import com.offhome.app.R
+import com.offhome.app.ui.login.LoginActivity
 import java.util.*
 
 /**
@@ -26,10 +29,8 @@ import java.util.*
  * @property email references the e-mail EditText
  * @property username references the username EditText
  * @property password references the password EditText
- * @property birthDate references the birth date EditText. This field will be filled using a DatePickerDialog
  * @property signUp references the sign-up Button
  * @property hereButton references the Button used to swap to the log-in screen
- * @property googleButton references the Button used to sign-up with google
  * @property loading references the ProgressBar shown while the sign-up is being processed
  * @property activity references this activity. It is used to pass the context to lower layers
  *
@@ -41,10 +42,9 @@ class SignUpActivity : AppCompatActivity() {
     private lateinit var email: EditText
     private lateinit var username: EditText
     private lateinit var password: EditText
-    private lateinit var birthDate: EditText
     private lateinit var signUp: Button
     private lateinit var hereButton: TextView
-    private lateinit var googleButton: Button
+    private lateinit var showPasswordButton: ImageView
     private lateinit var loading: ProgressBar
     private val activity: SignUpActivity = this
 
@@ -53,7 +53,7 @@ class SignUpActivity : AppCompatActivity() {
      *
      * Initializes the attributes
      * sets listeners to the form state and the text fields to check the correctness of the input data.
-     * sets listeners to the birthDate editText and the buttons.
+     * sets listeners to the buttons.
      * sets a listener to the result of the signUp call.
      * @param savedInstanceState is the instance of the saved State of the activity
      */
@@ -67,10 +67,9 @@ class SignUpActivity : AppCompatActivity() {
         email = findViewById(R.id.editTextEmail)
         username = findViewById(R.id.editTextUsername)
         password = findViewById(R.id.editTextPassword)
-        birthDate = findViewById(R.id.editTextBirthDate)
         signUp = findViewById(R.id.ButtonSignUp)
         hereButton = findViewById(R.id.textViewHere)
-        googleButton = findViewById(R.id.buttonGoogleSignUp)
+        showPasswordButton = findViewById(R.id.ImageViewShowPasswordSignUp)
         loading = findViewById(R.id.loading)
 
         // observar l'estat del form, és a dir, si hi ha errors. Si n'hi ha, posar els errors en els EditText's
@@ -79,7 +78,7 @@ class SignUpActivity : AppCompatActivity() {
             Observer {
                 val signUpStateVM = it ?: return@Observer
 
-                // disable login button unless both username / password is valid
+                // disable login button unless all fields are valid
                 signUp.isEnabled = signUpStateVM.isDataValid
 
                 if (signUpStateVM.emailError != null) { // si hi ha error
@@ -90,9 +89,6 @@ class SignUpActivity : AppCompatActivity() {
                 }
                 if (signUpStateVM.passwordError != null) {
                     password.error = getString(signUpStateVM.passwordError)
-                }
-                if (signUpStateVM.birthDateError != null) {
-                    birthDate.error = getString(signUpStateVM.birthDateError)
                 }
             }
         )
@@ -123,39 +119,27 @@ class SignUpActivity : AppCompatActivity() {
         // fan les comprovacions de si els strings son correctes
 
         email.afterTextChanged {
-            signUpViewModel.loginDataChanged(
+            signUpViewModel.signupDataChanged(
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
-                birthDate.text.toString()
             )
         }
 
         username.afterTextChanged {
-            signUpViewModel.loginDataChanged(
+            signUpViewModel.signupDataChanged(
                 email.text.toString(),
                 username.text.toString(),
                 password.text.toString(),
-                birthDate.text.toString()
-            )
-        }
-
-        birthDate.afterTextChanged {
-            signUpViewModel.loginDataChanged(
-                email.text.toString(),
-                username.text.toString(),
-                password.text.toString(),
-                birthDate.text.toString()
             )
         }
 
         password.apply {
             afterTextChanged {
-                signUpViewModel.loginDataChanged(
+                signUpViewModel.signupDataChanged(
                     email.text.toString(),
                     username.text.toString(),
                     password.text.toString(),
-                    birthDate.text.toString()
                 )
             }
 
@@ -167,7 +151,6 @@ class SignUpActivity : AppCompatActivity() {
                             email.text.toString(),
                             username.text.toString(),
                             password.text.toString(),
-                            birthDate.text.toString(),
                             activity
                         )
                 }
@@ -183,14 +166,13 @@ class SignUpActivity : AppCompatActivity() {
                     email.text.toString(),
                     username.text.toString(),
                     password.text.toString(),
-                    birthDate.text.toString(),
                     activity
                 )
             }
         }
 
         // mostrar el fragment que permet escollir la birth date.
-        birthDate.setOnClickListener {
+      /*  birthDate.setOnClickListener {
             val cal: Calendar = Calendar.getInstance()
             val year: Int = cal.get(Calendar.YEAR)
             val month: Int = cal.get(Calendar.MONTH)
@@ -201,7 +183,7 @@ class SignUpActivity : AppCompatActivity() {
                     val humanMonth = selectedMonth + 1 // perque els mesos comencen a 0
                     val textDate = "$selectedDay/$humanMonth/$selectedYear"
                     birthDate.setText(textDate)
-                    signUpViewModel.loginDataChanged(
+                    signUpViewModel.signupDataChanged(
                         email.text.toString(),
                         username.text.toString(),
                         password.text.toString(),
@@ -211,10 +193,20 @@ class SignUpActivity : AppCompatActivity() {
                 year, month, day
             )
             datePicker.show()
-        }
+        }*/
 
         hereButton.setOnClickListener {
             canviALogInActivity()
+        }
+
+        // yoink
+        showPasswordButton.setOnClickListener {
+            password.inputType = if (password.inputType == InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD) {
+                InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD
+            } else {
+                InputType.TYPE_CLASS_TEXT or InputType.TYPE_TEXT_VARIATION_PASSWORD
+            }
+            password.setSelection(password.text.length)
         }
     }
 
@@ -227,7 +219,6 @@ class SignUpActivity : AppCompatActivity() {
         // ensenyar missatge de welcome a baix
         Toast.makeText(
             applicationContext,
-            // "$emailConfirmationMessage $displayName",
             emailConfirmationMessage,
             Toast.LENGTH_LONG
         ).show()
@@ -247,8 +238,7 @@ class SignUpActivity : AppCompatActivity() {
      * Changes to the log-in screen
      */
     private fun canviALogInActivity() {
-        // TODO per ara, com a placeholder, va a MainActivity (la de les activitats (categories))
-        val intentCanviALogIn = Intent(this, MainActivity::class.java) // .apply {        }
+        val intentCanviALogIn = Intent(activity, LoginActivity::class.java) // .apply {        }
         startActivity(intentCanviALogIn)
 
         // aqui s'hauria de fer un finish() i potser un setResult(), crec

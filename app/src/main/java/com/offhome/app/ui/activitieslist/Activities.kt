@@ -1,12 +1,13 @@
 package com.offhome.app.ui.activitieslist
 
+
+
 import android.os.Bundle
 import android.widget.Button
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.button.MaterialButtonToggleGroup
 import com.google.android.material.button.MaterialButtonToggleGroup.OnButtonCheckedListener
 import com.offhome.app.R
-
 
 /**
  * Class *Activities*
@@ -52,28 +53,29 @@ class Activities : AppCompatActivity() {
                 .commitNow()
         }
 
-        //cambiar fragment entre list y map
-        buttonScreens.addOnButtonCheckedListener(OnButtonCheckedListener { buttonScreens, checkedId, isChecked ->
-            if (buttonScreens.checkedButtonId == R.id.btn_list) {
-                //Place code related to button1 here
-                if (savedInstanceState == null) {
-                    buttonlist.setBackgroundColor(getColor(R.color.secondary))
-                    buttonmap.setBackgroundColor(getColor(R.color.secondary_light))
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, ActivitiesListFragment.newInstance())
-                        .commitNow()
-                }
-
-            } else if (buttonScreens.checkedButtonId == R.id.btn_map) {
-                //Place code related to button 2 here
-                if (savedInstanceState == null) {
-                    buttonmap.setBackgroundColor(getColor(R.color.secondary))
-                    buttonlist.setBackgroundColor(getColor(R.color.secondary_light))
-                    supportFragmentManager.beginTransaction()
-                        .replace(R.id.container, MapsFragment.newInstance())
-                        .commitNow()
+        // cambiar fragment entre list y map
+        buttonScreens.addOnButtonCheckedListener(
+            OnButtonCheckedListener { buttonScreens, checkedId, isChecked ->
+                if (buttonScreens.checkedButtonId == R.id.btn_list) {
+                    // Place code related to button1 here
+                    if (savedInstanceState == null) {
+                        buttonlist.setBackgroundColor(getColor(R.color.secondary))
+                        buttonmap.setBackgroundColor(getColor(R.color.secondary_light))
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, ActivitiesListFragment.newInstance())
+                            .commitNow()
+                    }
+                } else if (buttonScreens.checkedButtonId == R.id.btn_map) {
+                    // Place code related to button 2 here
+                    if (savedInstanceState == null) {
+                        buttonmap.setBackgroundColor(getColor(R.color.secondary))
+                        buttonlist.setBackgroundColor(getColor(R.color.secondary_light))
+                        supportFragmentManager.beginTransaction()
+                            .replace(R.id.container, MapsFragment.newInstance())
+                            .commitNow()
+                    }
                 }
             }
-        })
+        )
     }
 }

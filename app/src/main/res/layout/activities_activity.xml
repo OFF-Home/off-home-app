@@ -24,19 +24,19 @@
 
         <Button
             android:id="@+id/btn_list"
-            android:layout_width="80dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             app:shapeAppearance="@style/Rounded"
             android:backgroundTint="@color/secondary"
-            android:text="List" />
+            android:text="@string/list" />
 
         <Button
             android:id="@+id/btn_map"
-            android:layout_width="80dp"
+            android:layout_width="90dp"
             android:layout_height="wrap_content"
             app:shapeAppearance="@style/Rounded"
             android:backgroundTint="@color/secondary_light"
-            android:text="Map" />
+            android:text="@string/map" />
 
         <Spinner
             android:id="@+id/spinnerCategories"

@@ -1,14 +1,17 @@
 package com.offhome.app.ui.otherprofile
 
 
+
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.ProfileRepository
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.AchievementData
 import com.offhome.app.data.model.FollowingUser
-import com.offhome.app.model.profile.ProfileRepository
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 
 /**
  * Class *OtherProfileViewModel*
@@ -24,13 +27,15 @@ import com.offhome.app.model.profile.UserInfo
  * @property followResult
  */
 class OtherProfileViewModel : ViewModel() {
-    private lateinit var userInfo :UserInfo
-    private lateinit var userTags :List<TagData>
-    var listFollowing: MutableLiveData<List<FollowingUser>> = MutableLiveData()
-    var isFollowing: MutableLiveData<Boolean> = MutableLiveData(false)
-    var followResult: MutableLiveData<String> = MutableLiveData()
+    private lateinit var userInfo: UserInfo
+    private lateinit var userTags: List<TagData>
+    var listFollowing = MutableLiveData<Result<List<FollowingUser>>>()
+    var isFollowingValue = MutableLiveData(false)
+    var followResult = MutableLiveData<Result<String>>()
     private var repository = ProfileRepository()
     private val currentUser = SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+
+    var userTagsFromBack = MutableLiveData<Result<List<TagData>>>()
 
     /**
      * It sets de info to the user
@@ -38,6 +43,11 @@ class OtherProfileViewModel : ViewModel() {
     fun setUserInfo(uinfo: UserInfo) {
         userInfo = uinfo
     }
+
+    fun updateFollowers(num: Int) {
+        userInfo.followers += num
+    }
+
     /**
      * It gets the info of the user
      */
@@ -45,44 +55,46 @@ class OtherProfileViewModel : ViewModel() {
         return userInfo
     }
 
-    //cal decidir si ajuntarem els tags a userInfo o no.
-    fun setUserTags(tags:List<TagData>) {
-        userTags = tags
+    // els tags van separats de userInfo; per tant no els passen des de l'activitat anterior, ja que cap activitat anterior haurà necessitat els tags.
+    // per tant faig GET dels tags de back. Per tant és probable que l'atribut userTags sobri.
+    fun setUserTags(tags: List<TagData>) {
     }
-    fun getUserTags():List<TagData> {
-        return userTags
+
+    fun getUserTags(): MutableLiveData<Result<List<TagData>>> {
+        // return userTags
+        return repository.getUserTagsResult(userInfo.email)
     }
 
     /**
      * It calls the repository to get if one user follows the other
      */
-    fun isFollowing(): List<FollowingUser>? {
-        listFollowing = repository.following(userInfo.email) as MutableLiveData<List<FollowingUser>>
-        return listFollowing.value
+    fun isFollowing(): MutableLiveData<Result<List<FollowingUser>>> {
+        listFollowing = repository.following(userInfo.email)
+        return listFollowing
     }
 
     /**
      * It calls the repository to start following a new user
      */
-    fun follow() {
-        followResult.value = repository.follow(currentUser, userInfo.email).value
-        isFollowing.value = true
-        userInfo.followers += 1
+    fun follow(): MutableLiveData<Result<String>> {
+        return repository.follow(currentUser, userInfo.email)
     }
 
     /**
      * It calls the repository to stop following a user
      */
-    fun stopFollowing() {
-        followResult.value = repository.stopFollowing(currentUser, userInfo.email).value
-        isFollowing.value = false
-        userInfo.followers -= 1
+    fun stopFollowing(): MutableLiveData<Result<String>> {
+        return repository.stopFollowing(currentUser, userInfo.email)
     }
 
     /**
      * It sets if it is following or not
      */
     fun setFollowing(b: Boolean) {
-        isFollowing.value = b
+        isFollowingValue.value = b
+    }
+
+    fun getAchievements(): MutableLiveData<Result<List<AchievementData>>> {
+        return repository.getAchievements(userInfo.email)
     }
 }

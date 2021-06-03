@@ -1,10 +1,12 @@
 package com.offhome.app.ui.updatePassword
 
+
+
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.text.method.PasswordTransformationMethod
-import android.view.View.INVISIBLE
+import android.view.View
 import android.view.View.VISIBLE
 import android.widget.Button
 import android.widget.EditText
@@ -30,13 +32,13 @@ import com.offhome.app.ui.login.LoginActivity
  * @property thirdText references the EditText to input the new password of the user repeated
  */
 @Suppress("NAME_SHADOWING")
-class UpdatePasswordActivity: AppCompatActivity() {
+class UpdatePasswordActivity : AppCompatActivity() {
 
-    private lateinit var btnAcceptChange : Button
-    private lateinit var text : TextView
-    private lateinit var firstText : EditText
-    private lateinit var secondText : EditText
-    private lateinit var thirdText : EditText
+    private lateinit var btnAcceptChange: Button
+    private lateinit var text: TextView
+    private lateinit var firstText: EditText
+    private lateinit var secondText: EditText
+    private lateinit var thirdText: EditText
 
     /**
      * This function initializes the activity [UpdatePasswordActivity]
@@ -59,9 +61,9 @@ class UpdatePasswordActivity: AppCompatActivity() {
      * needed to change his password
      */
     @SuppressLint("SetTextI18n")
-    private fun setLayout(){
+    private fun setLayout() {
         text = findViewById(R.id.textView)
-        text.visibility = INVISIBLE
+        text.visibility = View.GONE
         firstText = findViewById(R.id.editTextEmailToRecover)
         firstText.hint = "current password"
         firstText.transformationMethod = PasswordTransformationMethod()
@@ -78,21 +80,21 @@ class UpdatePasswordActivity: AppCompatActivity() {
     /**
      * This function resets the parameters of the view of the layout in order to leave the view as originally
      */
-    private fun resetLayout(){
+    private fun resetLayout() {
         firstText.text.clear()
         secondText.text.clear()
         thirdText.text.clear()
         firstText.transformationMethod = null
-        secondText.visibility = INVISIBLE
-        thirdText.visibility = INVISIBLE
+        secondText.visibility = View.GONE
+        thirdText.visibility = View.GONE
         text.visibility = VISIBLE
     }
 
     /**
      * This function manages the change of the password of the user logged and it checks whether the data given is correct
      */
-    private fun changePassword(){
-        if (firstText.text.isNotEmpty() && secondText.text.isNotEmpty() && thirdText.text.isNotEmpty()){
+    private fun changePassword() {
+        if (firstText.text.isNotEmpty() && secondText.text.isNotEmpty() && thirdText.text.isNotEmpty()) {
             if (secondText.text.toString().trim().length > 5) {
                 if (secondText.text.toString() == thirdText.text.toString()) {
                     val myUser = FirebaseAuth.getInstance().currentUser
@@ -139,10 +141,7 @@ class UpdatePasswordActivity: AppCompatActivity() {
                         finish()
                     }
                 } else Toast.makeText(this, "Password mismatching", Toast.LENGTH_SHORT).show()
-            }
-            else Toast.makeText(this, "The password should be 5 characters at a minimum", Toast.LENGTH_SHORT).show()
-        }
-        else Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
+            } else Toast.makeText(this, "The password should be 5 characters at a minimum", Toast.LENGTH_SHORT).show()
+        } else Toast.makeText(this, "Please enter all the fields", Toast.LENGTH_SHORT).show()
     }
-
 }

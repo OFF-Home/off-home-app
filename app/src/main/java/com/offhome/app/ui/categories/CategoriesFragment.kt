@@ -1,5 +1,7 @@
 package com.offhome.app.ui.categories
 
+
+
 import android.os.Bundle
 import android.view.*
 import android.widget.SearchView
@@ -9,7 +11,8 @@ import androidx.lifecycle.observe
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.offhome.app.R
-import com.offhome.app.model.Category
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.Category
 
 /**
  * Class that defines the fragment to show the Categories
@@ -57,11 +60,12 @@ class CategoriesFragment : Fragment() {
         categoriesViewModel.getCategories().observe(
             viewLifecycleOwner,
             {
-                categories = it
-                categoryAdapter.setData(categories)
+                if (it is Result.Success) {
+                    categories = it.data
+                    categoryAdapter.setData(categories)
+                }
             }
         )
-
         return view
     }
 
@@ -73,11 +77,11 @@ class CategoriesFragment : Fragment() {
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.search_button, menu)
         super.onCreateOptionsMenu(menu, inflater)
-        //categoryAdapter.setData(categories)
+        // categoryAdapter.setData(categories)
         val menuItem = menu.findItem(R.id.search)
         val searchView = menuItem.actionView as SearchView
         searchView.maxWidth = Int.MAX_VALUE
-        searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 return false
             }
@@ -93,4 +97,3 @@ class CategoriesFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
     }
 }
-

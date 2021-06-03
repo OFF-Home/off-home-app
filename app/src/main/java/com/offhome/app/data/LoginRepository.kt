@@ -1,5 +1,7 @@
 package com.offhome.app.data
 
+
+
 import androidx.lifecycle.LiveData
 import com.offhome.app.data.model.LoggedInUser
 
@@ -60,5 +62,8 @@ class LoginRepository(val dataSource: LoginDataSource) {
      */
     fun recoverPassword(email: String): LiveData<String> {
         return dataSource.recoverPassword(email)
+    }
+
+    fun deleteAccount() {
     }
 }

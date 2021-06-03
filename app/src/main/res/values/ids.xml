@@ -9,4 +9,5 @@
     <item name="editTagsCancelButton" type="id"> @+id/editTagsCancelButton </item>  <!-- ja no s'utilitza -->
     <item name="addTagButton" type="id"> @+id/addTagButton</item>
     <item name="share_btn" type="id">@+id/share_btn</item>
+    <item name="trophy_one" type="id">@+id/trophy_one</item>
 </resources>

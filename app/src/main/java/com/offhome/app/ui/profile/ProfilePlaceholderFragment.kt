@@ -1,11 +1,13 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
+import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.offhome.app.R
@@ -33,7 +35,7 @@ class ProfilePlaceholderFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        val btnChangePwd = view.findViewById<Button>(R.id.changePassword)
+        val btnChangePwd = view.findViewById<TextView>(R.id.changePassword)
 
         btnChangePwd.setOnClickListener {
             if (SharedPreferenceManager.getStringValue(Constants().PREF_PROVIDER) == Constants().PREF_PROVIDER_PASSWORD)

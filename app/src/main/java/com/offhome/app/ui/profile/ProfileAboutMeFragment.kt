@@ -1,28 +1,35 @@
 package com.offhome.app.ui.profile
 
+
+
 import android.app.AlertDialog
+import android.app.ProgressDialog
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
+import android.text.InputFilter
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
+import android.view.View.OnLongClickListener
 import android.view.ViewGroup
-import android.widget.EditText
-import android.widget.ImageView
-import android.widget.TextView
-import android.widget.Toast
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.constraintlayout.widget.ConstraintSet
+import androidx.core.content.ContextCompat
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
-import com.offhome.app.model.profile.TagData
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.TagData
 import java.util.*
+
 
 /**
  * Class *ProfileAboutMeFragment*
@@ -34,7 +41,6 @@ import java.util.*
  * @property profileVM reference to the ViewModel object of the entire Profile.
  * @property constraintLayout reference to the layout's ConstraintLayout
  * @property textViewProfileDescription reference to description TextView
- * @property textViewBirthDate reference to birth date TextView
  * @property textViewFollowerCount reference to follower count TextView
  * @property textViewFollowingCount reference to following count TextView
  * @property chipGroupTags reference to the tags ChipGroup
@@ -58,17 +64,17 @@ class ProfileAboutMeFragment : Fragment() {
 
     private lateinit var constraintLayout: ConstraintLayout
     private lateinit var textViewProfileDescription: TextView
-    private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
 
     private lateinit var editDescriptionButton: ImageView
-    private lateinit var addTagButton:ImageView
-    private lateinit var editIconDrawable:Drawable
-    private lateinit var saveIconDrawable:Drawable
-    private lateinit var addIconDrawable:Drawable
-    private lateinit var editTextProfileDescription : EditText
+    private lateinit var addTagButton: ImageView
+    private lateinit var editIconDrawable: Drawable
+    private lateinit var saveIconDrawable: Drawable
+    private lateinit var addIconDrawable: Drawable
+    private lateinit var editTextProfileDescription: EditText
+    private lateinit var gridLayout: GridLayout
 
     /**
      * Override the onCreateView method
@@ -92,7 +98,6 @@ class ProfileAboutMeFragment : Fragment() {
         val view = inflater.inflate(R.layout.profile_about_me_fragment, container, false)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
-        textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
@@ -105,12 +110,12 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.profileInfo.observe(
             viewLifecycleOwner,
             Observer {
-                val profileInfoVM = it ?: return@Observer
-                // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
-                textViewProfileDescription.text = profileInfoVM.description
-                textViewBirthDate.text = profileInfoVM.birthDate
-                textViewFollowerCount.text = profileInfoVM.followers.toString()
-                textViewFollowingCount.text = profileInfoVM.following.toString()
+                if (it is Result.Success) {
+                    // Toast.makeText(context,"arribo al profileVM.profileInfo.observe(); a AboutMeFragment",Toast.LENGTH_LONG).show()
+                    textViewProfileDescription.text = it.data.description
+                    textViewFollowerCount.text = it.data.followers.toString()
+                    textViewFollowingCount.text = it.data.following.toString()
+                }
             }
         )
         profileVM.tags.observe(
@@ -118,15 +123,15 @@ class ProfileAboutMeFragment : Fragment() {
             Observer {
                 val tagsVM = it ?: return@Observer
                 omplirTagGroup(tagsVM)
-                Log.d("tags","tags arriben al fragment")
+                Log.d("tags", "tags arriben al fragment")
             }
         )
 
-        // testing
-        omplirTagGroupStub()
-
         iniEditElements()
-        iniEditionResultListeners() //TODO sobra?
+        iniEditionResultListeners()
+
+        gridLayout = view.findViewById(R.id.gridLayout)
+        getAchievements()
 
         return view
     }
@@ -150,16 +155,31 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.descriptionSetSuccessfully.observe(
             viewLifecycleOwner,
             Observer {
+                Log.d("setDescription", "salta el observer del fragment1")
                 val resultVM = it ?: return@Observer
-                Log.d("setDescription", "salta el observer del fragment")
-                if (resultVM.string() == "User has been updated") {
+                Log.d(
+                    "setDescription",
+                    "salta el observer del fragment2. resultVM.toString() = " + resultVM.toString()
+                )
+
+                Log.d(
+                    "setDescription",
+                    "resultVM.toString().length = " + resultVM.toString().length
+                )
+
+                if (!resultVM.toString().contains("Error")) {
                     Toast.makeText(activity, R.string.description_updated_toast, Toast.LENGTH_LONG)
                         .show()
                 } else {
-                    Toast.makeText(activity, R.string.description_update_error_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(
+                        activity,
+                        R.string.description_update_error_toast,
+                        Toast.LENGTH_LONG
+                    ).show()
                 }
-                //esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
-                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner)   //hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
+
+                // esborrem l'observer. Així, podem settejar-lo cada cop sense que s'acumulin
+                profileVM.descriptionSetSuccessfully.removeObservers(viewLifecycleOwner) // hi ha una forma de treure només aquest observer, tipo removeObserver(this) pero nose com va
             }
         )
     }
@@ -170,16 +190,17 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagDeletionListener() {
-        profileVM.tagDeletedSuccessfully.observe(
+        profileVM.tagDeletedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Delete tag al usuario") {
+                if (resultVM is Result.Success) {
                     Toast.makeText(activity, R.string.tag_deleted_toast, Toast.LENGTH_LONG).show()
                 } else {
-                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG).show()
+                    Toast.makeText(activity, R.string.couldnt_delete_tag_toast, Toast.LENGTH_LONG)
+                        .show()
                 }
-                profileVM.tagDeletedSuccessfully.removeObservers(viewLifecycleOwner)
+                profileVM.tagDeletedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
     }
@@ -190,23 +211,27 @@ class ProfileAboutMeFragment : Fragment() {
      * the listener removes itself after one use
      */
     private fun iniTagAdditionListener() {
-        profileVM.tagAddedSuccessfully.observe(
+        profileVM.tagAddedSuccessfullyResult.observe(
             viewLifecycleOwner,
             Observer {
                 val resultVM = it ?: return@Observer
-                if (resultVM.string() == "Insert tag al usuario") {
-                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG)
+
+                if (resultVM is Result.Success) {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
+                } else {
+                    Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG)
                         .show()
+                }
+
+                /*if (resultVM.string() == "Insert tag al usuario") {
+                    Toast.makeText(activity, R.string.tag_added_toast, Toast.LENGTH_LONG).show()
                 } else {
                     Toast.makeText(activity, R.string.couldnt_add_tag_toast, Toast.LENGTH_LONG).show()
-                }
-                profileVM.tagAddedSuccessfully.removeObservers(viewLifecycleOwner)
+                }*/
+
+                profileVM.tagAddedSuccessfullyResult.removeObservers(viewLifecycleOwner)
             }
         )
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
     }
 
     /**
@@ -214,15 +239,15 @@ class ProfileAboutMeFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
         }
     }
 
     private fun omplirTagGroupStub() {
-        var i:Int = 0
-        val nTags:Int = 5
+        var i: Int = 0
+        val nTags: Int = 5
         while (i <nTags) {
             addTagToChipGroup("stub")
             ++i
@@ -242,14 +267,14 @@ class ProfileAboutMeFragment : Fragment() {
         chipGroupTags.addView(chip)
         chip.setOnCloseIconClickListener {
             val alertDialogBuilder = AlertDialog.Builder(context)
-                .setMessage("Delete tag \"$tag\"?")
-                .setPositiveButton("Delete") { dialog, which ->
+                .setMessage(getString(R.string.delete_tag_confirmation_title, tag))//        "Delete tag \"$tag\"?")
+                .setPositiveButton(getString(R.string.delete)) { dialog, which ->
                     profileVM.tagDeletedByUser(chip.text as String)
                     iniTagDeletionListener()
                     chipGroupTags.removeView(chip)
                 }
                 .setNegativeButton(
-                    "Cancel"
+                    getString(R.string.cancel)
                 ) { dialog, which -> dialog.cancel() }
 
             val alertDialog = alertDialogBuilder.show()
@@ -302,7 +327,8 @@ class ProfileAboutMeFragment : Fragment() {
         val bitmap2: Bitmap = (dr2 as BitmapDrawable).bitmap
         // we scale it
         saveIconDrawable = BitmapDrawable(
-            resources, Bitmap.createScaledBitmap(
+            resources,
+            Bitmap.createScaledBitmap(
                 bitmap2,
                 70,
                 70,
@@ -404,7 +430,13 @@ class ProfileAboutMeFragment : Fragment() {
         )
 
         constraintSet1.clear(R.id.textViewProfileDescription, ConstraintSet.TOP)
-        constraintSet1.connect(R.id.textViewProfileDescription, ConstraintSet.TOP, R.id.editTextProfileDescription, ConstraintSet.BOTTOM, 8) // a ver
+        constraintSet1.connect(
+            R.id.textViewProfileDescription,
+            ConstraintSet.TOP,
+            R.id.editTextProfileDescription,
+            ConstraintSet.BOTTOM,
+            8
+        ) // a ver
 
         constraintSet1.applyTo(constraintLayout)
 
@@ -412,6 +444,10 @@ class ProfileAboutMeFragment : Fragment() {
         editTextlayoutParams.width = 0
 
         editTextProfileDescription.visibility = View.GONE
+
+        // set the max chars
+        val filterArray: Array<InputFilter> = arrayOf(InputFilter.LengthFilter(280))
+        editTextProfileDescription.filters = filterArray
     }
 
     /**
@@ -423,8 +459,9 @@ class ProfileAboutMeFragment : Fragment() {
         editDescriptionButton.setImageDrawable(saveIconDrawable)
         textViewProfileDescription
         editDescriptionButton.setOnClickListener {
-            textViewProfileDescription.text = editTextProfileDescription.text
-            profileVM.descriptionChangedByUser(editTextProfileDescription.text)
+            val newDescription = editTextProfileDescription.text
+            textViewProfileDescription.text = newDescription
+            profileVM.descriptionChangedByUser(newDescription)
             iniDescriptionSetListener()
             changeDescriptionToDisplay()
         }
@@ -455,30 +492,33 @@ class ProfileAboutMeFragment : Fragment() {
      * It checks whether the introduced text is empty. If it isn't, it adds the tag
      */
     private fun addTagPressed() {
-        val textInputLayout = LayoutInflater.from(context).inflate(R.layout.text_input_for_dialogs, view as ViewGroup, false)
+        val textInputLayout = LayoutInflater.from(context).inflate(
+            R.layout.text_input_for_dialogs,
+            view as ViewGroup,
+            false
+        )
         val textInput = textInputLayout.findViewById<EditText>(R.id.editTextForInputDialogues)
         textInput.setHint(R.string.tag)
 
         val alertDialogBuilder = AlertDialog.Builder(context)
-            .setTitle("Add a tag")
+            .setTitle(getString(R.string.add_a_tag))
             .setView(textInputLayout)
-            .setPositiveButton("Add") { dialog, which ->
+            .setPositiveButton(getString(R.string.add)) { dialog, which ->
                 val tag = textInput.text.toString()
                 if (tag.isEmpty()) {
-                    Toast.makeText(context, R.string.tags_cant_be_empty_toast,Toast.LENGTH_LONG).show()
+                    Toast.makeText(context, R.string.tags_cant_be_empty_toast, Toast.LENGTH_LONG).show()
                     addTagPressed()
-                }
-                else
+                } else
                     addTag(tag)
             }
             .setNegativeButton(
-                "Cancel"
+                getString(R.string.cancel)
             ) { dialog, which -> dialog.cancel() }
 
         val alertDialog = alertDialogBuilder.show()
     }
 
-    //afegeix tag a la app (chip) i al backend
+    // afegeix tag a la app (chip) i al backend
     /**
      * Adds the tag in the app (meaning the chip) and starts the process to add it to the backend database
      * @param tag tag to add
@@ -488,4 +528,64 @@ class ProfileAboutMeFragment : Fragment() {
         profileVM.tagAddedByUser(tag)
         iniTagAdditionListener()
     }
+
+
+    private fun getAchievements() {
+        profileVM.getAchievements(
+            SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()
+        ).observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    for ((index, x) in it.data.withIndex()) {
+                        val imageView = ImageView(requireContext())
+                        var drawable2: Drawable?
+                        if (x.nom.contains("DIAMOND", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_diamond_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("PLATINUM", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_platinum_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("BRONZE", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_bronze_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("SILVER", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_silver_small,
+                                requireContext().theme
+                            )
+                        } else {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_gold_small,
+                                requireContext().theme
+                            )
+                        }
+                        imageView.setImageDrawable(drawable2)
+                        gridLayout.addView(imageView)
+                        imageView.setOnClickListener {
+                            Toast.makeText(context, x.descripcio, Toast.LENGTH_SHORT).show()
+                        }
+                        }
+                          /*  val progress = ProgressDialog(context)
+                            progress.setTitle(x.descripcio)
+                            progress.setCancelable(true)
+                            progress.show()*/
+                     //       Toast.makeText(context, x.descripcio, Toast.LENGTH_LONG).show()
+                } else if (it is Result.Error) {
+                    Log.d("GET", it.exception.message.toString())
+                }
+            })
+    }
+
 }

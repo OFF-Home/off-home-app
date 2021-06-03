@@ -1,12 +1,9 @@
 package com.offhome.app.ui.otherprofile
 
-import android.content.ActivityNotFoundException
+
+
 import android.content.Intent
-import android.database.Cursor
-import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
-import android.provider.MediaStore
 import android.view.View
 import android.widget.*
 import android.widget.ImageView
@@ -14,19 +11,18 @@ import android.widget.RatingBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.constraintlayout.widget.ConstraintLayout
-import androidx.core.app.ActivityCompat.startActivityForResult
 import androidx.lifecycle.ViewModelProvider
+import androidx.lifecycle.observe
 import com.bumptech.glide.Glide
-import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.storage.FirebaseStorage
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 import com.google.gson.GsonBuilder
 import com.offhome.app.R
 import com.offhome.app.common.Constants
 import com.offhome.app.common.SharedPreferenceManager
-import com.offhome.app.model.profile.UserInfo
-import java.io.ByteArrayOutputStream
-
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.UserInfo
+import com.offhome.app.ui.chats.singleChat.SingleChatActivity
 
 /**
  * Class *OtherProfileActivity*
@@ -51,6 +47,7 @@ class OtherProfileActivity : AppCompatActivity() {
     private lateinit var textViewUsername: TextView
     private lateinit var estrelles: RatingBar
     private lateinit var btnFollowFollowing: Button
+    private lateinit var btnChat: FloatingActionButton
     private lateinit var fragment: AboutThemFragment
 
     /**
@@ -66,6 +63,7 @@ class OtherProfileActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_other_profile)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         // recibir user seleccionado de la otra pantalla. //robat de infoActivity
         // a la pantalla anterior ja hem d'haver fet l'acces a backend. perque hi necessitavem la fotoPerfil     (des de chats, des de la pagina d'una activity, ...)
@@ -78,48 +76,82 @@ class OtherProfileActivity : AppCompatActivity() {
         estrelles = findViewById(R.id.otherUserRatingBar)
         estrelles.rating = otherUser.estrelles.toFloat()
         btnFollowFollowing = findViewById(R.id.buttonFollow)
+        imageViewProfilePic = findViewById(R.id.otherUserProfilePic)
         fragment =
             supportFragmentManager.findFragmentById(R.id.fragmentDinsOtherProfile) as AboutThemFragment
 
         viewModel = ViewModelProvider(this).get(OtherProfileViewModel::class.java) // funcionarà?
+
+        Glide.with(applicationContext)
+            .load(Constants().BASE_URL + "upload/userimageget/" + otherUser.username)
+            .placeholder(R.drawable.profile_pic_placeholder).centerCrop().circleCrop()
+            .diskCacheStrategy(DiskCacheStrategy.NONE).skipMemoryCache(true)
+            .into(imageViewProfilePic)
 
         viewModel.setUserInfo(otherUser)
         viewModel.isFollowing()
 
         btnFollowFollowing.setOnClickListener {
             if (btnFollowFollowing.text == getString(R.string.btn_follow))
-                viewModel.follow()
-            else viewModel.stopFollowing()
+                viewModel.follow().observe(this, {
+                    if (it is Result.Success) {
+                        viewModel.isFollowingValue.value = true
+                        viewModel.updateFollowers(1)
+                        changeFollowButtonText()
+                    } else
+                        Toast.makeText(
+                            applicationContext,
+                            getString(R.string.error_follow),
+                            Toast.LENGTH_LONG
+                        ).show()
+                })
+            else viewModel.stopFollowing().observe(this, {
+                if (it is Result.Success) {
+                    viewModel.isFollowingValue.value = false
+                    viewModel.updateFollowers(-1)
+                    changeFollowButtonText()
+                } else
+                    Toast.makeText(
+                        applicationContext,
+                        getString(R.string.error_follow),
+                        Toast.LENGTH_LONG
+                    ).show()
+            })
+        }
+
+        btnChat = findViewById(R.id.floatingActionButton)
+        if (otherUser.uid == SharedPreferenceManager.getStringValue(Constants().PREF_UID)) btnChat.visibility = View.GONE
+
+        btnChat.setOnClickListener {
+            val intent = Intent(this, SingleChatActivity::class.java)
+            intent.putExtra("uid", otherUser.uid)
+            intent.putExtra("username", otherUser.username)
+            startActivity(intent)
         }
 
         observe()
     }
 
-
     /**
      * It observes the following list of one user and the response to the call of follow/unfollow
      */
     private fun observe() {
-        viewModel.followResult.observe(this, {
-            if (it != "OK")
-                changeFollowButtonText()
-            else
-                Toast.makeText(
-                    applicationContext,
-                    getString(R.string.error_follow),
-                    Toast.LENGTH_LONG
-                ).show()
-        })
-
-        viewModel.listFollowing.observe(this, {
-            btnFollowFollowing.text = getString(R.string.btn_follow)
-            for (item in it) {
-                if (item.usuariSeguidor == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) {
-                    viewModel.setFollowing(true)
-                    btnFollowFollowing.text = getString(R.string.btn_following)
+        viewModel.listFollowing.observe(
+            this,
+            {
+                btnFollowFollowing.text = getString(R.string.btn_follow)
+                if (it is Result.Success) {
+                    for (item in it.data) {
+                        if (item.usuariSeguidor == SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString()) {
+                            viewModel.setFollowing(true)
+                            btnFollowFollowing.text = getString(R.string.btn_following)
+                            break
+                        }
+                    }
                 }
+
             }
-        })
+        )
     }
 
     /**
@@ -133,5 +165,4 @@ class OtherProfileActivity : AppCompatActivity() {
         }
         fragment.updateFollowes()
     }
-
 }

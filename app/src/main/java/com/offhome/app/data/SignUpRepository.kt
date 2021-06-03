@@ -1,10 +1,12 @@
 package com.offhome.app.data
 
+
+
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
-import com.offhome.app.ui.signup.SignUpActivity
+import com.offhome.app.data.model.SignUpUserData
 import java.util.*
 
 /**
@@ -30,10 +32,9 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
      * @param email user's email
      * @param username user's username
      * @param password
-     * @param birthDate user's birth date
      * @param activity pointer to the activity, used by the observers
      */
-    fun signUp(email: String, username: String, password: String?, birthDate: Date?, activity: AppCompatActivity) {
+    fun signUp(email: String, username: String, password: String?, activity: AppCompatActivity) {
         dataSource.result.observe(
             activity,
             Observer {
@@ -47,8 +48,29 @@ class SignUpRepository(val dataSource: SignUpDataSource) {
                     _result.value = ResultSignUp(success = resultDS.success)
                 }
                 // aqui la activity fa mes coses q suposo q aqui no calen
+                dataSource.result.removeObservers(activity)
             }
         )
-        dataSource.signUp(email, username, password, birthDate, activity)
+        dataSource.signUp(email, username, password, activity)
+    }
+
+    fun signUpBack(email: String, username: String, uid: String, token: String, activity: AppCompatActivity) {
+        dataSource.result.observe(
+            activity,
+            Observer {
+                val resultDS = it ?: return@Observer
+
+                // _result.value = resultDS  //potser es pot substituir per això
+                if (resultDS.error != null) {
+                    _result.value = ResultSignUp(error = resultDS.error)
+                }
+                if (resultDS.success != null) {
+                    _result.value = ResultSignUp(success = resultDS.success)
+                }
+                // aqui la activity fa mes coses q suposo q aqui no calen
+                dataSource.result.removeObservers(activity)
+            }
+        )
+        dataSource.signUpBack(username, SignUpUserData(email, uid, token))
     }
 }

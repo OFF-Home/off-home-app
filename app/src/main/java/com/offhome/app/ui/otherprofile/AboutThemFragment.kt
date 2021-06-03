@@ -1,22 +1,31 @@
 package com.offhome.app.ui.otherprofile
 
-import android.app.AlertDialog
+
+
 import android.content.res.ColorStateList
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.GridLayout
+import android.widget.ImageView
 import android.widget.TextView
-import androidx.appcompat.app.AppCompatActivity
+import android.widget.Toast
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.ViewModelStoreOwner
 import com.google.android.material.chip.Chip
 import com.google.android.material.chip.ChipGroup
 import com.offhome.app.R
-import com.offhome.app.model.profile.TagData
-import com.offhome.app.model.profile.UserInfo
+import com.offhome.app.common.Constants
+import com.offhome.app.common.SharedPreferenceManager
+import com.offhome.app.data.Result
+import com.offhome.app.data.model.TagData
+import com.offhome.app.data.model.UserInfo
 
 /**
  * Fragment for the "about them" part of the OtherProfile screen
@@ -24,7 +33,6 @@ import com.offhome.app.model.profile.UserInfo
  *
  * @property viewModel reference to the ViewModel object of the entire OtherProfile.
  * @property textViewProfileDescription reference to description TextView
- * @property textViewBirthDate reference to birth date TextView
  * @property textViewFollowerCount reference to follower count TextView
  * @property textViewFollowingCount reference to following count TextView
  * @property chipGroupTags reference to the tags ChipGroup
@@ -42,10 +50,10 @@ class AboutThemFragment : Fragment() {
     private lateinit var viewModel: OtherProfileViewModel
 
     private lateinit var textViewProfileDescription: TextView
-    private lateinit var textViewBirthDate: TextView
     private lateinit var textViewFollowerCount: TextView
     private lateinit var textViewFollowingCount: TextView
     private lateinit var chipGroupTags: ChipGroup
+    private lateinit var gridLayout: GridLayout
 
     /**
      * Override the onCreateView method
@@ -69,10 +77,11 @@ class AboutThemFragment : Fragment() {
         viewModel = ViewModelProvider(activity as ViewModelStoreOwner).get(OtherProfileViewModel::class.java)
 
         textViewProfileDescription = view.findViewById(R.id.textViewProfileDescription)
-        textViewBirthDate = view.findViewById(R.id.textViewBirthDate)
         textViewFollowerCount = view.findViewById(R.id.textViewFollowerCount)
         textViewFollowingCount = view.findViewById(R.id.textViewFollowingCount)
         chipGroupTags = view.findViewById(R.id.chipGroupTags)
+
+        gridLayout = view.findViewById(R.id.gridLayout)
 
         return view
     }
@@ -89,14 +98,25 @@ class AboutThemFragment : Fragment() {
         val uinfo: UserInfo = viewModel.getUserInfo()
 
         textViewProfileDescription.text = uinfo.description
-        textViewBirthDate.text = uinfo.birthDate
         textViewFollowerCount.text = uinfo.followers.toString()
         textViewFollowingCount.text = uinfo.following.toString()
-        omplirTagGroup(uinfo.tags)  //TODO canviar per el de List <TagData>
+
+        viewModel.getUserTags().observe(
+            viewLifecycleOwner,
+            Observer {
+
+                if (it is Result.Success) {
+                    omplirTagGroup(it.data)
+                } else {
+                    Toast.makeText(context, R.string.error, Toast.LENGTH_LONG).show()
+                }
+            }
+        )
+        getAchievements()
     }
 
-    //old
-    private fun omplirTagGroup(tagString: String) {
+    // old, stub.
+    private fun omplirTagGroup() {
         val tag1 = Chip(context); tag1.text = "stub"; chipGroupTags.addView(tag1)
         tag1.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         tag1.chipStrokeWidth = 5F
@@ -107,9 +127,12 @@ class AboutThemFragment : Fragment() {
      *
      * @param tagList list of tags
      */
-    private fun omplirTagGroup(tagList:List<TagData>) {
+    private fun omplirTagGroup(tagList: List<TagData>) {
         for (tagData in tagList) {
             addTagToChipGroup(tagData.nomTag)
+        }
+        if (tagList.isEmpty()) {
+            Log.d("tags otherprofile", "tags empty")
         }
     }
 
@@ -119,7 +142,7 @@ class AboutThemFragment : Fragment() {
      * @param tag tag to initialize
      */
     private fun addTagToChipGroup(tag: String) {
-        val chip = Chip(context);
+        val chip = Chip(context)
         chip.text = tag
         chip.chipStrokeColor = ColorStateList.valueOf(resources.getColor(R.color.primary_light))
         chip.chipStrokeWidth = 5F
@@ -131,5 +154,57 @@ class AboutThemFragment : Fragment() {
      */
     fun updateFollowes() {
         textViewFollowerCount.text = viewModel.getUserInfo().followers.toString()
+    }
+
+    private fun getAchievements() {
+        viewModel.getAchievements().observe(
+            viewLifecycleOwner,
+            Observer {
+                if (it is Result.Success) {
+                    for ((index, x) in it.data.withIndex()) {
+                        val imageView = ImageView(requireContext())
+                        var drawable2: Drawable?
+                        if (x.nom.contains("DIAMOND", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_diamond_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("PLATINUM", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_platinum_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("BRONZE", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_bronze_small,
+                                requireContext().theme
+                            )
+                        } else if (x.nom.contains("SILVER", true)) {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_silver_small,
+                                requireContext().theme
+                            )
+                        } else {
+                            drawable2 = ResourcesCompat.getDrawable(
+                                requireContext().resources,
+                                R.drawable.trophy_gold_small,
+                                requireContext().theme
+                            )
+                        }
+                        imageView.setImageDrawable(drawable2)
+                        gridLayout.addView(imageView)
+                        imageView.setOnClickListener {
+                            Toast.makeText(context, x.descripcio, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+
+                } else if (it is Result.Error) {
+                    Log.d("GET", it.exception.message.toString())
+                }
+            })
     }
 }

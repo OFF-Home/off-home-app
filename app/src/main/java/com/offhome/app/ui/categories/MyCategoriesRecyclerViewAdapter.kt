@@ -1,19 +1,18 @@
 package com.offhome.app.ui.categories
 
+
+
 import android.content.Context
 import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Filter
-import android.widget.Filterable
 import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.offhome.app.R
-import com.offhome.app.model.Category
-
+import com.offhome.app.data.model.Category
 import com.offhome.app.ui.activitieslist.Activities
 import java.util.*
 import kotlin.collections.ArrayList
@@ -23,11 +22,10 @@ import kotlin.collections.ArrayList
  * @param context is the context of the activity
  * @property categories is the list of categories
  */
-class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>(){
+class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerView.Adapter<MyCategoriesRecyclerViewAdapter.ViewHolder>() {
 
-    private var listCategoriesFull : List<Category> = ArrayList()
-    private var tempListCat : List<Category> = ArrayList()
-
+    private var listCategoriesFull: List<Category> = ArrayList()
+    private var tempListCat: List<Category> = ArrayList()
 
     /**
      * Onclick to item. Updated when activitiesList developed
@@ -61,8 +59,8 @@ class MyCategoriesRecyclerViewAdapter(private val context: Context?) : RecyclerV
         val item = categories[position]
         holder.textViewName.text = item.categoria
         if (context != null) {
-            Glide.with(context).load(R.drawable.sport).centerCrop().into(holder.imageViewBackground)
-            Glide.with(context).load(R.drawable.ic_running_solid).centerCrop().into(holder.imageViewIcon)
+            Glide.with(context).load(item.urlBackground).centerCrop().into(holder.imageViewBackground)
+            Glide.with(context).load(item.urlIcon).centerCrop().into(holder.imageViewIcon)
         }
         with(holder.imageViewBackground) {
             tag = item

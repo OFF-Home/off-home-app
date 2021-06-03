@@ -7,5 +7,5 @@ package com.offhome.app.data.model
  */
 data class Rating(
     val valoracio: Int,
-    val review: String,
+    val comentari: String,
 )

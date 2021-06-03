@@ -30,15 +30,15 @@ class ActivitiesViewModel : ViewModel() {
         return activitiesList
     }
 
-    fun getActivitiesByDescTitle(): MutableLiveData<List<ActivityFromList>> {
+    fun getActivitiesByDescTitle(): MutableLiveData<Result<List<ActivityFromList>>>{
         return repository.getActivitiesByDescTitle()
     }
 
-    fun getActivitiesByAscTitle(): MutableLiveData<List<ActivityFromList>> {
+    fun getActivitiesByAscTitle(): MutableLiveData<Result<List<ActivityFromList>>> {
         return repository.getActivitiesByAscTitle()
     }
 
-    fun getActivitiesByDate(): MutableLiveData<List<ActivityFromList>> {
+    fun getActivitiesByDate(): MutableLiveData<Result<List<ActivityFromList>>>{
         return repository.getActivitiesByDate()
     }
 

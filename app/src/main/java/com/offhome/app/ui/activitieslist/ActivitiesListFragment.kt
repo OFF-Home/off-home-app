@@ -4,6 +4,7 @@ package com.offhome.app.ui.activitieslist
 
 import android.app.AlertDialog
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import android.widget.SearchView
 import android.widget.Spinner
@@ -188,9 +189,9 @@ class ActivitiesListFragment : Fragment() {
                         activitiesViewModel.getActivitiesByAscTitle().observe(
                             viewLifecycleOwner,
                             Observer {
-                                if (it != null) {
+                                if (it is Result.Success) {
                                     activitiesList = ArrayList()
-                                    for (item in it) {
+                                    for (item in it.data) {
                                         // transform dataHoraIni into date format
                                         val mydate = item.dataHoraFi
                                         var date: Date? = null
@@ -208,15 +209,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    likedList.clear()
                                     for (item in activitiesList) {
-                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList?.forEachIndexed { index, element ->
-                                            if (item == element) likedList[index] = true
-                                            else likedList[index] = false
-                                        }
+                                        val found = likedActivitiesList?.find { element -> element == item }
+                                        if (found == item) likedList.add(true)
+                                        else likedList.add(false)
                                     }
+                                    activitiesListAdapter.setData(activitiesList, likedList)
                                 }
-                                activitiesListAdapter.setData(activitiesList, likedList)
+                                else if (it is Result.Error) Log.d("SORT", "Error getting the acitvities sorted by ascendant order")
                             }
                         )
                     }
@@ -226,9 +227,9 @@ class ActivitiesListFragment : Fragment() {
                         activitiesViewModel.getActivitiesByDescTitle().observe(
                             viewLifecycleOwner,
                             Observer {
-                                if (it != null) {
+                                if (it is Result.Success) {
                                     activitiesList = ArrayList()
-                                    for (item in it) {
+                                    for (item in it.data) {
                                         // transform dataHoraIni into date format
                                         val mydate = item.dataHoraFi
                                         var date: Date? = null
@@ -246,15 +247,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    likedList.clear()
                                     for (item in activitiesList) {
-                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList?.forEachIndexed { index, element ->
-                                            if (item == element) likedList[index] = true
-                                            else likedList[index] = false
-                                        }
+                                        val found = likedActivitiesList?.find { element -> element == item }
+                                        if (found == item) likedList.add(true)
+                                        else likedList.add(false)
                                     }
+                                    activitiesListAdapter.setData(activitiesList, likedList)
                                 }
-                                activitiesListAdapter.setData(activitiesList, likedList)
+                                else if (it is Result.Error) Log.d("SORT", "Error getting the acitvities sorted by descendant order")
                             }
                         )
                     }
@@ -264,9 +265,9 @@ class ActivitiesListFragment : Fragment() {
                         activitiesViewModel.getActivitiesByDate().observe(
                             viewLifecycleOwner,
                             Observer {
-                                if (it != null) {
+                                if (it is Result.Success) {
                                     activitiesList = ArrayList()
-                                    for (item in it) {
+                                    for (item in it.data) {
                                         // transform dataHoraIni into date format
                                         val mydate = item.dataHoraFi
                                         var date: Date? = null
@@ -284,15 +285,15 @@ class ActivitiesListFragment : Fragment() {
                                             }
                                         }
                                     }
+                                    likedList.clear()
                                     for (item in activitiesList) {
-                                        //mirar que activities ya tienen like y ponerlo en la lista con los bools
-                                        likedActivitiesList?.forEachIndexed { index, element ->
-                                            if (item == element) likedList[index] = true
-                                            else likedList[index] = false
-                                        }
+                                        val found = likedActivitiesList?.find { element -> element == item }
+                                        if (found == item) likedList.add(true)
+                                        else likedList.add(false)
                                     }
+                                    activitiesListAdapter.setData(activitiesList, likedList)
                                 }
-                                activitiesListAdapter.setData(activitiesList, likedList)
+                                else if (it is Result.Error) Log.d("SORT", "Error getting the activities sorted by descendant order")
                             }
                         )
                     }

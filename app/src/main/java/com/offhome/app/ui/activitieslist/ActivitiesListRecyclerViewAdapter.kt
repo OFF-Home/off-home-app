@@ -76,8 +76,7 @@ class ActivitiesListRecyclerViewAdapter(
         val item = activitiesList[position]
         holder.textViewName.text = item.titol
         holder.textViewDataTime.text = item.dataHoraIni
-        // holder.textViewCapacity.text = item.participants.toString() + "/" + item.maxParticipant.toString()
-        holder.textViewCapacity.text = item.maxParticipant.toString()
+        holder.textViewCapacity.text = item.numParticipants.toString() + "/" + item.maxParticipant.toString()
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_people_alt_24).centerCrop().into(holder.capacityImage)
         if (likedList[position] == true) Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
@@ -118,6 +117,24 @@ class ActivitiesListRecyclerViewAdapter(
             }
         }
     }
+
+
+/*    mRecyclerViewAdapter.registerAdapterDataObserver(myObserver);
+
+
+    protected fun setupRecyclerView() {
+        mAdapter = MyAdapter(listActivitiesFull)
+        mAdapter.registerAdapterDataObserver(object : AdapterDataObserver() {
+            override fun onChanged() {
+                super.onChanged()
+                checkAdapterIsEmpty()
+            }
+        })
+        mRecyclerView.setLayoutManager(LinearLayoutManager(this))
+        mRecyclerView.setHasFixedSize(true)
+        mRecyclerView.setAdapter(mAdapter)
+        checkAdapterIsEmpty()
+    }*/
 
     /**
      * gets the number of views

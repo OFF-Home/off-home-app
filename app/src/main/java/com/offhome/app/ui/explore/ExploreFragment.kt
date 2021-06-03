@@ -101,12 +101,7 @@ class ExploreFragment : Fragment() {
                 if (it is Result.Success) {
                     activitiesListFriends = it.data
                     for ((index, activity) in activitiesListFriends.withIndex()) {
-                        viewModel.getUserInfo(activity.usuariCreador).observe(requireActivity(), {
-                            if (it is Result.Success) {
-                                activity.usernameCreador = it.data.username
-                                activitiesListFiendsAdapter.setData(activitiesListFriends)
-                            }
-                        })
+                        getInfoActivity(activity, index)
                     }
                     activitiesListFiendsAdapter.setData(activitiesListFriends)
                 } else if (it is Result.Error) {
@@ -117,6 +112,15 @@ class ExploreFragment : Fragment() {
             })
 
         return view
+    }
+
+    private fun getInfoActivity(activity: ActivityFromList, index: Int) {
+        viewModel.getUserInfo(activity.usuariCreador).observe(requireActivity(), {
+            if (it is Result.Success) {
+                activitiesListFriends[index].usernameCreador = it.data.username
+                activitiesListFiendsAdapter.setData(activitiesListFriends)
+            }
+        })
     }
 
     /**

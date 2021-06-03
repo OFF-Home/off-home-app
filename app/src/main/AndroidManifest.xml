@@ -54,7 +54,8 @@
         <activity
             android:name=".ui.recoverPassword.RecoverPasswordActivity"
             android:parentActivityName=".ui.login.LoginActivity" />
-        <activity android:name=".ui.otherprofile.OtherProfileActivity" />
+        <activity android:name=".ui.otherprofile.OtherProfileActivity"
+            android:parentActivityName=".MainActivity"/>
         <activity
             android:name=".ui.chats.groupChat.GroupChatActivity"
             android:parentActivityName=".ui.infoactivity.InfoActivity" />

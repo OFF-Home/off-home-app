@@ -28,19 +28,6 @@
             android:background="@color/secondary_light" />
     </androidx.cardview.widget.CardView>
 
-    <ImageView
-        android:id="@+id/imageViewIconLike"
-        android:layout_width="36dp"
-        android:layout_height="36dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginEnd="8dp"
-        android:contentDescription="Icon"
-        android:padding="3dp"
-        app:layout_constraintEnd_toEndOf="@+id/cardViewBackground"
-        app:layout_constraintTop_toTopOf="@+id/cardViewBackground"
-        app:srcCompat="@drawable/ic_baseline_favorite_border_24"
-        tools:srcCompat="@drawable/ic_baseline_favorite_border_24" />
-
     <TextView
         android:id="@+id/textViewNameActivity"
         android:layout_width="150dp"

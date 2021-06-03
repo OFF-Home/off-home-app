@@ -68,16 +68,16 @@ class ProfileRepository {
      * @return mutable live data which will be updated with the data from the call, if it is successful
      */
     fun getProfileInfo(email: String): MutableLiveData<Result<UserInfo>> {
-
+        val result =  MutableLiveData<Result<UserInfo>>()
         // accés a Backend
         val call: Call<UserInfo> = userService!!.getProfileInfo(email)
         call.enqueue(object : Callback<UserInfo> {
             override fun onResponse(call: Call<UserInfo>, response: Response<UserInfo>) {
                 if (response.isSuccessful) {
-                    userInfo.value = Result.Success(response.body() as UserInfo)
+                    result.value = Result.Success(response.body() as UserInfo)
                     Log.d("success response", "getProfileInfo: got a response indicating success")
                 } else {
-                    userInfo!!.value = Result.Error(IOException(response.errorBody().toString()))
+                    result.value = Result.Error(IOException(response.errorBody().toString()))
                     Log.d("failure response", "getProfileInfo: got a response indicating failure")
                 }
             }
@@ -87,7 +87,7 @@ class ProfileRepository {
             }
         })
 
-        return userInfo
+        return result
     }
 
     /**

@@ -112,10 +112,10 @@ class InviteActivity : AppCompatActivity() {
         )
 
         // stub, per que per ara no segueixo a ningú. pero treient aquest stub hauria de funcionar
-        usersList =
+        /*usersList =
             listOf(UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"), UserSummaryInfo(email = "agnesmgomez@gmail.com", username = "agnes", uid = "NujR0SvhtLUICj9BmJPOeUoeqA33"), UserSummaryInfo(email = "ferran.iglesias.barenys@estudiantat.upc.edu", username = "ferran3", uid = "cWSvMtQAczPKujgMqnljP44kbHX2"))
                 as MutableList<UserSummaryInfo>
-        usersListAdapter.setData(usersList)
+        usersListAdapter.setData(usersList)*/
 
         tracker = SelectionTracker.Builder<Long>(
             "mySelection",

@@ -501,7 +501,7 @@ class ProfileRepository {
     fun getFollowedUsers(email: String): MutableLiveData<List<UserInfo>> {
         if (followedUsers == null) followedUsers = MutableLiveData<List<UserInfo>>()
 
-        val call: Call<List<UserInfo>> = userService!!.getFollowedUsers(email)
+        val call: Call<List<UserInfo>> = userService!!.getFollowedUsersFullObject(email)
 
         call.enqueue(object : Callback<List<UserInfo>> {
             override fun onResponse(call: Call<List<UserInfo>>, response: Response<List<UserInfo>>) {

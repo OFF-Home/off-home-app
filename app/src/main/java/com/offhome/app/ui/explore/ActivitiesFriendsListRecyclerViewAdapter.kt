@@ -61,22 +61,12 @@ class ActivitiesFriendsListRecyclerViewAdapter(private val context: Context?) : 
         holder.textViewCreated.text = context!!.getString(R.string.created_by) + " " + item.usernameCreador
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_access_time_filled_24).centerCrop().into(holder.dataTimeImage)
         Glide.with(holder.mView.context).load(R.drawable.ic_baseline_face_24).centerCrop().into(holder.createdImage)
-        Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
 
         with(holder.background) {
             tag = item
             setOnClickListener(mOnClickListener)
         }
         var clicked = false
-
-        holder.iconLikeImage.setOnClickListener {
-            clicked = !clicked
-            if (clicked) {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_24).centerCrop().into(holder.iconLikeImage)
-            } else {
-                Glide.with(holder.mView.context).load(R.drawable.ic_baseline_favorite_border_24).centerCrop().into(holder.iconLikeImage)
-            }
-        }
     }
 
     /**
@@ -111,7 +101,6 @@ class ActivitiesFriendsListRecyclerViewAdapter(private val context: Context?) : 
         val textViewCreated: TextView = mView.findViewById(R.id.textViewCreatedBy)
         val dataTimeImage: ImageView = mView.findViewById(R.id.imageViewDataTime)
         val createdImage: ImageView = mView.findViewById(R.id.imageViewCreatedBy)
-        val iconLikeImage: ImageView = mView.findViewById(R.id.imageViewIconLike)
         val background: CardView = mView.findViewById(R.id.cardViewBackground)
 
         /**

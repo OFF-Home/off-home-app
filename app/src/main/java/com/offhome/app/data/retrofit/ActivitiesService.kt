@@ -50,7 +50,7 @@ interface ActivitiesService {
     /**
      * This call is for joining an activity
      */
-    @POST("/activitats/insertusuari")
+    @POST("activitats/insertusuari")
     fun joinActivity(@Body join: JoInActivity): Call<AchievementList>
 
     /**

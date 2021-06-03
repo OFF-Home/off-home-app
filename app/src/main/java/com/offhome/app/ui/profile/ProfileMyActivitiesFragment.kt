@@ -46,7 +46,6 @@ class ProfileMyActivitiesFragment : Fragment() {
     private var activitiesList: List<ActivityFromList> = ArrayList()
     private lateinit var activitiesViewModel: ActivitiesViewModel
     private lateinit var activitiesListAdapter: ActivitiesListRecyclerViewAdapter
-    private var likedList = ArrayList<Boolean>()
     lateinit var buttonold: Button
     lateinit var buttonliked: Button
 
@@ -99,6 +98,7 @@ class ProfileMyActivitiesFragment : Fragment() {
 
         val profileFragment: ProfileFragment = parentFragment as ProfileFragment
         profileVM = profileFragment.getViewModel()
+        profileVM.getLikedActivitiesList(SharedPreferenceManager.getStringValue(Constants().PREF_EMAIL).toString())
         profileVM.likedActivities.observe(
             viewLifecycleOwner,
             Observer {

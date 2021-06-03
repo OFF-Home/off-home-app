@@ -307,8 +307,6 @@ class InfoActivity : AppCompatActivity(), OnMapReadyCallback {
                                         val auxSnack = AuxShowAchievementSnackbar()
                                         auxSnack.showAchievementSnackbarObject(layout, this, it.data.result)
                                     }
-                                }else if (it is Result.Error) {
-                                    Toast.makeText(this, it.exception.message, Toast.LENGTH_LONG).show()
                                 }
                             }
                         )
